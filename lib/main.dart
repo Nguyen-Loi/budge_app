@@ -1,13 +1,15 @@
+import 'package:budget_app/features/auth/view/login_view.dart';
 import 'package:budget_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
-  );
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart'; // generated via `flutterfire` CLI
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const MyApp());
 }
 
 class MyApp extends ConsumerWidget {
@@ -18,18 +20,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Twitter Clone',
       theme: AppTheme.theme,
-      home: ref.watch(currentUserAccountProvider).when(
-            data: (user) {
-              if (user != null) {
-                return const HomeView();
-              }
-              return const SignUpView();
-            },
-            error: (error, st) => ErrorPage(
-              error: error.toString(),
-            ),
-            loading: () => const LoadingPage(),
-          ),
+      home: const LoginView(),
     );
   }
 }

@@ -1,15 +1,16 @@
-import 'package:budget_app/theme/pallete.dart';
+import 'package:budget_app/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static ThemeData theme = ThemeData.dark().copyWith(
-    scaffoldBackgroundColor: Pallete.backgroundColor,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Pallete.backgroundColor,
+  static ThemeData theme = ThemeData(
+    useMaterial3: true,
+    scaffoldBackgroundColor: ColorConstants.white,
+    appBarTheme: AppBarTheme(
+      backgroundColor: ColorConstants.white,
       elevation: 0,
     ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Pallete.blueColor,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: ColorConstants.purple2,
     ),
   );
 }

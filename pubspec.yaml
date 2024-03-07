@@ -2,19 +2,14 @@ name: budget_app
 description: "A new Flutter project."
 
 publish_to: 'none' 
-
-
 version: 1.0.0+1
 
 environment:
   sdk: '>=3.2.6 <4.0.0'
 
-
 dependencies:
   flutter:
     sdk: flutter
-
-
 
   cupertino_icons: ^1.0.2
   fpdart: ^1.1.0
@@ -33,6 +28,18 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+
+fonts:
+    - family: PublicSans
+      fonts:
+        - asset: assets/fonts/PublicSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/PublicSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/PublicSans-Medium.ttf
+          weight: 500
+        - asset: assets/fontsPublicSans-Regular.ttf
+          weight: 400
 
 flutter:
   uses-material-design: true
