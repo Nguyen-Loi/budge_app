@@ -22,6 +22,7 @@ dependencies:
   firebase_storage: ^11.6.8
   firebase_auth: ^4.17.7
   collection: ^1.18.0
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:
@@ -43,3 +44,5 @@ fonts:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/svgs/

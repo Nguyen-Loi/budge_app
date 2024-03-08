@@ -25,7 +25,7 @@ class BDivider extends StatelessWidget {
     this.indent,
     this.color,
     this.endIndent,
-  })  : isHorizental = false,
+  })  : isHorizental = true,
         width = null;
   @override
   Widget build(BuildContext context) {
