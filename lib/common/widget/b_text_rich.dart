@@ -27,18 +27,26 @@ class BTextRich extends StatelessWidget {
 class BTextRichSpace extends StatelessWidget {
   final String text1;
   final String text2;
+  final TextStyle? styleText1;
+  final TextStyle? styleText2;
   final VoidCallback? onTap;
 
   const BTextRichSpace(
-      {super.key, required this.text1, required this.text2, this.onTap});
+      {super.key,
+      required this.text1,
+      required this.text2,
+      this.onTap,
+      this.styleText1,
+      this.styleText2});
   @override
   Widget build(BuildContext context) {
     return BTextRich(
       BTextSpan(children: [
-        BTextSpan(text: text1),
+        BTextSpan(text: text1, style: styleText1),
         BTextSpan(
           text: text2,
-          style: BTextStyle.bodyMedium(color: ColorConstants.primary),
+          style: styleText1 ??
+              BTextStyle.bodyMedium(color: ColorConstants.primary),
           onTap: onTap,
         ),
       ]),

@@ -6,9 +6,9 @@
         "editor.rulers": [
             80
         ],
-        "editor.selectionHighlight":false,
+        "editor.selectionHighlight": false,
         "editor.suggest.snippetsPreventQuickSuggestions": true,
-        "editor.suggestSelection": "first",
+        "editor.suggestSelection": "recentlyUsedByPrefix",
         "editor.tabCompletion": "onlySnippets",
         "editor.wordBasedSuggestions": "off",
     },
@@ -16,12 +16,12 @@
     "dart.renameFilesWithClasses": "prompt",
     "window.zoomLevel": 1,
     "editor.bracketPairColorization.enabled": true,
-    "editor.inlineSuggest.enabled": true,
+    "editor.inlineSuggest.enabled": false,
     "editor.formatOnSave": true,
     "editor.stickyScroll.enabled": false,
     "explorer.fileNesting.patterns": {
         "*.dart": "${capture}.g.dart, ${capture}.freezed.dart"
     },
-    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.enabled": false,
     "explorer.fileNesting.expand": false
 }
