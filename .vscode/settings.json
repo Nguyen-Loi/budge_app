@@ -1,0 +1,27 @@
+{
+    "[dart]": {
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "always"
+        },
+        "editor.rulers": [
+            80
+        ],
+        "editor.selectionHighlight":false,
+        "editor.suggest.snippetsPreventQuickSuggestions": true,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off",
+    },
+    "dart.warnWhenEditingFilesOutsideWorkspace": false,
+    "dart.renameFilesWithClasses": "prompt",
+    "window.zoomLevel": 1,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.inlineSuggest.enabled": true,
+    "editor.formatOnSave": true,
+    "editor.stickyScroll.enabled": false,
+    "explorer.fileNesting.patterns": {
+        "*.dart": "${capture}.g.dart, ${capture}.freezed.dart"
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.expand": false
+}
