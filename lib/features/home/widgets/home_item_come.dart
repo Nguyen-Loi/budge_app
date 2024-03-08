@@ -3,13 +3,13 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:flutter/material.dart';
 
-class HomeItemdart extends StatelessWidget {
+class HomeItemCome extends StatelessWidget {
   final String title;
   final int money;
   final Color color;
   final VoidCallback onTap;
 
-  const HomeItemdart(
+  const HomeItemCome(
       {super.key,
       required this.title,
       required this.money,
