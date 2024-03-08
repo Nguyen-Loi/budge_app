@@ -1,7 +1,7 @@
 import 'package:budget_app/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
-enum BTextType {
+enum _BTextType {
   heading1,
   heading2,
   bodyLarge,
@@ -10,71 +10,69 @@ enum BTextType {
   caption,
 }
 
+const String _fontName = 'PublicSans';
+
 class BText extends StatelessWidget {
-  final String fontName = 'PublicSans';
   final String text;
   final FontWeight? fontWeight;
   final Color? color;
   final TextAlign textAlign;
-  final BTextType textType;
+  // ignore: library_private_types_in_public_api
+  final _BTextType textType;
 
   const BText.h1(
     this.text, {
     this.color,
     this.fontWeight,
-    this.textAlign = TextAlign.center,
+    this.textAlign = TextAlign.left,
     super.key,
-  }) : textType = BTextType.heading1;
+  }) : textType = _BTextType.heading1;
 
   const BText.h2(
     this.text, {
     this.color,
     this.fontWeight,
-    this.textAlign = TextAlign.center,
+    this.textAlign = TextAlign.left,
     super.key,
-  }) : textType = BTextType.heading2;
+  }) : textType = _BTextType.heading2;
 
   const BText.b1(
     this.text, {
     this.color,
     this.fontWeight,
-    this.textAlign = TextAlign.center,
+    this.textAlign = TextAlign.left,
     super.key,
-  }) : textType = BTextType.bodyLarge;
+  }) : textType = _BTextType.bodyLarge;
 
   const BText(
     this.text, {
     this.color,
     this.fontWeight,
-    this.textAlign = TextAlign.center,
+    this.textAlign = TextAlign.left,
     super.key,
-  }) : textType = BTextType.bodyMedium;
+  }) : textType = _BTextType.bodyMedium;
 
   const BText.b3(
     this.text, {
     this.color,
     this.fontWeight,
-    this.textAlign = TextAlign.center,
+    this.textAlign = TextAlign.left,
     super.key,
-  }) : textType = BTextType.bodySmall;
+  }) : textType = _BTextType.bodySmall;
 
   const BText.caption(
     this.text, {
     this.color,
     this.fontWeight,
-    this.textAlign = TextAlign.center,
+    this.textAlign = TextAlign.left,
     super.key,
-  }) : textType = BTextType.caption;
+  }) : textType = _BTextType.caption;
 
   Widget _heading1() {
     return Text(
       text,
       textAlign: textAlign,
-      style: TextStyle(
-          fontFamily: fontName,
-          fontWeight: fontWeight ?? _FontWeightManager.bold,
-          fontSize: 24,
-          color: color ?? _ColorFontDefault.heading1),
+      style: BTextStyle.heading1(color: color, fontWeight: fontWeight),
     );
   }
 
@@ -82,11 +80,7 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
-      style: TextStyle(
-          fontFamily: fontName,
-          fontWeight: fontWeight ?? _FontWeightManager.semiBold,
-          fontSize: 20,
-          color: color ?? _ColorFontDefault.heading2),
+      style: BTextStyle.heading2(color: color, fontWeight: fontWeight),
     );
   }
 
@@ -94,11 +88,7 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
-      style: TextStyle(
-          fontFamily: fontName,
-          fontWeight: _FontWeightManager.semiBold,
-          fontSize: 18,
-          color: _ColorFontDefault.bodyLarge),
+      style: BTextStyle.bodyLarge(color: color, fontWeight: fontWeight),
     );
   }
 
@@ -106,11 +96,7 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
-      style: TextStyle(
-          fontFamily: fontName,
-          fontWeight: fontWeight ?? _FontWeightManager.regular,
-          fontSize: 16,
-          color: color ?? _ColorFontDefault.bodyRegular),
+      style: BTextStyle.bodyMedium(color: color, fontWeight: fontWeight),
     );
   }
 
@@ -118,11 +104,7 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
-      style: TextStyle(
-          fontFamily: fontName,
-          fontWeight: fontWeight ?? _FontWeightManager.regular,
-          fontSize: 14,
-          color: color ?? _ColorFontDefault.bodySmall),
+      style: BTextStyle.bodySmall(fontWeight: fontWeight, color: color),
     );
   }
 
@@ -130,34 +112,73 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
-      style: TextStyle(
-          fontFamily: fontName,
-          fontWeight: fontWeight ?? _FontWeightManager.medium,
-          fontSize: 12,
-          color: color ?? _ColorFontDefault.caption),
+      style: BTextStyle.caption(color: color, fontWeight: fontWeight),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     switch (textType) {
-      case BTextType.heading1:
+      case _BTextType.heading1:
         return _heading1();
-      case BTextType.heading2:
+      case _BTextType.heading2:
         return _heading2();
-      case BTextType.bodyLarge:
+      case _BTextType.bodyLarge:
         return _bodyLarge();
-      case BTextType.bodyMedium:
+      case _BTextType.bodyMedium:
         return _bodyMedium();
-      case BTextType.bodySmall:
+      case _BTextType.bodySmall:
         return _bodySmall();
-      case BTextType.caption:
+      case _BTextType.caption:
         return _caption();
     }
   }
 }
 
-class _FontWeightManager {
+class BTextStyle {
+  static TextStyle heading1({FontWeight? fontWeight, Color? color}) =>
+      TextStyle(
+          fontFamily: _fontName,
+          fontWeight: fontWeight ?? FontWeightManager.bold,
+          fontSize: 24,
+          color: color ?? _ColorFontDefault.heading1);
+
+  static TextStyle heading2({FontWeight? fontWeight, Color? color}) =>
+      TextStyle(
+          fontFamily: _fontName,
+          fontWeight: fontWeight ?? FontWeightManager.semiBold,
+          fontSize: 20,
+          color: color ?? _ColorFontDefault.heading2);
+
+  static TextStyle bodyLarge({FontWeight? fontWeight, Color? color}) =>
+      TextStyle(
+          fontFamily: _fontName,
+          fontWeight: FontWeightManager.semiBold,
+          fontSize: 18,
+          color: color ?? _ColorFontDefault.bodyLarge);
+
+  static TextStyle bodyMedium({FontWeight? fontWeight, Color? color}) =>
+      TextStyle(
+          fontFamily: _fontName,
+          fontWeight: fontWeight ?? FontWeightManager.regular,
+          fontSize: 16,
+          color: color ?? _ColorFontDefault.bodyRegular);
+
+  static TextStyle bodySmall({FontWeight? fontWeight, Color? color}) =>
+      TextStyle(
+          fontFamily: _fontName,
+          fontWeight: fontWeight ?? FontWeightManager.regular,
+          fontSize: 14,
+          color: color ?? _ColorFontDefault.bodySmall);
+
+  static TextStyle caption({FontWeight? fontWeight, Color? color}) => TextStyle(
+      fontFamily: _fontName,
+      fontWeight: fontWeight ?? FontWeightManager.medium,
+      fontSize: 12,
+      color: color ?? _ColorFontDefault.caption);
+}
+
+class FontWeightManager {
   static const FontWeight regular = FontWeight.w400;
   static const FontWeight medium = FontWeight.w500;
   static const FontWeight semiBold = FontWeight.w600;
@@ -165,10 +186,10 @@ class _FontWeightManager {
 }
 
 class _ColorFontDefault {
-  static Color heading1 = ColorConstants.darkGrey;
-  static Color heading2 = ColorConstants.primary;
-  static Color bodyLarge = ColorConstants.primary;
-  static Color bodyRegular = ColorConstants.primary;
-  static Color bodySmall = ColorConstants.darkGrey;
+  static Color heading1 = ColorConstants.primary;
+  static Color heading2 = ColorConstants.black;
+  static Color bodyLarge = ColorConstants.black;
+  static Color bodyRegular = ColorConstants.black;
+  static Color bodySmall = ColorConstants.grey1;
   static Color caption = ColorConstants.grey1;
 }
