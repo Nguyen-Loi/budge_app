@@ -19,7 +19,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'Twitter Clone',
-      theme: AppTheme.theme,
+      theme: AppTheme.lightTheme,
       home: const LoginView(),
     );
   }
