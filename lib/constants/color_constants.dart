@@ -21,7 +21,8 @@ class ColorConstants {
   static Color green1 = HexColor.fromHex("#017A47");
   static Color green2 = HexColor.fromHex("#D1FADF");
   static Color white = HexColor.fromHex("#FFFFFF");
-  static Color black = HexColor.fromHex("#000000"); // red color
+  static Color black = HexColor.fromHex("#000000");
+  static Color orange = HexColor.fromHex("#FE7C2F");
 
   static Color grey1 = HexColor.fromHex("#707070");
   static Color grey2 = HexColor.fromHex("F5E8DD");
@@ -34,6 +35,19 @@ class ColorConstants {
   static Color darkPrimary = HexColor.fromHex("#d17d11");
 
   static Color error = HexColor.fromHex("#e61f34");
+
+  static LinearGradient linearGreen = LinearGradient(colors: [
+    HexColor.fromHex('#11998e'),
+    HexColor.fromHex('#38ef7d'),
+  ]);
+  static LinearGradient linearWarning = LinearGradient(colors: [
+    HexColor.fromHex('#f12711'),
+    HexColor.fromHex('#f5af19'),
+  ]);
+  static LinearGradient linearDanger = LinearGradient(colors: [
+    HexColor.fromHex('#e52d27'),
+    HexColor.fromHex('#b31217'),
+  ]);
 }
 
 extension HexColor on Color {

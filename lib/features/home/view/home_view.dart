@@ -7,13 +7,15 @@ import 'package:budget_app/common/widget/form/with_spacing.dart';
 import 'package:budget_app/constants/color_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/features/home/controller/home_controller.dart';
 import 'package:budget_app/features/home/widgets/home_budge_card.dart';
 import 'package:budget_app/features/home/widgets/home_item_come.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key});
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  final HomeController _controller = HomeController();
   List<String> get listCategory => ['A', 'B', 'C', 'D'];
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class HomeView extends StatelessWidget {
         ],
       ),
       body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         children: [
           _cardBalance(),
           gapH16,
@@ -53,16 +56,22 @@ class HomeView extends StatelessWidget {
 
   Widget _cardBalance() {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 16),
-      child: Column(
-        children: [
-          const BImage.avatar(
-              'https://acpro.edu.vn/hinh-nhung-chu-meo-de-thuong/imager_173.jpg'),
-          gapH24,
-          const BText('Your available lalance is'),
-          gapH16,
-          BText('\$ 2028', color: ColorConstants.white),
-        ],
+      elevation: 2,
+      margin: const EdgeInsets.all(0),
+      color: ColorConstants.purple12,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const BImage.avatar(
+                'https://acpro.edu.vn/hinh-nhung-chu-meo-de-thuong/imager_173.jpg'),
+            gapH24,
+            BText('Your available lalance is', color: ColorConstants.white),
+            gapH16,
+            BText.h1('\$ 2028', color: ColorConstants.white),
+          ],
+        ),
       ),
     );
   }
@@ -70,17 +79,21 @@ class HomeView extends StatelessWidget {
   Widget _inComeAndExpense() {
     return Row(
       children: [
-        HomeItemCome(
-            title: 'Income',
-            money: 4250,
-            color: ColorConstants.purple11,
-            onTap: () {}),
+        Expanded(
+          child: HomeItemCome(
+              title: 'Income',
+              money: 4250,
+              color: ColorConstants.purple11,
+              onTap: () {}),
+        ),
         gapW16,
-        HomeItemCome(
-            title: 'Income',
-            money: 4250,
-            color: ColorConstants.purple21,
-            onTap: () {})
+        Expanded(
+          child: HomeItemCome(
+              title: 'Income',
+              money: 4250,
+              color: ColorConstants.purple21,
+              onTap: () {}),
+        )
       ],
     );
   }
@@ -89,7 +102,10 @@ class HomeView extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: BSearchBar(controller: _controller),
+          child: BSearchBar(
+            controller: _searchController,
+            hintText: 'Search ...',
+          ),
         ),
         gapW16,
         BDropdown<String>(
@@ -103,14 +119,11 @@ class HomeView extends StatelessWidget {
 
   Widget _listBudget() {
     return ColumnWithSpacing(
-      children: const [
-        HomeBudgeCard(),
-        HomeBudgeCard(),
-        HomeBudgeCard(),
-        HomeBudgeCard(),
-        HomeBudgeCard(),
-        HomeBudgeCard(),
-      ],
+      children: _controller.listBuget
+          .map(
+            (e) => HomeBudgeCard(model: e),
+          )
+          .toList(),
     );
   }
 }
