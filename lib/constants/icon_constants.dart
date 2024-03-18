@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class IconConstants {
   static IconData showPassword = Icons.visibility;
@@ -8,5 +9,8 @@ class IconConstants {
   static IconData search = Icons.search;
   static IconData clear = Icons.clear;
   static IconData arrowNext = Icons.arrow_forward_ios_rounded;
-
+  static IconData dropdown = Icons.keyboard_arrow_down;
+  static IconData emojiSmile = FontAwesomeIcons.faceSmile;
+  static IconData emojiSurprise = FontAwesomeIcons.faceSurprise;
+  static IconData emojiFrown = FontAwesomeIcons.faceFrown;
 }

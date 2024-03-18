@@ -9,7 +9,7 @@ enum TransactionType {
   }
 
   final int value;
-  const TransactionType(this.value);
+  const TransactionType(this.value);  
 }
 
 extension ConvertTypeAccount on TransactionType {

@@ -1,5 +1,6 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/color_constants.dart';
+import 'package:budget_app/constants/icon_constants.dart';
 import 'package:flutter/material.dart';
 
 class BDropdown<T> extends StatefulWidget {
@@ -33,27 +34,37 @@ class _BDropdownState<T> extends State<BDropdown<T?>> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<T>(
-      value: value,
-      hint: widget.hint == null
-          ? BText('Empty', color: ColorConstants.grey1)
-          : BText(widget.hint!, color: ColorConstants.grey1),
-      icon: const Icon(Icons.arrow_downward),
-      elevation: 16,
-      onChanged: (T? v) {
-        if (value != null) {
-          setState(() {
-            value = v;
-            widget.onChanged(v);
-          });
-        }
-      },
-      items: widget.items.map<DropdownMenuItem<T>>((T? value) {
-        return DropdownMenuItem<T>(
-          value: value,
-          child: Text(widget.label(value).toString()),
-        );
-      }).toList(),
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: ColorConstants.grey, width: 0.4)),
+      child: DropdownButton<T>(
+        value: value,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        underline: const SizedBox.shrink(),
+        hint: widget.hint == null
+            ? BText('Empty', color: ColorConstants.grey1)
+            : BText(widget.hint!, color: ColorConstants.grey1),
+        icon: Icon(
+          IconConstants.dropdown,
+          color: ColorConstants.black,
+        ),
+        elevation: 16,
+        onChanged: (T? v) {
+          if (value != null) {
+            setState(() {
+              value = v;
+              widget.onChanged(v);
+            });
+          }
+        },
+        items: widget.items.map<DropdownMenuItem<T>>((T? value) {
+          return DropdownMenuItem<T>(
+            value: value,
+            child: Text(widget.label(value).toString()),
+          );
+        }).toList(),
+      ),
     );
   }
 }

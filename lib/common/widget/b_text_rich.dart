@@ -30,12 +30,14 @@ class BTextRichSpace extends StatelessWidget {
   final TextStyle? styleText1;
   final TextStyle? styleText2;
   final VoidCallback? onTap;
+  final TextAlign? textAlign;
 
   const BTextRichSpace(
       {super.key,
       required this.text1,
       required this.text2,
       this.onTap,
+      this.textAlign = TextAlign.start,
       this.styleText1,
       this.styleText2});
   @override
@@ -45,12 +47,12 @@ class BTextRichSpace extends StatelessWidget {
         BTextSpan(text: text1, style: styleText1),
         BTextSpan(
           text: text2,
-          style: styleText1 ??
+          style: styleText2 ??
               BTextStyle.bodyMedium(color: ColorConstants.primary),
           onTap: onTap,
         ),
       ]),
-      textAlign: TextAlign.end,
+      textAlign: textAlign,
     );
   }
 }

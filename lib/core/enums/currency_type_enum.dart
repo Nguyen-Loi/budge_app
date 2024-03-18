@@ -1,11 +1,11 @@
 import 'package:collection/collection.dart';
 
 enum CurrencyType {
-  usD(1),
-  vnD(2);
+  usd(1),
+  vnd(2);
   
   static CurrencyType fromValue (int value){
-    return  CurrencyType.values.firstWhereOrNull((e) => e.value==value)??CurrencyType.usD;
+    return  CurrencyType.values.firstWhereOrNull((e) => e.value==value)??CurrencyType.usd;
   }
   final int value;
   const CurrencyType(this.value);
@@ -14,9 +14,9 @@ enum CurrencyType {
 extension ConvertTypeAccount on CurrencyType {
   String toText() {
     switch (this) {
-      case CurrencyType.usD:
+      case CurrencyType.usd:
         return 'USD';
-      case CurrencyType.vnD:
+      case CurrencyType.vnd:
         return 'VND';
     }
   }
