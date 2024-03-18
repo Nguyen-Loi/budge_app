@@ -8,6 +8,7 @@ class BudgetModel extends BaseModel {
   String get userId => Methods.getString(data, FieldConstants.userId);
   String get name => Methods.getString(data, FieldConstants.name);
   int get currentAmount => Methods.getInt(data, FieldConstants.currentAmount);
+  int get limit => Methods.getInt(data, FieldConstants.limit);
   CurrencyType get currencyType =>
       CurrencyType.fromValue(Methods.getInt(data, FieldConstants.currencyType));
   DateTime get startDate =>

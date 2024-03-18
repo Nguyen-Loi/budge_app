@@ -1,4 +1,4 @@
-import 'package:budget_app/common/log.dart';
+
 import 'package:budget_app/common/widget/b_app_bar.dart';
 import 'package:budget_app/common/widget/b_divider.dart';
 import 'package:budget_app/common/widget/b_text.dart';
