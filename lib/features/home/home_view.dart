@@ -1,15 +1,16 @@
 import 'package:budget_app/common/widget/b_dropdown.dart';
+import 'package:budget_app/common/widget/b_image.dart';
 import 'package:budget_app/common/widget/b_search_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
-import 'package:budget_app/common/widget/form/b_image.dart';
-import 'package:budget_app/common/widget/form/with_spacing.dart';
+import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/color_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/features/home/controller/home_controller.dart';
 import 'package:budget_app/features/home/widgets/home_budge_card.dart';
 import 'package:budget_app/features/home/widgets/home_item_come.dart';
+import 'package:budget_app/features/income/income_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatelessWidget {
@@ -44,7 +45,7 @@ class HomeView extends StatelessWidget {
         children: [
           _cardBalance(),
           gapH16,
-          _inComeAndExpense(),
+          _inComeAndExpense(context),
           gapH16,
           _searchAndCategory(),
           gapH16,
@@ -76,7 +77,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _inComeAndExpense() {
+  Widget _inComeAndExpense(BuildContext context) {
     return Row(
       children: [
         Expanded(
@@ -84,12 +85,15 @@ class HomeView extends StatelessWidget {
               title: 'Income',
               money: 4250,
               color: ColorConstants.purple11,
-              onTap: () {}),
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => IncomeView()));
+              }),
         ),
         gapW16,
         Expanded(
           child: HomeItemCome(
-              title: 'Income',
+              title: 'Expense',
               money: 4250,
               color: ColorConstants.purple21,
               onTap: () {}),

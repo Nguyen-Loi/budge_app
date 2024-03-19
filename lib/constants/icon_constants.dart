@@ -10,6 +10,7 @@ class IconConstants {
   static IconData clear = Icons.clear;
   static IconData arrowNext = Icons.arrow_forward_ios_rounded;
   static IconData dropdown = Icons.keyboard_arrow_down;
+  static IconData calendar = Icons.calendar_month_rounded;
   static IconData emojiSmile = FontAwesomeIcons.faceSmile;
   static IconData emojiSurprise = FontAwesomeIcons.faceSurprise;
   static IconData emojiFrown = FontAwesomeIcons.faceFrown;
