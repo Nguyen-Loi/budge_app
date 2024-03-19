@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ColorConstants {
+class ColorManager {
   static Color primary = HexColor.fromHex("#7001E0");
 
   static Color purple11 = HexColor.fromHex("#410080");

@@ -1,4 +1,4 @@
-import 'package:budget_app/constants/color_constants.dart';
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/theme/app_colors.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/theme/asset_tile_style.dart';
@@ -47,36 +47,36 @@ class AppTheme {
 
   static AppColors get lightColors => AppColors(
         brightness: Brightness.dark,
-        primary: ColorConstants.purple13,
-        onPrimary: ColorConstants.black,
-        secondary: ColorConstants.purple23,
-        onSecondary: ColorConstants.white,
-        background: ColorConstants.white,
+        primary: ColorManager.purple13,
+        onPrimary: ColorManager.black,
+        secondary: ColorManager.purple23,
+        onSecondary: ColorManager.white,
+        background: ColorManager.white,
         onBackground: const Color(0xFF002E42),
         surface: const Color(0xFFF2F5F6),
         onSurface: const Color(0xFF002E42),
         surfaceVariant: const Color(0xFFF2F5F6),
         onSurfaceVariant: const Color(0xFF667C86),
-        success: ColorConstants.green2,
-        onSuccess: ColorConstants.white,
-        error: ColorConstants.red,
-        onError: ColorConstants.white,
+        success: ColorManager.green2,
+        onSuccess: ColorManager.white,
+        error: ColorManager.red,
+        onError: ColorManager.white,
 
         /// Custom colors
         tileBackgroundColor: const Color(0xFFF2F5F6),
         defaultText: const Color(0XFF002E42),
         lightText: const Color(0XFF667C86),
-        defaultIcon: ColorConstants.purple22, //Hover icon button
+        defaultIcon: ColorManager.purple22, //Hover icon button
         disabledIcon: const Color(0XFF8097A0),
         disabledSurface: const Color(0XFFD2DBDE),
         onDisabledSurface: const Color(0XFFA0B1B8),
         linearGradient: LinearGradient(
           colors: [
-            ColorConstants.purple21,
-            ColorConstants.purple22,
-            ColorConstants.purple23,
-            ColorConstants.purple24,
-            ColorConstants.purple25,
+            ColorManager.purple21,
+            ColorManager.purple22,
+            ColorManager.purple23,
+            ColorManager.purple24,
+            ColorManager.purple25,
           ],
         ),
       );
@@ -176,6 +176,15 @@ class AppTheme {
           textStyle: AppTextTheme.labelMedium.copyWith(color: darkColors.error),
         ),
       ),
+      filledButtonTheme: FilledButtonThemeData(
+          style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                  const EdgeInsets.all(10)),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              )))),
+
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           shape:
@@ -201,10 +210,10 @@ class AppTheme {
             .copyWith(color: darkColors.onSurfaceVariant),
         focusedErrorBorder: darkColors.error.getOutlineBorder,
         errorBorder: darkColors.error.getOutlineBorder,
-        focusedBorder: ColorConstants.primary.getOutlineBorder,
+        focusedBorder: ColorManager.primary.getOutlineBorder,
         iconColor: darkColors.onSurfaceVariant,
-        enabledBorder: ColorConstants.primary.getOutlineBorder,
-        disabledBorder: ColorConstants.grey1.getOutlineBorder,
+        enabledBorder: ColorManager.primary.getOutlineBorder,
+        disabledBorder: ColorManager.grey1.getOutlineBorder,
         errorMaxLines: 3,
       ),
       tabBarTheme: TabBarTheme(
@@ -272,6 +281,14 @@ class AppTheme {
               AppTextTheme.labelMedium.copyWith(color: lightColors.error),
         ),
       ),
+      filledButtonTheme: FilledButtonThemeData(
+          style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                  const EdgeInsets.all(10)),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              )))),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           shape:
@@ -299,10 +316,10 @@ class AppTheme {
             .copyWith(color: lightColors.onSurfaceVariant),
         focusedErrorBorder: lightColors.error.getOutlineBorder,
         errorBorder: lightColors.error.getOutlineBorder,
-        focusedBorder: ColorConstants.primary.getOutlineBorder,
+        focusedBorder: ColorManager.primary.getOutlineBorder,
         iconColor: darkColors.onSurfaceVariant,
-        enabledBorder: ColorConstants.grey1.getOutlineBorder,
-        disabledBorder: ColorConstants.grey1.getOutlineBorder,
+        enabledBorder: ColorManager.grey1.getOutlineBorder,
+        disabledBorder: ColorManager.grey1.getOutlineBorder,
         errorMaxLines: 3,
       ),
       tabBarTheme: TabBarTheme(

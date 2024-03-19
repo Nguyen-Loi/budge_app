@@ -1,4 +1,4 @@
-import 'package:budget_app/constants/color_constants.dart';
+import 'package:budget_app/common/color_manager.dart';
 import 'package:flutter/material.dart';
 
 enum _BTextType {
@@ -186,10 +186,10 @@ class FontWeightManager {
 }
 
 class _ColorFontDefault {
-  static Color heading1 = ColorConstants.primary;
-  static Color heading2 = ColorConstants.black;
-  static Color bodyLarge = ColorConstants.black;
-  static Color bodyRegular = ColorConstants.black;
-  static Color bodySmall = ColorConstants.grey1;
-  static Color caption = ColorConstants.grey1;
+  static Color heading1 = ColorManager.primary;
+  static Color heading2 = ColorManager.black;
+  static Color bodyLarge = ColorManager.black;
+  static Color bodyRegular = ColorManager.black;
+  static Color bodySmall = ColorManager.grey1;
+  static Color caption = ColorManager.grey1;
 }

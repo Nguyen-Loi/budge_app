@@ -1,4 +1,6 @@
 import 'package:budget_app/common/type_def.dart';
+import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/utils/b_date_time.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +11,14 @@ class BPickerDatetime extends StatefulWidget {
       this.initialDate,
       required this.firstDate,
       this.lastDate,
-      required this.onChanged})
+      required this.onChanged,
+      required this.title})
       : super(key: key);
   final DateTime? initialDate;
   final DateTime firstDate;
   final DateTime? lastDate;
   final OnChangeDate onChanged;
+  final String title;
 
   @override
   State<BPickerDatetime> createState() => _BPickerDatetimeState();
@@ -35,15 +39,25 @@ class _BPickerDatetimeState extends State<BPickerDatetime> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      focusNode: _AlwaysDisabledFocusNode(),
-      controller: _textEditingController,
-      onTap: () {
-        _selectDate(context);
-      },
-      decoration: InputDecoration(
-        prefixIcon: Icon(IconConstants.calendar),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BText(
+          widget.title,
+          fontWeight: FontWeightManager.semiBold,
+        ),
+        gapH8,
+        TextField(
+          focusNode: _AlwaysDisabledFocusNode(),
+          controller: _textEditingController,
+          onTap: () {
+            _selectDate(context);
+          },
+          decoration: InputDecoration(
+            suffix: Icon(IconConstants.calendar),
+          ),
+        ),
+      ],
     );
   }
 

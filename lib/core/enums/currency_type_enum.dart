@@ -1,11 +1,11 @@
-import 'package:collection/collection.dart';
+
 
 enum CurrencyType {
-  usd(1),
-  vnd(2);
+  vnd(1),
+  usd(2);
   
   static CurrencyType fromValue (int value){
-    return  CurrencyType.values.firstWhereOrNull((e) => e.value==value)??CurrencyType.usd;
+    return  CurrencyType.values.firstWhere((e) => e.value==value);
   }
   final int value;
   const CurrencyType(this.value);
