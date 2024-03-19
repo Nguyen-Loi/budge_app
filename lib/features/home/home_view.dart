@@ -4,7 +4,7 @@ import 'package:budget_app/common/widget/b_search_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
-import 'package:budget_app/constants/color_constants.dart';
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/features/home/controller/home_controller.dart';
@@ -59,7 +59,7 @@ class HomeView extends StatelessWidget {
     return Card(
       elevation: 2,
       margin: const EdgeInsets.all(0),
-      color: ColorConstants.purple12,
+      color: ColorManager.purple12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -68,9 +68,9 @@ class HomeView extends StatelessWidget {
             const BImage.avatar(
                 'https://acpro.edu.vn/hinh-nhung-chu-meo-de-thuong/imager_173.jpg'),
             gapH24,
-            BText('Your available lalance is', color: ColorConstants.white),
+            BText('Your available lalance is', color: ColorManager.white),
             gapH16,
-            BText.h1('\$ 2028', color: ColorConstants.white),
+            BText.h1('\$ 2028', color: ColorManager.white),
           ],
         ),
       ),
@@ -84,7 +84,7 @@ class HomeView extends StatelessWidget {
           child: HomeItemCome(
               title: 'Income',
               money: 4250,
-              color: ColorConstants.purple11,
+              color: ColorManager.purple11,
               onTap: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (_) => IncomeView()));
@@ -95,7 +95,7 @@ class HomeView extends StatelessWidget {
           child: HomeItemCome(
               title: 'Expense',
               money: 4250,
-              color: ColorConstants.purple21,
+              color: ColorManager.purple21,
               onTap: () {}),
         )
       ],

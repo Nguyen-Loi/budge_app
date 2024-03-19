@@ -14,4 +14,16 @@ class IconConstants {
   static IconData emojiSmile = FontAwesomeIcons.faceSmile;
   static IconData emojiSurprise = FontAwesomeIcons.faceSurprise;
   static IconData emojiFrown = FontAwesomeIcons.faceFrown;
+  
+  //For budget category
+  static IconData categoryAccomodation = Icons.home;
+  static IconData categoryEating = FontAwesomeIcons.utensils;
+  static IconData categoryShopping = Icons.shopify_sharp;
+  static IconData categoryTransportation = FontAwesomeIcons.bus;
+  static IconData categoryEntertainment = FontAwesomeIcons.fan;
+  static IconData categorySport = Icons.sports_gymnastics_rounded;
+  static IconData categoryGift = FontAwesomeIcons.gift;
+  static IconData categoryWater = FontAwesomeIcons.droplet;
+  static IconData categoryElectric = FontAwesomeIcons.bolt;
+  
 }

@@ -1,5 +1,5 @@
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/constants/color_constants.dart';
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:flutter/material.dart';
@@ -29,21 +29,21 @@ class HomeItemCome extends StatelessWidget {
           children: [
             Column(
               children: [
-                BText(title, color: ColorConstants.white),
+                BText(title, color: ColorManager.white),
                 gapH16,
-                BText.h2(money.toString(), color: ColorConstants.white),
+                BText.h2(money.toString(), color: ColorManager.white),
               ],
             ),
             gapW24,
             CircleAvatar(
               radius: 20,
-              backgroundColor: ColorConstants.white,
+              backgroundColor: ColorManager.white,
               child: IconButton(
                 onPressed: onTap,
-                color: ColorConstants.white,
+                color: ColorManager.white,
                 icon: Icon(
                   IconConstants.add,
-                  color: ColorConstants.black,
+                  color: ColorManager.black,
                 ),
               ),
             )

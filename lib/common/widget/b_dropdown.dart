@@ -1,5 +1,6 @@
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/constants/color_constants.dart';
+import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ class BDropdown<T> extends StatefulWidget {
   final void Function(T?) onChanged;
   final String Function(T?) label;
   final String? hint;
+  final String? title;
 
   const BDropdown({
     Key? key,
@@ -17,6 +19,7 @@ class BDropdown<T> extends StatefulWidget {
     required this.label,
     required this.items,
     required this.onChanged,
+    this.title,
   }) : super(key: key);
 
   @override
@@ -34,20 +37,38 @@ class _BDropdownState<T> extends State<BDropdown<T?>> {
 
   @override
   Widget build(BuildContext context) {
+    return widget.title == null ? _itemDropdown() : _itemDropdownWithTitle();
+  }
+
+  Widget _itemDropdownWithTitle() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BText(
+          widget.title!,
+          fontWeight: FontWeightManager.semiBold,
+        ),
+        gapH8,
+        _itemDropdown(),
+      ],
+    );
+  }
+
+  Widget _itemDropdown() {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: ColorConstants.grey, width: 0.4)),
+          border: Border.all(color: ColorManager.grey, width: 0.4)),
       child: DropdownButton<T>(
         value: value,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         underline: const SizedBox.shrink(),
         hint: widget.hint == null
-            ? BText('Empty', color: ColorConstants.grey1)
-            : BText(widget.hint!, color: ColorConstants.grey1),
+            ? BText('Empty', color: ColorManager.grey1)
+            : BText(widget.hint!, color: ColorManager.grey1),
         icon: Icon(
           IconConstants.dropdown,
-          color: ColorConstants.black,
+          color: ColorManager.black,
         ),
         elevation: 16,
         onChanged: (T? v) {
@@ -61,7 +82,7 @@ class _BDropdownState<T> extends State<BDropdown<T?>> {
         items: widget.items.map<DropdownMenuItem<T>>((T? value) {
           return DropdownMenuItem<T>(
             value: value,
-            child: Text(widget.label(value).toString()),
+            child: BText(widget.label(value).toString()),
           );
         }).toList(),
       ),
