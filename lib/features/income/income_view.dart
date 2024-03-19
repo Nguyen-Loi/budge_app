@@ -1,6 +1,7 @@
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_dropdown.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/picker/b_picker_datetime.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
@@ -32,14 +33,25 @@ class IncomeView extends StatelessWidget {
               label: 'Amount',
             ),
             BDropdown<String>(
+                title: 'Currency',
                 label: (v) => v.toString(),
                 items: const ['USD', 'VND'],
+                value: 'USD',
                 onChanged: (v) {}),
             BPickerDatetime(
+              title: 'Date',
               firstDate: firstDate,
               onChanged: (date) {
                 logSuccess(date.toString());
               },
+            ),
+            Expanded(
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BButton(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      onPressed: () {},
+                      title: 'Add money')),
             )
           ],
         ),

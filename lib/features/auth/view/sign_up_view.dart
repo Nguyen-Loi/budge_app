@@ -2,9 +2,10 @@ import 'package:budget_app/common/widget/b_app_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/common/widget/b_text_span.dart';
+import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
-import 'package:budget_app/constants/color_constants.dart';
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,7 +74,7 @@ class _LoginViewState extends ConsumerState<SignUpView> {
               BTextSpan(text: 'By the signing up, you agree to the  '),
               BTextSpan(
                 text: 'Terms of Service and Privay Policy',
-                style: BTextStyle.bodyMedium(color: ColorConstants.primary),
+                style: BTextStyle.bodyMedium(color: ColorManager.primary),
               ),
             ]),
             maxLines: 3,
@@ -104,19 +105,6 @@ class _LoginViewState extends ConsumerState<SignUpView> {
   }
 
   Widget _button() {
-    return FilledButton(
-      onPressed: () {},
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      ),
-      child: BText.b1(
-        'Create',
-        color: ColorConstants.white,
-      ),
-    );
+    return BButton(onPressed: () {}, title: 'Create');
   }
 }

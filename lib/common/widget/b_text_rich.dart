@@ -1,6 +1,6 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_span.dart';
-import 'package:budget_app/constants/color_constants.dart';
+import 'package:budget_app/common/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class BTextRich extends StatelessWidget {
@@ -47,8 +47,8 @@ class BTextRichSpace extends StatelessWidget {
         BTextSpan(text: text1, style: styleText1),
         BTextSpan(
           text: text2,
-          style: styleText2 ??
-              BTextStyle.bodyMedium(color: ColorConstants.primary),
+          style:
+              styleText2 ?? BTextStyle.bodyMedium(color: ColorManager.primary),
           onTap: onTap,
         ),
       ]),
