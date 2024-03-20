@@ -14,8 +14,8 @@ import 'package:budget_app/features/home/widgets/home_item_come.dart';
 import 'package:budget_app/features/income/income_view.dart';
 import 'package:flutter/material.dart';
 
-class HomeView extends StatelessWidget {
-  HomeView({super.key});
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
   final TextEditingController _searchController = TextEditingController();
   final HomeController _controller = HomeController();
   List<String> get listCategory => ['A', 'B', 'C', 'D'];

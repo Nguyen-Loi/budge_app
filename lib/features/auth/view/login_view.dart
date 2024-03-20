@@ -9,7 +9,7 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/features/auth/view/sign_up_view.dart';
-import 'package:budget_app/features/home/home_view.dart';
+import 'package:budget_app/features/main_page_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -92,7 +92,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       onPressed: () {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (_) => HomeView(),
+            builder: (_) => const MainPageBottomBar(),
           ),
         );
       },
