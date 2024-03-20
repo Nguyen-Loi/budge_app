@@ -1,5 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/features/budget/budget_page.dart';
 import 'package:budget_app/features/home/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +42,7 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
     _selectedIndex = 0;
     _screens = [
       HomePage(),
-      const SizedBox(),
+      BudgetPage(),
       const SizedBox(),
       const SizedBox(),
       const SizedBox()
