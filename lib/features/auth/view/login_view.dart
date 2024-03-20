@@ -1,3 +1,4 @@
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_app_bar.dart';
 import 'package:budget_app/common/widget/b_divider.dart';
 import 'package:budget_app/common/widget/b_text.dart';
@@ -6,7 +7,6 @@ import 'package:budget_app/common/widget/b_text_span.dart';
 import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/constants/assets_constants.dart';
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/features/auth/view/sign_up_view.dart';
 import 'package:budget_app/features/home/home_view.dart';
@@ -52,7 +52,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
             ),
             gapH48,
             _bTextFormField(),
-            gapH32,
+            gapH16,
             _bTextFormFieldPassword(),
             gapH8,
             _forgotPassword(),

@@ -1,5 +1,5 @@
-import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:flutter/material.dart';
@@ -58,10 +58,12 @@ class _BDropdownState<T> extends State<BDropdown<T?>> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
+          color: Theme.of(context).colorScheme.onSecondary,
           border: Border.all(color: ColorManager.grey, width: 0.4)),
       child: DropdownButton<T>(
         value: value,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        dropdownColor: Theme.of(context).colorScheme.onSecondary,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         underline: const SizedBox.shrink(),
         hint: widget.hint == null
             ? BText('Empty', color: ColorManager.grey1)

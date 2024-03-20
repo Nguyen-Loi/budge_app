@@ -3,8 +3,8 @@ import 'package:budget_app/theme/app_colors.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/theme/asset_tile_style.dart';
 import 'package:budget_app/theme/chart_style.dart';
-import 'package:budget_app/theme/transaction_tile_style.dart';
 import 'package:budget_app/theme/helper.dart';
+import 'package:budget_app/theme/transaction_tile_style.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -51,7 +51,7 @@ class AppTheme {
         onPrimary: ColorManager.black,
         secondary: ColorManager.purple23,
         onSecondary: ColorManager.white,
-        background: ColorManager.white,
+        background: const Color(0xFFF2F2F2),
         onBackground: const Color(0xFF002E42),
         surface: const Color(0xFFF2F5F6),
         onSurface: const Color(0xFF002E42),
@@ -203,6 +203,8 @@ class AppTheme {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: darkColors.onSecondary,
         errorStyle: AppTextTheme.bodySmall.copyWith(color: darkColors.error),
         helperStyle:
             AppTextTheme.bodySmall.copyWith(color: darkColors.onSurfaceVariant),
@@ -228,6 +230,11 @@ class AppTheme {
             ),
           ),
         ),
+      ),
+      cardTheme: CardTheme(
+        color: darkColors.onSecondary,
+        margin: EdgeInsets.zero,
+        elevation: 2,
       ),
 
       ///Extensions
@@ -308,7 +315,7 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: lightColors.surface,
+        fillColor: lightColors.onSecondary,
         errorStyle: AppTextTheme.bodySmall.copyWith(color: lightColors.error),
         helperStyle: AppTextTheme.bodySmall
             .copyWith(color: lightColors.onSurfaceVariant),
@@ -334,6 +341,12 @@ class AppTheme {
             ),
           ),
         ),
+      ),
+
+      cardTheme: CardTheme(
+        color: lightColors.onSecondary,
+        margin: EdgeInsets.zero,
+        elevation: 2,
       ),
 
       ///Extensions

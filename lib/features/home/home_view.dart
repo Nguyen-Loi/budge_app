@@ -1,12 +1,13 @@
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_dropdown.dart';
 import 'package:budget_app/common/widget/b_image.dart';
 import 'package:budget_app/common/widget/b_search_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/features/expense/expense_view.dart';
 import 'package:budget_app/features/home/controller/home_controller.dart';
 import 'package:budget_app/features/home/widgets/home_budge_card.dart';
 import 'package:budget_app/features/home/widgets/home_item_come.dart';
@@ -57,10 +58,8 @@ class HomeView extends StatelessWidget {
 
   Widget _cardBalance() {
     return Card(
-      elevation: 2,
-      margin: const EdgeInsets.all(0),
-      color: ColorManager.purple12,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: ColorManager.primary,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -96,7 +95,10 @@ class HomeView extends StatelessWidget {
               title: 'Expense',
               money: 4250,
               color: ColorManager.purple21,
-              onTap: () {}),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const ExpenseView()));
+              }),
         )
       ],
     );
