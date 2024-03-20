@@ -14,7 +14,14 @@ class IconConstants {
   static IconData emojiSmile = FontAwesomeIcons.faceSmile;
   static IconData emojiSurprise = FontAwesomeIcons.faceSurprise;
   static IconData emojiFrown = FontAwesomeIcons.faceFrown;
-  
+
+  //Bottombar
+  static IconData home = Icons.home_rounded;
+  static IconData profile = FontAwesomeIcons.user;
+  static IconData goals = FontAwesomeIcons.bullseye;
+  static IconData history = Icons.history;
+  static IconData limit = Icons.diamond;
+
   //For budget category
   static IconData categoryAccomodation = Icons.home;
   static IconData categoryEating = FontAwesomeIcons.utensils;
@@ -25,5 +32,4 @@ class IconConstants {
   static IconData categoryGift = FontAwesomeIcons.gift;
   static IconData categoryWater = FontAwesomeIcons.droplet;
   static IconData categoryElectric = FontAwesomeIcons.bolt;
-  
 }
