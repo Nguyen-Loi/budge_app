@@ -45,7 +45,7 @@ class _BFormFieldPasswordState extends State<BFormFieldPassword> {
         gapH8,
         TextFormField(
           initialValue: widget.initialValue,
-          maxLength: widget.maxLength,
+          maxLength: widget.maxLength,  
           maxLines: 1,
           obscureText: _passwordVisible,
           controller: widget.controller,

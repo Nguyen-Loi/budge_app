@@ -1,15 +1,11 @@
+import 'package:budget_app/common/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class BProgressBar extends StatelessWidget {
   final int percent;
   final LinearGradient gradient;
-  final Color backgroundColor;
 
-  const BProgressBar(
-      {required this.percent,
-      required this.gradient,
-      required this.backgroundColor,
-      Key? key})
+  const BProgressBar({required this.percent, required this.gradient, Key? key})
       : super(key: key);
 
   @override
@@ -36,7 +32,7 @@ class BProgressBar extends StatelessWidget {
           flex: 100 - percent,
           child: Container(
             decoration: BoxDecoration(
-              color: backgroundColor,
+              color: ColorManager.grey2,
               borderRadius: percent == 0
                   ? const BorderRadius.all(Radius.circular(4))
                   : const BorderRadius.only(

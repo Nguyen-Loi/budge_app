@@ -20,7 +20,6 @@ class HomeItemCome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: color,
-      margin: const EdgeInsets.all(0),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         child: Row(

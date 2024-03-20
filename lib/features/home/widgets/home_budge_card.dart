@@ -1,7 +1,7 @@
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_progress_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/models/budget_model.dart';
@@ -26,8 +26,6 @@ class HomeBudgeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(0),
-      color: ColorManager.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Column(
@@ -36,7 +34,7 @@ class HomeBudgeCard extends StatelessWidget {
               children: [
                 Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(color: ColorManager.grey2),
+                    decoration: BoxDecoration(color: ColorManager.grey3),
                     child: Icon(
                       Icons.home,
                       color: ColorManager.black,
@@ -128,7 +126,7 @@ class HomeBudgeCard extends StatelessWidget {
       BProgressBar(
           percent: progress,
           gradient: linearGradient,
-          backgroundColor: ColorManager.grey2)
+        )
     ];
   }
 }
