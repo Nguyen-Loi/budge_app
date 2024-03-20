@@ -12,7 +12,7 @@ enum CurrencyType {
 }
 
 extension ConvertTypeAccount on CurrencyType {
-  String toText() {
+  String toSymbol() {
     switch (this) {
       case CurrencyType.usd:
         return 'USD';

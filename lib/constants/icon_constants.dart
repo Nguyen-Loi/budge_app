@@ -5,6 +5,7 @@ class IconConstants {
   static IconData showPassword = Icons.visibility;
   static IconData hidePassword = Icons.visibility_off;
   static IconData add = Icons.add;
+  static IconData minus = FontAwesomeIcons.minus;
   static IconData notification = Icons.notifications_none_outlined;
   static IconData search = Icons.search;
   static IconData clear = Icons.clear;
