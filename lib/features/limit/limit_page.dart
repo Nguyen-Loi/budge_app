@@ -6,6 +6,7 @@ import 'package:budget_app/constants/field_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:budget_app/features/limit/new_limit/new_limit_view.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
@@ -63,14 +64,14 @@ class LimitPage extends StatelessWidget {
         children: [
           const SizedBox(height: 100),
           Expanded(
-            child: _body(),
+            child: _body(context),
           )
         ],
       ),
     );
   }
 
-  Widget _body() {
+  Widget _body(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -85,17 +86,17 @@ class LimitPage extends StatelessWidget {
             ),
             gapH16,
             Expanded(
-              child: _listBudget(),
+              child: _listBudget(context),
             )
           ],
         ));
   }
 
-  Widget _listBudget() {
+  Widget _listBudget(BuildContext context) {
     return ListViewWithSpacing(children: [
       ...listBudget.map((e) => _budgetItem(e)).toList(),
       gapH24,
-      _buttonAddCategory(),
+      _buttonAddCategory(context),
     ]);
   }
 
@@ -139,7 +140,15 @@ class LimitPage extends StatelessWidget {
     );
   }
 
-  Widget _buttonAddCategory() {
-    return BButton(onPressed: () {}, title: 'Add new category');
+  Widget _buttonAddCategory(BuildContext context) {
+    return BButton(
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => const NewLimitView(),
+            ),
+          );
+        },
+        title: 'Add new category');
   }
 }

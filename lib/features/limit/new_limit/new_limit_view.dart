@@ -1,13 +1,30 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/form/b_form.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
+import 'package:budget_app/common/widget/form/b_form_modify_limit.dart';
+import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
+import 'package:budget_app/constants/budget_icon_constant.dart';
+import 'package:budget_app/constants/gap_constants.dart';
 import 'package:flutter/material.dart';
 
-class NewLimitView extends StatelessWidget {
+class NewLimitView extends StatefulWidget {
   const NewLimitView({Key? key}) : super(key: key);
-  final TextEditingController _nameController;
-  final 
+
+  @override
+  State<NewLimitView> createState() => _NewLimitViewState();
+}
+
+class _NewLimitViewState extends State<NewLimitView> {
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _nameController;
+  late int iconId;
+
+  @override
+  void initState() {
+    _nameController = TextEditingController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +55,25 @@ class NewLimitView extends StatelessWidget {
             color: ColorManager.white,
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(32), topRight: Radius.circular(32))),
-        child: );
+        child: _form());
   }
 
-  Widget _form(){
-return BForm(onSubmit: onSubmit, titleSubmit: titleSubmit,children: const [
-  BFormFieldText(controller, label: label)
-  
-], );
+  Widget _form() {
+    return Column(
+      children: [
+        BFormFieldText(_nameController, label: 'Name'),
+        gapH16,
+        BFormPickerIcon(
+          items: BudgetIconConstant.listIcon,
+          onChanged: (iconId) {
+            logSuccess(iconId.toString());
+          },
+        ),
+        gapH32,
+        BFormModifyLimit(onChanged: (v) {
+          logSuccess(v.toString());
+        })
+      ],
+    );
   }
 }
