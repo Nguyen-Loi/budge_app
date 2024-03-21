@@ -4,6 +4,9 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
 
+const double _sizeIconMain = 40;
+const double _sizeIconItem = 32;
+
 class BFormPickerIcon extends FormField<IconModel> {
   BFormPickerIcon({
     Key? key,
@@ -35,20 +38,28 @@ class BFormPickerIcon extends FormField<IconModel> {
                           });
                       if (icon != null) state.didChange(icon);
                     },
-                    child: Ink(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                          color: ColorManager.white,
-                          border: Border.all(width: 0.5, color: ColorManager.green1),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(8))),
-                      child: state.value == null
-                          ? BText('Picker your icon', color: ColorManager.grey2)
-                          : Icon(
-                              state.value!.iconData,
-                              color: state.value!.color,
-                            ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Ink(
+                        decoration: BoxDecoration(
+                            color: ColorManager.white,
+                            border: Border.all(
+                                width: 0.5, color: ColorManager.green1),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(8))),
+                        child: state.value == null
+                            ? const _ShowItem(
+                                child: BText(
+                                  'Picker your icon',
+                                ),
+                              )
+                            : _ShowItem(
+                                child: Icon(
+                                state.value!.iconData,
+                                size: _sizeIconMain,
+                                color: state.value!.color,
+                              )),
+                      ),
                     )),
                 if (state.hasError)
                   BText(
@@ -59,6 +70,24 @@ class BFormPickerIcon extends FormField<IconModel> {
             );
           },
         );
+}
+
+class _ShowItem extends StatelessWidget {
+  const _ShowItem({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: ColorManager.purple25,
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        border: Border.all(color: ColorManager.grey2),
+      ),
+      child: child,
+    );
+  }
 }
 
 class _PickerIconDialog extends StatefulWidget {
@@ -92,19 +121,22 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
         ),
       ),
       actions: [
-        TextButton(
+        OutlinedButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: BText('Cancel', color: ColorManager.grey1),
+          child: const BText('Cancel'),
         ),
-        TextButton(
+        ElevatedButton(
           onPressed: _selectedIcon == null
               ? null
               : () {
                   Navigator.pop(context, _selectedIcon);
                 },
-          child: BText('Get', color: ColorManager.purple11),
+          child: const BText(
+            'Get',
+            fontWeight: FontWeight.bold,
+          ),
         )
       ],
     );
@@ -120,17 +152,21 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
           } else {
             _selectedIcon = icon;
           }
-          Navigator.pop(context, _selectedIcon);
         });
       },
       child: Ink(
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: isSelected ? ColorManager.purple12 : ColorManager.white,
           borderRadius: const BorderRadius.all(
-            Radius.circular(16),
+            Radius.circular(8),
           ),
         ),
-        child: Icon(icon.iconData, color: icon.color),
+        child: Icon(
+          icon.iconData,
+          color: icon.color,
+          size: _sizeIconItem,
+        ),
       ),
     );
   }
