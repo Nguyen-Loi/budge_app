@@ -10,8 +10,8 @@ import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
 
-class BudgetPage extends StatelessWidget {
-  BudgetPage({Key? key}) : super(key: key);
+class LimitPage extends StatelessWidget {
+  LimitPage({Key? key}) : super(key: key);
   final List<BudgetModel> listBudget = [
     BudgetModel({
       FieldConstants.name: 'Data 1',
