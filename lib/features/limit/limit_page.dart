@@ -80,6 +80,7 @@ class LimitPage extends StatelessWidget {
                 topLeft: Radius.circular(32), topRight: Radius.circular(32))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const BText.h2(
               'All limits',
@@ -93,7 +94,7 @@ class LimitPage extends StatelessWidget {
   }
 
   Widget _listBudget(BuildContext context) {
-    return ListViewWithSpacing(children: [
+    return ListViewWithSpacing(padding: EdgeInsets.zero, children: [
       ...listBudget.map((e) => _budgetItem(e)).toList(),
       gapH24,
       _buttonAddCategory(context),
@@ -103,9 +104,9 @@ class LimitPage extends StatelessWidget {
   Widget _budgetItem(BudgetModel model) {
     IconModel icon = model.icon;
     const double iconSize = 18;
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Card(
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -143,7 +144,7 @@ class LimitPage extends StatelessWidget {
   Widget _buttonAddCategory(BuildContext context) {
     return BButton(
         onPressed: () {
-          Navigator.of(context).pushReplacement(
+          Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => const NewLimitView(),
             ),
