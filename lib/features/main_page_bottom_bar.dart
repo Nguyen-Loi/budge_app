@@ -59,8 +59,6 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
     return Scaffold(
       bottomNavigationBar: isSmallScreen
           ? BottomNavigationBar(
-              // fixedColor: ColorManager.purple11,
-
               unselectedItemColor: ColorManager.black,
               items: _navBarItems,
               currentIndex: _selectedIndex,

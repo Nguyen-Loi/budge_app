@@ -1,27 +1,25 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:flutter/material.dart';
 
 class BFormModifyLimit extends FormField<int> {
+  final void Function(int value) onChanged;
   BFormModifyLimit({
     Key? key,
     int? initialValue,
     FormFieldValidator<int>? validator,
-    required void Function(int? iconId) onChanged,
+    required this.onChanged,
     String? hint,
   }) : super(
           key: key,
           validator: validator,
-          builder: (state) {     
-            TextEditingController controller = TextEditingController(
-                text: initialValue == null ? '0' : initialValue.toString());
-            state.didChange(int.tryParse(controller.text));
+          builder: (field) {
+            final _FormFieldState state = field as _FormFieldState;
             return GestureDetector(
               onTap: () {
-                FocusScope.of(state.context).unfocus();
+                FocusScope.of(field.context).unfocus();
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,15 +36,16 @@ class BFormModifyLimit extends FormField<int> {
                       _IconButtonLimit(
                           icon: IconConstants.minus,
                           onTap: () {
-                            int newValue = int.parse(controller.text) - 10;
-                            controller.text = newValue.toString();
-                            onChanged(newValue);
+                            int newValue =
+                                int.parse(state.controller.text) - 10;
+                            state.controller.text = newValue.toString();
                           }),
                       gapW16,
                       SizedBox(
                         width: 90,
                         child: TextField(
-                          controller: controller,
+                          controller: state.controller,
+                          textAlign: TextAlign.center,
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -54,14 +53,15 @@ class BFormModifyLimit extends FormField<int> {
                       _IconButtonLimit(
                           icon: IconConstants.add,
                           onTap: () {
-                            int newValue = int.parse(controller.text) + 10;
-                            controller.text = newValue.toString();
+                            int newValue =
+                                int.parse(state.controller.text) + 10;
+                            state.controller.text = newValue.toString();
                           })
                     ],
                   ),
-                  if (state.hasError)
+                  if (field.hasError)
                     BText(
-                      state.errorText ?? "Invalid",
+                      field.errorText ?? "Invalid",
                       color: ColorManager.error,
                     )
                 ],
@@ -69,10 +69,9 @@ class BFormModifyLimit extends FormField<int> {
             );
           },
         );
- 
- @override
+
+  @override
   FormFieldState<int> createState() {
-    
     return _FormFieldState();
   }
 }
@@ -80,17 +79,35 @@ class BFormModifyLimit extends FormField<int> {
 class _FormFieldState extends FormFieldState<int> {
   @override
   BFormModifyLimit get widget => super.widget as BFormModifyLimit;
-
- @override
+  late final TextEditingController controller;
+  @override
   void initState() {
+    String initialValue =
+        widget.initialValue == null ? '0' : widget.initialValue.toString();
+    controller = TextEditingController(text: initialValue);
+    controller.addListener(_onChangedText);
     super.initState();
   }
 
- @override
+  void _onChangedText() {
+    didChange(int.tryParse(controller.text));
+  }
+
+  @override
+  void didChange(int? value) {
+    if (value != null) {
+      widget.onChanged(value);
+    }
+    super.didChange(value);
+  }
+
+  @override
   void dispose() {
+    controller.dispose();
     super.dispose();
   }
 }
+
 class _IconButtonLimit extends StatelessWidget {
   const _IconButtonLimit({required this.icon, required this.onTap});
   final IconData icon;

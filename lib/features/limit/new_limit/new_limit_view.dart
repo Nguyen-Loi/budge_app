@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/form/b_form_modify_limit.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/budget_icon_constant.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/features/base_view.dart';
 import 'package:flutter/material.dart';
 
 class NewLimitView extends StatefulWidget {
@@ -28,34 +29,11 @@ class _NewLimitViewState extends State<NewLimitView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const BText.h2('New limit'),
-        centerTitle: true,
-        backgroundColor: ColorManager.purple12,
-      ),
-      body: ColoredBox(
-        color: ColorManager.purple12,
-        child: Column(
-          children: [
-            const SizedBox(height: 100),
-            Expanded(
-              child: _body(),
-            )
-          ],
-        ),
-      ),
+    return BaseView.customBackground(
+      title: 'New limit',
+      buildTop: gapH32,
+      child: _form(),
     );
-  }
-
-  Widget _body() {
-    return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-            color: ColorManager.white,
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(32), topRight: Radius.circular(32))),
-        child: _form());
   }
 
   Widget _form() {
