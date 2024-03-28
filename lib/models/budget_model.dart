@@ -17,7 +17,9 @@ class BudgetModel extends BaseModel {
   int get currentAmount => Methods.getInt(data, FieldConstants.currentAmount);
   int get limit => Methods.getInt(data, FieldConstants.limit);
   List<TransactionModel> get transactions =>
-      Methods.getList(data, TableConstant.Transaction);
+      Methods.getList(data, TableConstant.Transaction)
+          .map((e) => TransactionModel(e))
+          .toList();
 
   IconModel get icon => BudgetIconConstant.getIconModel(iconId);
   StatusBudget get status {

@@ -22,24 +22,30 @@ class BudgetDetailView extends StatelessWidget {
   }
 
   Widget _buildTop() {
-    return Column(
-      children: [
-        BText.h1('Monthly Expense', color: ColorManager.white),
-        gapH16,
-        Row(
-          children: [
-            const BText('You\'ve spent '),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              decoration: BoxDecoration(
-                  color: ColorManager.purple15,
-                  borderRadius: const BorderRadius.all(Radius.circular(16))),
-              child: const BText('\$60'),
-            ),
-            const BText(' for the past 7 days')
-          ],
-        )
-      ],
+    Color textColor = ColorManager.white;
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          BText.h1('Monthly Expense', color: ColorManager.white),
+          gapH16,
+          Row(
+            children: [
+              BText('You\'ve spent ', color: textColor),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                    color: ColorManager.purple15,
+                    borderRadius: const BorderRadius.all(Radius.circular(16))),
+                child: BText('\$60', color: textColor),
+              ),
+              BText(' for the past 7 days', color: textColor)
+            ],
+          ),
+          gapH16
+        ],
+      ),
     );
   }
 
@@ -55,6 +61,7 @@ class BudgetDetailView extends StatelessWidget {
 
   Widget _status() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // info
         Row(
@@ -89,16 +96,23 @@ class BudgetDetailView extends StatelessWidget {
     List<_GroupDateTransactionModel> listGroupTransactionByDay =
         _GroupDateTransactionModel.toList(budget.transactions);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const BText.h2('Transactions'),
+        const BText.h2('Transactions', textAlign: TextAlign.left),
         gapH16,
-        ColumnWithSpacing(
-          children: listGroupTransactionByDay
-              .map((e) => _groupDateTransactionsCard(e))
-              .toList(),
-        )
+        listGroupTransactionByDay.isEmpty
+            ? _transactionEmpty()
+            : ColumnWithSpacing(
+                children: listGroupTransactionByDay
+                    .map((e) => _groupDateTransactionsCard(e))
+                    .toList(),
+              )
       ],
     );
+  }
+
+  Widget _transactionEmpty() {
+    return const BText('You don\'t have any transactions yet');
   }
 
   Widget _groupDateTransactionsCard(
@@ -151,13 +165,12 @@ class _GroupDateTransactionModel {
   final List<TransactionModel> transactions;
   final DateTime dateTime;
 
- // Create a map to group transactions by date
+  // Create a map to group transactions by date
   static List<_GroupDateTransactionModel> toList(
       List<TransactionModel> transactions) {
-  
     Map<DateTime, List<TransactionModel>> groupedTransactions = {};
     for (var transaction in transactions) {
-      if(transaction.createdAt==null){
+      if (transaction.createdAt == null) {
         continue;
       }
       DateTime date = DateTime(transaction.createdAt!.year,

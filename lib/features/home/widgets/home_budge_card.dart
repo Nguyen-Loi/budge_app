@@ -1,10 +1,10 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/b_progress_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/common/widget/view/budget_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/features/budget_detail/budget_detail_view.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:flutter/material.dart';
 
@@ -14,35 +14,41 @@ class HomeBudgeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(color: ColorManager.grey3),
-                    child: Icon(
-                      Icons.home,
-                      color: ColorManager.black,
-                    )),
-                gapW8,
-                Expanded(
-                  child:
-                      BText(model.name, fontWeight: FontWeightManager.semiBold),
-                ),
-                gapW8,
-                Icon(
-                  IconConstants.arrowNext,
-                  color: ColorManager.black,
-                )
-              ],
-            ),
-            gapH8,
-            ..._showStatusType()
-          ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => BudgetDetailView(budget: model)));
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(color: ColorManager.grey3),
+                      child: Icon(
+                        Icons.home,
+                        color: ColorManager.black,
+                      )),
+                  gapW8,
+                  Expanded(
+                    child: BText(model.name,
+                        fontWeight: FontWeightManager.semiBold),
+                  ),
+                  gapW8,
+                  Icon(
+                    IconConstants.arrowNext,
+                    color: ColorManager.black,
+                  )
+                ],
+              ),
+              gapH8,
+              ..._showStatusType()
+            ],
+          ),
         ),
       ),
     );

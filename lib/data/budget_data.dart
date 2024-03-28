@@ -1,9 +1,12 @@
 import 'package:budget_app/common/table_constant.dart';
-import 'package:budget_app/models/base_model.dart';
+import 'package:budget_app/constants/field_constants.dart';
 import 'package:budget_app/models/budget_model.dart';
 
 class BudgetData {
   BudgetModel budgetData = BudgetModel({
+    FieldConstants.name: 'Shopping',
+    FieldConstants.iconId: 1,
+    FieldConstants.limit: 300,
     TableConstant.Transaction: [
       {
         "id": "66011de6e2ac9b172b9ce00e",
