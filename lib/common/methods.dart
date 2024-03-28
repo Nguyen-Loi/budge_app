@@ -103,7 +103,7 @@ class Methods {
     );
   }
 
-  static List<T> getList(Map data, String fieldName) {
+  static List getList(Map data, String fieldName) {
     return data.findData(fieldName, (value) => value, defaultValue: []);
   }
 
