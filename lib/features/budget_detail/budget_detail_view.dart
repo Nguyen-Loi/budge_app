@@ -1,8 +1,10 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/view/budget_status.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/features/base_view.dart';
 import 'package:budget_app/models/budget_model.dart';
@@ -15,7 +17,7 @@ class BudgetDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView.customBackground(
-      title: 'Shopping',
+      title: budget.name,
       buildTop: _buildTop(),
       child: _body(),
     );
@@ -50,7 +52,7 @@ class BudgetDetailView extends StatelessWidget {
   }
 
   Widget _body() {
-    return Column(
+    return ListView(
       children: [
         _status(),
         gapH24,
@@ -103,6 +105,7 @@ class BudgetDetailView extends StatelessWidget {
         listGroupTransactionByDay.isEmpty
             ? _transactionEmpty()
             : ColumnWithSpacing(
+                spacing: 24,
                 children: listGroupTransactionByDay
                     .map((e) => _groupDateTransactionsCard(e))
                     .toList(),
@@ -112,14 +115,15 @@ class BudgetDetailView extends StatelessWidget {
   }
 
   Widget _transactionEmpty() {
-    return const BText('You don\'t have any transactions yet');
+    return const BStatus.empty(text: 'You don\'t have any transactions yet');
   }
 
   Widget _groupDateTransactionsCard(
       _GroupDateTransactionModel groupDateTransactionModel) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BText(groupDateTransactionModel.dateTime.toFormat()),
+        BText(groupDateTransactionModel.dateTime.toFormatDate()),
         gapH8,
         ColumnWithSpacing(
           spacing: 8,
@@ -133,17 +137,28 @@ class BudgetDetailView extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            const Expanded(child: BText.b1('Table')),
+                            Expanded(
+                                child: BText(
+                                    e.description.isEmpty
+                                        ? budget.name
+                                        : e.description,
+                                    fontWeight: FontWeightManager.semiBold)),
                             gapW16,
-                            BText('-${e.amount}',
-                                color: ColorManager.red,
-                                fontWeight: FontWeightManager.bold)
+                            _itemStatusTransaction(type: e.transactionType)
                           ],
                         ),
                         gapH16,
-                        if (e.description != '') BText.caption(e.description),
-                        BText.b3(
-                          e.createdAt.toFormat(strFormat: 'hh:mm'),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: BText.b3(
+                                e.createdAt.toHHmm(),
+                              ),
+                            ),
+                            gapW16,
+                            _itemMoneyTransaction(
+                                type: e.transactionType, amount: e.amount)
+                          ],
                         ),
                       ],
                     ),
@@ -154,6 +169,27 @@ class BudgetDetailView extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Widget _itemStatusTransaction({required TransactionType type}) {
+    switch (type) {
+      case TransactionType.expense:
+        return const BText.caption('Expense');
+      case TransactionType.income:
+        return const BText.caption('Income');
+    }
+  }
+
+  Widget _itemMoneyTransaction(
+      {required TransactionType type, required int amount}) {
+    switch (type) {
+      case TransactionType.expense:
+        return BText('-$amount',
+            color: ColorManager.red, fontWeight: FontWeightManager.bold);
+      case TransactionType.income:
+        return BText('+$amount',
+            color: ColorManager.green1, fontWeight: FontWeightManager.bold);
+    }
   }
 }
 

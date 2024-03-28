@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class   IconModel {
+class IconModel {
   final IconData iconData;
   final Color color;
   final int id;

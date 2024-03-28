@@ -2,7 +2,7 @@ import 'package:budget_app/common/type_def.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
-import 'package:budget_app/utils/b_date_time.dart';
+import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:flutter/material.dart';
 
 class BPickerDatetime extends StatefulWidget {
@@ -30,7 +30,7 @@ class _BPickerDatetimeState extends State<BPickerDatetime> {
   @override
   void initState() {
     DateTime initValue = widget.initialDate ?? DateTime.now();
-    String? strFormat = BDateTime.toFormat(initValue);
+    String? strFormat = initValue.toFormatDate();
     widget.onChanged(initValue);
 
     _textEditingController = TextEditingController(text: strFormat);
@@ -70,7 +70,7 @@ class _BPickerDatetimeState extends State<BPickerDatetime> {
     );
 
     if (newSelectedDate != null) {
-      _textEditingController.text = BDateTime.toFormat(newSelectedDate);
+      _textEditingController.text = newSelectedDate.toFormatDate();
       widget.onChanged(newSelectedDate);
     }
   }
