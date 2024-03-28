@@ -1,61 +1,60 @@
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-enum _Status{
-   loading,
-   error,
-   empty
-}
+enum _Status { loading, error, empty }
 
 class BStatus extends StatelessWidget {
-const BStatus({ Key? key, required this.text, required this._status }) : super(key: key);
+  const BStatus.error({super.key, required this.text})
+      : _status = _Status.error;
+  const BStatus.loading({super.key, required this.text})
+      : _status = _Status.loading;
+  const BStatus.empty({super.key, required this.text})
+      : _status = _Status.empty;
+
   final String text;
   final _Status _status;
   @override
-  Widget build(BuildContext context){
-    switch(_status){
-      
+  Widget build(BuildContext context) {
+    switch (_status) {
       case _Status.loading:
-       return _loading();
+        return _loading();
       case _Status.error:
-       return _error();
+        return _error();
       case _Status.empty:
-       return _empty();
+        return _empty();
     }
   }
 
-  Widget _loading{
+  Widget _loading() {
     return Column(
       children: [
         Lottie.asset(AssetsConstants.lottieLoading),
         gapH16,
-        BText.b1(text),
-        
+         BText.b1(text, color: ColorManager.grey1),
       ],
     );
   }
 
-   Widget _error{
+  Widget _error() {
     return Column(
       children: [
         Lottie.asset(AssetsConstants.lottieError),
         gapH16,
-        BText.b1(text),
-        
+        BText.b1(text, color: ColorManager.grey1),
       ],
     );
   }
 
-   Widget _empty{
+  Widget _empty() {
     return Column(
       children: [
         Lottie.asset(AssetsConstants.lottieEmpty),
         gapH16,
-        BText.b1(text),
-        
+        BText.b1(text, color: ColorManager.grey1),
       ],
     );
   }

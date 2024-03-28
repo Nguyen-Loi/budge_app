@@ -190,6 +190,6 @@ class _ColorFontDefault {
   static Color heading2 = ColorManager.black;
   static Color bodyLarge = ColorManager.black;
   static Color bodyRegular = ColorManager.black;
-  static Color bodySmall = ColorManager.grey1;
+  static Color bodySmall = ColorManager.grey;
   static Color caption = ColorManager.grey1;
 }
