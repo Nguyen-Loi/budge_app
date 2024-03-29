@@ -1,10 +1,8 @@
 import 'package:budget_app/common/methods.dart';
 import 'package:budget_app/common/table_constant.dart';
-import 'package:budget_app/constants/budget_icon_constant.dart';
 import 'package:budget_app/constants/field_constants.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/models/base_model.dart';
-import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
 
 enum StatusBudget { safe, warning, danger }
@@ -21,7 +19,6 @@ class BudgetModel extends BaseModel {
           .map((e) => TransactionModel(e))
           .toList();
 
-  IconModel get icon => BudgetIconConstant.getIconModel(iconId);
   StatusBudget get status {
     if (currentAmount <= limit / 2) {
       return StatusBudget.safe;
