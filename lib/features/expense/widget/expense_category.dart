@@ -1,8 +1,8 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseCategory extends StatefulWidget {
@@ -44,7 +44,7 @@ class _ExpenseCategoryState extends State<ExpenseCategory> {
 
   Widget _itemCategory(BudgetModel model) {
     bool isSelected =
-        _selectedItem != null && model.icon.id == _selectedItem!.icon.id;
+        _selectedItem != null && model.iconId == _selectedItem!.iconId;
     return isSelected
         ? _itemCategoryBase(model,
             backgroundColor: ColorManager.purple22,
@@ -64,7 +64,6 @@ class _ExpenseCategoryState extends State<ExpenseCategory> {
 
   Widget _itemCategoryBase(BudgetModel model,
       {required Color backgroundColor, required Color textColor}) {
-    IconModel icon = model.icon;
     return Ink(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       width: MediaQuery.of(context).size.width / 3 - 24,
@@ -74,10 +73,7 @@ class _ExpenseCategoryState extends State<ExpenseCategory> {
           borderRadius: const BorderRadius.all(Radius.circular(8))),
       child: Column(
         children: [
-          Icon(
-            icon.iconData,
-            color: icon.color,
-          ),
+          BIcon(id: model.iconId),
           gapH16,
           BText(model.name, fontWeight: FontWeight.bold, color: textColor)
         ],

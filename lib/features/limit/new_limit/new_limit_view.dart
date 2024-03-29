@@ -1,10 +1,8 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/log.dart';
-import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_modify_limit.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
-import 'package:budget_app/constants/budget_icon_constant.dart';
+import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/features/base_view.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +40,7 @@ class _NewLimitViewState extends State<NewLimitView> {
         BFormFieldText(_nameController, label: 'Name'),
         gapH16,
         BFormPickerIcon(
-          items: BudgetIconConstant.listIcon,
+          items: IconDataConstant.listIcon,
           onChanged: (iconId) {
             logSuccess(iconId.toString());
           },

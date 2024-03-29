@@ -128,7 +128,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
             );
           },
           icon: SvgPicture.asset(
-            AssetsConstants.google,
+            AssetsConstants.iconGoogle,
             width: 48,
             height: 48,
           ),
@@ -137,7 +137,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
         IconButton(
           onPressed: () {},
           icon: SvgPicture.asset(
-            AssetsConstants.facebook,
+            AssetsConstants.iconFacebook,
             placeholderBuilder: (BuildContext context) => Container(
               padding: const EdgeInsets.all(30.0),
               child: const CircularProgressIndicator(),
