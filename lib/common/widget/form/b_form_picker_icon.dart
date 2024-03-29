@@ -8,13 +8,14 @@ const double _sizeIconMain = 40;
 const double _sizeIconItem = 32;
 
 class BFormPickerIcon extends FormField<IconModel> {
+  final void Function(int? iconId) onChanged;
   BFormPickerIcon({
     Key? key,
     required List<IconModel> items,
     IconModel? initialValue,
     String label = 'Icon',
     FormFieldValidator<IconModel>? validator,
-    required void Function(int? iconId) onChanged,
+    required this.onChanged,
     String? hint,
   }) : super(
           key: key,
@@ -36,7 +37,10 @@ class BFormPickerIcon extends FormField<IconModel> {
                             return _PickerIconDialog(
                                 listIcon: items, initialValue: initialValue);
                           });
-                      if (icon != null) state.didChange(icon);
+                      if (icon != null) {
+                        state.didChange(icon);
+                        onChanged(icon.id);
+                      }
                     },
                     child: Align(
                       alignment: Alignment.center,
@@ -50,7 +54,7 @@ class BFormPickerIcon extends FormField<IconModel> {
                         child: state.value == null
                             ? const _ShowItem(
                                 child: BText(
-                                  'Picker your icon',
+                                  'Choose your icon',
                                 ),
                               )
                             : _ShowItem(
@@ -114,10 +118,14 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
     return AlertDialog(
       content: SizedBox(
         width: double.maxFinite,
-        child: Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: _listIcon.map((e) => _icon(e)).toList(),
+        height: 300,
+        child: SingleChildScrollView(
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.center,
+            children: _listIcon.map((e) => _icon(e)).toList(),
+          ),
         ),
       ),
       actions: [
@@ -144,28 +152,30 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
 
   Widget _icon(IconModel icon) {
     bool isSelected = _selectedIcon != null && icon.id == _selectedIcon!.id;
-    return InkWell(
-      onTap: () {
-        setState(() {
-          if (isSelected) {
-            _selectedIcon = null;
-          } else {
-            _selectedIcon = icon;
-          }
-        });
-      },
-      child: Ink(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: isSelected ? ColorManager.purple12 : ColorManager.white,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(8),
+    return Card(
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            if (isSelected) {
+              _selectedIcon = null;
+            } else {
+              _selectedIcon = icon;
+            }
+          });
+        },
+        child: Ink(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: isSelected ? ColorManager.purple12 : ColorManager.white,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(8),
+            ),
           ),
-        ),
-        child: Icon(
-          icon.iconData,
-          color: icon.color,
-          size: _sizeIconItem,
+          child: Icon(
+            icon.iconData,
+            color: icon.color,
+            size: _sizeIconItem,
+          ),
         ),
       ),
     );
