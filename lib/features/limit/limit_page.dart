@@ -1,4 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
@@ -102,7 +103,6 @@ class LimitPage extends StatelessWidget {
   }
 
   Widget _budgetItem(BudgetModel model) {
-    IconModel icon = model.icon;
     const double iconSize = 18;
     return Card(
       child: Padding(
@@ -110,7 +110,7 @@ class LimitPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon.iconData, color: icon.color),
+            BIcon(id: model.iconId),
             gapW16,
             BText(model.name.toString()),
             gapW16,
