@@ -224,9 +224,9 @@ class AppTheme {
         indicatorSize: TabBarIndicatorSize.label,
         indicator: BoxDecoration(
           border: Border(
-            top: BorderSide(
+            bottom: BorderSide(
               color: darkColors.primary,
-              width: 2,
+              width: 3,
             ),
           ),
         ),
@@ -335,9 +335,9 @@ class AppTheme {
         indicatorSize: TabBarIndicatorSize.label,
         indicator: BoxDecoration(
           border: Border(
-            top: BorderSide(
+            bottom: BorderSide(
               color: lightColors.primary,
-              width: 2,
+              width: 3,
             ),
           ),
         ),

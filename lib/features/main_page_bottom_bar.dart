@@ -1,7 +1,9 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/features/history/history_page.dart';
 import 'package:budget_app/features/home/home_page.dart';
 import 'package:budget_app/features/limit/limit_page.dart';
+import 'package:budget_app/features/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 
 class MainPageBottomBar extends StatefulWidget {
@@ -43,9 +45,9 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
     _screens = [
       HomePage(),
       LimitPage(),
+      const HistoryPage(),
       const SizedBox(),
-      const SizedBox(),
-      const SizedBox()
+      const ProfilePage(),
     ];
     super.initState();
   }

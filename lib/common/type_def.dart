@@ -1,1 +1,1 @@
-typedef OnChangeDate = Function(DateTime dateTime);
+typedef OnChangeDate = void Function(DateTime dateTime);
