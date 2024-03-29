@@ -15,6 +15,7 @@ class IconConstants {
   static IconData emojiSmile = FontAwesomeIcons.faceSmile;
   static IconData emojiSurprise = FontAwesomeIcons.faceSurprise;
   static IconData emojiFrown = FontAwesomeIcons.faceFrown;
+  static IconData galley= Icons.image;
 
   //Bottombar
   static IconData home = Icons.home_rounded;
