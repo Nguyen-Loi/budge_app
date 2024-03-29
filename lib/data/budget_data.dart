@@ -3,7 +3,44 @@ import 'package:budget_app/constants/field_constants.dart';
 import 'package:budget_app/models/budget_model.dart';
 
 class BudgetData {
-  static BudgetModel data = BudgetModel({
+  static List<BudgetModel> listItem = [
+    BudgetModel({
+      FieldConstants.name: 'Shopping1',
+      FieldConstants.iconId: 1,
+      FieldConstants.limit:100,
+      FieldConstants.currentAmount: 100,
+      TableConstant.Transaction: []
+    }),
+    BudgetModel({
+      FieldConstants.name: 'Shopping2',
+      FieldConstants.iconId: 2,
+      FieldConstants.limit: 200,
+      FieldConstants.currentAmount: 300,
+      TableConstant.Transaction: []
+    }),
+    BudgetModel({
+      FieldConstants.name: 'Shopping3',
+      FieldConstants.iconId: 3,
+      FieldConstants.limit: 300,
+      FieldConstants.currentAmount: 100,
+      TableConstant.Transaction: []
+    }),
+    BudgetModel({
+      FieldConstants.name: 'Shopping4',
+      FieldConstants.iconId: 4,
+      FieldConstants.limit: 400,
+      FieldConstants.currentAmount: 200,
+      TableConstant.Transaction: []
+    }),
+    BudgetModel({
+      FieldConstants.name: 'Shopping5',
+      FieldConstants.iconId: 5,
+      FieldConstants.limit: 500,
+      FieldConstants.currentAmount: 200,
+      TableConstant.Transaction: []
+    })
+  ];
+  static BudgetModel item = BudgetModel({
     FieldConstants.name: 'Shopping',
     FieldConstants.iconId: 1,
     FieldConstants.limit: 300,

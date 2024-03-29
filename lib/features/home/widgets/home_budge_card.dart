@@ -20,7 +20,7 @@ class HomeBudgeCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => BudgetDetailView(budget: BudgetData.data),
+            builder: (_) => BudgetDetailView(budget: BudgetData.item),
           ),
         );
       },

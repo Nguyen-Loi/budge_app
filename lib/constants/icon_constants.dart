@@ -16,6 +16,10 @@ class IconConstants {
   static IconData emojiSurprise = FontAwesomeIcons.faceSurprise;
   static IconData emojiFrown = FontAwesomeIcons.faceFrown;
 
+  static IconData account = FontAwesomeIcons.user;
+  static IconData setting = Icons.settings_outlined;
+  static IconData contact = Icons.phone_outlined;
+
   //Bottombar
   static IconData home = Icons.home_rounded;
   static IconData profile = FontAwesomeIcons.user;
