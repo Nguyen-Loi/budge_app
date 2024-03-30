@@ -5,8 +5,6 @@ class BaseModel {
   BaseModel(this.data);
   final Map<String, dynamic> data;
   String get id => Methods.getString(data, FieldConstants.id);
-  DateTime? get createdAt => Methods.getDateTime(data, FieldConstants.createdAt);
-  DateTime? get updatedAt => Methods.getDateTime(data, FieldConstants.updatedAt);
-  String get strCreatedAt => Methods.strTimeStamp(data, FieldConstants.createdAt);
-  String get strUpdatedAt => Methods.strTimeStamp(data, FieldConstants.updatedAt);
+  DateTime get createdAt => Methods.getDateTime(data, FieldConstants.createdAt)!;
+  DateTime get updatedAt => Methods.getDateTime(data, FieldConstants.updatedAt)!;
 }

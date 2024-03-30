@@ -37,9 +37,21 @@ class ColorManager {
 
   static Color error = HexColor.fromHex("#e61f34");
 
-  static LinearGradient linearGreen = LinearGradient(colors: [
+  static LinearGradient linearGreen1 = LinearGradient(colors: [
     HexColor.fromHex('#11998e'),
     HexColor.fromHex('#38ef7d'),
+  ]);
+  static LinearGradient linearGrey = LinearGradient(colors: [
+    HexColor.fromHex('#bdc3c7'),
+    HexColor.fromHex('#2c3e50'),
+  ]);
+  static LinearGradient linearPink = LinearGradient(colors: [
+    HexColor.fromHex('#ee9ca7'),
+    HexColor.fromHex('#ffdde1'),
+  ]);
+  static LinearGradient linearGreen2 = LinearGradient(colors: [
+    HexColor.fromHex('#DCE35B'),
+    HexColor.fromHex('#45B649'),
   ]);
   static LinearGradient linearWarning = LinearGradient(colors: [
     HexColor.fromHex('#f12711'),

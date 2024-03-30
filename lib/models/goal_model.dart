@@ -3,37 +3,37 @@ import 'package:budget_app/common/table_constant.dart';
 import 'package:budget_app/constants/field_constants.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/models/base_model.dart';
-import 'package:budget_app/models/budget_transaction_model.dart';
+import 'package:budget_app/models/goal_transaction_model.dart';
 
-enum StatusBudget { safe, warning, danger }
+enum StatusBudget { start, progress, almostDone, complete }
 
-class BudgetModel extends BaseModel {
-  BudgetModel(Map<String, dynamic> data) : super(data);
+class GoalModel extends BaseModel {
+  GoalModel(Map<String, dynamic> data) : super(data);
+  static const String strUrgentMain = 'Urgent';
+  bool get isUrgent => name == strUrgentMain;
+
   String get userId => Methods.getString(data, FieldConstants.userId);
   String get name => Methods.getString(data, FieldConstants.name);
   int get iconId => Methods.getInt(data, FieldConstants.iconId);
   int get currentAmount => Methods.getInt(data, FieldConstants.currentAmount);
   int get limit => Methods.getInt(data, FieldConstants.limit);
-  List<BudgetTransactionModel> get transactions =>
-      Methods.getList(data, TableConstant.budgetTransaction)
-          .map((e) => BudgetTransactionModel(e))
+  List<GoalTransactionModel> get transactions =>
+      Methods.getList(data, TableConstant.goalTransaction)
+          .map((e) => GoalTransactionModel(e))
           .toList();
 
   StatusBudget get status {
-    if (currentAmount <= limit / 2) {
-      return StatusBudget.safe;
+    if (currentAmount <= limit / 4) {
+      return StatusBudget.start;
+    } else if (currentAmount <= limit / 1.5) {
+      return StatusBudget.progress;
     } else if (currentAmount < limit) {
-      return StatusBudget.warning;
+      return StatusBudget.almostDone;
     } else {
-      return StatusBudget.danger;
+      return StatusBudget.complete;
     }
   }
 
   CurrencyType get currencyType =>
       CurrencyType.fromValue(Methods.getInt(data, FieldConstants.currencyType));
-  DateTime get startDate =>
-      Methods.getDateTime(data, FieldConstants.startDate) ??
-      DateTime(1, 1, 1, 1);
-  DateTime get endDate =>
-      Methods.getDateTime(data, FieldConstants.endDate) ?? DateTime(1, 1, 1, 1);
 }

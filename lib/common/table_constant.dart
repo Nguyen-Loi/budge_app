@@ -1,6 +1,7 @@
 class TableConstant {
-  static const String Budget = 'Budget';
-  static const String Transaction = 'Transaction';
-  static const String User = 'User';
-
+  static const String budget = 'Budget';
+  static const String budgetTransaction = 'BudgetTransaction';
+  static const String goal = 'Goal';
+  static const String goalTransaction = 'GoalTransaction';
+  static const String user = 'User';
 }
