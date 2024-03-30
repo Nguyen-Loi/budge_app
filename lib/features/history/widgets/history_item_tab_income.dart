@@ -1,4 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
@@ -19,7 +20,7 @@ class HistoryItemTabIncome extends HistoryItemTabBase<BudgetModel> {
         Expanded(
             child: Row(
           children: [
-            Icon(model.icon.iconData, color: model.icon.color),
+            BIcon(id: model.iconId),
             gapW8,
             Column(
               children: [

@@ -39,8 +39,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
 
   Widget _form() {
     return Form(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: ListView(
         children: [
           gapH16,
           _avatar(),
@@ -72,8 +71,6 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
     return BFormPickerImage(
         initialUrl:
             'https://e7.pngegg.com/pngimages/155/513/png-clipart-cat-feline-mammal-kawaii-animal-domestic-cute.png',
-        onChanged: (file) {
-
-        });
+        onChanged: (file) {});
   }
 }

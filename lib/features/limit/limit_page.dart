@@ -9,7 +9,6 @@ import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/features/limit/new_limit/new_limit_view.dart';
 import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
 
 class LimitPage extends StatelessWidget {
@@ -79,23 +78,20 @@ class LimitPage extends StatelessWidget {
             color: ColorManager.white,
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(32), topRight: Radius.circular(32))),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
             const BText.h2(
               'All limits',
             ),
             gapH16,
-            Expanded(
-              child: _listBudget(context),
-            )
+            _listBudget(context)
           ],
         ));
   }
 
   Widget _listBudget(BuildContext context) {
-    return ListViewWithSpacing(padding: EdgeInsets.zero, children: [
+    return ColumnWithSpacing(children: [
       ...listBudget.map((e) => _budgetItem(e)).toList(),
       gapH24,
       _buttonAddCategory(context),

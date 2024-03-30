@@ -1,6 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/b_dropdown.dart';
 import 'package:budget_app/common/widget/b_avatar.dart';
+import 'package:budget_app/common/widget/b_dropdown.dart';
 import 'package:budget_app/common/widget/b_search_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
@@ -12,7 +12,6 @@ import 'package:budget_app/features/home/controller/home_controller.dart';
 import 'package:budget_app/features/home/widgets/home_budge_card.dart';
 import 'package:budget_app/features/home/widgets/home_item_come.dart';
 import 'package:budget_app/features/income/income_view.dart';
-import 'package:budget_app/features/profile_detail/profile_detail_view.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -39,15 +38,7 @@ class HomePage extends StatelessWidget {
           ),
           gapW16,
           GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const ProfileDetailView(),
-                  ),
-                );
-              },
-              child: Icon(IconConstants.notification)),
+              onTap: () {}, child: Icon(IconConstants.notification)),
           gapW16,
         ],
       ),

@@ -1,9 +1,10 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/b_image.dart';
+import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/features/profile/profile_detail/profile_detail_view.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -26,7 +27,7 @@ class ProfilePage extends StatelessWidget {
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(32),
                         topRight: Radius.circular(32))),
-                child: _body()),
+                child: _body(context)),
           )
         ],
       ),
@@ -42,7 +43,7 @@ class ProfilePage extends StatelessWidget {
           gapH24,
           ListTile(
             title: BText.b1('Tester 1', color: ColorManager.white),
-            leading: const BImage.avatar(
+            leading: const BAvatar.network(
                 'https://acpro.edu.vn/hinh-nhung-chu-meo-de-thuong/imager_173.jpg',
                 size: 20),
             subtitle:
@@ -53,7 +54,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _body() {
+  Widget _body(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 16, bottom: 16),
       child: ColumnWithSpacing(
@@ -61,7 +62,14 @@ class ProfilePage extends StatelessWidget {
           _item(
               icon: IconConstants.account,
               text: 'My Account',
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ProfileDetailView(),
+                  ),
+                );
+              }),
           _item(
               icon: IconConstants.setting, text: 'Settings', onPressed: () {}),
           _item(icon: IconConstants.contact, text: 'Contact', onPressed: () {}),

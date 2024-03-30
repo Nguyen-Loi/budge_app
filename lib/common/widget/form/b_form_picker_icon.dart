@@ -83,7 +83,7 @@ class _ShowItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       decoration: BoxDecoration(
         color: ColorManager.purple25,
         borderRadius: const BorderRadius.all(Radius.circular(16)),
@@ -121,8 +121,8 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
         height: 300,
         child: SingleChildScrollView(
           child: Wrap(
-            spacing: 8,
-            runSpacing: 8,
+            spacing: 16,
+            runSpacing: 16,
             alignment: WrapAlignment.center,
             children: _listIcon.map((e) => _icon(e)).toList(),
           ),
@@ -166,7 +166,7 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
         child: Ink(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isSelected ? ColorManager.purple12 : ColorManager.white,
+            color: isSelected ? ColorManager.purple13 : ColorManager.white,
             borderRadius: const BorderRadius.all(
               Radius.circular(8),
             ),
