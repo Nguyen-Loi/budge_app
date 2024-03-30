@@ -1,9 +1,11 @@
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/log.dart';
+import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_modify_limit.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
-import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/features/base_view.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +37,7 @@ class _NewLimitViewState extends State<NewLimitView> {
   }
 
   Widget _form() {
-    return Column(
+    return ListView(
       children: [
         BFormFieldText(_nameController, label: 'Name'),
         gapH16,
@@ -45,10 +47,13 @@ class _NewLimitViewState extends State<NewLimitView> {
             logSuccess(iconId.toString());
           },
         ),
-        gapH32,
+        gapH16,
         BFormModifyLimit(onChanged: (v) {
           logSuccess(v.toString());
-        })
+        }),
+        const SizedBox(height: 64),
+        FilledButton(
+            onPressed: () {}, child: BText('Add', color: ColorManager.white))
       ],
     );
   }

@@ -8,13 +8,12 @@ class BAvatar extends StatelessWidget {
   const BAvatar.network(
     this.url, {
     super.key,
-  })  : _imageType = _ImageType.network,
-        size = null;
+    this.size,
+  }) : _imageType = _ImageType.network;
 
   const BAvatar.asset(String asset, {super.key, this.size})
       : _imageType = _ImageType.asset,
-        url = asset
-        ;
+        url = asset;
 
   final String url;
   final double? size;
