@@ -1,4 +1,4 @@
-import 'package:budget_app/features/auth/view/login_view.dart';
+import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

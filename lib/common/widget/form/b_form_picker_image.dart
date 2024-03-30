@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/type_def.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';

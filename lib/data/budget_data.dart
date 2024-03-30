@@ -7,37 +7,37 @@ class BudgetData {
     BudgetModel({
       FieldConstants.name: 'Shopping1',
       FieldConstants.iconId: 1,
-      FieldConstants.limit:100,
+      FieldConstants.limit: 100,
       FieldConstants.currentAmount: 100,
-      TableConstant.Transaction: []
+      TableConstant.budgetTransaction: []
     }),
     BudgetModel({
       FieldConstants.name: 'Shopping2',
       FieldConstants.iconId: 2,
       FieldConstants.limit: 200,
       FieldConstants.currentAmount: 300,
-      TableConstant.Transaction: []
+      TableConstant.budgetTransaction: []
     }),
     BudgetModel({
       FieldConstants.name: 'Shopping3',
       FieldConstants.iconId: 3,
       FieldConstants.limit: 300,
       FieldConstants.currentAmount: 100,
-      TableConstant.Transaction: []
+      TableConstant.budgetTransaction: []
     }),
     BudgetModel({
       FieldConstants.name: 'Shopping4',
       FieldConstants.iconId: 4,
       FieldConstants.limit: 400,
       FieldConstants.currentAmount: 200,
-      TableConstant.Transaction: []
+      TableConstant.budgetTransaction: []
     }),
     BudgetModel({
       FieldConstants.name: 'Shopping5',
       FieldConstants.iconId: 5,
       FieldConstants.limit: 500,
       FieldConstants.currentAmount: 200,
-      TableConstant.Transaction: []
+      TableConstant.budgetTransaction: []
     })
   ];
   static BudgetModel item = BudgetModel({
@@ -45,7 +45,7 @@ class BudgetData {
     FieldConstants.iconId: 1,
     FieldConstants.limit: 300,
     FieldConstants.currentAmount: 200,
-    TableConstant.Transaction: [
+    TableConstant.budgetTransaction: [
       {
         "id": "66011de6e2ac9b172b9ce00e",
         "budgetId": 1,

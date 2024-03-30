@@ -1,5 +1,4 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,6 +19,7 @@ class IconDataConstant {
   static const IconData _house2 = FontAwesomeIcons.houseChimney;
   static const IconData _gift1 = FontAwesomeIcons.gift;
   static const IconData _gift2 = FontAwesomeIcons.gifts;
+  static const IconData _baby = FontAwesomeIcons.baby;
   static const IconData _car1 = FontAwesomeIcons.car;
   static const IconData _car2 = FontAwesomeIcons.carSide;
   static const IconData _star = FontAwesomeIcons.star;
@@ -57,6 +57,7 @@ class IconDataConstant {
     IconModel(12, _house2, Colors.deepPurpleAccent),
     IconModel(13, _gift1, Colors.blue),
     IconModel(14, _gift2, Colors.purple),
+    IconModel(15, _baby, Colors.green),
     IconModel(16, _car1, Colors.pink),
     IconModel(17, _car2, Colors.black),
     IconModel(18, _star, Colors.yellow),
