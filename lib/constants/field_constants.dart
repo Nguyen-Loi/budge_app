@@ -12,7 +12,7 @@ class FieldConstants {
   static const String name = 'name';
   static const String accountType = 'accountType';
 
-  // Budget
+  // Budget - Goal
   static const String currentAmount = 'currentAmount';
   static const String currencyType = 'currencyType';
   static const String startDate = 'startDate';
