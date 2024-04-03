@@ -1,23 +1,21 @@
-import 'package:budget_app/apis/db_api.dart';
-import 'package:budget_app/common/table_constant.dart';
+import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/models/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-abstract class IUserApi {
-  Future<UserModel> getProfile();
-  Future<UserModel> updateProfile(Map<String, dynamic> data);
-}
+class UserApi {
+  final FirebaseFirestore db;
+  UserApi({
+    required this.db,
+  });
 
-class UserApi implements IUserApi {
-  static const String _tableUser = TableConstant.user;
-  DbApi _db = DbApi(firestore: firestore, storage: storage);
-  @override
-  Future<UserModel> getProfile() {
-    
-  }
+  String get uid => '123';
 
-  @override
-  Future<UserModel> updateProfile(Map<String, dynamic> data) {
-    // TODO: implement updateProfile
-    throw UnimplementedError();
+  Future<UserModel> getUser() async {
+    final data = await db
+        .doc(FirestorePath.user(uid))
+        .mapModel<UserModel>(
+            modelFrom: UserModel.fromMap, modelTo: (model) => model.toMap())
+        .get();
+    return data.data()!;
   }
 }
