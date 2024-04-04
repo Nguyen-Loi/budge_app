@@ -42,7 +42,7 @@ class IconDataConstant {
   static const IconData _laptop = FontAwesomeIcons.laptop;
 
   static final List<IconModel> _listIcon = [
-    IconModel(0, _accomodation, ColorManager.purple25),
+    IconModel(0, _accomodation, Colors.cyan),
     IconModel(1, _categoryEating, ColorManager.yellow),
     IconModel(2, _shopping, Colors.green),
     IconModel(3, _transportation, ColorManager.blue),
@@ -52,7 +52,7 @@ class IconDataConstant {
     IconModel(7, _water, ColorManager.blue),
     IconModel(8, _electric, ColorManager.yellow),
     IconModel(9, _phone1, Colors.green),
-    IconModel(10, _phone2, Colors.greenAccent),
+    IconModel(10, _phone2, Colors.deepPurple),
     IconModel(11, _house1, Colors.black),
     IconModel(12, _house2, Colors.deepPurpleAccent),
     IconModel(13, _gift1, Colors.blue),

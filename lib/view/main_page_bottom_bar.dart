@@ -3,7 +3,7 @@ import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/view/goals_view/goals_view.dart';
 import 'package:budget_app/view/history_view/history_page.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
-import 'package:budget_app/view/limit_view/limit_page.dart';
+import 'package:budget_app/view/new_limit/new_limit_view.dart';
 import 'package:budget_app/view/profile_view/profile_page.dart';
 import 'package:flutter/material.dart';
 
@@ -18,10 +18,6 @@ final _navBarItems = [
   BottomNavigationBarItem(
     icon: Icon(IconConstants.home),
     label: 'Home',
-  ),
-  BottomNavigationBarItem(
-    icon: Icon(IconConstants.limit),
-    label: 'Limit',
   ),
   BottomNavigationBarItem(
     icon: Icon(IconConstants.history),
@@ -45,10 +41,9 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
     _selectedIndex = 0;
     _screens = [
       HomePage(),
-      LimitPage(),
       const HistoryPage(),
       GoalsView(),
-      const ProfilePage(),
+      ProfilePage(),
     ];
     super.initState();
   }
@@ -98,6 +93,14 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
             child: _screens[_selectedIndex],
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const NewLimitView(),
+          ));
+        },
+        child: Icon(IconConstants.add, color: ColorManager.white),
       ),
     );
   }

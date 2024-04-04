@@ -37,13 +37,13 @@ class GoalStatus extends StatelessWidget {
   LinearGradient _gradient() {
     switch (goal.status) {
       case StatusGoal.start:
-        return ColorManager.linearGrey;
+        return ColorManager.linearPrimary;
       case StatusGoal.progress:
-        return ColorManager.linearPink;
+        return ColorManager.linearPrimary;
       case StatusGoal.almostDone:
-        return ColorManager.linearGreen2;
+        return ColorManager.linearPrimary;
       case StatusGoal.complete:
-        return ColorManager.linearGreen1;
+        return ColorManager.linearPrimary;
     }
   }
 }

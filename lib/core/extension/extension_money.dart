@@ -1,13 +1,28 @@
+import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:intl/intl.dart';
 
 extension NumExtensions on num {
-  String toMoneyStr({String currency = 'USD'}) {
-    // Define the format for USD and VND
-    final usdFormat = NumberFormat.currency(locale: 'en_US', symbol: '\$');
-    final vndFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
+  String toMoneyStr({CurrencyType currencyType = CurrencyType.vnd}) {
+    switch (currencyType) {
+      case CurrencyType.vnd:
+        return _formatVND(this);
+      case CurrencyType.usd:
+        NumberFormat numberFormat =
+            NumberFormat.currency(locale: 'en_US', symbol: '\$');
+        return numberFormat.format(this);
+    }
+  }
+}
 
-    final format = currency.toUpperCase() == 'VND' ? vndFormat : usdFormat;
-
-    return format.format(this);
+String _formatVND(num value) {
+  if (value >= 1000000000) {
+    double formattedValue = value / 1000000000;
+    return '${formattedValue.toStringAsFixed(2)} ß';
+  } else if (value >= 1000000) {
+    double formattedValue = value / 1000000;
+    return '${formattedValue.toStringAsFixed(2)} ʍ';
+  } else {
+    final formatCurrency = NumberFormat("#,##0");
+    return '${formatCurrency.format(value.toInt())} đ';
   }
 }

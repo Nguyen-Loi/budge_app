@@ -19,12 +19,14 @@ class BText extends StatelessWidget {
   final TextAlign textAlign;
   // ignore: library_private_types_in_public_api
   final _BTextType textType;
+  final int? maxLines;
 
   const BText.h1(
     this.text, {
     this.color,
     this.fontWeight,
     this.textAlign = TextAlign.left,
+    this.maxLines,
     super.key,
   }) : textType = _BTextType.heading1;
 
@@ -33,6 +35,7 @@ class BText extends StatelessWidget {
     this.color,
     this.fontWeight,
     this.textAlign = TextAlign.left,
+    this.maxLines,
     super.key,
   }) : textType = _BTextType.heading2;
 
@@ -41,6 +44,7 @@ class BText extends StatelessWidget {
     this.color,
     this.fontWeight,
     this.textAlign = TextAlign.left,
+    this.maxLines,
     super.key,
   }) : textType = _BTextType.bodyLarge;
 
@@ -49,6 +53,7 @@ class BText extends StatelessWidget {
     this.color,
     this.fontWeight,
     this.textAlign = TextAlign.left,
+    this.maxLines,
     super.key,
   }) : textType = _BTextType.bodyMedium;
 
@@ -57,6 +62,7 @@ class BText extends StatelessWidget {
     this.color,
     this.fontWeight,
     this.textAlign = TextAlign.left,
+    this.maxLines,
     super.key,
   }) : textType = _BTextType.bodySmall;
 
@@ -65,6 +71,7 @@ class BText extends StatelessWidget {
     this.color,
     this.fontWeight,
     this.textAlign = TextAlign.left,
+    this.maxLines,
     super.key,
   }) : textType = _BTextType.caption;
 
@@ -72,6 +79,7 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      maxLines: maxLines,
       style: BTextStyle.heading1(color: color, fontWeight: fontWeight),
     );
   }
@@ -80,6 +88,7 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      maxLines: maxLines,
       style: BTextStyle.heading2(color: color, fontWeight: fontWeight),
     );
   }
@@ -88,6 +97,7 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      maxLines: maxLines,
       style: BTextStyle.bodyLarge(color: color, fontWeight: fontWeight),
     );
   }
@@ -96,6 +106,7 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      maxLines: maxLines,
       style: BTextStyle.bodyMedium(color: color, fontWeight: fontWeight),
     );
   }
@@ -104,6 +115,7 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      maxLines: maxLines,
       style: BTextStyle.bodySmall(fontWeight: fontWeight, color: color),
     );
   }
@@ -112,6 +124,7 @@ class BText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
+      maxLines: maxLines,
       style: BTextStyle.caption(color: color, fontWeight: fontWeight),
     );
   }

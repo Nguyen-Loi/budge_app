@@ -5,7 +5,6 @@ import 'package:budget_app/core/enums/currency_type_enum.dart';
 class UserModel {
   final String userId;
   final String email;
-  final String password;
   final String profileUrl;
   final String name;
   final AccountType accountType;
@@ -16,7 +15,6 @@ class UserModel {
   UserModel({
     required this.userId,
     required this.email,
-    required this.password,
     required this.profileUrl,
     required this.name,
     required this.accountType,
@@ -37,7 +35,6 @@ class UserModel {
     return UserModel(
       userId: userId ?? this.userId,
       email: email ?? this.email,
-      password: password ?? this.password,
       profileUrl: profileUrl ?? this.profileUrl,
       name: name ?? this.name,
       accountType: accountType ?? this.accountType,
@@ -51,7 +48,6 @@ class UserModel {
     return <String, dynamic>{
       'userId': userId,
       'email': email,
-      'password': password,
       'profileUrl': profileUrl,
       'name': name,
       'accountType': AccountType.fromValue(accountType.value),
@@ -64,7 +60,6 @@ class UserModel {
     return UserModel(
       userId: map['userId'] as String,
       email: map['email'] as String,
-      password: map['password'] as String,
       profileUrl: map['profileUrl'] as String,
       name: map['name'] as String,
       accountType: AccountType.fromValue(map['accountType'] as int),
@@ -81,7 +76,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(userId: $userId, email: $email, password: $password, profileUrl: $profileUrl, name: $name, accountType: $accountType)';
+    return 'UserModel(userId: $userId, email: $email, profileUrl: $profileUrl, name: $name, accountType: $accountType)';
   }
 
   @override
@@ -90,7 +85,6 @@ class UserModel {
 
     return other.userId == userId &&
         other.email == email &&
-        other.password == password &&
         other.profileUrl == profileUrl &&
         other.name == name &&
         other.accountType == accountType;
@@ -100,7 +94,6 @@ class UserModel {
   int get hashCode {
     return userId.hashCode ^
         email.hashCode ^
-        password.hashCode ^
         profileUrl.hashCode ^
         name.hashCode ^
         accountType.hashCode;

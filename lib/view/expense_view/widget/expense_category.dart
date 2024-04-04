@@ -69,7 +69,7 @@ class _ExpenseCategoryState extends State<ExpenseCategory> {
       width: MediaQuery.of(context).size.width / 3 - 24,
       decoration: BoxDecoration(
           color: backgroundColor,
-          border: Border.all(color: ColorManager.grey3),
+          border: Border.all(color: ColorManager.grey1),
           borderRadius: const BorderRadius.all(Radius.circular(8))),
       child: Column(
         children: [

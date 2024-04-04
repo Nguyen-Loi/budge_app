@@ -1,7 +1,7 @@
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/data/budget_data.dart';
+import 'package:budget_app/view/history_view/controller/history_controller.dart';
 import 'package:budget_app/view/history_view/widgets/history_item_tab_expense.dart';
 import 'package:budget_app/view/history_view/widgets/history_item_tab_income.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +17,12 @@ class _HistoryPageState extends State<HistoryPage>
     with TickerProviderStateMixin {
   late final TabController _tabController;
 
+  final HistoryController _controller = HistoryController();
+
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _controller.init();
     super.initState();
   }
 
@@ -40,8 +43,8 @@ class _HistoryPageState extends State<HistoryPage>
 
   List<Widget> _tabData() {
     return [
-      HistoryItemTabIncome(budgets: BudgetData.listItem),
-      HistoryItemTabExpense(transactions: BudgetData.item.transactions),
+      HistoryItemTabIncome(list: _controller.budgetsIncome),
+      HistoryItemTabExpense(list: _controller.budgetsExpense),
     ];
   }
 

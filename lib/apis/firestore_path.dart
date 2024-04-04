@@ -26,10 +26,10 @@ class FirestorePath {
 }
 
 extension Converter<T> on CollectionReference<Map<String, dynamic>> {
-  Query<T> mapModel<T>(
-      {required T Function(Map<String, dynamic> value) modelFrom,
-      required Map<String, dynamic> Function(T model) modelTo}) {
-    return withConverter<T>(
+  Query<V> mapModel<V>(
+      {required V Function(Map<String, dynamic> value) modelFrom,
+      required Map<String, dynamic> Function(V model) modelTo}) {
+    return withConverter<V>(
         fromFirestore: (snapshot, _) {
           Map<String, dynamic> data = snapshot.data()!;
           data['id'] = snapshot.id;
@@ -40,10 +40,10 @@ extension Converter<T> on CollectionReference<Map<String, dynamic>> {
 }
 
 extension ConverterDocument<T> on DocumentReference<Map<String, dynamic>> {
-  DocumentReference<T> mapModel<T>(
-      {required T Function(Map<String, dynamic> value) modelFrom,
-      required Map<String, dynamic> Function(T model) modelTo}) {
-    return withConverter<T>(
+  DocumentReference<V> mapModel<V>(
+      {required V Function(Map<String, dynamic> value) modelFrom,
+      required Map<String, dynamic> Function(V model) modelTo}) {
+    return withConverter<V>(
         fromFirestore: (snapshot, _) {
           Map<String, dynamic> data = snapshot.data()!;
           data['id'] = snapshot.id;

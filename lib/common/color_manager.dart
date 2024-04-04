@@ -61,6 +61,14 @@ class ColorManager {
     HexColor.fromHex('#e52d27'),
     HexColor.fromHex('#b31217'),
   ]);
+  static LinearGradient linearBlue = LinearGradient(colors: [
+    HexColor.fromHex('#2E3192'),
+    HexColor.fromHex('#1BFFFF'),
+  ]);
+   static LinearGradient linearPrimary = LinearGradient(colors: [
+    HexColor.fromHex('#614385'),
+    HexColor.fromHex('#516395'),
+  ]);
 }
 
 extension HexColor on Color {

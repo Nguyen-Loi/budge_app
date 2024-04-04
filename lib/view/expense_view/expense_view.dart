@@ -4,8 +4,8 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
-import 'package:budget_app/constants/field_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/data/data_local.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/expense_view/widget/expense_category.dart';
 import 'package:budget_app/models/budget_model.dart';
@@ -21,17 +21,7 @@ class ExpenseView extends StatefulWidget {
 class _ExpenseViewState extends State<ExpenseView> {
   late TextEditingController _nameController;
   late TextEditingController _amountController;
-  final List<BudgetModel> listBudget = [
-    BudgetModel({FieldConstants.name: 'Data 1', FieldConstants.iconId: 0}),
-    BudgetModel({FieldConstants.name: 'Data 2', FieldConstants.iconId: 1}),
-    BudgetModel({FieldConstants.name: 'Data 3', FieldConstants.iconId: 2}),
-    BudgetModel({FieldConstants.name: 'Data 4', FieldConstants.iconId: 3}),
-    BudgetModel({FieldConstants.name: 'Data 5', FieldConstants.iconId: 4}),
-    BudgetModel({FieldConstants.name: 'Data 6', FieldConstants.iconId: 5}),
-    BudgetModel({FieldConstants.name: 'Data 7', FieldConstants.iconId: 6}),
-    BudgetModel({FieldConstants.name: 'Data 8', FieldConstants.iconId: 7}),
-    BudgetModel({FieldConstants.name: 'Data 9', FieldConstants.iconId: 8}),
-  ];
+  final List<BudgetModel> budgets = DataLocal.budgets;
 
   @override
   void initState() {
@@ -87,7 +77,7 @@ class _ExpenseViewState extends State<ExpenseView> {
         const BText.h2('Choose category'),
         gapH16,
         ExpenseCategory(
-            list: listBudget,
+            list: budgets,
             onChanged: (id) {
               logSuccess(id);
             })
