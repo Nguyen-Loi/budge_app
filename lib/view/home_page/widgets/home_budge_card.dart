@@ -1,10 +1,11 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/common/widget/custom/budget_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
-import 'package:budget_app/data/budget_data.dart';
+import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/view/budget_detail/budget_detail_view.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class HomeBudgeCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => BudgetDetailView(budget: BudgetData.item),
+            builder: (_) => BudgetDetailView(budget: model),
           ),
         );
       },
@@ -34,10 +35,7 @@ class HomeBudgeCard extends StatelessWidget {
                   Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(color: ColorManager.grey3),
-                      child: Icon(
-                        Icons.home,
-                        color: ColorManager.black,
-                      )),
+                      child: BIcon(id: model.iconId)),
                   gapW8,
                   Expanded(
                     child: BText(model.name,
@@ -69,13 +67,13 @@ class HomeBudgeCard extends StatelessWidget {
             iconData: IconConstants.emojiSmile);
       case StatusBudget.warning:
         return baseStatus(
-            textStatus: 'Limit approaced',
+            textStatus: 'Approaced',
             iconColor: ColorManager.orange,
             textColor: ColorManager.orange,
             iconData: IconConstants.emojiSurprise);
       case StatusBudget.danger:
         return baseStatus(
-            textStatus: 'Limit is exceeded',
+            textStatus: 'Exceeded',
             iconColor: ColorManager.red,
             textColor: ColorManager.red,
             iconData: IconConstants.emojiFrown);
@@ -93,10 +91,11 @@ class HomeBudgeCard extends StatelessWidget {
         children: [
           Expanded(
             child: BTextRichSpace(
-              text1: '\$${model.currentAmount}/',
-              text2: '\$${model.limit}',
-              styleText2: BTextStyle.bodyMedium(
-                  fontWeight: FontWeightManager.semiBold,
+              text1: model.currentAmount.toMoneyStr(),
+              text2: '/${model.limit.toMoneyStr()}',
+              styleText1: BTextStyle.bodySmall(color: ColorManager.black),
+              styleText2: BTextStyle.bodySmall(
+                  fontWeight: FontWeightManager.bold,
                   color: ColorManager.black),
             ),
           ),
@@ -105,12 +104,13 @@ class HomeBudgeCard extends StatelessWidget {
             children: [
               BTextRichSpace(
                 text1: '$textStatus:',
-                text2: '\$$left',
+                text2: left.toMoneyStr(),
+                styleText1: BTextStyle.caption(),
                 styleText2: BTextStyle.bodyMedium(
                     color: textColor, fontWeight: FontWeightManager.semiBold),
               ),
               gapW8,
-              Icon(iconData, color: iconColor)
+              Icon(iconData, color: iconColor, size: 14)
             ],
           )
         ],

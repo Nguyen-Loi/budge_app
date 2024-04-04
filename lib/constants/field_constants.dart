@@ -1,7 +1,7 @@
 class FieldConstants {
   const FieldConstants._();
   static const String id = 'id';
-  static const String createdAt = 'createdAt';
+  static const String createdDate = 'createdDate';
   static const String updatedAt = 'updatedAt';
   static const String refId = 'refId';
 
@@ -27,6 +27,6 @@ class FieldConstants {
   // Transaction
   static const String amount = 'amount';
   static const String budgetId = 'budgetId';
-  static const String description = 'description';
-  static const String transactionType= 'transactionType';
+  static const String note = 'note';
+  static const String transactionType = 'transactionType';
 }

@@ -38,6 +38,8 @@ class GoalModel {
     }
   }
 
+  bool get isUrgent => name=='_'; 
+
   GoalModel copyWith({
     String? userId,
     String? name,

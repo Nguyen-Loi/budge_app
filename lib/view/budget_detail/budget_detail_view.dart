@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/budget_transaction_model.dart';
 import 'package:budget_app/view/base_view.dart';
@@ -139,9 +140,7 @@ class BudgetDetailView extends StatelessWidget {
                           children: [
                             Expanded(
                                 child: BText(
-                                    e.description.isEmpty
-                                        ? budget.name
-                                        : e.description,
+                                    e.note.isEmpty ? budget.name : e.note,
                                     fontWeight: FontWeightManager.semiBold)),
                             gapW16,
                             _itemStatusTransaction(type: e.transactionType)
@@ -152,7 +151,7 @@ class BudgetDetailView extends StatelessWidget {
                           children: [
                             Expanded(
                               child: BText.b3(
-                                e.createdAt.toHHmm(),
+                                e.createdDate.toHHmm(),
                               ),
                             ),
                             gapW16,
@@ -182,12 +181,13 @@ class BudgetDetailView extends StatelessWidget {
 
   Widget _itemMoneyTransaction(
       {required TransactionType type, required int amount}) {
+    String amountMoney = amount.toMoneyStr();
     switch (type) {
       case TransactionType.expense:
-        return BText('-$amount',
+        return BText('-$amountMoney',
             color: ColorManager.red, fontWeight: FontWeightManager.bold);
       case TransactionType.income:
-        return BText('+$amount',
+        return BText('+$amountMoney',
             color: ColorManager.green1, fontWeight: FontWeightManager.bold);
     }
   }
@@ -206,9 +206,9 @@ class _GroupDateTransactionModel {
       List<BudgetTransactionModel> transactions) {
     Map<DateTime, List<BudgetTransactionModel>> groupedTransactions = {};
     for (var transaction in transactions) {
-      DateTime date = DateTime(transaction.createdAt.year,
-          transaction.createdAt.month, transaction.createdAt.day);
-      if (!groupedTransactions.containsKey(date)) {
+      DateTime date = DateTime(transaction.createdDate.year,
+          transaction.createdDate.month, transaction.createdDate.day);
+      if (groupedTransactions[date] == null) {
         groupedTransactions[date] = [];
       }
       groupedTransactions[date]!.add(transaction);
