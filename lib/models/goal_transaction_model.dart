@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 
-class GoalTransactionModel  {
+class GoalTransactionModel {
   final String goalId;
-  final String amount;
-  final String description;
+  final int amount;
+  final String note;
   final TransactionType transactionType;
-   final DateTime createdDate;
+  final DateTime createdDate;
   final DateTime updatedDate;
   GoalTransactionModel({
     required this.goalId,
     required this.amount,
-    required this.description,
+    required this.note,
     required this.transactionType,
     required this.createdDate,
     required this.updatedDate,
@@ -19,14 +19,14 @@ class GoalTransactionModel  {
 
   GoalTransactionModel copyWith({
     String? goalId,
-    String? amount,
-    String? description,
+    int? amount,
+    String? note,
     TransactionType? transactionType,
   }) {
     return GoalTransactionModel(
       goalId: goalId ?? this.goalId,
       amount: amount ?? this.amount,
-      description: description ?? this.description,
+      note: note ?? this.note,
       transactionType: transactionType ?? this.transactionType,
       createdDate: createdDate,
       updatedDate: updatedDate,
@@ -37,7 +37,7 @@ class GoalTransactionModel  {
     return <String, dynamic>{
       'goalId': goalId,
       'amount': amount,
-      'description': description,
+      'note': note,
       'transactionType': TransactionType.fromValue(transactionType.value),
       'createdDate': createdDate,
       'updatedDate': updatedDate
@@ -47,8 +47,8 @@ class GoalTransactionModel  {
   factory GoalTransactionModel.fromMap(Map<String, dynamic> map) {
     return GoalTransactionModel(
       goalId: map['goalId'] as String,
-      amount: map['amount'] as String,
-      description: map['description'] as String,
+      amount: map['amount'] as int,
+      note: map['note'] as String,
       transactionType: TransactionType.fromValue(map['transactionType'] as int),
       createdDate: map['createdDate'] as DateTime,
       updatedDate: map['updatedDate'] as DateTime,
@@ -62,7 +62,7 @@ class GoalTransactionModel  {
 
   @override
   String toString() {
-    return 'GoalTransactionModel(goalId: $goalId, amount: $amount, description: $description, transactionType: $transactionType)';
+    return 'GoalTransactionModel(goalId: $goalId, amount: $amount, note: $note, transactionType: $transactionType)';
   }
 
   @override
@@ -71,7 +71,7 @@ class GoalTransactionModel  {
 
     return other.goalId == goalId &&
         other.amount == amount &&
-        other.description == description &&
+        other.note == note &&
         other.transactionType == transactionType;
   }
 
@@ -79,7 +79,7 @@ class GoalTransactionModel  {
   int get hashCode {
     return goalId.hashCode ^
         amount.hashCode ^
-        description.hashCode ^
+        note.hashCode ^
         transactionType.hashCode;
   }
 }

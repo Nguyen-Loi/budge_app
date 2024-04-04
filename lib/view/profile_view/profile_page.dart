@@ -4,12 +4,16 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  ProfilePage({Key? key}) : super(key: key);
 
+  final ProfileController _controller = ProfileController();
+  UserModel get user => _controller.user;
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
@@ -42,12 +46,9 @@ class ProfilePage extends StatelessWidget {
           BText.h2('Profile', color: ColorManager.white),
           gapH24,
           ListTile(
-            title: BText.b1('Tester 1', color: ColorManager.white),
-            leading: const BAvatar.network(
-                'https://acpro.edu.vn/hinh-nhung-chu-meo-de-thuong/imager_173.jpg',
-                size: 20),
-            subtitle:
-                BText.caption('Tester1@gmail.com', color: ColorManager.white),
+            title: BText.b1(user.name, color: ColorManager.white),
+            leading: BAvatar.network(user.profileUrl, size: 20),
+            subtitle: BText.caption(user.email, color: ColorManager.white),
           ),
         ],
       ),
