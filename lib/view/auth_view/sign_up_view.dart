@@ -8,16 +8,14 @@ import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-class SignUpView extends ConsumerStatefulWidget {
+class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _LoginViewState();
+  State<StatefulWidget> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends ConsumerState<SignUpView> {
+class _LoginViewState extends State<SignUpView> {
   late final TextEditingController _emailController;
   late final TextEditingController _nameController;
   late final TextEditingController _passwordController;
