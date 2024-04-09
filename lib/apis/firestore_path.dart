@@ -52,3 +52,15 @@ extension ConverterDocument<T> on DocumentReference<Map<String, dynamic>> {
         toFirestore: (model, _) => modelTo(model));
   }
 }
+
+extension ChangeData on DocumentReference<Map<String, dynamic>> {
+  Future<void> customSet(Map<String, dynamic> data) {
+    DateTime now = DateTime.now();
+    return set({'createdDate': now, 'updatedDate': now, ...data});
+  }
+
+  Future<void> customUpdate(Map<String, dynamic> data) {
+    DateTime now = DateTime.now();
+    return set({'updatedDate': now, ...data});
+  }
+}
