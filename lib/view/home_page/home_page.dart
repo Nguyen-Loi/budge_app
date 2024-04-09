@@ -10,6 +10,7 @@ import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/view/expense_view/expense_view.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_budge_card.dart';
+import 'package:budget_app/view/home_page/widgets/home_budge_list.dart';
 import 'package:budget_app/view/home_page/widgets/home_item_come.dart';
 import 'package:budget_app/view/income_view/income_view.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   HomePage({super.key});
   final TextEditingController _searchController = TextEditingController();
-  final HomeController _controller = HomeController();
   List<String> get listCategory => ['A', 'B', 'C', 'D'];
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
           gapH16,
           _searchAndCategory(),
           gapH16,
-          _listBudget()
+          const HomeBudgeList()
         ],
       ),
     );
@@ -121,16 +121,6 @@ class HomePage extends StatelessWidget {
             items: listCategory,
             onChanged: (v) => {})
       ],
-    );
-  }
-
-  Widget _listBudget() {
-    return ColumnWithSpacing(
-      children: _controller.listBuget
-          .map(
-            (e) => HomeBudgeCard(model: e),
-          )
-          .toList(),
     );
   }
 }
