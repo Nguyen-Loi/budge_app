@@ -1,13 +1,18 @@
+import 'package:budget_app/apis/firestore_path.dart';
+import 'package:budget_app/core/enums/account_type_enum.dart';
+import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/failure.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
 final authAPIProvider = Provider((ref) {
   final account = ref.watch(authProvider);
-  return AuthAPI(auth: account);
+  final db = ref.watch(dbProvider);
+  return AuthAPI(auth: account, db: db);
 });
 
 abstract class IAuthAPI {
@@ -27,21 +32,33 @@ abstract class IAuthAPI {
     required String email,
     required String password,
   });
-  FutureEither<User> loginWithDemo({
-    required String email,
-    required String password,
-  });
   User? currentUserAccount();
-  FutureEitherVoid logout();
+  FutureEitherVoid signOut();
 }
 
 class AuthAPI implements IAuthAPI {
   final FirebaseAuth _auth;
-  AuthAPI({required FirebaseAuth auth}) : _auth = auth;
+  final FirebaseFirestore _db;
+  AuthAPI({required FirebaseAuth auth, required FirebaseFirestore db})
+      : _auth = auth,
+        _db = db;
 
   @override
-  User? currentUserAccount() {
-    return _auth.currentUser;
+  User currentUserAccount() {
+    return _auth.currentUser!;
+  }
+
+  Future<void> _writeInfoToDB({required AccountType accountType}) {
+    User user = currentUserAccount();
+    return _db.doc(FirestorePath.user(user.uid)).customSet({
+      'id': user.uid,
+      'email': user.email,
+      'name': user.displayName ?? 'User',
+      'accountType': accountType.value,
+      'profileUrl': user.photoURL ??
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSItlIyMon238HFkvhWIJidKnw2lEVhtmB3sEuBdOMr5A&s',
+      'currencyType': CurrencyType.vnd
+    });
   }
 
   @override
@@ -52,6 +69,7 @@ class AuthAPI implements IAuthAPI {
     try {
       final account = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      await _writeInfoToDB(accountType: AccountType.emailAndPassword);
       return right(account.user!);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -60,14 +78,14 @@ class AuthAPI implements IAuthAPI {
         return left(
             const Failure(error: 'The account already exists for that email.'));
       }
-       return left(Failure(error: e.code));
+      return left(Failure(error: e.code));
     } catch (e) {
       return left(Failure(error: e.toString()));
     }
   }
 
   @override
-  FutureEitherVoid logout() async {
+  FutureEitherVoid signOut() async {
     try {
       await _auth.signOut();
       return right(null);
@@ -77,17 +95,11 @@ class AuthAPI implements IAuthAPI {
   }
 
   @override
-  FutureEither<User> loginWithDemo(
-      {required String email, required String password}) {
-    throw UnimplementedError();
-  }
-
-  @override
   FutureEither<User> loginWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return right(currentUserAccount()!);
+      _auth.signInWithEmailAndPassword(email: email, password: password);
+      return right(currentUserAccount());
     } on FirebaseAuthException catch (e) {
       return left(Failure(error: e.code));
     }
@@ -95,13 +107,15 @@ class AuthAPI implements IAuthAPI {
 
   @override
   FutureEither<User> loginWithFacebook(
-      {required String email, required String password}) {
+      {required String email, required String password}) async {
+    await _writeInfoToDB(accountType: AccountType.facebook);
     throw UnimplementedError();
   }
 
   @override
   FutureEither<User> loginWithGoogle(
-      {required String email, required String password}) {
+      {required String email, required String password}) async {
+    await _writeInfoToDB(accountType: AccountType.facebook);
     throw UnimplementedError();
   }
 }
