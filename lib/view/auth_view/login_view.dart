@@ -53,19 +53,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
     }
   }
 
-  void onLoginFacebook() {
+  void _onLoginFacebook() {
     ref.read(authControllerProvider.notifier).loginWithFacebook(
           context,
-          email: _emailController.text,
-          password: _passwordController.text,
         );
   }
 
-  void onLoginGoogle() {
+  void _onLoginGoogle() {
     ref.read(authControllerProvider.notifier).loginWithGoogle(
           context,
-          email: _emailController.text,
-          password: _passwordController.text,
         );
   }
 
@@ -179,9 +175,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           ),
         ),
         IconButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed(RoutePath.signUp);
-          },
+          onPressed: _onLoginGoogle,
           icon: SvgPicture.asset(
             SvgAssets.google,
             width: 48,
@@ -189,7 +183,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           ),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: _onLoginFacebook,
           icon: SvgPicture.asset(
             SvgAssets.facebook,
             width: 48,
