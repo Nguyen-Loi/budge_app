@@ -49,18 +49,34 @@
 	<string>This app requires access to the photo library.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires access to the camera.</string>
-	<!-- Google Sign-In section -->
+	<!--Sign-In section -->
 	<key>CFBundleURLTypes</key>
 	<array>
+		 <!-- Google  -->
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>fb407772455439263</string>
 				<string>com.googleusercontent.apps.856201938981-r493pe36ntn9b3kgoo9iejnoi14smod1</string>
 			</array>
 		</dict>
 	</array>
-	<!-- End of the Google Sign-In section -->
+	<key>FacebookAppID</key>
+	<string>407772455439263</string>
+	<key>FacebookDisplayName</key>
+	<string>Budget SS</string>
+	<key>FacebookClientToken</key>
+	<string>a018e1f278d258ed9d74f16e03afd6ee</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<!-- End of the Sign-In section -->
+	
 </dict>
 </plist>

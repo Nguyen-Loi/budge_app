@@ -1,4 +1,5 @@
 import 'package:budget_app/apis/auth_api.dart';
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/utils.dart';
 import 'package:flutter/material.dart';
@@ -48,8 +49,12 @@ final class AuthController extends StateNotifier<bool> {
   ) async {
     state = true;
     final res = await _authAPI.loginWithFacebook();
-    res.fold((l) => showSnackBar(context, l.message), (r) {
-      Navigator.pushReplacementNamed(context, RoutePath.home);
+    res.fold((l) {
+      logError(l.error);
+      showSnackBar(context, l.message);
+    }, (r) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, RoutePath.home, (route) => false);
     });
     state = false;
   }
@@ -60,7 +65,8 @@ final class AuthController extends StateNotifier<bool> {
     state = true;
     final res = await _authAPI.loginWithGoogle();
     res.fold((l) => showSnackBar(context, l.message), (r) {
-      Navigator.pushReplacementNamed(context, RoutePath.home);
+      Navigator.pushNamedAndRemoveUntil(
+          context, RoutePath.home, (route) => false);
     });
     state = false;
   }
