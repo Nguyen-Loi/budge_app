@@ -1,5 +1,6 @@
 class Failure {
   final String message;
   final String error;
-  const Failure({required this.error, this.message='An error unexpected occur!'});
+  const Failure(
+      {this.error = 'Error', this.message = 'An error unexpected occur!'});
 }

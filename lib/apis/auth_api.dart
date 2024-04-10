@@ -1,4 +1,5 @@
 import 'package:budget_app/apis/firestore_path.dart';
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/failure.dart';
@@ -6,13 +7,15 @@ import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 final authApiProvider = Provider((ref) {
-  final account = ref.watch(authProvider);
+  final auth = ref.watch(authProvider);
   final db = ref.watch(dbProvider);
-  return AuthAPI(auth: account, db: db);
+  return AuthAPI(auth: auth, db: db);
 });
 
 abstract class IAuthApi {
@@ -24,14 +27,8 @@ abstract class IAuthApi {
     required String email,
     required String password,
   });
-  FutureEither<User> loginWithFacebook({
-    required String email,
-    required String password,
-  });
-  FutureEither<User> loginWithGoogle({
-    required String email,
-    required String password,
-  });
+  FutureEitherVoid loginWithFacebook();
+  FutureEitherVoid loginWithGoogle();
   User? currentUserAccount();
   FutureEitherVoid signOut();
 }
@@ -105,16 +102,58 @@ class AuthAPI implements IAuthApi {
   }
 
   @override
-  FutureEither<User> loginWithFacebook(
-      {required String email, required String password}) async {
-    await _writeInfoToDB(accountType: AccountType.facebook);
-    throw UnimplementedError();
+  FutureEitherVoid loginWithFacebook() async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      await _writeInfoToDB(accountType: AccountType.facebook);
+      return right(null);
+    } catch (e) {
+      return left(Failure(error: e.toString()));
+    }
   }
 
   @override
-  FutureEither<User> loginWithGoogle(
-      {required String email, required String password}) async {
-    await _writeInfoToDB(accountType: AccountType.facebook);
-    throw UnimplementedError();
+  FutureEitherVoid loginWithGoogle() async {
+    String defaultError = 'Error occurred using Google Sign-In. Try again.';
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        await _writeInfoToDB(accountType: AccountType.google);
+        return right(null);
+      }
+      return left(const Failure(message: 'You have canceled your login'));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        return left(const Failure(
+            error: 'The account already exists.',
+            message:
+                'The account already exists with a different credential.'));
+      } else if (e.code == 'invalid-credential') {
+        return left(
+          const Failure(
+            error: 'Error occurred while accessing credentials.',
+            message: 'Error occurred while accessing credentials. Try again.',
+          ),
+        );
+      }
+      logError(e.toString());
+      return left(Failure(message: defaultError, error: e.toString()));
+    } catch (e) {
+      logError(e.toString());
+      return left(Failure(error: e.toString(), message: defaultError));
+    }
   }
 }
