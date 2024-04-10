@@ -8,27 +8,62 @@ import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:budget_app/view/auth_view/sign_up_view.dart';
 import 'package:budget_app/view/main_page_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LoginView extends StatefulWidget {
+class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
 
   @override
-  State<StatefulWidget> createState() => _LoginViewState();
+  ConsumerState<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends ConsumerState<LoginView> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void onLogin() {
+    ref.read(authControllerProvider.notifier).loginWithEmailPassword(
+          context,
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+  }
+
+  void onLoginFacebook() {
+    ref.read(authControllerProvider.notifier).loginWithFacebook(
+          context,
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+  }
+
+  void onLoginGoogle() {
+    ref.read(authControllerProvider.notifier).loginWithGoogle(
+          context,
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
   }
 
   @override
@@ -50,9 +85,19 @@ class _LoginViewState extends State<LoginView> {
               textAlign: TextAlign.left,
             ),
             gapH48,
-            _bTextFormField(),
+            _form()
+          ]),
+    );
+  }
+
+  Widget _form() {
+    return Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            _bFieldEmail(),
             gapH16,
-            _bTextFormFieldPassword(),
+            _bFieldPassword(),
             gapH8,
             _forgotPassword(),
             gapH32,
@@ -61,8 +106,8 @@ class _LoginViewState extends State<LoginView> {
             _orLoginWidth(),
             gapH48,
             _iconButtons()
-          ]),
-    );
+          ],
+        ));
   }
 
   Widget _forgotPassword() {
@@ -78,11 +123,12 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget _bTextFormField() {
-    return BFormFieldText(_emailController, label: 'Email');
+  Widget _bFieldEmail() {
+    return BFormFieldText(_emailController,
+        label: 'Email', validator: (e) => e.validateEmail());
   }
 
-  Widget _bTextFormFieldPassword() {
+  Widget _bFieldPassword() {
     return BFormFieldPassword(_passwordController);
   }
 
