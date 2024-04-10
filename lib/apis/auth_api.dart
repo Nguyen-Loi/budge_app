@@ -9,13 +9,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
-final authAPIProvider = Provider((ref) {
+final authApiProvider = Provider((ref) {
   final account = ref.watch(authProvider);
   final db = ref.watch(dbProvider);
   return AuthAPI(auth: account, db: db);
 });
 
-abstract class IAuthAPI {
+abstract class IAuthApi {
   FutureEither<User> signUp({
     required String email,
     required String password,
@@ -36,7 +36,7 @@ abstract class IAuthAPI {
   FutureEitherVoid signOut();
 }
 
-class AuthAPI implements IAuthAPI {
+class AuthAPI implements IAuthApi {
   final FirebaseAuth _auth;
   final FirebaseFirestore _db;
   AuthAPI({required FirebaseAuth auth, required FirebaseFirestore db})

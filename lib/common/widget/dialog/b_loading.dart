@@ -1,4 +1,3 @@
-
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +5,7 @@ typedef CloseLoading = void Function();
 
 CloseLoading showLoading({
   required BuildContext context,
-  required String text,
+  String text = 'Loading...',
 }) {
   final dialog = AlertDialog(
     content: Column(
