@@ -7,6 +7,7 @@ import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -45,8 +46,19 @@ class AuthAPI implements IAuthApi {
     return _auth.currentUser!;
   }
 
-  Future<void> _writeInfoToDB({required AccountType accountType}) {
+  Future<void> _writeInfoToDB({required AccountType accountType}) async {
     User user = currentUserAccount();
+    if (accountType == AccountType.google ||
+        accountType == AccountType.facebook) {
+      final isUserExitsOnDb = await _db
+          .collection(FirestorePath.users())
+          .where('id', isEqualTo: user.uid)
+          .limit(1)
+          .get();
+      if (isUserExitsOnDb.size != 0) {
+        return;
+      }
+    }
     return _db.doc(FirestorePath.user(user.uid)).customSet({
       'id': user.uid,
       'email': user.email,
@@ -103,15 +115,25 @@ class AuthAPI implements IAuthApi {
 
   @override
   FutureEitherVoid loginWithFacebook() async {
+    String defaultError = 'Error occurred using Facebook Sign-In. Try again.';
     try {
-      final LoginResult loginResult = await FacebookAuth.instance.login();
-      final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      await FacebookAuth.instance
+          .login(permissions: ['public_profile', 'email']);
+      final userData = await FacebookAuth.instance.getUserData(
+        fields: "name,email,id,picture",
+      );
+
+       UserInfo.fromJson(data)
+
+      // This code ios not working
+      // final LoginResult result = await FacebookAuth.instance.login();
+      // final AuthCredential facebookCredential =
+      //     FacebookAuthProvider.credential(result.accessToken!.token);
+      // await _auth.signInWithCredential(facebookCredential);
       await _writeInfoToDB(accountType: AccountType.facebook);
       return right(null);
     } catch (e) {
-      return left(Failure(error: e.toString()));
+      return left(Failure(error: e.toString(), message: defaultError));
     }
   }
 
@@ -130,11 +152,11 @@ class AuthAPI implements IAuthApi {
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
-        await FirebaseAuth.instance.signInWithCredential(credential);
+        await _auth.signInWithCredential(credential);
         await _writeInfoToDB(accountType: AccountType.google);
         return right(null);
       }
-      return left(const Failure(message: 'You have canceled your login'));
+      return left(Failure(message: defaultError));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
         return left(const Failure(
@@ -149,10 +171,8 @@ class AuthAPI implements IAuthApi {
           ),
         );
       }
-      logError(e.toString());
       return left(Failure(message: defaultError, error: e.toString()));
     } catch (e) {
-      logError(e.toString());
       return left(Failure(error: e.toString(), message: defaultError));
     }
   }
