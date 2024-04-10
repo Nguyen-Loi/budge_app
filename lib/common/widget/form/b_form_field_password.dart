@@ -1,6 +1,7 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:flutter/material.dart';
 
 class BFormFieldPassword extends StatefulWidget {
@@ -45,11 +46,11 @@ class _BFormFieldPasswordState extends State<BFormFieldPassword> {
         gapH8,
         TextFormField(
           initialValue: widget.initialValue,
-          maxLength: widget.maxLength,  
+          maxLength: widget.maxLength,
           maxLines: 1,
-          obscureText: _passwordVisible,
+          obscureText: !_passwordVisible,
           controller: widget.controller,
-          validator: widget.validator,
+          validator: widget.validator ?? (v) => v.validatePassword,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             hintText: widget.hint,
