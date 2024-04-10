@@ -42,12 +42,14 @@ class _LoginViewState extends ConsumerState<LoginView> {
     super.dispose();
   }
 
-  void onLogin() {
-    ref.read(authControllerProvider.notifier).loginWithEmailPassword(
-          context,
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
+  void _onLogin() {
+    if (_formKey.currentState!.validate()) {
+      ref.read(authControllerProvider.notifier).loginWithEmailPassword(
+            context,
+            email: _emailController.text,
+            password: _passwordController.text,
+          );
+    }
   }
 
   void onLoginFacebook() {
@@ -124,23 +126,23 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Widget _bFieldEmail() {
-    return BFormFieldText(_emailController,
-        label: 'Email', validator: (e) => e.validateEmail());
+    return BFormFieldText(
+      _emailController,
+      label: 'Email',
+      validator: (e) => e.validateEmail,
+    );
   }
 
   Widget _bFieldPassword() {
-    return BFormFieldPassword(_passwordController);
+    return BFormFieldPassword(
+      _passwordController,
+      validator: (e) => e.validatePassword,
+    );
   }
 
   Widget _button() {
     return FilledButton(
-      onPressed: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const MainPageBottomBar(),
-          ),
-        );
-      },
+      onPressed: _onLogin,
       child: BText.b1(
         'Sign In',
         color: ColorManager.white,
