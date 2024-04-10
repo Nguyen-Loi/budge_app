@@ -43,22 +43,22 @@ final class AuthController extends StateNotifier<bool> {
     state = false;
   }
 
-  void loginWithFacebook(BuildContext context,
-      {required String email, required String password}) async {
+  void loginWithFacebook(
+    BuildContext context,
+  ) async {
     state = true;
-    final res =
-        await _authAPI.loginWithFacebook(email: email, password: password);
+    final res = await _authAPI.loginWithFacebook();
     res.fold((l) => showSnackBar(context, l.message), (r) {
       Navigator.pushReplacementNamed(context, RoutePath.home);
     });
     state = false;
   }
 
-  void loginWithGoogle(BuildContext context,
-      {required String email, required String password}) async {
+  void loginWithGoogle(
+    BuildContext context,
+  ) async {
     state = true;
-    final res =
-        await _authAPI.loginWithGoogle(email: email, password: password);
+    final res = await _authAPI.loginWithGoogle();
     res.fold((l) => showSnackBar(context, l.message), (r) {
       Navigator.pushReplacementNamed(context, RoutePath.home);
     });
