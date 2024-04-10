@@ -98,7 +98,7 @@ class AuthAPI implements IAuthApi {
   FutureEither<User> loginWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      _auth.signInWithEmailAndPassword(email: email, password: password);
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
       return right(currentUserAccount());
     } on FirebaseAuthException catch (e) {
       return left(Failure(error: e.code));

@@ -34,4 +34,12 @@ extension ValidateForm on String? {
     }
     return null;
   }
+
+  String? get validatePassword {
+    String textError = 'Password minimum is 6 characters';
+    if (this == null || this!.length < 6) {
+      return textError;
+    }
+    return null;
+  }
 }

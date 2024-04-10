@@ -4,10 +4,10 @@ import 'package:budget_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final authControllerProvider = StateNotifierProvider<AuthController, bool>((ref) {
+final authControllerProvider =
+    StateNotifierProvider<AuthController, bool>((ref) {
   return AuthController(authApi: ref.watch(authApiProvider));
 });
-
 
 final class AuthController extends StateNotifier<bool> {
   final AuthAPI _authAPI;
@@ -20,7 +20,9 @@ final class AuthController extends StateNotifier<bool> {
     state = true;
     final res = await _authAPI.loginWithEmailAndPassword(
         email: email, password: password);
-    res.fold((l) => showSnackBar(context, l.message), (r) {
+    res.fold((l) {
+      showSnackBar(context, l.message);
+    }, (r) {
       showSnackBar(context, 'Account created! Please login');
       Navigator.pushReplacementNamed(context, RoutePath.home);
     });
