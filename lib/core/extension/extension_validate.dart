@@ -1,0 +1,37 @@
+extension ValidateForm on String? {
+  String? get validateEmail {
+    final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    String textError = 'Email invalid';
+    if (this == null || !emailRegExp.hasMatch(this!)) {
+      return textError;
+    }
+    return null;
+  }
+
+  String? get validateNotNull {
+    String textError = 'Data emtpy';
+    if (this == null) {
+      return textError;
+    }
+    return null;
+  }
+
+  String? get validatePhoneNumber {
+    final phoneRegExp = RegExp(r"^\+?0[0-9]{10}$");
+    String textError = 'Phone number invalid';
+    if (this == null || !phoneRegExp.hasMatch(this!)) {
+      return textError;
+    }
+    return null;
+  }
+
+  String? get validateName {
+    final nameRegExp =
+        RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+    String textError = 'Name invalid';
+    if (this == null || !nameRegExp.hasMatch(this!)) {
+      return textError;
+    }
+    return null;
+  }
+}
