@@ -42,4 +42,12 @@ extension ValidateForm on String? {
     }
     return null;
   }
+
+  String? validateMatchPassword(String password) {
+    String textError = 'Confirm password invalid';
+    if (this == null || this! != password) {
+      return textError;
+    }
+    return null;
+  }
 }

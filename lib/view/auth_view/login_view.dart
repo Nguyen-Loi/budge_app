@@ -6,12 +6,13 @@ import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/common/widget/b_text_span.dart';
 import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
+import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:budget_app/view/auth_view/sign_up_view.dart';
-import 'package:budget_app/view/main_page_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -96,6 +97,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     return Form(
         key: _formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _bFieldEmail(),
             gapH16,
@@ -163,32 +165,33 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Widget _iconButtons() {
-    return Row(
+    return RowWithSpacing(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => const SignUpView(),
-              ),
-            );
+            Navigator.of(context).pushNamed(RoutePath.signUp);
           },
           icon: SvgPicture.asset(
-            AssetsConstants.iconGoogle,
+            SvgAssets.budget,
             width: 48,
             height: 48,
           ),
         ),
-        gapW32,
+        IconButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(RoutePath.signUp);
+          },
+          icon: SvgPicture.asset(
+            SvgAssets.google,
+            width: 48,
+            height: 48,
+          ),
+        ),
         IconButton(
           onPressed: () {},
           icon: SvgPicture.asset(
-            AssetsConstants.iconFacebook,
-            placeholderBuilder: (BuildContext context) => Container(
-              padding: const EdgeInsets.all(30.0),
-              child: const CircularProgressIndicator(),
-            ),
+            SvgAssets.facebook,
             width: 48,
             height: 48,
           ),

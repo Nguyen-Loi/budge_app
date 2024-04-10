@@ -1,3 +1,4 @@
+import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,8 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Twitter Clone',
       theme: AppTheme.lightTheme,
+      onGenerateRoute: MainRouter.generateRoute,
+      initialRoute: RoutePath.login,
       home: const LoginView(),
     );
   }

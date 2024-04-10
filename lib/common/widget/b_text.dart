@@ -17,8 +17,7 @@ class BText extends StatelessWidget {
   final FontWeight? fontWeight;
   final Color? color;
   final TextAlign textAlign;
-  // ignore: library_private_types_in_public_api
-  final _BTextType textType;
+  final _BTextType _textType;
   final int? maxLines;
 
   const BText.h1(
@@ -28,7 +27,7 @@ class BText extends StatelessWidget {
     this.textAlign = TextAlign.left,
     this.maxLines,
     super.key,
-  }) : textType = _BTextType.heading1;
+  }) : _textType = _BTextType.heading1;
 
   const BText.h2(
     this.text, {
@@ -37,7 +36,7 @@ class BText extends StatelessWidget {
     this.textAlign = TextAlign.left,
     this.maxLines,
     super.key,
-  }) : textType = _BTextType.heading2;
+  }) : _textType = _BTextType.heading2;
 
   const BText.b1(
     this.text, {
@@ -46,7 +45,7 @@ class BText extends StatelessWidget {
     this.textAlign = TextAlign.left,
     this.maxLines,
     super.key,
-  }) : textType = _BTextType.bodyLarge;
+  }) : _textType = _BTextType.bodyLarge;
 
   const BText(
     this.text, {
@@ -55,7 +54,7 @@ class BText extends StatelessWidget {
     this.textAlign = TextAlign.left,
     this.maxLines,
     super.key,
-  }) : textType = _BTextType.bodyMedium;
+  }) : _textType = _BTextType.bodyMedium;
 
   const BText.b3(
     this.text, {
@@ -64,7 +63,7 @@ class BText extends StatelessWidget {
     this.textAlign = TextAlign.left,
     this.maxLines,
     super.key,
-  }) : textType = _BTextType.bodySmall;
+  }) : _textType = _BTextType.bodySmall;
 
   const BText.caption(
     this.text, {
@@ -73,7 +72,7 @@ class BText extends StatelessWidget {
     this.textAlign = TextAlign.left,
     this.maxLines,
     super.key,
-  }) : textType = _BTextType.caption;
+  }) : _textType = _BTextType.caption;
 
   Widget _heading1() {
     return Text(
@@ -131,7 +130,7 @@ class BText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (textType) {
+    switch (_textType) {
       case _BTextType.heading1:
         return _heading1();
       case _BTextType.heading2:

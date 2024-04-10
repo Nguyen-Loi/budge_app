@@ -53,22 +53,21 @@ class AuthAPI implements IAuthApi {
     return _db.doc(FirestorePath.user(user.uid)).customSet({
       'id': user.uid,
       'email': user.email,
-      'name': user.displayName ?? 'User',
+      'name': user.displayName ?? user.email!.split('@')[0],
       'accountType': accountType.value,
       'profileUrl': user.photoURL ??
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSItlIyMon238HFkvhWIJidKnw2lEVhtmB3sEuBdOMr5A&s',
-      'currencyType': CurrencyType.vnd
+      'currencyType': CurrencyType.vnd.value
     });
   }
 
   @override
-  FutureEither<User> signUp({
-    required String email,
-    required String password,
-  }) async {
+  FutureEither<User> signUp(
+      {required String email, required String password}) async {
     try {
       final account = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+
       await _writeInfoToDB(accountType: AccountType.emailAndPassword);
       return right(account.user!);
     } on FirebaseAuthException catch (e) {
@@ -101,7 +100,7 @@ class AuthAPI implements IAuthApi {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return right(currentUserAccount());
     } on FirebaseAuthException catch (e) {
-      return left(Failure(error: e.code));
+      return left(Failure(error: e.message.toString()));
     }
   }
 
