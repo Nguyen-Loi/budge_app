@@ -25,7 +25,7 @@ class AppTheme {
         onSurfaceVariant: Color(0xFFBFCBD0),
         success: Color(0xFF27BA62),
         onSuccess: Color(0xFFFFFFFF),
-        error: Color(0xFFED4460),
+        error: Colors.red,
         onError: Color(0xFFFFFFFF),
 
         /// Custom colors
@@ -59,7 +59,7 @@ class AppTheme {
         onSurfaceVariant: const Color(0xFF667C86),
         success: ColorManager.green2,
         onSuccess: ColorManager.white,
-        error: ColorManager.red,
+        error: Colors.red,
         onError: ColorManager.white,
 
         /// Custom colors

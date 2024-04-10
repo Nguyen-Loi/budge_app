@@ -14,7 +14,7 @@
     },
     "dart.warnWhenEditingFilesOutsideWorkspace": false,
     "dart.renameFilesWithClasses": "prompt",
-    "window.zoomLevel": 0.8,
+    "window.zoomLevel": 0.6,
     "workbench.colorTheme": "Dracula",
     "editor.bracketPairColorization.enabled": true,
     "editor.inlineSuggest.enabled": true,

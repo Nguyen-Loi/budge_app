@@ -23,17 +23,20 @@ final class AuthController extends StateNotifier<bool> {
     res.fold((l) {
       showSnackBar(context, l.message);
     }, (r) {
-      showSnackBar(context, 'Account created! Please login');
-      Navigator.pushReplacementNamed(context, RoutePath.home);
+      Navigator.pushNamedAndRemoveUntil(
+          context, RoutePath.home, (route) => false);
     });
     state = false;
   }
 
-  void signUp(BuildContext context,
-      {required String email, required String password}) async {
+  void signUp(
+    BuildContext context, {
+    required String email,
+    required String password,
+  }) async {
     state = true;
     final res = await _authAPI.signUp(email: email, password: password);
-    res.fold((l) => showSnackBar(context, l.message), (r) {
+    res.fold((l) => showSnackBar(context, l.error), (r) {
       showSnackBar(context, 'Account created! Please login');
       Navigator.pop(context);
     });
