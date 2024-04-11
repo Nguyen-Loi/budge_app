@@ -1,9 +1,10 @@
 import 'dart:convert';
+
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 
 class UserModel {
-  final String userId;
+  final String id;
   final String email;
   final String profileUrl;
   final String name;
@@ -13,7 +14,7 @@ class UserModel {
   final DateTime updatedDate;
 
   UserModel({
-    required this.userId,
+    required this.id,
     required this.email,
     required this.profileUrl,
     required this.name,
@@ -33,7 +34,7 @@ class UserModel {
     CurrencyType? currencyType,
   }) {
     return UserModel(
-      userId: userId ?? this.userId,
+      id: userId ?? this.id,
       email: email ?? this.email,
       profileUrl: profileUrl ?? this.profileUrl,
       name: name ?? this.name,
@@ -46,7 +47,7 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'userId': userId,
+      'userId': id,
       'email': email,
       'profileUrl': profileUrl,
       'name': name,
@@ -58,7 +59,7 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      userId: map['userId'] as String,
+      id: map['userId'] as String,
       email: map['email'] as String,
       profileUrl: map['profileUrl'] as String,
       name: map['name'] as String,
@@ -76,14 +77,14 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(userId: $userId, email: $email, profileUrl: $profileUrl, name: $name, accountType: $accountType)';
+    return 'UserModel(userId: $id, email: $email, profileUrl: $profileUrl, name: $name, accountType: $accountType)';
   }
 
   @override
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
 
-    return other.userId == userId &&
+    return other.id == id &&
         other.email == email &&
         other.profileUrl == profileUrl &&
         other.name == name &&
@@ -92,7 +93,7 @@ class UserModel {
 
   @override
   int get hashCode {
-    return userId.hashCode ^
+    return id.hashCode ^
         email.hashCode ^
         profileUrl.hashCode ^
         name.hashCode ^
