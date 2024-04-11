@@ -27,11 +27,10 @@ class BFormCheckbox extends FormField<bool> {
                   if (field.hasError)
                     Padding(
                       padding: const EdgeInsets.only(left: 16),
-                      child: Text(
-                        field.errorText ?? "Invalid",
-                        style: AppTextTheme.bodySmall
-                            .copyWith(color: ColorManager.red),
-                      ),
+                      child: Text(field.errorText ?? 'Invalid',
+                          style: Theme.of(field.context)
+                              .inputDecorationTheme
+                              .errorStyle),
                     )
                 ],
               );

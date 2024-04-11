@@ -1,33 +1,43 @@
 import 'package:budget_app/common/log.dart';
-import 'package:budget_app/common/widget/b_dropdown.dart';
-import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
+import 'package:budget_app/common/widget/form/b_form_category_budget.dart';
+import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/data/data_local.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/view/expense_view/widget/expense_category.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ExpenseView extends StatefulWidget {
-  const ExpenseView({Key? key}) : super(key: key);
+class ExpenseView extends ConsumerStatefulWidget {
+  const ExpenseView({super.key});
 
   @override
-  State<ExpenseView> createState() => _ExpenseViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ExpenseViewState();
 }
 
-class _ExpenseViewState extends State<ExpenseView> {
-  late TextEditingController _nameController;
+class _ExpenseViewState extends ConsumerState<ExpenseView> {
+  late TextEditingController _noteController;
   late TextEditingController _amountController;
+
   final List<BudgetModel> budgets = DataLocal.budgets;
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    _nameController = TextEditingController();
+    _noteController = TextEditingController();
     _amountController = TextEditingController();
     super.initState();
+  }
+
+  void _addExpense() {
+    if (_formKey.currentState!.validate()) {
+      logError('Success');
+    }
   }
 
   @override
@@ -36,56 +46,50 @@ class _ExpenseViewState extends State<ExpenseView> {
         title: 'New expense',
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: ListViewWithSpacing(
-            children: [
-              _fieldName(),
-              _amountAndCurrency(),
-              _chooseCategory(),
-              gapH24,
-              _buttonAddMoney()
-            ],
+          child: Form(
+            key: _formKey,
+            child: ListViewWithSpacing(
+              children: [
+                _amount(),
+                _note(),
+                _chooseCategory(),
+                gapH24,
+                _buttonAddMoney()
+              ],
+            ),
           ),
         ));
   }
 
-  Widget _fieldName() {
-    return BFormFieldText(_nameController, label: 'Name');
+  Widget _note() {
+    return BFormFieldText(_noteController, label: 'Note', maxLines: 2);
   }
 
-  Widget _amountAndCurrency() {
-    return Row(
-      children: [
-        Expanded(
-            flex: 2,
-            child: BFormFieldText(_amountController, label: 'Enter amount')),
-        gapW16,
-        Expanded(
-            child: BDropdown(
-                label: (v) => v.toString(),
-                title: 'Currency',
-                items: const ['USD', 'VND'],
-                value: 'USD',
-                onChanged: (v) {}))
-      ],
+  Widget _amount() {
+    return BFormFieldAmount(
+      _amountController,
+      label: 'Amount',
+      validator: (p0) => p0.validateAmount,
     );
   }
 
   Widget _chooseCategory() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const BText.h2('Choose category'),
-        gapH16,
-        ExpenseCategory(
-            list: budgets,
-            onChanged: (id) {
-              logSuccess(id);
-            })
-      ],
+    return BFormCategoryBudget(
+      label: 'Choose your budget',
+      list: budgets,
+      validator: (p0) {
+        if (p0 == null) {
+          return 'Please choose your budget';
+        }
+        return null;
+      },
+      onChanged: (budgetModel) {
+        logSuccess(budgetModel.toString());
+      },
     );
   }
 
   Widget _buttonAddMoney() {
-    return BButton(onPressed: () {}, title: 'Add money');
+    return BButton(onPressed: _addExpense, title: 'Add money');
   }
 }

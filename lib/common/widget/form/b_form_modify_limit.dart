@@ -29,6 +29,18 @@ class BFormModifyLimit extends FormField<int> {
                     color: ColorManager.purple12,
                     fontWeight: FontWeightManager.semiBold,
                   ),
+                  if (field.hasError)
+                    Column(
+                      children: [
+                        gapH8,
+                        Text(
+                          field.errorText ?? 'Invalid',
+                          style: Theme.of(field.context)
+                              .inputDecorationTheme
+                              .errorStyle,
+                        ),
+                      ],
+                    ),
                   gapH16,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -59,11 +71,6 @@ class BFormModifyLimit extends FormField<int> {
                           })
                     ],
                   ),
-                  if (field.hasError)
-                    BText(
-                      field.errorText ?? "Invalid",
-                      color: ColorManager.error,
-                    )
                 ],
               ),
             );

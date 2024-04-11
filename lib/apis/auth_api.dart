@@ -29,20 +29,24 @@ abstract class IAuthApi {
   FutureEitherVoid loginWithFacebook();
   FutureEitherVoid loginWithGoogle();
   FutureEitherVoid signOut();
+  bool get isLogin;
 }
 
 class AuthAPI implements IAuthApi {
   final FirebaseAuth _auth;
   final FirebaseFirestore _db;
-  AuthAPI({required FirebaseAuth auth, required FirebaseFirestore db})
-      : _auth = auth,
+  AuthAPI({
+    required FirebaseAuth auth,
+    required FirebaseFirestore db,
+  })  : _auth = auth,
         _db = db;
+  String get uid => _auth.currentUser!.uid;
 
   User _currentUserAccount() {
     return _auth.currentUser!;
   }
 
-  Future<void> _writeInfoToDB({required AccountType accountType}) async {
+  Future<void> _writeNewInfoToDB({required AccountType accountType}) async {
     User user = _currentUserAccount();
     if (accountType == AccountType.google ||
         accountType == AccountType.facebook) {
@@ -59,10 +63,10 @@ class AuthAPI implements IAuthApi {
       'id': user.uid,
       'email': user.email,
       'name': user.displayName ?? user.email!.split('@')[0],
-      'accountType': accountType.value,
+      'accountValue': accountType.value,
       'profileUrl': user.photoURL ??
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSItlIyMon238HFkvhWIJidKnw2lEVhtmB3sEuBdOMr5A&s',
-      'currencyType': CurrencyType.vnd.value
+      'currencyValue': CurrencyType.vnd.value
     });
   }
 
@@ -73,7 +77,7 @@ class AuthAPI implements IAuthApi {
       final account = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      await _writeInfoToDB(accountType: AccountType.emailAndPassword);
+      await _writeNewInfoToDB(accountType: AccountType.emailAndPassword);
       return right(account.user!);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -113,22 +117,12 @@ class AuthAPI implements IAuthApi {
   FutureEitherVoid loginWithFacebook() async {
     String defaultError = 'Error occurred using Facebook Sign-In. Try again.';
     try {
-      // await FacebookAuth.instance
-      //     .login(permissions: ['public_profile', 'email']);
-      // final userData = await FacebookAuth.instance.getUserData(
-      //   fields: "name,email,id,picture",
-      // );
-
-      // _auth.signInWithCustomToken()
-
-      //  UserInfo.fromJson(data)
-
       // This code ios not working
       final LoginResult result = await FacebookAuth.instance.login();
       final AuthCredential facebookCredential =
           FacebookAuthProvider.credential(result.accessToken!.token);
       await _auth.signInWithCredential(facebookCredential);
-      await _writeInfoToDB(accountType: AccountType.facebook);
+      await _writeNewInfoToDB(accountType: AccountType.facebook);
       return right(null);
     } catch (e) {
       return left(Failure(error: e.toString(), message: defaultError));
@@ -151,7 +145,7 @@ class AuthAPI implements IAuthApi {
           idToken: googleAuth.idToken,
         );
         await _auth.signInWithCredential(credential);
-        await _writeInfoToDB(accountType: AccountType.google);
+        await _writeNewInfoToDB(accountType: AccountType.google);
         return right(null);
       }
       return left(Failure(message: defaultError));
@@ -174,4 +168,7 @@ class AuthAPI implements IAuthApi {
       return left(Failure(error: e.toString(), message: defaultError));
     }
   }
+  
+  @override
+  bool get isLogin => _auth.currentUser!=null;
 }
