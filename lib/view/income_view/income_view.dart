@@ -1,4 +1,5 @@
 import 'package:budget_app/apis/budget_api.dart';
+import 'package:budget_app/apis/budget_transaction_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
@@ -6,13 +7,20 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/picker/b_picker_datetime.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:budget_app/view/base_view.dart';
+import 'package:budget_app/view/income_view/controller/income_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class IncomeView extends ConsumerWidget {
-  IncomeView({Key? key}) : super(key: key);
+class IncomeView extends ConsumerStatefulWidget {
+  const IncomeView({super.key});
 
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _IncomeViewState();
+}
+
+class _IncomeViewState extends ConsumerState<IncomeView> {
   DateTime get firstDate {
     DateTime now = DateTime.now();
     return DateTime(now.year, now.month, now.day - 10);
@@ -20,14 +28,21 @@ class IncomeView extends ConsumerWidget {
 
   final TextEditingController _controllerAmount = TextEditingController();
   final TextEditingController _controllerNote = TextEditingController();
+  late DateTime _transactionDate;
   final _formKey = GlobalKey<FormState>();
 
-  void _addMoney(WidgetRef ref){
-   final data = ref.read(budgetAPIProvider).addBudget(name: name, iconId: iconId, limit: limit, startDate: startDate, endDate: endDate) 
+  void _addMoney({required String uid}) {
+    if (_formKey.currentState!.validate()) {
+      ref.read(incomeControllerProvider).addMoney(context,
+          uid: uid,
+          amount: int.parse(_controllerAmount.text),
+          transactionDate: _transactionDate,
+          note: _controllerNote.text);
+    }
   }
 
-
   Widget _form() {
+    String uid = ref.watch(authControllerProvider.notifier).uid;
     return Form(
       key: _formKey,
       child: ColumnWithSpacing(
@@ -49,7 +64,7 @@ class IncomeView extends ConsumerWidget {
             title: 'Date',
             firstDate: firstDate,
             onChanged: (date) {
-              logSuccess(date.toString());
+              _transactionDate = date;
             },
           ),
           Expanded(
@@ -57,16 +72,16 @@ class IncomeView extends ConsumerWidget {
                 alignment: Alignment.bottomCenter,
                 child: BButton(
                     padding: const EdgeInsets.only(bottom: 16),
-                    onPressed: () {},
+                    onPressed: () => _addMoney(uid: uid),
                     title: 'Add money')),
           )
         ],
       ),
     );
   }
-  
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return BaseView(
         title: 'Income',
         child: Padding(

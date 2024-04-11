@@ -29,7 +29,13 @@ class BFormPickerImage extends FormField<File> {
                   children: [
                     state.image(),
                     if (field.hasError) gapH16,
-                    if (field.hasError) BText.caption(field.errorText!)
+                    if (field.hasError)
+                      Text(
+                        field.errorText ?? 'Invalid',
+                        style: Theme.of(field.context)
+                            .inputDecorationTheme
+                            .errorStyle,
+                      )
                   ],
                 ),
               ),

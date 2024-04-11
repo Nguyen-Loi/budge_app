@@ -4,7 +4,7 @@ enum CurrencyType {
   vnd(1),
   usd(2);
   
-  static CurrencyType fromValue (int value){
+  factory CurrencyType.fromValue (int value){
     return  CurrencyType.values.firstWhere((e) => e.value==value);
   }
   final int value;

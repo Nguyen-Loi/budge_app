@@ -3,7 +3,7 @@ import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/view/goals_view/goals_view.dart';
 import 'package:budget_app/view/history_view/history_page.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
-import 'package:budget_app/view/new_limit/new_limit_view.dart';
+import 'package:budget_app/view/new_budget_view/new_budget_view.dart';
 import 'package:budget_app/view/profile_view/profile_page.dart';
 import 'package:flutter/material.dart';
 
@@ -97,7 +97,7 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const NewLimitView(),
+            builder: (context) => const NewBudgetView(),
           ));
         },
         child: Icon(IconConstants.add, color: ColorManager.white),

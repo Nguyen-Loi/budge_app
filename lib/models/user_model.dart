@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:budget_app/core/enums/account_type_enum.dart';
@@ -8,95 +9,105 @@ class UserModel {
   final String email;
   final String profileUrl;
   final String name;
-  final AccountType accountType;
-  final CurrencyType currencyType;
+  final int accountValue;
+  final int currencyValue;
   final DateTime createdDate;
   final DateTime updatedDate;
-
   UserModel({
     required this.id,
     required this.email,
     required this.profileUrl,
     required this.name,
-    required this.accountType,
-    required this.currencyType,
+    required this.accountValue,
+    required this.currencyValue,
     required this.createdDate,
     required this.updatedDate,
   });
 
+  AccountType get accountType => AccountType.fromValue(accountValue);
+  CurrencyType get currencyType => CurrencyType.fromValue(currencyValue);
+
   UserModel copyWith({
-    String? userId,
+    String? id,
     String? email,
-    String? password,
     String? profileUrl,
     String? name,
-    AccountType? accountType,
-    CurrencyType? currencyType,
+    int? accountValue,
+    int? currencyValue,
+    DateTime? createdDate,
+    DateTime? updatedDate,
   }) {
     return UserModel(
-      id: userId ?? this.id,
+      id: id ?? this.id,
       email: email ?? this.email,
       profileUrl: profileUrl ?? this.profileUrl,
       name: name ?? this.name,
-      accountType: accountType ?? this.accountType,
-      currencyType: currencyType ?? this.currencyType,
-      createdDate: createdDate,
-      updatedDate: updatedDate,
+      accountValue: accountValue ?? this.accountValue,
+      currencyValue: currencyValue ?? this.currencyValue,
+      createdDate: createdDate ?? this.createdDate,
+      updatedDate: updatedDate ?? this.updatedDate,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'userId': id,
+      'id': id,
       'email': email,
       'profileUrl': profileUrl,
       'name': name,
-      'accountType': AccountType.fromValue(accountType.value),
-      'createdDate': createdDate,
-      'updatedDate': updatedDate
+      'accountValue': accountValue,
+      'currencyValue': currencyValue,
+      'createdDate': createdDate.millisecondsSinceEpoch,
+      'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['userId'] as String,
+      id: map['id'] as String,
       email: map['email'] as String,
       profileUrl: map['profileUrl'] as String,
       name: map['name'] as String,
-      accountType: AccountType.fromValue(map['accountType'] as int),
-      currencyType: CurrencyType.fromValue(map['currencyType'] as int),
-      createdDate: map['createdDate'] as DateTime,
-      updatedDate: map['updatedDate'] as DateTime,
+      accountValue: map['accountValue'] as int,
+      currencyValue: map['currencyValue'] as int,
+      createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
+      updatedDate: DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'UserModel(userId: $id, email: $email, profileUrl: $profileUrl, name: $name, accountType: $accountType)';
+    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountValue: $accountValue, currencyValue: $currencyValue, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.email == email &&
-        other.profileUrl == profileUrl &&
-        other.name == name &&
-        other.accountType == accountType;
+  
+    return 
+      other.id == id &&
+      other.email == email &&
+      other.profileUrl == profileUrl &&
+      other.name == name &&
+      other.accountValue == accountValue &&
+      other.currencyValue == currencyValue &&
+      other.createdDate == createdDate &&
+      other.updatedDate == updatedDate;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-        email.hashCode ^
-        profileUrl.hashCode ^
-        name.hashCode ^
-        accountType.hashCode;
+      email.hashCode ^
+      profileUrl.hashCode ^
+      name.hashCode ^
+      accountValue.hashCode ^
+      currencyValue.hashCode ^
+      createdDate.hashCode ^
+      updatedDate.hashCode;
   }
 }

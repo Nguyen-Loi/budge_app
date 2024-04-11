@@ -4,16 +4,17 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/data/data_local.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
-  ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({Key? key}) : super(key: key);
 
-  final ProfileController _controller = ProfileController();
-  UserModel get user => _controller.user;
+  // final ProfileController _controller = ProfileController();
+  UserModel get user => DataLocal.userModel;
   @override
   Widget build(BuildContext context) {
     return ColoredBox(

@@ -1,20 +1,53 @@
 import 'package:budget_app/apis/auth_api.dart';
+import 'package:budget_app/apis/user_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/utils.dart';
+import 'package:budget_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authControllerProvider =
     StateNotifierProvider<AuthController, bool>((ref) {
-  return AuthController(authApi: ref.watch(authApiProvider));
+  final auth = ref.watch(authApiProvider);
+  final user = ref.watch(userApiProvider);
+  return AuthController(authApi: auth, userApi: user);
 });
 
-final class AuthController extends StateNotifier<bool> {
+final userControllerProvider = Provider((ref) {
+  final currentUser = ref.watch(authControllerProvider.notifier).currentUser;
+  return currentUser;
+});
+
+final uidControllerProvider = Provider((ref) {
+  final uid = ref.watch(authControllerProvider.notifier).uid;
+  return uid;
+});
+
+class AuthController extends StateNotifier<bool> {
   final AuthAPI _authAPI;
-  AuthController({required AuthAPI authApi})
-      : _authAPI = authApi,
+  final UserApi _userApi;
+  AuthController({
+    required AuthAPI authApi,
+    required UserApi userApi,
+  })  : _authAPI = authApi,
+        _userApi = userApi,
         super(false);
+
+  late UserModel _currentUser;
+  late String _uid;
+
+  UserModel get currentUser => _currentUser;
+  String get uid => _uid;
+
+  bool get isLogin => _authAPI.isLogin;
+
+  Future<void> _loadInfoUser() async {
+    UserModel user = await _userApi.getUserById(_authAPI.uid);
+
+    _currentUser = user;
+    _uid = user.id;
+  }
 
   void loginWithEmailPassword(BuildContext context,
       {required String email, required String password}) async {
@@ -27,6 +60,9 @@ final class AuthController extends StateNotifier<bool> {
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
     });
+    if (res.isRight()) {
+      await _loadInfoUser();
+    }
     state = false;
   }
 
@@ -56,6 +92,9 @@ final class AuthController extends StateNotifier<bool> {
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
     });
+    if (res.isRight()) {
+      await _loadInfoUser();
+    }
     state = false;
   }
 
@@ -68,6 +107,9 @@ final class AuthController extends StateNotifier<bool> {
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
     });
+    if (res.isRight()) {
+      await _loadInfoUser();
+    }
     state = false;
   }
 }

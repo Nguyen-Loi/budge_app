@@ -4,7 +4,7 @@ enum TransactionType {
   income(1),
   expense(2);
   
-  static TransactionType fromValue (int value){
+  factory TransactionType.fromValue (int value){
     return  TransactionType.values.firstWhereOrNull((e) => e.value==value)??TransactionType.income;
   }
 

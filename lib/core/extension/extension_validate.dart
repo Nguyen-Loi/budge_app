@@ -51,6 +51,15 @@ extension ValidateForm on String? {
     return null;
   }
 
+  String? get validateAmount {
+    String textError = 'Number invalid';
+    final intRegExp = RegExp(r'^[1-9]\d*$');
+    if (this == null || !intRegExp.hasMatch(this!)) {
+      return textError;
+    }
+    return null;
+  }
+
   String? validateMatchPassword(String password) {
     String textError = 'Confirm password invalid';
     if (this == null || this! != password) {

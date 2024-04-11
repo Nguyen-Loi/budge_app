@@ -5,8 +5,8 @@ enum AccountType {
   facebook(2),
   google(3);
   
-  static AccountType fromValue (int value){
-    return  AccountType.values.firstWhereOrNull((e) => e.value==value)??AccountType.emailAndPassword;
+  factory AccountType.fromValue (int value){
+    return  AccountType.values.firstWhere((e) => e.value==value);
   }
 
   final int value;
