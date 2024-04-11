@@ -1,5 +1,4 @@
 import 'package:budget_app/apis/firestore_path.dart';
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/failure.dart';
@@ -7,7 +6,6 @@ import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -30,7 +28,6 @@ abstract class IAuthApi {
   });
   FutureEitherVoid loginWithFacebook();
   FutureEitherVoid loginWithGoogle();
-  User? currentUserAccount();
   FutureEitherVoid signOut();
 }
 
@@ -41,13 +38,12 @@ class AuthAPI implements IAuthApi {
       : _auth = auth,
         _db = db;
 
-  @override
-  User currentUserAccount() {
+  User _currentUserAccount() {
     return _auth.currentUser!;
   }
 
   Future<void> _writeInfoToDB({required AccountType accountType}) async {
-    User user = currentUserAccount();
+    User user = _currentUserAccount();
     if (accountType == AccountType.google ||
         accountType == AccountType.facebook) {
       final isUserExitsOnDb = await _db
@@ -107,7 +103,7 @@ class AuthAPI implements IAuthApi {
       {required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return right(currentUserAccount());
+      return right(_currentUserAccount());
     } on FirebaseAuthException catch (e) {
       return left(Failure(error: e.message.toString()));
     }
@@ -117,19 +113,21 @@ class AuthAPI implements IAuthApi {
   FutureEitherVoid loginWithFacebook() async {
     String defaultError = 'Error occurred using Facebook Sign-In. Try again.';
     try {
-      await FacebookAuth.instance
-          .login(permissions: ['public_profile', 'email']);
-      final userData = await FacebookAuth.instance.getUserData(
-        fields: "name,email,id,picture",
-      );
+      // await FacebookAuth.instance
+      //     .login(permissions: ['public_profile', 'email']);
+      // final userData = await FacebookAuth.instance.getUserData(
+      //   fields: "name,email,id,picture",
+      // );
 
-       UserInfo.fromJson(data)
+      // _auth.signInWithCustomToken()
+
+      //  UserInfo.fromJson(data)
 
       // This code ios not working
-      // final LoginResult result = await FacebookAuth.instance.login();
-      // final AuthCredential facebookCredential =
-      //     FacebookAuthProvider.credential(result.accessToken!.token);
-      // await _auth.signInWithCredential(facebookCredential);
+      final LoginResult result = await FacebookAuth.instance.login();
+      final AuthCredential facebookCredential =
+          FacebookAuthProvider.credential(result.accessToken!.token);
+      await _auth.signInWithCredential(facebookCredential);
       await _writeInfoToDB(accountType: AccountType.facebook);
       return right(null);
     } catch (e) {
