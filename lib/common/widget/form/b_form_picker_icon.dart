@@ -20,7 +20,7 @@ class BFormPickerIcon extends FormField<IconModel> {
   }) : super(
           key: key,
           validator: validator,
-          builder: (state) {
+          builder: (field) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -28,17 +28,29 @@ class BFormPickerIcon extends FormField<IconModel> {
                   label,
                   fontWeight: FontWeightManager.semiBold,
                 ),
+                if (field.hasError)
+                  Column(
+                    children: [
+                      gapH8,
+                      Text(
+                        field.errorText ?? 'Invalid',
+                        style: Theme.of(field.context)
+                            .inputDecorationTheme
+                            .errorStyle,
+                      ),
+                    ],
+                  ),
                 gapH8,
                 InkWell(
                     onTap: () async {
                       IconModel? icon = await showDialog(
-                          context: state.context,
+                          context: field.context,
                           builder: (context) {
                             return _PickerIconDialog(
                                 listIcon: items, initialValue: initialValue);
                           });
                       if (icon != null) {
-                        state.didChange(icon);
+                        field.didChange(icon);
                         onChanged(icon.id);
                       }
                     },
@@ -51,7 +63,7 @@ class BFormPickerIcon extends FormField<IconModel> {
                                 width: 0.5, color: ColorManager.green1),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8))),
-                        child: state.value == null
+                        child: field.value == null
                             ? const _ShowItem(
                                 child: BText(
                                   'Choose your icon',
@@ -59,17 +71,12 @@ class BFormPickerIcon extends FormField<IconModel> {
                               )
                             : _ShowItem(
                                 child: Icon(
-                                state.value!.iconData,
+                                field.value!.iconData,
                                 size: _sizeIconMain,
-                                color: state.value!.color,
+                                color: field.value!.color,
                               )),
                       ),
                     )),
-                if (state.hasError)
-                  BText(
-                    state.errorText ?? "Invalid",
-                    color: ColorManager.error,
-                  )
               ],
             );
           },

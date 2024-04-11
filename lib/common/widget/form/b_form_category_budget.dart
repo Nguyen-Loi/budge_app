@@ -1,0 +1,125 @@
+import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/widget/b_icon.dart';
+import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/theme/app_text_theme.dart';
+import 'package:flutter/material.dart';
+
+class BFormCategoryBudget extends FormField<BudgetModel> {
+  final Function(String budgetId) onChanged;
+  BFormCategoryBudget({
+    super.key,
+    required String label,
+    required List<BudgetModel> list,
+    BudgetModel? initialValue,
+    required this.onChanged,
+    String? Function(BudgetModel?)? validator,
+  }) : super(
+            builder: (field) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  BText.h2(label),
+                  if (field.hasError) gapH8,
+                  if (field.hasError)
+                    Text(
+                      field.errorText ?? "Invalid",
+                      style: AppTextTheme.bodySmall
+                          .copyWith(color: ColorManager.red),
+                    ),
+                  gapH16,
+                  _CategoryBudget(field.context,
+                      list: list,
+                      initialValue: field.value, onChanged: (model) {
+                    field.didChange(model);
+                  }),
+                ],
+              );
+            },
+            initialValue: initialValue,
+            validator: validator);
+  @override
+  FormFieldState<BudgetModel> createState() {
+    return _BFormCategoryBudgetState();
+  }
+}
+
+class _BFormCategoryBudgetState extends FormFieldState<BudgetModel> {
+  @override
+  BFormCategoryBudget get widget => super.widget as BFormCategoryBudget;
+
+  @override
+  void didChange(BudgetModel? value) {
+    if (value != null) {
+      widget.onChanged(value.id);
+    }
+    super.didChange(value);
+  }
+}
+
+class _CategoryBudget extends StatelessWidget {
+  const _CategoryBudget(this.context,
+      {required this.list,
+      required this.initialValue,
+      required this.onChanged});
+  final List<BudgetModel> list;
+  final BuildContext context;
+  final BudgetModel? initialValue;
+  final Function(BudgetModel model) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 16,
+      runSpacing: 16,
+      alignment: WrapAlignment.center,
+      children: list.map((e) => _itemCategory(model: e)).toList(),
+    );
+  }
+
+  Widget _itemCategory({required BudgetModel model}) {
+    bool isSelected = initialValue != null && model.id == initialValue!.id;
+    return isSelected
+        ? _itemCategoryBase(context,
+            model: model,
+            backgroundColor: ColorManager.purple22,
+            textColor: ColorManager.white)
+        : InkWell(
+            onTap: () {
+              onChanged(model);
+            },
+            child: _itemCategoryBase(context,
+                model: model,
+                backgroundColor: ColorManager.white,
+                textColor: ColorManager.black),
+          );
+  }
+
+  Widget _itemCategoryBase(BuildContext context,
+      {required BudgetModel model,
+      required Color backgroundColor,
+      required Color textColor}) {
+    return Card(
+      child: Ink(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        decoration: BoxDecoration(
+            color: backgroundColor,
+            border: Border.all(color: ColorManager.grey1),
+            borderRadius: const BorderRadius.all(Radius.circular(8))),
+        child: Column(
+          children: [
+            BIcon(id: model.iconId),
+            gapH16,
+            BText(
+              model.name,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+              maxLines: 2,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

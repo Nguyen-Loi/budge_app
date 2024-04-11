@@ -1,57 +1,71 @@
 import 'dart:convert';
+
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 
 class GoalTransactionModel {
+  final String id;
   final String goalId;
   final int amount;
   final String note;
-  final TransactionType transactionType;
+  final int transactionValue;
   final DateTime createdDate;
   final DateTime updatedDate;
   GoalTransactionModel({
+    required this.id,
     required this.goalId,
     required this.amount,
     required this.note,
-    required this.transactionType,
+    required this.transactionValue,
     required this.createdDate,
     required this.updatedDate,
   });
 
+  TransactionType get transactionType =>
+      TransactionType.fromValue(transactionValue);
+
   GoalTransactionModel copyWith({
+    String? id,
     String? goalId,
     int? amount,
     String? note,
-    TransactionType? transactionType,
+    int? transactionValue,
+    DateTime? createdDate,
+    DateTime? updatedDate,
   }) {
     return GoalTransactionModel(
+      id: id ?? this.id,
       goalId: goalId ?? this.goalId,
       amount: amount ?? this.amount,
       note: note ?? this.note,
-      transactionType: transactionType ?? this.transactionType,
-      createdDate: createdDate,
-      updatedDate: updatedDate,
+      transactionValue: transactionValue ?? this.transactionValue,
+      createdDate: createdDate ?? this.createdDate,
+      updatedDate: updatedDate ?? this.updatedDate,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'goalId': goalId,
       'amount': amount,
       'note': note,
-      'transactionType': TransactionType.fromValue(transactionType.value),
-      'createdDate': createdDate,
-      'updatedDate': updatedDate
+      'transactionValue': transactionValue,
+      'createdDate': createdDate.millisecondsSinceEpoch,
+      'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
   }
 
   factory GoalTransactionModel.fromMap(Map<String, dynamic> map) {
     return GoalTransactionModel(
+      id: map['id'] as String,
       goalId: map['goalId'] as String,
       amount: map['amount'] as int,
       note: map['note'] as String,
-      transactionType: TransactionType.fromValue(map['transactionType'] as int),
-      createdDate: map['createdDate'] as DateTime,
-      updatedDate: map['updatedDate'] as DateTime,
+      transactionValue: map['transactionValue'] as int,
+      createdDate:
+          DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
+      updatedDate:
+          DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
     );
   }
 
@@ -62,24 +76,30 @@ class GoalTransactionModel {
 
   @override
   String toString() {
-    return 'GoalTransactionModel(goalId: $goalId, amount: $amount, note: $note, transactionType: $transactionType)';
+    return 'GoalTransactionModel(id: $id, goalId: $goalId, amount: $amount, note: $note, transactionValue: $transactionValue, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
   bool operator ==(covariant GoalTransactionModel other) {
     if (identical(this, other)) return true;
 
-    return other.goalId == goalId &&
+    return other.id == id &&
+        other.goalId == goalId &&
         other.amount == amount &&
         other.note == note &&
-        other.transactionType == transactionType;
+        other.transactionValue == transactionValue &&
+        other.createdDate == createdDate &&
+        other.updatedDate == updatedDate;
   }
 
   @override
   int get hashCode {
-    return goalId.hashCode ^
+    return id.hashCode ^
+        goalId.hashCode ^
         amount.hashCode ^
         note.hashCode ^
-        transactionType.hashCode;
+        transactionValue.hashCode ^
+        createdDate.hashCode ^
+        updatedDate.hashCode;
   }
 }

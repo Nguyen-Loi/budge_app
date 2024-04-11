@@ -12,17 +12,15 @@ class FirestorePath {
 
   static String budgets({required String uid}) => '$user/$uid/$_budget';
   static String budget({required String uid, required String budgetId}) =>
-      '$user/$uid/$_budget/$budgetId';
-  static String budgetTransactions(
-          {required String uid}) =>
-      '$user/$uid/$_budget/$_budgetTransaction';
+      '$_user/$uid/$_budget/$budgetId';
+  static String budgetTransactions({required String uid}) =>
+      '$_user/$uid/$_budgetTransaction';
 
   static String goals({required String uid}) => '$user/$uid/$_goal';
   static String goal({required String uid, required String goalId}) =>
-      '$user/$uid/$_goal/$goalId';
-  static String goalTransactions(
-          {required String uid}) =>
-      '$user/$uid/$_goal/$_goalTransaction';
+      '$_user/$uid/$_goal/$goalId';
+  static String goalTransactions({required String uid}) =>
+      '$_user/$uid/$_goal/$_goalTransaction';
 }
 
 extension Converter<T> on CollectionReference<Map<String, dynamic>> {
@@ -55,12 +53,12 @@ extension ConverterDocument<T> on DocumentReference<Map<String, dynamic>> {
 
 extension ChangeData on DocumentReference<Map<String, dynamic>> {
   Future<void> customSet(Map<String, dynamic> data) {
-    DateTime now = DateTime.now();
+    int now = DateTime.now().microsecondsSinceEpoch;
     return set({'createdDate': now, 'updatedDate': now, ...data});
   }
 
   Future<void> customUpdate(Map<String, dynamic> data) {
-    DateTime now = DateTime.now();
+    int now = DateTime.now().microsecondsSinceEpoch;
     return set({'updatedDate': now, ...data});
   }
 }
