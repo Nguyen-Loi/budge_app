@@ -23,7 +23,7 @@ class DataLocal {
   static List<GoalTransactionModel> get goalTransactions => _goalTransactions;
 
   static final UserModel _userModel = UserModel(
-      userId: '1',
+      id: '1',
       email: 'tester@gmail.com',
       profileUrl:
           'https://static.vecteezy.com/system/resources/thumbnails/010/265/384/small_2x/cute-happy-3d-robot-png.png',

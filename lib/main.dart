@@ -1,3 +1,4 @@
+import 'package:budget_app/core/locator.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/theme/app_theme.dart';
@@ -9,6 +10,7 @@ import 'firebase_options.dart'; // generated via `flutterfire` CLI
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setupLocator();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const ProviderScope(
     child: MyApp(),

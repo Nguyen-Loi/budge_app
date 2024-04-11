@@ -12,7 +12,6 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
-import 'package:budget_app/view/auth_view/sign_up_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';

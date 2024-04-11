@@ -14,15 +14,15 @@ class FirestorePath {
   static String budget({required String uid, required String budgetId}) =>
       '$user/$uid/$_budget/$budgetId';
   static String budgetTransactions(
-          {required String uid, required String budgetId}) =>
-      '$user/$uid/$_budget/$budgetId/$_budgetTransaction';
+          {required String uid}) =>
+      '$user/$uid/$_budget/$_budgetTransaction';
 
   static String goals({required String uid}) => '$user/$uid/$_goal';
   static String goal({required String uid, required String goalId}) =>
       '$user/$uid/$_goal/$goalId';
   static String goalTransactions(
-          {required String uid, required String goalId}) =>
-      '$user/$uid/$_goal/$goalId/$_goalTransaction';
+          {required String uid}) =>
+      '$user/$uid/$_goal/$_goalTransaction';
 }
 
 extension Converter<T> on CollectionReference<Map<String, dynamic>> {
