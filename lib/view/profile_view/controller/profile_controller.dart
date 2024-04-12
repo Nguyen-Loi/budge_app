@@ -17,10 +17,10 @@ final currentUserProvider = Provider((ref) {
   return profileController.currentUser;
 });
 
-final uidProvider = Provider((ref) {
-  final profileController = ref.watch(profileControllerProvider);
-  return profileController.uid;
-});
+// final uidProvider = Provider((ref) {
+//   final profileController = ref.watch(profileControllerProvider);
+//   return profileController.uid;
+// });
 
 final class ProfileController extends StateNotifier<bool> {
   final UserApi _userApi;

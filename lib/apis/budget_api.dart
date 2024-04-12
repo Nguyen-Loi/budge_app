@@ -12,7 +12,7 @@ final budgetAPIProvider = Provider((ref) {
 });
 
 abstract class IBudgetApi {
-  Future<List<BudgetModel>> fetchBudgets();
+  Future<List<BudgetModel>> fetchBudgets(String uid);
   FutureEitherVoid addBudget({required BudgetModel model});
   Future<void> updateBudget(
       {required String budgetId, required BudgetModel model});
@@ -24,10 +24,8 @@ class BudgetApi implements IBudgetApi {
     required this.db,
   });
 
-  final String uid = '123';
-
   @override
-  Future<List<BudgetModel>> fetchBudgets() async {
+  Future<List<BudgetModel>> fetchBudgets(String uid) async {
     final data = await db
         .collection(FirestorePath.budgets(uid: uid))
         .mapModel<BudgetModel>(
@@ -40,7 +38,7 @@ class BudgetApi implements IBudgetApi {
   FutureEitherVoid addBudget({required BudgetModel model}) async {
     try {
       await db
-          .collection(FirestorePath.budgets(uid: uid))
+          .collection(FirestorePath.budgets(uid: model.userId))
           .doc(model.id)
           .customSet(model.toMap());
       return right(null);
@@ -54,7 +52,7 @@ class BudgetApi implements IBudgetApi {
   Future<void> updateBudget(
       {required String budgetId, required BudgetModel model}) {
     return db
-        .collection(FirestorePath.budgets(uid: uid))
+        .collection(FirestorePath.budgets(uid: model.userId))
         .doc(budgetId)
         .update(model.toMap());
   }

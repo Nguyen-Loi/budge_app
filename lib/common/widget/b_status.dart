@@ -8,11 +8,11 @@ import 'package:lottie/lottie.dart';
 enum _Status { loading, error, empty }
 
 class BStatus extends StatelessWidget {
-  const BStatus.error({super.key, required this.text})
+  const BStatus.error({super.key, this.text = 'Error'})
       : _status = _Status.error;
-  const BStatus.loading({super.key, required this.text})
+  const BStatus.loading({super.key, this.text = 'Loading...'})
       : _status = _Status.loading;
-  const BStatus.empty({super.key, required this.text})
+  const BStatus.empty({super.key, this.text = 'No data'})
       : _status = _Status.empty;
 
   final String text;
@@ -40,13 +40,7 @@ class BStatus extends StatelessWidget {
   }
 
   Widget _error() {
-    return Column(
-      children: [
-        Lottie.asset(LottieAssets.error),
-        gapH16,
-        BText.b1(text, color: ColorManager.grey1),
-      ],
-    );
+    return Lottie.asset(LottieAssets.error);
   }
 
   Widget _empty() {

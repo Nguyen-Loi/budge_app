@@ -12,6 +12,15 @@ extension NumExtensions on num {
         return numberFormat.format(this);
     }
   }
+
+  int toAmountMoney({CurrencyType currencyType = CurrencyType.vnd}) {
+    switch (currencyType) {
+      case CurrencyType.vnd:
+        return round() * 1000;
+      case CurrencyType.usd:
+        return round();
+    }
+  }
 }
 
 String _formatVND(num value) {

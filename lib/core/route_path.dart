@@ -2,7 +2,7 @@ import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/view/auth_view/sign_up_view.dart';
 import 'package:budget_app/view/budget_detail/budget_detail_view.dart';
-import 'package:budget_app/view/expense_view/expense_view.dart';
+import 'package:budget_app/view/new_expense_view/new_expense_view.dart';
 import 'package:budget_app/view/goals_view/goals_view.dart';
 import 'package:budget_app/view/income_view/income_view.dart';
 import 'package:budget_app/view/main_page_bottom_bar.dart';
@@ -40,7 +40,7 @@ class MainRouter {
       case RoutePath.income:
         return MaterialPageRoute(builder: (_) => const IncomeView());
       case RoutePath.expense:
-        return MaterialPageRoute(builder: (_) => const ExpenseView());
+        return MaterialPageRoute(builder: (_) => const NewExpenseView());
       case RoutePath.newLimit:
         return MaterialPageRoute(builder: (_) => const NewBudgetView());
       case RoutePath.profileDetail:

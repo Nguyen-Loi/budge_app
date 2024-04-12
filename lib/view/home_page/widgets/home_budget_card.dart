@@ -10,8 +10,8 @@ import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:flutter/material.dart';
 
-class HomeBudgeCard extends StatelessWidget {
-  const HomeBudgeCard({super.key, required this.model});
+class HomeBudgetCard extends StatelessWidget {
+  const HomeBudgetCard({super.key, required this.model});
   final BudgetModel model;
 
   @override

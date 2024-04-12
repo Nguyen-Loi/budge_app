@@ -21,7 +21,8 @@ class NewBudgetView extends ConsumerStatefulWidget {
 
 class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
   late TextEditingController _budgetNameController;
-  late int iconId;
+  late int _iconId;
+  late int _limit;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -33,7 +34,9 @@ class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
   void _addNewBudget() {
     if (_formKey.currentState!.validate()) {
       ref.read(newBudgetControllerProvider).addBudget(context,
-          budgetName: _budgetNameController.text, iconId: iconId, limit: 3);
+          budgetName: _budgetNameController.text,
+          iconId: _iconId,
+          limit: _limit);
     }
   }
 
@@ -62,8 +65,7 @@ class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
             items: IconDataConstant.listIcon,
             onChanged: (value) {
               if (value != null) {
-                iconId = value;
-                logSuccess(value.toString());
+                _iconId = value;
               }
             },
             validator: (p0) {
@@ -76,7 +78,7 @@ class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
           gapH16,
           BFormModifyLimit(
             onChanged: (v) {
-              logSuccess(v.toString());
+              _limit = v;
             },
             validator: (value) {
               if (value == null) {
