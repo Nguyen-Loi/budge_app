@@ -32,9 +32,9 @@ class BStatus extends StatelessWidget {
   Widget _loading() {
     return Column(
       children: [
-        Lottie.asset(AssetsConstants.lottieLoading),
+        Lottie.asset(LottieAssets.loading1),
         gapH16,
-         BText.b1(text, color: ColorManager.grey1),
+        BText.b1(text, color: ColorManager.grey1),
       ],
     );
   }
@@ -42,7 +42,7 @@ class BStatus extends StatelessWidget {
   Widget _error() {
     return Column(
       children: [
-        Lottie.asset(AssetsConstants.lottieError),
+        Lottie.asset(LottieAssets.error),
         gapH16,
         BText.b1(text, color: ColorManager.grey1),
       ],
@@ -52,7 +52,7 @@ class BStatus extends StatelessWidget {
   Widget _empty() {
     return Column(
       children: [
-        Lottie.asset(AssetsConstants.lottieEmpty),
+        Lottie.asset(LottieAssets.empty),
         gapH16,
         BText.b1(text, color: ColorManager.grey1),
       ],

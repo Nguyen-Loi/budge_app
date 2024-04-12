@@ -14,7 +14,7 @@ class HistoryController {
     _budgetTransaction.clear();
     List<BudgetModel> temp = _budgets.toList();
     for (var a in temp) {
-      for (var b in a.transactions) {
+      for (var b in a.transactions!) {
         _budgetTransaction
             .add(BudgetTransactionCustomModel.from(budget: a, transaction: b));
       }

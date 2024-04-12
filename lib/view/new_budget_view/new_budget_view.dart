@@ -8,29 +8,32 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/view/base_view.dart';
+import 'package:budget_app/view/new_budget_view/new_budget_controller/new_budget_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewBudgetView extends StatefulWidget {
-  const NewBudgetView({Key? key}) : super(key: key);
+class NewBudgetView extends ConsumerStatefulWidget {
+  const NewBudgetView({super.key});
 
   @override
-  State<NewBudgetView> createState() => _NewBudgetViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _NewBudgetViewState();
 }
 
-class _NewBudgetViewState extends State<NewBudgetView> {
-  late TextEditingController _nameController;
+class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
+  late TextEditingController _budgetNameController;
   late int iconId;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    _nameController = TextEditingController();
+    _budgetNameController = TextEditingController();
     super.initState();
   }
 
   void _addNewBudget() {
     if (_formKey.currentState!.validate()) {
-      logSuccess('suceess');
+      ref.read(newBudgetControllerProvider).addBudget(context,
+          budgetName: _budgetNameController.text, iconId: iconId, limit: 3);
     }
   }
 
@@ -49,8 +52,9 @@ class _NewBudgetViewState extends State<NewBudgetView> {
       child: ListView(
         children: [
           BFormFieldText(
-            _nameController,
+            _budgetNameController,
             label: 'Budget Name',
+            hint: 'Water',
             validator: (p0) => p0.validateNotNull,
           ),
           gapH16,

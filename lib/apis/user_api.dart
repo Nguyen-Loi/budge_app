@@ -9,7 +9,6 @@ final userApiProvider = Provider((ref) {
   return UserApi(db: db);
 });
 
-
 abstract class IUserApi {
   Future<UserModel> getUserById(String uid);
 }

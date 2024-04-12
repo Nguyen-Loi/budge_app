@@ -29,9 +29,7 @@ extension Converter<T> on CollectionReference<Map<String, dynamic>> {
       required Map<String, dynamic> Function(V model) modelTo}) {
     return withConverter<V>(
         fromFirestore: (snapshot, _) {
-          Map<String, dynamic> data = snapshot.data()!;
-          data['id'] = snapshot.id;
-          return modelFrom(data);
+          return modelFrom(snapshot.data()!);
         },
         toFirestore: (model, _) => modelTo(model));
   }
@@ -43,9 +41,19 @@ extension ConverterDocument<T> on DocumentReference<Map<String, dynamic>> {
       required Map<String, dynamic> Function(V model) modelTo}) {
     return withConverter<V>(
         fromFirestore: (snapshot, _) {
-          Map<String, dynamic> data = snapshot.data()!;
-          data['id'] = snapshot.id;
-          return modelFrom(data);
+          return modelFrom(snapshot.data()!);
+        },
+        toFirestore: (model, _) => modelTo(model));
+  }
+}
+
+extension ConverterQuery<T> on Query<Map<String, dynamic>>  {
+  Query<V> mapModel<V>(
+      {required V Function(Map<String, dynamic> value) modelFrom,
+      required Map<String, dynamic> Function(V model) modelTo}) {
+    return withConverter<V>(
+        fromFirestore: (snapshot, _) {
+          return modelFrom(snapshot.data()!);
         },
         toFirestore: (model, _) => modelTo(model));
   }

@@ -43,7 +43,7 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
       HomePage(),
       const HistoryPage(),
       GoalsView(),
-      ProfilePage(),
+      const ProfilePage(),
     ];
     super.initState();
   }

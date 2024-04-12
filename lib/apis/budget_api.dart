@@ -1,9 +1,11 @@
 import 'package:budget_app/apis/firestore_path.dart';
+import 'package:budget_app/common/log.dart';
+import 'package:budget_app/core/core.dart';
 import 'package:budget_app/core/providers.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:budget_app/models/budget_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 
 final budgetAPIProvider = Provider((ref) {
   return BudgetApi(db: ref.watch(dbProvider));
@@ -11,12 +13,7 @@ final budgetAPIProvider = Provider((ref) {
 
 abstract class IBudgetApi {
   Future<List<BudgetModel>> fetchBudgets();
-  Future<void> addBudget(
-      {required String name,
-      required int iconId,
-      required int limit,
-      required DateTime startDate,
-      required DateTime endDate});
+  FutureEitherVoid addBudget({required BudgetModel model});
   Future<void> updateBudget(
       {required String budgetId, required BudgetModel model});
 }
@@ -40,20 +37,17 @@ class BudgetApi implements IBudgetApi {
   }
 
   @override
-  Future<void> addBudget(
-      {required String name,
-      required int iconId,
-      required int limit,
-      required DateTime startDate,
-      required DateTime endDate}) async {
-    Map<String, dynamic> data = {
-      'name': name,
-      'iconId': iconId,
-      'limit': limit,
-      'startDate': startDate,
-      'endDate': endDate
-    };
-    await db.collection(FirestorePath.budgets(uid: uid)).add(data);
+  FutureEitherVoid addBudget({required BudgetModel model}) async {
+    try {
+      await db
+          .collection(FirestorePath.budgets(uid: uid))
+          .doc(model.id)
+          .customSet(model.toMap());
+      return right(null);
+    } catch (e) {
+      logError(e.toString());
+      return left(Failure(error: e.toString()));
+    }
   }
 
   @override

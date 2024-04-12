@@ -1,12 +1,15 @@
 class AssetsConstants {
-  static const String _lottiePath = 'assets/lottie';
   static const String _imagePath = 'assets/images';
 
-  static const String lottieLoading = '$_lottiePath/loading.json';
-  static const String lottieError = '$_lottiePath/error.json';
-  static const String lottieEmpty = '$_lottiePath/empty.json';
-
   static const String avatarDefault = '$_imagePath/avatar_default.png';
+}
+
+class LottieAssets {
+  static const String _lottiePath = 'assets/lottie';
+  static const String loading1 = '$_lottiePath/loading1.json';
+  static const String loading2 = '$_lottiePath/loading2.json';
+  static const String error = '$_lottiePath/error.json';
+  static const String empty = '$_lottiePath/empty.json';
 }
 
 class SvgAssets {

@@ -16,7 +16,7 @@ class RoutePath {
   static const String signUp = "/signUp";
   // static const String splash = "/";
 
-  static const String home = "/";
+  static const String home = "/home";
   static const String goal = "/goal";
   static const String income = "/income";
   static const String expense = "/expense";
