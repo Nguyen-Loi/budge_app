@@ -8,6 +8,7 @@ typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 
 enum _TypeListBuilder { column, listView, listViewSeparated }
 
+
 /// Default this list is type column
 class BListBuilderAsync<T> extends StatelessWidget {
   const BListBuilderAsync({

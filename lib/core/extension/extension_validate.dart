@@ -10,7 +10,7 @@ extension ValidateForm on String? {
 
   String? get validateNotNull {
     String textError = 'Data emtpy';
-    if (this == null) {
+    if (this == null || this == '') {
       return textError;
     }
     return null;

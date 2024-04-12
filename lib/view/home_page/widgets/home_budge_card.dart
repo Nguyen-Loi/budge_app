@@ -6,7 +6,7 @@ import 'package:budget_app/common/widget/custom/budget_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
-import 'package:budget_app/view/budget_detail/budget_detail_view.dart';
+import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:flutter/material.dart';
 
@@ -18,12 +18,7 @@ class HomeBudgeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => BudgetDetailView(budget: model),
-          ),
-        );
+        Navigator.pushNamed(context, RoutePath.budgetDetail, arguments: model);
       },
       child: Card(
         child: Padding(
