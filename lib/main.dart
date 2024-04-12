@@ -1,3 +1,4 @@
+import 'package:budget_app/core/logger_observer.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/theme/app_theme.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
@@ -12,8 +13,9 @@ import 'firebase_options.dart'; // generated via `flutterfire` CLI
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const ProviderScope(
-    child: MyApp(),
+  runApp(ProviderScope(
+    observers: [LoggerObserver()],
+    child: const MyApp(),
   ));
 }
 

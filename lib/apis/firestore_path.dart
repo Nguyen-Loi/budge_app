@@ -10,7 +10,7 @@ class FirestorePath {
   static String users() => _user;
   static String user(String uid) => '$_user/$uid';
 
-  static String budgets({required String uid}) => '$user/$uid/$_budget';
+  static String budgets({required String uid}) => '$_user/$uid/$_budget';
   static String budget({required String uid, required String budgetId}) =>
       '$_user/$uid/$_budget/$budgetId';
   static String budgetTransactions({required String uid}) =>
@@ -47,7 +47,7 @@ extension ConverterDocument<T> on DocumentReference<Map<String, dynamic>> {
   }
 }
 
-extension ConverterQuery<T> on Query<Map<String, dynamic>>  {
+extension ConverterQuery<T> on Query<Map<String, dynamic>> {
   Query<V> mapModel<V>(
       {required V Function(Map<String, dynamic> value) modelFrom,
       required Map<String, dynamic> Function(V model) modelTo}) {

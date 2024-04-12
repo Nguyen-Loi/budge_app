@@ -1,5 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/builder/b_list_builder_async.dart';
+import 'package:budget_app/common/widget/b_list_async.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
@@ -18,27 +18,29 @@ class BudgetDetailTransactions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<_GroupDateTransactionModel> listGroupTransactionByDay =
-        _GroupDateTransactionModel.toList(budget.transactions!);
-    return BListBuilderAsync(data: ref.watch(fetchBudgetDetailController(budgetId)),itemBuilder: (context, model){
-
-    });
+    return BListAsync.customList(
+        data: ref.watch(fetchBudgetDetailController(budgetId)),
+        itemsBuilder: (context, items) {
+          List<_GroupDateTransactionModel> listGroupTransactionByDay =
+              _GroupDateTransactionModel.toList(items);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const BText.h2('Transactions', textAlign: TextAlign.left),
+              gapH16,
+              listGroupTransactionByDay.isEmpty
+                  ? _transactionEmpty()
+                  : ColumnWithSpacing(
+                      spacing: 24,
+                      children: listGroupTransactionByDay
+                          .map((e) => _groupDateTransactionsCard(e))
+                          .toList(),
+                    )
+            ],
+          );
+        });
   }
-Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const BText.h2('Transactions', textAlign: TextAlign.left),
-        gapH16,
-        listGroupTransactionByDay.isEmpty
-            ? _transactionEmpty()
-            : ColumnWithSpacing(
-                spacing: 24,
-                children: listGroupTransactionByDay
-                    .map((e) => _groupDateTransactionsCard(e))
-                    .toList(),
-              )
-      ],
-    )
+
   Widget _groupDateTransactionsCard(
       _GroupDateTransactionModel groupDateTransactionModel) {
     return Column(
@@ -59,8 +61,7 @@ Column(
                         Row(
                           children: [
                             Expanded(
-                                child: BText(
-                                    e.note,
+                                child: BText(e.note,
                                     fontWeight: FontWeightManager.semiBold)),
                             gapW16,
                             _itemStatusTransaction(type: e.transactionType)

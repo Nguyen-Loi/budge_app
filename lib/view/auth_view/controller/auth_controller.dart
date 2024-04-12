@@ -12,7 +12,7 @@ final authControllerProvider =
   return AuthController(authApi: auth);
 });
 
-final uidControllerProvider = Provider((ref) {
+final uidProvider = Provider((ref) {
   final uid = ref.watch(authControllerProvider.notifier).uid;
   return uid;
 });

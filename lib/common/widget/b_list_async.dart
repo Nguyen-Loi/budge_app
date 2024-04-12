@@ -5,32 +5,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
+typedef ListItemBuilder<T> = Widget Function(
+    BuildContext context, List<T> items);
 
-enum _TypeListBuilder { column, listView, listViewSeparated }
-
+enum _TypeListBuilder { column, listView, listViewSeparated, customList }
 
 /// Default this list is type column
-class BListBuilderAsync<T> extends StatelessWidget {
-  const BListBuilderAsync({
+class BListAsync<T> extends StatelessWidget {
+  const BListAsync({
     super.key,
     required this.data,
     required this.itemBuilder,
-  }) : _typeBuilder = _TypeListBuilder.column;
+  })  : _typeBuilder = _TypeListBuilder.column,
+        itemsBuilder = null;
 
-  const BListBuilderAsync.listView({
+  const BListAsync.lvItem({
     super.key,
     required this.data,
     required this.itemBuilder,
-  }) : _typeBuilder = _TypeListBuilder.listView;
+  })  : _typeBuilder = _TypeListBuilder.listView,
+        itemsBuilder = null;
 
-    const BListBuilderAsync.listViewSeparated({
+  const BListAsync.lvSeperated({
     super.key,
     required this.data,
     required this.itemBuilder,
-  }) : _typeBuilder = _TypeListBuilder.listViewSeparated;
+  })  : _typeBuilder = _TypeListBuilder.listViewSeparated,
+        itemsBuilder = null;
+
+  const BListAsync.customList({
+    super.key,
+    required this.data,
+    required this.itemsBuilder,
+  })  : _typeBuilder = _TypeListBuilder.customList,
+        itemBuilder = null;
 
   final AsyncValue<List<T>> data;
-  final ItemWidgetBuilder<T> itemBuilder;
+  final ItemWidgetBuilder<T>? itemBuilder;
+  final ListItemBuilder<T>? itemsBuilder;
   final _TypeListBuilder _typeBuilder;
 
   Widget _type(BuildContext context, {required List<T> list}) {
@@ -41,6 +53,8 @@ class BListBuilderAsync<T> extends StatelessWidget {
         return _listView(context, list: list);
       case _TypeListBuilder.listViewSeparated:
         return _listViewSeparated(context, list: list);
+      case _TypeListBuilder.customList:
+        return _customList(context, list: list);
     }
   }
 
@@ -60,13 +74,17 @@ class BListBuilderAsync<T> extends StatelessWidget {
 
   Widget _listView(BuildContext context, {required List<T> list}) {
     return ListView(
-      children: list.map((e) => itemBuilder(context, e)).toList(),
+      children: list.map((e) => itemBuilder!(context, e)).toList(),
     );
+  }
+
+  Widget _customList(BuildContext context, {required List<T> list}) {
+    return itemsBuilder!(context, list);
   }
 
   Widget _column(BuildContext context, {required List<T> list}) {
     return ColumnWithSpacing(
-      children: list.map((e) => itemBuilder(context, e)).toList(),
+      children: list.map((e) => itemBuilder!(context, e)).toList(),
     );
   }
 
@@ -78,7 +96,7 @@ class BListBuilderAsync<T> extends StatelessWidget {
         if (index == 0 || index == list.length + 1) {
           return const SizedBox.shrink();
         }
-        return itemBuilder(context, list[index - 1]);
+        return itemBuilder!(context, list[index - 1]);
       },
     );
   }
