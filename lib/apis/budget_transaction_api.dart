@@ -1,5 +1,4 @@
 import 'package:budget_app/apis/firestore_path.dart';
-import 'package:budget_app/apis/random_id.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/failure.dart';
 import 'package:budget_app/core/providers.dart';
@@ -16,6 +15,8 @@ final budgetTransactionApiProvider = Provider(((ref) {
 
 abstract class IBudgetTransactionApi {
   Future<List<BudgetTransactionModel>> fetch(String uid);
+  Future<List<BudgetTransactionModel>> getBudgetTransactionsById(
+      {required String uid, required String budgetId});
   FutureEitherVoid add(String uid,
       {required BudgetTransactionModel budgetTransaction});
 }
@@ -47,5 +48,18 @@ class BudgetTransactionApi extends IBudgetTransactionApi {
             modelTo: (e) => e.toMap())
         .get();
     return data.docs.map((e) => e.data()).toList();
+  }
+
+  @override
+  Future<List<BudgetTransactionModel>> getBudgetTransactionsById(
+      {required String uid, required String budgetId}) async {
+    final data = await _db
+        .collection(FirestorePath.budgetTransactions(uid: uid))
+        .where('budgetId', isEqualTo: budgetId)
+        .mapModel<BudgetTransactionModel>(
+            modelFrom: BudgetTransactionModel.fromMap,
+            modelTo: (model) => model.toMap())
+        .get();
+    return data.docs.map((e) => e.data()!).toList();
   }
 }

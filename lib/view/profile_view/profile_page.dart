@@ -6,8 +6,8 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/data/data_local.dart';
 import 'package:budget_app/models/user_model.dart';
-import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -74,7 +74,12 @@ class ProfilePage extends StatelessWidget {
               }),
           _item(
               icon: IconConstants.setting, text: 'Settings', onPressed: () {}),
-          _item(icon: IconConstants.contact, text: 'Contact', onPressed: () {}),
+          _item(
+              icon: IconConstants.contact,
+              text: 'Contact',
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              }),
           Expanded(child: _content())
         ],
       ),

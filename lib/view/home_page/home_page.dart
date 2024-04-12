@@ -2,36 +2,47 @@ import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_dropdown.dart';
 import 'package:budget_app/common/widget/b_search_bar.dart';
+import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/view/expense_view/expense_view.dart';
+import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_budge_list.dart';
 import 'package:budget_app/view/home_page/widgets/home_item_come.dart';
 import 'package:budget_app/view/income_view/income_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   HomePage({super.key});
   final TextEditingController _searchController = TextEditingController();
   List<String> get listCategory => ['A', 'B', 'C', 'D'];
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         actions: [
           gapW16,
           const SizedBox.shrink(),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                BTextRichSpace(text1: 'Hello ', text2: 'Roya!'),
-                gapH8,
-                BText.caption('Your finances are looking good'),
-              ],
-            ),
+          Expanded(
+            child: ref.watch(fetchUserControllerProvider).when(
+                data: (_) {
+                  String userName = ref.read(userControllerProvider).name;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BTextRichSpace(text1: 'Hello ', text2: userName),
+                      gapH8,
+                      const BText.caption('Your finances are looking good'),
+                    ],
+                  );
+                },
+                error: (_, __) => const BStatus.error(
+                      text: 'Error when load info user',
+                    ),
+                loading: () => const BStatus.loading(text: 'Get info user...')),
           ),
           gapW16,
           GestureDetector(
@@ -42,7 +53,7 @@ class HomePage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         children: [
-          _cardBalance(),
+          _cardBalance(ref),
           gapH16,
           _inComeAndExpense(context),
           gapH16,
@@ -54,22 +65,33 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _cardBalance() {
+  Widget _cardBalance(WidgetRef ref) {
+    bool isLoading =ref.watch(homeControllerProvider);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       color: ColorManager.primary,
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const BAvatar.network(
-                'https://acpro.edu.vn/hinh-nhung-chu-meo-de-thuong/imager_173.jpg'),
-            gapH24,
-            BText('Your available lalance is', color: ColorManager.white),
-            gapH16,
-            BText.h1('\$ 2028', color: ColorManager.white),
-          ],
-        ),
+        child: isLoading
+            ? Column(
+                children: [
+                  BAvatar.network(ref.read(userControllerProvider).profileUrl),
+                  gapH24,
+                  BText('Your available lalance is', color: ColorManager.white),
+                  gapH16,
+                  BText.h1('\$ 2028', color: ColorManager.white),
+                ],
+              )
+            : Column(
+                children: [
+                  const BAvatar.network(
+                      'https://acpro.edu.vn/hinh-nhung-chu-meo-de-thuong/imager_173.jpg'),
+                  gapH24,
+                  BText('----------------------', color: ColorManager.white),
+                  gapH16,
+                  BText.h1('\$ ----', color: ColorManager.white),
+                ],
+              ),
       ),
     );
   }
@@ -83,8 +105,8 @@ class HomePage extends StatelessWidget {
               money: 4250,
               color: ColorManager.purple11,
               onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => IncomeView()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const IncomeView()));
               }),
         ),
         gapW16,
