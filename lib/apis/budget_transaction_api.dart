@@ -60,6 +60,6 @@ class BudgetTransactionApi extends IBudgetTransactionApi {
             modelFrom: BudgetTransactionModel.fromMap,
             modelTo: (model) => model.toMap())
         .get();
-    return data.docs.map((e) => e.data()!).toList();
+    return data.docs.map((e) => e.data()).toList();
   }
 }

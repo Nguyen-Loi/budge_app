@@ -1,4 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_dropdown.dart';
 import 'package:budget_app/common/widget/b_search_bar.dart';
@@ -7,42 +8,30 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
-import 'package:budget_app/view/expense_view/expense_view.dart';
+import 'package:budget_app/view/home_page/widgets/home_budget_appbar.dart';
+import 'package:budget_app/view/home_page/widgets/home_budget_card_balance.dart';
+import 'package:budget_app/view/new_expense_view/new_expense_view.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
-import 'package:budget_app/view/home_page/widgets/home_budge_list.dart';
+import 'package:budget_app/view/home_page/widgets/home_budget_list/home_budget_list.dart';
 import 'package:budget_app/view/home_page/widgets/home_item_come.dart';
 import 'package:budget_app/view/income_view/income_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends StatelessWidget {
   HomePage({super.key});
   final TextEditingController _searchController = TextEditingController();
   List<String> get listCategory => ['A', 'B', 'C', 'D'];
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    logError('rebuild full');
     return Scaffold(
       appBar: AppBar(
         actions: [
           gapW16,
           const SizedBox.shrink(),
-          Expanded(
-            child: ref.watch(fetchUserControllerProvider).when(
-                data: (_) {
-                  String userName = ref.read(userControllerProvider).name;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BTextRichSpace(text1: 'Hello ', text2: userName),
-                      gapH8,
-                      const BText.caption('Your finances are looking good'),
-                    ],
-                  );
-                },
-                error: (_, __) => const BStatus.error(
-                      text: 'Error when load info user',
-                    ),
-                loading: () => const BStatus.loading(text: 'Get info user...')),
+          const Expanded(
+            child: HomeBudgetAppBar(),
           ),
           gapW16,
           GestureDetector(
@@ -53,45 +42,14 @@ class HomePage extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         children: [
-          _cardBalance(ref),
+          const HomeBudgetCardBalance(),
           gapH16,
           _inComeAndExpense(context),
           gapH16,
           _searchAndCategory(),
           gapH16,
-          const HomeBudgeList()
+          const HomeBudgetList()
         ],
-      ),
-    );
-  }
-
-  Widget _cardBalance(WidgetRef ref) {
-    bool isLoading =ref.watch(homeControllerProvider);
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: ColorManager.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: isLoading
-            ? Column(
-                children: [
-                  BAvatar.network(ref.read(userControllerProvider).profileUrl),
-                  gapH24,
-                  BText('Your available lalance is', color: ColorManager.white),
-                  gapH16,
-                  BText.h1('\$ 2028', color: ColorManager.white),
-                ],
-              )
-            : Column(
-                children: [
-                  const BAvatar.network(
-                      'https://acpro.edu.vn/hinh-nhung-chu-meo-de-thuong/imager_173.jpg'),
-                  gapH24,
-                  BText('----------------------', color: ColorManager.white),
-                  gapH16,
-                  BText.h1('\$ ----', color: ColorManager.white),
-                ],
-              ),
       ),
     );
   }
@@ -117,7 +75,7 @@ class HomePage extends ConsumerWidget {
               color: ColorManager.purple21,
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const ExpenseView()));
+                    MaterialPageRoute(builder: (_) => const NewExpenseView()));
               }),
         )
       ],

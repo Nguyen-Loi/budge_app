@@ -4,7 +4,7 @@ import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final budgetDetailControllerProvider = Provider((ref) {
-  final uid = ref.watch(uidControllerProvider);
+  final uid = ref.watch(uidProvider);
   final budgetTransactionApi = ref.watch(budgetTransactionApiProvider);
   return BudgetDetailController(
       budgetTransactionApi: budgetTransactionApi, uid: uid);

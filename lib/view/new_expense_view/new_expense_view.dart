@@ -1,4 +1,3 @@
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_category_budget.dart';
 import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
@@ -6,24 +5,23 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
-import 'package:budget_app/data/data_local.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
+import 'package:budget_app/view/new_expense_view/controller/new_expense_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ExpenseView extends ConsumerStatefulWidget {
-  const ExpenseView({super.key});
+class NewExpenseView extends ConsumerStatefulWidget {
+  const NewExpenseView({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ExpenseViewState();
 }
 
-class _ExpenseViewState extends ConsumerState<ExpenseView> {
+class _ExpenseViewState extends ConsumerState<NewExpenseView> {
   late TextEditingController _noteController;
   late TextEditingController _amountController;
-
-  final List<BudgetModel> budgets = DataLocal.budgets;
+  late String _budgetId;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -36,7 +34,10 @@ class _ExpenseViewState extends ConsumerState<ExpenseView> {
 
   void _addExpense() {
     if (_formKey.currentState!.validate()) {
-      logError('Success');
+      ref.read(expenseControllerProvider).addMoneyExpense(context,
+          budgetId: _budgetId,
+          amount: int.parse(_amountController.text),
+          note: _noteController.text);
     }
   }
 
@@ -76,15 +77,15 @@ class _ExpenseViewState extends ConsumerState<ExpenseView> {
   Widget _chooseCategory() {
     return BFormCategoryBudget(
       label: 'Choose your budget',
-      list: budgets,
+      list: ref.read(budgetsProvider),
       validator: (p0) {
         if (p0 == null) {
           return 'Please choose your budget';
         }
         return null;
       },
-      onChanged: (budgetModel) {
-        logSuccess(budgetModel.toString());
+      onChanged: (budgetId) {
+        _budgetId = budgetId;
       },
     );
   }
