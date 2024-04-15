@@ -1,6 +1,4 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 
 class BFormCheckbox extends FormField<bool> {

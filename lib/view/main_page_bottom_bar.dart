@@ -1,7 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/icon_constants.dart';
-import 'package:budget_app/view/goals_view/goals_view.dart';
-import 'package:budget_app/view/history_view/history_page.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
 import 'package:budget_app/view/new_budget_view/new_budget_view.dart';
 import 'package:budget_app/view/profile_view/profile_page.dart';
@@ -19,14 +17,14 @@ final _navBarItems = [
     icon: Icon(IconConstants.home),
     label: 'Home',
   ),
-  BottomNavigationBarItem(
-    icon: Icon(IconConstants.history),
-    label: 'History',
-  ),
-  BottomNavigationBarItem(
-    icon: Icon(IconConstants.goals),
-    label: 'Goals',
-  ),
+  // BottomNavigationBarItem(
+  //   icon: Icon(IconConstants.history),
+  //   label: 'History',
+  // ),
+  // BottomNavigationBarItem(
+  //   icon: Icon(IconConstants.goals),
+  //   label: 'Goals',
+  // ),
   BottomNavigationBarItem(
     icon: Icon(IconConstants.profile),
     label: 'Profile',
@@ -41,8 +39,8 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
     _selectedIndex = 0;
     _screens = [
       HomePage(),
-      const HistoryPage(),
-      GoalsView(),
+      // const HistoryPage(),
+      // GoalsView(),
       const ProfilePage(),
     ];
     super.initState();

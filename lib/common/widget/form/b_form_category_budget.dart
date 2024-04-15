@@ -29,11 +29,16 @@ class BFormCategoryBudget extends FormField<BudgetModel> {
                           .copyWith(color: ColorManager.red),
                     ),
                   gapH16,
-                  _CategoryBudget(field.context,
-                      list: list,
-                      initialValue: field.value, onChanged: (model) {
-                    field.didChange(model);
-                  }),
+                  list.isEmpty
+                      ? const BText(
+                          'No budget available',
+                          textAlign: TextAlign.center,
+                        )
+                      : _CategoryBudget(field.context,
+                          list: list,
+                          initialValue: field.value, onChanged: (model) {
+                          field.didChange(model);
+                        }),
                 ],
               );
             },
