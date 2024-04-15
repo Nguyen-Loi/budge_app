@@ -1,4 +1,5 @@
 import 'package:budget_app/apis/budget_api.dart';
+import 'package:budget_app/core/b_datetime.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
@@ -10,6 +11,11 @@ final goalsControllerProvider =
   final uid = ref.watch(uidProvider);
   final budgetApi = ref.watch(budgetAPIProvider);
   return GoalsController(uid: uid, budgetApi: budgetApi);
+});
+
+final goalsFetchProvider = FutureProvider((ref) {
+  final controller = ref.watch(goalsControllerProvider.notifier);
+  return controller.fetchGoals();
 });
 
 class GoalsController extends StateNotifier<List<BudgetModel>> {
@@ -37,6 +43,7 @@ class GoalsController extends StateNotifier<List<BudgetModel>> {
       final urgentDefault = BudgetModel(
           id: _goalKeyDefault,
           userId: _uid,
+          month: BDateTime.month(now),
           name: 'Urgent',
           iconId: 1,
           currentAmount: 0,

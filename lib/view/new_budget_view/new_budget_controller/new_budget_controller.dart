@@ -1,6 +1,8 @@
 import 'package:budget_app/apis/budget_api.dart';
+import 'package:budget_app/apis/get_id.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
+import 'package:budget_app/core/b_datetime.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/models/budget_model.dart';
@@ -38,10 +40,12 @@ class NewBudgetController extends StateNotifier<bool> {
     required int limit,
   }) async {
     final DateTime now = DateTime.now();
+    final id = '${GetId.currentMonth}-$budgetName';
     BudgetModel model = BudgetModel(
-      id: budgetName,
+      id: id,
       userId: _uid,
       name: budgetName,
+      month: BDateTime.month(now),
       iconId: iconId,
       currentAmount: 0,
       budgetTypeValue: BudgetTypeEnum.budget.value,

@@ -9,10 +9,14 @@ class BPickerMonth extends StatefulWidget {
   const BPickerMonth(
       {Key? key,
       this.initialDate,
+      this.firstDate,
+      this.lastDate,
       required this.onChange,
       this.hint = 'Picker your time'})
       : super(key: key);
   final DateTime? initialDate;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
   final OnChangeDate onChange;
   final String hint;
 
@@ -22,12 +26,10 @@ class BPickerMonth extends StatefulWidget {
 
 class _BPickerMonthState extends State<BPickerMonth> {
   DateTime? _dateTimePicker;
+
   @override
   void initState() {
     _dateTimePicker = widget.initialDate;
-    if (_dateTimePicker != null) {
-      widget.onChange(_dateTimePicker!);
-    }
     super.initState();
   }
 
@@ -38,6 +40,8 @@ class _BPickerMonthState extends State<BPickerMonth> {
         DateTime? dateTime = await showMonthPicker(
           headerColor: ColorManager.primary,
           context: context,
+          firstDate: widget.firstDate,
+          lastDate: widget.lastDate,
           initialDate: _dateTimePicker ?? DateTime.now(),
         );
         if (dateTime != null) {
@@ -49,7 +53,7 @@ class _BPickerMonthState extends State<BPickerMonth> {
       },
       child: BText.b1(_dateTimePicker == null
           ? widget.hint
-          : _dateTimePicker.toFormatDate()),
+          : _dateTimePicker.toFormatDate(strFormat: 'MM-yyyy')),
     );
   }
 }

@@ -36,7 +36,7 @@ class MainRouter {
         return MaterialPageRoute(builder: (_) => const MainPageBottomBar());
 
       case RoutePath.goal:
-        return MaterialPageRoute(builder: (_) => GoalsView());
+        return MaterialPageRoute(builder: (_) => const GoalsView());
       case RoutePath.income:
         return MaterialPageRoute(builder: (_) => const IncomeView());
       case RoutePath.expense:

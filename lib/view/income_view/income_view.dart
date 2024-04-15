@@ -1,6 +1,3 @@
-import 'package:budget_app/apis/budget_api.dart';
-import 'package:budget_app/apis/budget_transaction_api.dart';
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
@@ -45,8 +42,7 @@ class _IncomeViewState extends ConsumerState<IncomeView> {
     String uid = ref.watch(authControllerProvider.notifier).uid;
     return Form(
       key: _formKey,
-      child: ColumnWithSpacing(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListViewWithSpacing(
         children: [
           BFormFieldAmount(
             _controllerAmount,
