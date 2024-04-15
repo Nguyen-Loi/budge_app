@@ -1,8 +1,8 @@
 import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/common/log.dart';
-import 'package:budget_app/core/core.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
+import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

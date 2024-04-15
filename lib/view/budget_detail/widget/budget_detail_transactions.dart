@@ -1,5 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/b_list_async.dart';
+import 'package:budget_app/common/widget/async/b_async_list.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
@@ -7,7 +7,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
-import 'package:budget_app/models/budget_transaction_model.dart';
+import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/budget_detail/controller/budget_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -124,13 +124,13 @@ class _GroupDateTransactionModel {
     required this.transactions,
     required this.dateTime,
   });
-  final List<BudgetTransactionModel> transactions;
+  final List<TransactionModel> transactions;
   final DateTime dateTime;
 
   // Create a map to group transactions by date
   static List<_GroupDateTransactionModel> toList(
-      List<BudgetTransactionModel> transactions) {
-    Map<DateTime, List<BudgetTransactionModel>> groupedTransactions = {};
+      List<TransactionModel> transactions) {
+    Map<DateTime, List<TransactionModel>> groupedTransactions = {};
     for (var transaction in transactions) {
       DateTime date = DateTime(transaction.createdDate.year,
           transaction.createdDate.month, transaction.createdDate.day);

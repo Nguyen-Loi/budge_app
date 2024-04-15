@@ -1,9 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:budget_app/core/enums/budget_type_enum.dart';
-import 'package:budget_app/models/budget_transaction_model.dart';
 import 'package:flutter/foundation.dart';
+
+import 'package:budget_app/core/enums/budget_type_enum.dart';
+import 'package:budget_app/models/transaction_model.dart';
 
 enum StatusBudgetProgress { start, progress, almostDone, complete }
 
@@ -14,8 +15,9 @@ class BudgetModel {
   final int iconId;
   final int currentAmount;
   final int limit;
-  final List<BudgetTransactionModel>? transactions;
+  final List<TransactionModel>? transactions;
   final int budgetTypeValue;
+  final int month;
   final DateTime createdDate;
   final DateTime updatedDate;
   BudgetModel({
@@ -27,6 +29,7 @@ class BudgetModel {
     required this.limit,
     this.transactions,
     required this.budgetTypeValue,
+    required this.month,
     required this.createdDate,
     required this.updatedDate,
   });
@@ -52,8 +55,9 @@ class BudgetModel {
     int? iconId,
     int? currentAmount,
     int? limit,
-    List<BudgetTransactionModel>? transactions,
+    List<TransactionModel>? transactions,
     int? budgetTypeValue,
+    int? month,
     DateTime? createdDate,
     DateTime? updatedDate,
   }) {
@@ -66,6 +70,7 @@ class BudgetModel {
       limit: limit ?? this.limit,
       transactions: transactions ?? this.transactions,
       budgetTypeValue: budgetTypeValue ?? this.budgetTypeValue,
+      month: month ?? this.month,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
     );
@@ -80,6 +85,7 @@ class BudgetModel {
       'currentAmount': currentAmount,
       'limit': limit,
       'budgetTypeValue': budgetTypeValue,
+      'month': month,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
@@ -94,14 +100,14 @@ class BudgetModel {
       currentAmount: map['currentAmount'] as int,
       limit: map['limit'] as int,
       transactions: map['transactions'] != null
-          ? List<BudgetTransactionModel>.from(
-              (map['transactions'] as List<int>).map<BudgetTransactionModel?>(
-                (x) =>
-                    BudgetTransactionModel.fromMap(x as Map<String, dynamic>),
+          ? List<TransactionModel>.from(
+              (map['transactions'] as List<int>).map<TransactionModel?>(
+                (x) => TransactionModel.fromMap(x as Map<String, dynamic>),
               ),
             )
           : null,
       budgetTypeValue: map['budgetTypeValue'] as int,
+      month: map['month'] as int,
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       updatedDate:
@@ -116,7 +122,7 @@ class BudgetModel {
 
   @override
   String toString() {
-    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, transactions: $transactions, budgetTypeValue: $budgetTypeValue, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, transactions: $transactions, budgetTypeValue: $budgetTypeValue, month: $month, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -131,6 +137,7 @@ class BudgetModel {
         other.limit == limit &&
         listEquals(other.transactions, transactions) &&
         other.budgetTypeValue == budgetTypeValue &&
+        other.month == month &&
         other.createdDate == createdDate &&
         other.updatedDate == updatedDate;
   }
@@ -145,6 +152,7 @@ class BudgetModel {
         limit.hashCode ^
         transactions.hashCode ^
         budgetTypeValue.hashCode ^
+        month.hashCode ^
         createdDate.hashCode ^
         updatedDate.hashCode;
   }

@@ -8,14 +8,28 @@ import 'package:lottie/lottie.dart';
 enum _Status { loading, error, empty }
 
 class BStatus extends StatelessWidget {
-  const BStatus.error({super.key, this.text = 'Error'})
+  const BStatus.error(
+      {super.key,
+      this.text = 'Error',
+      this.crossAxisAlignment = CrossAxisAlignment.center,
+      this.mainAxisAlignment = MainAxisAlignment.center})
       : _status = _Status.error;
-  const BStatus.loading({super.key, this.text = 'Loading...'})
+  const BStatus.loading(
+      {super.key,
+      this.text = 'Loading...',
+      this.crossAxisAlignment = CrossAxisAlignment.center,
+      this.mainAxisAlignment = MainAxisAlignment.center})
       : _status = _Status.loading;
-  const BStatus.empty({super.key, this.text = 'No data'})
+  const BStatus.empty(
+      {super.key,
+      this.text = 'No data',
+      this.crossAxisAlignment = CrossAxisAlignment.center,
+      this.mainAxisAlignment = MainAxisAlignment.center})
       : _status = _Status.empty;
 
   final String text;
+  final CrossAxisAlignment crossAxisAlignment;
+  final MainAxisAlignment mainAxisAlignment;
   final _Status _status;
   @override
   Widget build(BuildContext context) {
@@ -31,6 +45,9 @@ class BStatus extends StatelessWidget {
 
   Widget _loading() {
     return Column(
+      crossAxisAlignment: crossAxisAlignment,
+      mainAxisAlignment: mainAxisAlignment,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Lottie.asset(LottieAssets.loading1),
         gapH16,
@@ -40,11 +57,23 @@ class BStatus extends StatelessWidget {
   }
 
   Widget _error() {
-    return Lottie.asset(LottieAssets.error);
+    return Column(
+      crossAxisAlignment: crossAxisAlignment,
+      mainAxisAlignment: mainAxisAlignment,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Lottie.asset(LottieAssets.error),
+        gapH16,
+        BText.b1(text, color: ColorManager.grey1),
+      ],
+    );
   }
 
   Widget _empty() {
     return Column(
+      crossAxisAlignment: crossAxisAlignment,
+      mainAxisAlignment: mainAxisAlignment,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Lottie.asset(LottieAssets.empty),
         gapH16,

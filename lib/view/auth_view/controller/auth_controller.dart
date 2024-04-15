@@ -57,9 +57,7 @@ class AuthController extends StateNotifier<bool> {
   }
 
   void loginWithFacebook(BuildContext context) async {
-    final closeLoading = showLoading(context: context);
     final res = await _authAPI.loginWithFacebook();
-    closeLoading();
     res.fold((l) {
       logError(l.error);
       showSnackBar(context, l.message);
@@ -72,12 +70,10 @@ class AuthController extends StateNotifier<bool> {
   void loginWithGoogle(
     BuildContext context,
   ) async {
-    final closeLoading = showLoading(context: context);
     final res = await _authAPI.loginWithGoogle();
     res.fold((l) => showSnackBar(context, l.message), (r) {
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
     });
-    closeLoading();
   }
 }

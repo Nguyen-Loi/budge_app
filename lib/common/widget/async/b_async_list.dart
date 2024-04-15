@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 typedef ListItemBuilder<T> = Widget Function(
     BuildContext context, List<T> items);
+typedef BuildStatus = Widget Function(BuildContext context, Widget statusChild);
 
 enum _TypeListBuilder { column, listView, listViewSeparated, customList }
 
@@ -15,6 +16,7 @@ class BListAsync<T> extends StatelessWidget {
   const BListAsync({
     super.key,
     required this.data,
+    this.buildStatus,
     required this.itemBuilder,
   })  : _typeBuilder = _TypeListBuilder.column,
         itemsBuilder = null;
@@ -22,6 +24,7 @@ class BListAsync<T> extends StatelessWidget {
   const BListAsync.lvItem({
     super.key,
     required this.data,
+    this.buildStatus,
     required this.itemBuilder,
   })  : _typeBuilder = _TypeListBuilder.listView,
         itemsBuilder = null;
@@ -29,6 +32,7 @@ class BListAsync<T> extends StatelessWidget {
   const BListAsync.lvSeperated({
     super.key,
     required this.data,
+    this.buildStatus,
     required this.itemBuilder,
   })  : _typeBuilder = _TypeListBuilder.listViewSeparated,
         itemsBuilder = null;
@@ -36,6 +40,7 @@ class BListAsync<T> extends StatelessWidget {
   const BListAsync.customList({
     super.key,
     required this.data,
+    this.buildStatus,
     required this.itemsBuilder,
   })  : _typeBuilder = _TypeListBuilder.customList,
         itemBuilder = null;
@@ -44,6 +49,9 @@ class BListAsync<T> extends StatelessWidget {
   final ItemWidgetBuilder<T>? itemBuilder;
   final ListItemBuilder<T>? itemsBuilder;
   final _TypeListBuilder _typeBuilder;
+
+  /// To custom status widget
+  final BuildStatus? buildStatus;
 
   Widget _type(BuildContext context, {required List<T> list}) {
     switch (_typeBuilder) {
@@ -61,13 +69,12 @@ class BListAsync<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return data.when(
-      data: (items) => items.isNotEmpty
-          ? _type(context, list: items)
-          : const BStatus.empty(text: 'No data'),
-      loading: () => const BStatus.loading(text: 'Loading'),
+      data: (items) =>
+          items.isNotEmpty ? _type(context, list: items) : _empty(context),
+      loading: () => _loading(context),
       error: (error, __) {
         logError(error.toString());
-        return const BStatus.error(text: 'Something went wrong');
+        return _error(context);
       },
     );
   }
@@ -99,5 +106,29 @@ class BListAsync<T> extends StatelessWidget {
         return itemBuilder!(context, list[index - 1]);
       },
     );
+  }
+
+  Widget _error(BuildContext context) {
+    Widget error = const BStatus.error(text: 'Something went wrong');
+    if (buildStatus == null) {
+      return error;
+    }
+    return buildStatus!(context, error);
+  }
+
+  Widget _loading(BuildContext context) {
+    Widget loading = const BStatus.loading(text: 'Loading');
+    if (buildStatus == null) {
+      return loading;
+    }
+    return buildStatus!(context, loading);
+  }
+
+  Widget _empty(BuildContext context) {
+    Widget empty = const BStatus.empty(text: 'No data');
+    if (buildStatus == null) {
+      return empty;
+    }
+    return buildStatus!(context, empty);
   }
 }

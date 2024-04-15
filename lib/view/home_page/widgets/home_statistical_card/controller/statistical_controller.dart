@@ -1,7 +1,6 @@
 import 'package:budget_app/apis/get_id.dart';
 import 'package:budget_app/apis/statistical_api.dart';
-import 'package:budget_app/common/log.dart';
-import 'package:budget_app/models/budget_transaction_model.dart';
+import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/models/statistical_model.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,7 +34,7 @@ class StatisticalController extends StateNotifier<StatisticalModel?> {
       return;
     }
     final dataDefault = StatisticalModel(
-        id: GetId.month,
+        id: GetId.currentMonth,
         userId: _uid,
         income: 0,
         expense: 0,
@@ -45,9 +44,9 @@ class StatisticalController extends StateNotifier<StatisticalModel?> {
   }
 
   Future<void> updateStatistical(
-      {required BudgetTransactionModel budgetTransaction}) async {
+      {required TransactionModel transaction}) async {
     final res = await _statisticalApi.updateStatistical(
-        statistical: state!, budgetTransaction: budgetTransaction);
+        statistical: state!, transaction: transaction);
     res.fold((l) {}, (rData) {
       state = rData;
     });

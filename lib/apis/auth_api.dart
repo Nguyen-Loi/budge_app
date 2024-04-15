@@ -1,7 +1,6 @@
 import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
-import 'package:budget_app/core/failure.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

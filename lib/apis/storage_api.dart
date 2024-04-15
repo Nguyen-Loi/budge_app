@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:budget_app/core/core.dart';
 import 'package:budget_app/core/providers.dart';
+import 'package:budget_app/core/type_defs.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
