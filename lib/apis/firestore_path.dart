@@ -6,6 +6,7 @@ class FirestorePath {
   static const String _goal = 'Goal';
   static const String _goalTransaction = 'GoalTransaction';
   static const String _user = 'User';
+  static const String _statistical = 'Statistical';
 
   static String users() => _user;
   static String user(String uid) => '$_user/$uid';
@@ -21,6 +22,9 @@ class FirestorePath {
       '$_user/$uid/$_goal/$goalId';
   static String goalTransactions({required String uid}) =>
       '$_user/$uid/$_goal/$_goalTransaction';
+
+  static String statistical({required String uid}) =>
+      '$_user/$uid/$_statistical';
 }
 
 extension Converter<T> on CollectionReference<Map<String, dynamic>> {
@@ -61,12 +65,12 @@ extension ConverterQuery<T> on Query<Map<String, dynamic>> {
 
 extension ChangeData on DocumentReference<Map<String, dynamic>> {
   Future<void> customSet(Map<String, dynamic> data) {
-    int now = DateTime.now().microsecondsSinceEpoch;
+    int now = DateTime.now().millisecondsSinceEpoch;
     return set({'createdDate': now, 'updatedDate': now, ...data});
   }
 
   Future<void> customUpdate(Map<String, dynamic> data) {
-    int now = DateTime.now().microsecondsSinceEpoch;
+    int now = DateTime.now().millisecondsSinceEpoch;
     return set({'updatedDate': now, ...data});
   }
 }

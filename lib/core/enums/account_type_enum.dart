@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 
 enum AccountType {
   emailAndPassword(1),

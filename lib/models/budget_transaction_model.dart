@@ -8,7 +8,7 @@ class BudgetTransactionModel {
   final String budgetId;
   final int amount;
   final String note;
-  final int transactionValue;
+  final int transactionTypeValue;
   final DateTime createdDate;
   final DateTime transactionDate;
   final DateTime updatedDate;
@@ -17,14 +17,15 @@ class BudgetTransactionModel {
     required this.budgetId,
     required this.amount,
     required this.note,
-    required this.transactionValue,
+    required this.transactionTypeValue,
     required this.createdDate,
     required this.transactionDate,
     required this.updatedDate,
   });
+ 
 
   TransactionType get transactionType =>
-      TransactionType.fromValue(transactionValue);
+      TransactionType.fromValue(transactionTypeValue);
 
 
   BudgetTransactionModel copyWith({
@@ -32,7 +33,7 @@ class BudgetTransactionModel {
     String? budgetId,
     int? amount,
     String? note,
-    int? transactionValue,
+    int? transactionTypeValue,
     DateTime? createdDate,
     DateTime? transactionDate,
     DateTime? updatedDate,
@@ -42,7 +43,7 @@ class BudgetTransactionModel {
       budgetId: budgetId ?? this.budgetId,
       amount: amount ?? this.amount,
       note: note ?? this.note,
-      transactionValue: transactionValue ?? this.transactionValue,
+      transactionTypeValue: transactionTypeValue ?? this.transactionTypeValue,
       createdDate: createdDate ?? this.createdDate,
       transactionDate: transactionDate ?? this.transactionDate,
       updatedDate: updatedDate ?? this.updatedDate,
@@ -55,7 +56,7 @@ class BudgetTransactionModel {
       'budgetId': budgetId,
       'amount': amount,
       'note': note,
-      'transactionValue': transactionValue,
+      'transactionTypeValue': transactionTypeValue,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'transactionDate': transactionDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
@@ -68,7 +69,7 @@ class BudgetTransactionModel {
       budgetId: map['budgetId'] as String,
       amount: map['amount'] as int,
       note: map['note'] as String,
-      transactionValue: map['transactionValue'] as int,
+      transactionTypeValue: map['transactionTypeValue'] as int,
       createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       transactionDate: DateTime.fromMillisecondsSinceEpoch(map['transactionDate'] as int),
       updatedDate: DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
@@ -81,7 +82,7 @@ class BudgetTransactionModel {
 
   @override
   String toString() {
-    return 'BudgetTransactionModel(id: $id, budgetId: $budgetId, amount: $amount, note: $note, transactionValue: $transactionValue, createdDate: $createdDate, transactionDate: $transactionDate, updatedDate: $updatedDate)';
+    return 'BudgetTransactionModel(id: $id, budgetId: $budgetId, amount: $amount, note: $note, transactionTypeValue: $transactionTypeValue, createdDate: $createdDate, transactionDate: $transactionDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -93,7 +94,7 @@ class BudgetTransactionModel {
       other.budgetId == budgetId &&
       other.amount == amount &&
       other.note == note &&
-      other.transactionValue == transactionValue &&
+      other.transactionTypeValue == transactionTypeValue &&
       other.createdDate == createdDate &&
       other.transactionDate == transactionDate &&
       other.updatedDate == updatedDate;
@@ -105,7 +106,7 @@ class BudgetTransactionModel {
       budgetId.hashCode ^
       amount.hashCode ^
       note.hashCode ^
-      transactionValue.hashCode ^
+      transactionTypeValue.hashCode ^
       createdDate.hashCode ^
       transactionDate.hashCode ^
       updatedDate.hashCode;

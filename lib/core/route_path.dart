@@ -2,11 +2,11 @@ import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/view/auth_view/sign_up_view.dart';
 import 'package:budget_app/view/budget_detail/budget_detail_view.dart';
-import 'package:budget_app/view/new_expense_view/new_expense_view.dart';
 import 'package:budget_app/view/goals_view/goals_view.dart';
 import 'package:budget_app/view/income_view/income_view.dart';
 import 'package:budget_app/view/main_page_bottom_bar.dart';
 import 'package:budget_app/view/new_budget_view/new_budget_view.dart';
+import 'package:budget_app/view/new_expense_view/new_expense_view.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
 import 'package:flutter/material.dart';
 

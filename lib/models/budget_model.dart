@@ -1,10 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/models/budget_transaction_model.dart';
 import 'package:flutter/foundation.dart';
 
-enum StatusBudget { safe, warning, danger }
+enum StatusBudgetProgress { start, progress, almostDone, complete }
 
 class BudgetModel {
   final String id;
@@ -14,6 +15,7 @@ class BudgetModel {
   final int currentAmount;
   final int limit;
   final List<BudgetTransactionModel>? transactions;
+  final int budgetTypeValue;
   final DateTime createdDate;
   final DateTime updatedDate;
   BudgetModel({
@@ -24,17 +26,22 @@ class BudgetModel {
     required this.currentAmount,
     required this.limit,
     this.transactions,
+    required this.budgetTypeValue,
     required this.createdDate,
     required this.updatedDate,
   });
 
-  StatusBudget get status {
-    if (currentAmount <= limit / 2) {
-      return StatusBudget.safe;
+  BudgetTypeEnum get budgetType => BudgetTypeEnum.fromValue(budgetTypeValue);
+
+  StatusBudgetProgress get status {
+    if (currentAmount <= limit / 4) {
+      return StatusBudgetProgress.start;
+    } else if (currentAmount <= limit / 2) {
+      return StatusBudgetProgress.progress;
     } else if (currentAmount < limit) {
-      return StatusBudget.warning;
+      return StatusBudgetProgress.almostDone;
     } else {
-      return StatusBudget.danger;
+      return StatusBudgetProgress.complete;
     }
   }
 
@@ -46,6 +53,7 @@ class BudgetModel {
     int? currentAmount,
     int? limit,
     List<BudgetTransactionModel>? transactions,
+    int? budgetTypeValue,
     DateTime? createdDate,
     DateTime? updatedDate,
   }) {
@@ -57,6 +65,7 @@ class BudgetModel {
       currentAmount: currentAmount ?? this.currentAmount,
       limit: limit ?? this.limit,
       transactions: transactions ?? this.transactions,
+      budgetTypeValue: budgetTypeValue ?? this.budgetTypeValue,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
     );
@@ -70,6 +79,7 @@ class BudgetModel {
       'iconId': iconId,
       'currentAmount': currentAmount,
       'limit': limit,
+      'budgetTypeValue': budgetTypeValue,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
@@ -83,6 +93,15 @@ class BudgetModel {
       iconId: map['iconId'] as int,
       currentAmount: map['currentAmount'] as int,
       limit: map['limit'] as int,
+      transactions: map['transactions'] != null
+          ? List<BudgetTransactionModel>.from(
+              (map['transactions'] as List<int>).map<BudgetTransactionModel?>(
+                (x) =>
+                    BudgetTransactionModel.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
+      budgetTypeValue: map['budgetTypeValue'] as int,
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       updatedDate:
@@ -97,7 +116,7 @@ class BudgetModel {
 
   @override
   String toString() {
-    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, transactions: $transactions, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, transactions: $transactions, budgetTypeValue: $budgetTypeValue, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -111,6 +130,7 @@ class BudgetModel {
         other.currentAmount == currentAmount &&
         other.limit == limit &&
         listEquals(other.transactions, transactions) &&
+        other.budgetTypeValue == budgetTypeValue &&
         other.createdDate == createdDate &&
         other.updatedDate == updatedDate;
   }
@@ -124,6 +144,7 @@ class BudgetModel {
         currentAmount.hashCode ^
         limit.hashCode ^
         transactions.hashCode ^
+        budgetTypeValue.hashCode ^
         createdDate.hashCode ^
         updatedDate.hashCode;
   }

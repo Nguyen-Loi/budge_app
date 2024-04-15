@@ -1,5 +1,4 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_modify_limit.dart';

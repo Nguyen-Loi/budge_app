@@ -54,19 +54,20 @@ class HomeBudgetCard extends StatelessWidget {
 
   List<Widget> _showStatusType() {
     switch (model.status) {
-      case StatusBudget.safe:
+      case StatusBudgetProgress.start:
+      case StatusBudgetProgress.progress:
         return baseStatus(
             textStatus: 'Left',
             iconColor: ColorManager.green1,
             textColor: ColorManager.black,
             iconData: IconConstants.emojiSmile);
-      case StatusBudget.warning:
+      case StatusBudgetProgress.almostDone:
         return baseStatus(
             textStatus: 'Approaced',
             iconColor: ColorManager.orange,
             textColor: ColorManager.orange,
             iconData: IconConstants.emojiSurprise);
-      case StatusBudget.danger:
+      case StatusBudgetProgress.complete:
         return baseStatus(
             textStatus: 'Exceeded',
             iconColor: ColorManager.red,

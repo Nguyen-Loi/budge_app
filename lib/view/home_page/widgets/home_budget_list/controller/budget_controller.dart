@@ -1,48 +1,43 @@
 import 'package:budget_app/apis/budget_api.dart';
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final budgetControllerProvider =
-    StateNotifierProvider<BudgetController, bool>((ref) {
+    StateNotifierProvider<BudgetController, List<BudgetModel>>((ref) {
   final uid = ref.watch(uidProvider);
   final budgetApi = ref.watch(budgetAPIProvider);
   return BudgetController(budgetApi: budgetApi, uid: uid);
 });
-final fetchBudgetsProvider = FutureProvider((ref) {
+final budgetsFetchProvider = FutureProvider((ref) {
   final data = ref.watch(budgetControllerProvider.notifier);
   return data.fetchBudgets();
 });
 
-final budgetsProvider = Provider((ref) {
-  final data = ref.watch(budgetControllerProvider.notifier);
-  return data.listBudget;
-});
-
-class BudgetController extends StateNotifier<bool> {
+class BudgetController extends StateNotifier<List<BudgetModel>> {
   BudgetController({required BudgetApi budgetApi, required String uid})
       : _budgetApi = budgetApi,
         _uid = uid,
-        super(true);
+        super([]);
 
   final BudgetApi _budgetApi;
   final String _uid;
 
-  late List<BudgetModel> _listBudget = [];
-  List<BudgetModel> get listBudget => _listBudget;
+  List<BudgetModel> _budgets = [];
 
   Future<List<BudgetModel>> fetchBudgets() async {
-    _listBudget = [];
     final budgets = await _budgetApi.fetchBudgets(_uid);
-    _listBudget = budgets;
-    logError(_listBudget.length.toString());
-    state = false;
-    return budgets;
+    _budgets = budgets;
+    _notifier();
+    return _budgets;
   }
 
   void addBudget(BudgetModel model) {
-    _listBudget.add(model);
-    state = false;
+    _budgets.add(model);
+    _notifier();
+  }
+
+  void _notifier() {
+    state = _budgets.toList();
   }
 }

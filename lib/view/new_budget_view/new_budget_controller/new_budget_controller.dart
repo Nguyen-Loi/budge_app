@@ -1,6 +1,7 @@
 import 'package:budget_app/apis/budget_api.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
@@ -43,6 +44,7 @@ class NewBudgetController extends StateNotifier<bool> {
       name: budgetName,
       iconId: iconId,
       currentAmount: 0,
+      budgetTypeValue: BudgetTypeEnum.budget.value,
       limit: limit.toAmountMoney(),
       createdDate: now,
       updatedDate: now,

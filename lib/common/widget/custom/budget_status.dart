@@ -19,11 +19,13 @@ class BudgetStatus extends StatelessWidget {
 
   LinearGradient _gradient() {
     switch (budget.status) {
-      case StatusBudget.safe:
+      case StatusBudgetProgress.start:
+        return ColorManager.linearGrey;
+      case StatusBudgetProgress.progress:
         return ColorManager.linearGreen1;
-      case StatusBudget.warning:
+      case StatusBudgetProgress.almostDone:
         return ColorManager.linearWarning;
-      case StatusBudget.danger:
+      case StatusBudgetProgress.complete:
         return ColorManager.linearDanger;
     }
   }
