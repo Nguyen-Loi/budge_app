@@ -1,5 +1,4 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_dropdown.dart';
 import 'package:budget_app/common/widget/b_search_bar.dart';
@@ -8,30 +7,33 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
-import 'package:budget_app/view/home_page/widgets/home_budget_appbar.dart';
-import 'package:budget_app/view/home_page/widgets/home_budget_card_balance.dart';
-import 'package:budget_app/view/new_expense_view/new_expense_view.dart';
+import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/home_budget_list.dart';
-import 'package:budget_app/view/home_page/widgets/home_item_come.dart';
-import 'package:budget_app/view/income_view/income_view.dart';
+import 'package:budget_app/view/home_page/widgets/home_statistical_card/home_income_and_expense_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   HomePage({super.key});
   final TextEditingController _searchController = TextEditingController();
   List<String> get listCategory => ['A', 'B', 'C', 'D'];
   @override
-  Widget build(BuildContext context) {
-    logError('rebuild full');
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(fetchUserProvider).when(
+        data: (_) => body(),
+        error: (_, __) => const BStatus.error(),
+        loading: () => const BStatus.loading());
+  }
+
+  Widget body() {
     return Scaffold(
       appBar: AppBar(
         actions: [
           gapW16,
           const SizedBox.shrink(),
-          const Expanded(
-            child: HomeBudgetAppBar(),
+          Expanded(
+            child: _appbarInfo(),
           ),
           gapW16,
           GestureDetector(
@@ -42,43 +44,15 @@ class HomePage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         children: [
-          const HomeBudgetCardBalance(),
+          _cardBalance(),
           gapH16,
-          _inComeAndExpense(context),
+          const HomeIncomeAndExpenseCard(),
           gapH16,
           _searchAndCategory(),
           gapH16,
           const HomeBudgetList()
         ],
       ),
-    );
-  }
-
-  Widget _inComeAndExpense(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: HomeItemCome(
-              title: 'Income',
-              money: 4250,
-              color: ColorManager.purple11,
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const IncomeView()));
-              }),
-        ),
-        gapW16,
-        Expanded(
-          child: HomeItemCome(
-              title: 'Expense',
-              money: 4250,
-              color: ColorManager.purple21,
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const NewExpenseView()));
-              }),
-        )
-      ],
     );
   }
 
@@ -99,5 +73,40 @@ class HomePage extends StatelessWidget {
             onChanged: (v) => {})
       ],
     );
+  }
+
+  Widget _cardBalance() {
+    return Consumer(builder: (_, ref, __) {
+      final UserModel user = ref.watch(homeControllerProvider)!;
+      return Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        color: ColorManager.primary,
+        child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                BAvatar.network(user.profileUrl),
+                gapH24,
+                BText('Your available lalance is', color: ColorManager.white),
+                gapH16,
+                BText.h1('\$ 2028', color: ColorManager.white),
+              ],
+            )),
+      );
+    });
+  }
+
+  Widget _appbarInfo() {
+    return Consumer(builder: (_, ref, __) {
+      final UserModel user = ref.watch(homeControllerProvider)!;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          BTextRichSpace(text1: 'Hello ', text2: user.name),
+          gapH8,
+          const BText.caption('Your finances are looking good'),
+        ],
+      );
+    });
   }
 }

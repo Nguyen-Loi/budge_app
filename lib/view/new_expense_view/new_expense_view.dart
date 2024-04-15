@@ -77,7 +77,7 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
   Widget _chooseCategory() {
     return BFormCategoryBudget(
       label: 'Choose your budget',
-      list: ref.read(budgetsProvider),
+      list: ref.watch(budgetControllerProvider),
       validator: (p0) {
         if (p0 == null) {
           return 'Please choose your budget';

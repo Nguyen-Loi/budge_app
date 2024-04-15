@@ -11,7 +11,7 @@ final budgetDetailControllerProvider = Provider((ref) {
 });
 
 final fetchBudgetDetailController =
-    FutureProvider.family((ref, String budgetId) {
+    FutureProvider.autoDispose.family((ref, String budgetId) {
   final controller = ref.watch(budgetDetailControllerProvider);
   return controller.fetchListTransaction(budgetId);
 });

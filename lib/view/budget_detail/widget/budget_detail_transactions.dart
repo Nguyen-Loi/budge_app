@@ -18,8 +18,9 @@ class BudgetDetailTransactions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final data = ref.watch(fetchBudgetDetailController(budgetId));
     return BListAsync.customList(
-        data: ref.watch(fetchBudgetDetailController(budgetId)),
+        data: data,
         itemsBuilder: (context, items) {
           List<_GroupDateTransactionModel> listGroupTransactionByDay =
               _GroupDateTransactionModel.toList(items);

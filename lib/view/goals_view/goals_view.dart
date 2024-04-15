@@ -6,14 +6,12 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/data/data_local.dart';
-import 'package:budget_app/models/goal_model.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class GoalsView extends StatelessWidget {
   GoalsView({super.key});
-  List<GoalModel> goals = DataLocal.goals;
 
   GoalModel get urgentGoal =>
       goals.firstWhereOrNull((e) => e.isUrgent) ?? _defaultUrgent;
