@@ -1,48 +1,64 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/widget/async/b_async_data.dart';
 
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/custom/goal_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
-import 'package:budget_app/data/data_local.dart';
+import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
-import 'package:collection/collection.dart';
+import 'package:budget_app/view/goals_view/controller/goals_controller.dart';
+import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GoalsView extends StatelessWidget {
-  GoalsView({super.key});
+class GoalsView extends StatefulWidget {
+  const GoalsView({super.key});
 
-  GoalModel get urgentGoal =>
-      goals.firstWhereOrNull((e) => e.isUrgent) ?? _defaultUrgent;
+  @override
+  State<GoalsView> createState() => _GoalsViewState();
+}
 
-  GoalModel get _defaultUrgent => DataLocal.goalUrgent;
+class _GoalsViewState extends State<GoalsView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
 
-  List<GoalModel> get listGoalCustom =>
-      goals.where((e) => !e.isUrgent).toList();
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(
       children: [
         gapH40,
         const BText.h2('Goals'),
         gapH32,
         Expanded(
-          child: ListView(
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-            children: [
-              _urgentMoney(),
-              gapH16,
-              _listGoalCustom(),
-            ],
-          ),
+          child: _body(),
         ),
       ],
     );
   }
 
-  Widget _listGoalCustom() {
-    List<GoalModel> listGoal = listGoalCustom;
+  Widget _body() {
+    return Consumer(builder: (_, ref, __) {
+      final goals = ref.watch(goalsControllerProvider);
+      final goalDefault =
+          ref.watch(goalsControllerProvider.notifier).goalDefault;
+      return BAsyncData(
+          async: ref.watch(budgetsFetchProvider),
+          builder: (_) => ListView(
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                children: [
+                  _urgentMoney(goalDefault),
+                  gapH16,
+                  _listGoalCustom(goals),
+                ],
+              ));
+    });
+  }
+
+  Widget _listGoalCustom(List<BudgetModel> goals) {
     return Column(
       children: [
         //Title
@@ -68,8 +84,8 @@ class GoalsView extends StatelessWidget {
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: listGoal.length,
-            itemBuilder: (_, index) => _cardGoal(listGoal[index]),
+            itemCount: goals.length,
+            itemBuilder: (_, index) => _cardGoal(goals[index]),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: constraints.maxWidth > 700 ? 3 : 2,
               crossAxisSpacing: 16,
@@ -82,9 +98,7 @@ class GoalsView extends StatelessWidget {
     );
   }
 
-  Widget _urgentMoney() {
-    GoalModel goal = urgentGoal;
-
+  Widget _urgentMoney(BudgetModel goal) {
     return Column(
       children: [
         Row(
@@ -100,7 +114,7 @@ class GoalsView extends StatelessWidget {
     );
   }
 
-  Widget _cardGoal(GoalModel goal) {
+  Widget _cardGoal(BudgetModel goal) {
     IconModel icon = IconDataConstant.getIconModel(goal.iconId);
     return Card(
       child: Padding(

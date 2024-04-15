@@ -16,8 +16,8 @@
 //   static UserModel get userModel => _userModel;
 //   static GoalModel get goalUrgent => _goalUrent;
 //   static List<BudgetModel> get budgets => _bugets;
-//   static List<BudgetTransactionModel> get budgetTransactions =>
-//       _budgetTransactions;
+//   static List<BudgetTransactionModel> get transactions =>
+//       _transactions;
 //   static List<GoalModel> get goals => _goals;
 //   static List<GoalTransactionModel> get goalTransactions => _goalTransactions;
 
@@ -40,7 +40,7 @@
 //       iconId: 1,
 //       currentAmount: random.nextInt(2000000) + 1000,
 //       limit: random.nextInt(10000000) + 1000,
-//       transactions: _budgetTransactions,
+//       transactions: _transactions,
 //       // startDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       // endDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       createdDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
@@ -53,7 +53,7 @@
 //       iconId: 2,
 //       currentAmount: random.nextInt(2000000) + 1000,
 //       limit: random.nextInt(10000000) + 1000,
-//       transactions: _budgetTransactions,
+//       transactions: _transactions,
 //       // startDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       // endDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       createdDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
@@ -66,7 +66,7 @@
 //       iconId: 3,
 //       currentAmount: random.nextInt(2000000) + 1000,
 //       limit: random.nextInt(10000000) + 1000,
-//       transactions: _budgetTransactions,
+//       transactions: _transactions,
 //       // startDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       // endDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       createdDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
@@ -79,7 +79,7 @@
 //       iconId: 4,
 //       currentAmount: random.nextInt(2000000) + 1000,
 //       limit: random.nextInt(10000000) + 1000,
-//       transactions: _budgetTransactions,
+//       transactions: _transactions,
 //       // startDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       // endDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       createdDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
@@ -92,7 +92,7 @@
 //       iconId: 5,
 //       currentAmount: random.nextInt(2000000) + 1000,
 //       limit: random.nextInt(10000000) + 1000,
-//       transactions: _budgetTransactions,
+//       transactions: _transactions,
 //       // startDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       // endDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       createdDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
@@ -105,7 +105,7 @@
 //       iconId: 6,
 //       currentAmount: random.nextInt(2000000) + 1000,
 //       limit: random.nextInt(10000000) + 1000,
-//       transactions: _budgetTransactions,
+//       transactions: _transactions,
 //       // startDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       // endDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       createdDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
@@ -118,7 +118,7 @@
 //       iconId: 7,
 //       currentAmount: random.nextInt(2000000) + 1000,
 //       limit: random.nextInt(10000000) + 1000,
-//       transactions: _budgetTransactions,
+//       transactions: _transactions,
 //       // startDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       // endDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
 //       createdDate: faker.date.dateTime(minYear: 2000, maxYear: 2025),
@@ -126,7 +126,7 @@
 //     )
 //   ];
 
-//   static final List<BudgetTransactionModel> _budgetTransactions = [
+//   static final List<BudgetTransactionModel> _transactions = [
 //     BudgetTransactionModel(
 //         id: '1',
 //         budgetId: '1',

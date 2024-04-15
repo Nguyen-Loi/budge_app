@@ -1,5 +1,7 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/view/goals_view/goals_view.dart';
+import 'package:budget_app/view/history_view/history_page.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
 import 'package:budget_app/view/new_budget_view/new_budget_view.dart';
 import 'package:budget_app/view/profile_view/profile_page.dart';
@@ -17,14 +19,14 @@ final _navBarItems = [
     icon: Icon(IconConstants.home),
     label: 'Home',
   ),
-  // BottomNavigationBarItem(
-  //   icon: Icon(IconConstants.history),
-  //   label: 'History',
-  // ),
-  // BottomNavigationBarItem(
-  //   icon: Icon(IconConstants.goals),
-  //   label: 'Goals',
-  // ),
+  BottomNavigationBarItem(
+    icon: Icon(IconConstants.history),
+    label: 'History',
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(IconConstants.goals),
+    label: 'Goals',
+  ),
   BottomNavigationBarItem(
     icon: Icon(IconConstants.profile),
     label: 'Profile',
@@ -33,17 +35,26 @@ final _navBarItems = [
 
 class _MainPageBottomBarState extends State<MainPageBottomBar> {
   late int _selectedIndex;
+  late PageController _pageController;
   late List<Widget> _screens;
   @override
   void initState() {
     _selectedIndex = 0;
+    _pageController = PageController(initialPage: _selectedIndex);
     _screens = [
       HomePage(),
-      // const HistoryPage(),
-      // GoalsView(),
+      const HistoryPage(),
+      const GoalsView(),
       const ProfilePage(),
     ];
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -62,6 +73,7 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
               onTap: (int index) {
                 setState(() {
                   _selectedIndex = index;
+                  _pageController.jumpToPage(_selectedIndex);
                 });
               })
           : null,
@@ -88,7 +100,10 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
           const VerticalDivider(thickness: 1, width: 1),
           // This is the main content.
           Expanded(
-            child: _screens[_selectedIndex],
+            child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: _screens),
           )
         ],
       ),

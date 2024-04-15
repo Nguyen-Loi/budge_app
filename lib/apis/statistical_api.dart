@@ -1,10 +1,10 @@
 import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/apis/get_id.dart';
 import 'package:budget_app/common/log.dart';
-import 'package:budget_app/core/core.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
-import 'package:budget_app/models/budget_transaction_model.dart';
+import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/models/statistical_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +18,7 @@ final statisticalApiProvider = Provider((ref) {
 abstract class IStatisticalApi {
   FutureEither<StatisticalModel> updateStatistical(
       {required StatisticalModel statistical,
-      required BudgetTransactionModel budgetTransaction});
+      required TransactionModel transaction});
   Future<StatisticalModel?> fetchCurrentStatistical({required String uid});
 }
 
@@ -28,10 +28,10 @@ class StatisticalApi extends IStatisticalApi {
   @override
   FutureEither<StatisticalModel> updateStatistical(
       {required StatisticalModel statistical,
-      required BudgetTransactionModel budgetTransaction}) async {
+      required TransactionModel transaction}) async {
     try {
       StatisticalModel newStatistical = _updateStatisticalBaseOnTransaction(
-          statistical: statistical, transaction: budgetTransaction);
+          statistical: statistical, transaction: transaction);
       await _db
           .collection(FirestorePath.statistical(uid: statistical.userId))
           .doc(newStatistical.id)
@@ -45,7 +45,7 @@ class StatisticalApi extends IStatisticalApi {
 
   StatisticalModel _updateStatisticalBaseOnTransaction(
       {required StatisticalModel statistical,
-      required BudgetTransactionModel transaction}) {
+      required TransactionModel transaction}) {
     DateTime now = DateTime.now();
     final oldIncome = statistical.income;
     final oldExpense = statistical.expense;
@@ -69,7 +69,7 @@ class StatisticalApi extends IStatisticalApi {
       {required String uid}) async {
     final document = await _db
         .collection(FirestorePath.statistical(uid: uid))
-        .doc(GetId.month)
+        .doc(GetId.currentMonth)
         .mapModel(
             modelFrom: StatisticalModel.fromMap, modelTo: (e) => e.toMap())
         .get();

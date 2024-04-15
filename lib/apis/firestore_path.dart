@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestorePath {
   static const String _budget = 'Budget';
-  static const String _budgetTransaction = 'BudgetTransaction';
-  static const String _goal = 'Goal';
-  static const String _goalTransaction = 'GoalTransaction';
+  static const String _transaction = 'Transaction';
   static const String _user = 'User';
   static const String _statistical = 'Statistical';
 
@@ -14,14 +12,8 @@ class FirestorePath {
   static String budgets({required String uid}) => '$_user/$uid/$_budget';
   static String budget({required String uid, required String budgetId}) =>
       '$_user/$uid/$_budget/$budgetId';
-  static String budgetTransactions({required String uid}) =>
-      '$_user/$uid/$_budgetTransaction';
-
-  static String goals({required String uid}) => '$user/$uid/$_goal';
-  static String goal({required String uid, required String goalId}) =>
-      '$_user/$uid/$_goal/$goalId';
-  static String goalTransactions({required String uid}) =>
-      '$_user/$uid/$_goal/$_goalTransaction';
+  static String transactions({required String uid}) =>
+      '$_user/$uid/$_transaction';
 
   static String statistical({required String uid}) =>
       '$_user/$uid/$_statistical';
