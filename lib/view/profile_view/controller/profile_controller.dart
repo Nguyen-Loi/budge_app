@@ -1,26 +1,33 @@
-import 'dart:io';
-
-import 'package:budget_app/apis/user_api.dart';
-import 'package:budget_app/models/user_model.dart';
-import 'package:budget_app/view/home_page/controller/home_controller.dart';
+import 'package:budget_app/apis/auth_api.dart';
+import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
+import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/view/home_page/controller/uid_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
-final profileControllerProvider = Provider((ref) {
-  final userApi = ref.watch(userApiProvider);
-  return ProfileController(userApi: userApi);
+final profileController = StateNotifierProvider((ref) {
+  final authApi = ref.watch(authApiProvider);
+  final uidController = ref.watch(uidControllerProvider.notifier);
+  return ProfileController(authAPI: authApi, uidController: uidController);
 });
 
-final class ProfileController extends StateNotifier<UserModel?> {
-  final UserApi _userApi;
-  final HomeController _homeController;
+class ProfileController extends StateNotifier<void> {
+  final AuthAPI _authApi;
+  final UidController _uidController;
   ProfileController(
-      {required UserApi userApi, required HomeController homeController})
-      : _userApi = userApi,
-        _homeController = homeController,
-        super(null);
+      {required AuthAPI authAPI, required UidController uidController})
+      : _authApi = authAPI,
+        _uidController = uidController,
+        super(false);
 
-  Future<void> updateUser ({required File? file,required String name, required String }){
-    PhoneNumber d= PhoneNumber()
+  void signOut(BuildContext context) async {
+    final res = await _authApi.signOut();
+    res.fold((l) {
+      showSnackBar(context, l.message);
+    }, (r) {
+      _uidController.clear();
+      Navigator.pushNamedAndRemoveUntil(
+          context, RoutePath.login, (route) => false);
+    });
   }
 }

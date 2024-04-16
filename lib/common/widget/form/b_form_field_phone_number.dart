@@ -7,11 +7,15 @@ class BFormFieldPhoneNumber extends StatelessWidget {
   const BFormFieldPhoneNumber(
       {super.key,
       this.label = 'Phone number',
+      this.disable = false,
       required this.onInputChanged,
+      this.validator,
       this.initialValue});
   final String label;
   final void Function(PhoneNumber)? onInputChanged;
   final PhoneNumber? initialValue;
+  final bool disable;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +28,12 @@ class BFormFieldPhoneNumber extends StatelessWidget {
         ),
         gapH8,
         InternationalPhoneNumberInput(
-          onInputChanged: (_) {},
+          validator: validator,
+          isEnabled: !disable,
+          onInputChanged: onInputChanged,
           initialValue: initialValue,
+          hintText: 'No data',
+          countries: const ['VN', 'SG', 'JP'],
         ),
       ],
     );

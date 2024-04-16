@@ -87,7 +87,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   Widget _cardBalance() {
     return Consumer(builder: (_, ref, __) {
-      final UserModel user = ref.watch(homeControllerProvider)!;
+      final UserModel user = ref.watch(userControllerProvider)!;
       return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         color: ColorManager.primary,
@@ -108,7 +108,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   Widget _appbarInfo() {
     return Consumer(builder: (_, ref, __) {
-      final UserModel user = ref.watch(homeControllerProvider)!;
+      final UserModel user = ref.watch(userControllerProvider)!;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
