@@ -8,6 +8,7 @@ class LottieAssets {
   static const String _lottiePath = 'assets/lottie';
   static const String loading1 = '$_lottiePath/loading1.json';
   static const String loading2 = '$_lottiePath/loading2.json';
+  static const String loadingImage = '$_lottiePath/loadingImage.json';
   static const String error = '$_lottiePath/error.json';
   static const String empty = '$_lottiePath/empty.json';
 }

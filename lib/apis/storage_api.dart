@@ -26,8 +26,10 @@ class StorageApi extends IStorageAPI {
   @override
   FutureEither<String> uploadFile(File file, {required String filePath}) async {
     try {
-      String fileName = '$filePath/${DateTime.now().millisecondsSinceEpoch}-${file.path}';
-      UploadTask uploadTask = _storage.ref().child(fileName).putFile(file);
+      String fileName = file.path.split('/').last;
+      String path =
+          '$filePath/${DateTime.now().millisecondsSinceEpoch}_$fileName';
+      UploadTask uploadTask = _storage.ref().child(path).putFile(file);
       String url = await (await uploadTask).ref.getDownloadURL();
       return right(url);
     } catch (e) {

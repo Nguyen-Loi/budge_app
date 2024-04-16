@@ -4,8 +4,8 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/picker/b_picker_datetime.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
-import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:budget_app/view/base_view.dart';
+import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:budget_app/view/income_view/controller/income_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,8 +38,8 @@ class _IncomeViewState extends ConsumerState<IncomeView> {
     }
   }
 
-  Widget _form() {
-    String uid = ref.watch(authControllerProvider.notifier).uid;
+  Widget _form(BuildContext context) {
+    String uid = ref.watch(uidControllerProvider);
     return Form(
       key: _formKey,
       child: ListViewWithSpacing(
@@ -63,14 +63,11 @@ class _IncomeViewState extends ConsumerState<IncomeView> {
               _transactionDate = date;
             },
           ),
-          Expanded(
-            child: Align(
-                alignment: Alignment.bottomCenter,
-                child: BButton(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    onPressed: () => _addMoney(uid: uid),
-                    title: 'Add money')),
-          )
+          SizedBox(height: MediaQuery.sizeOf(context).height / 5),
+          BButton(
+              padding: const EdgeInsets.only(bottom: 16),
+              onPressed: () => _addMoney(uid: uid),
+              title: 'Add money')
         ],
       ),
     );
@@ -78,11 +75,16 @@ class _IncomeViewState extends ConsumerState<IncomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseView(
-        title: 'Income',
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: _form(),
-        ));
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: BaseView(
+          title: 'Income',
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: _form(context),
+          )),
+    );
   }
 }

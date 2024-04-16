@@ -6,14 +6,14 @@ import 'package:budget_app/core/b_datetime.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
+import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final newBudgetControllerProvider = Provider((ref) {
   final budgetApi = ref.watch(budgetAPIProvider);
-  final uid = ref.watch(uidProvider);
+  final uid = ref.watch(uidControllerProvider);
   final budgetController = ref.watch(budgetControllerProvider.notifier);
   return NewBudgetController(
       budgetApi: budgetApi, uid: uid, budgetController: budgetController);

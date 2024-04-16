@@ -2,13 +2,13 @@ import 'package:budget_app/apis/budget_api.dart';
 import 'package:budget_app/core/b_datetime.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
+import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final goalsControllerProvider =
     StateNotifierProvider<GoalsController, List<BudgetModel>>((ref) {
-  final uid = ref.watch(uidProvider);
+  final uid = ref.watch(uidControllerProvider);
   final budgetApi = ref.watch(budgetAPIProvider);
   return GoalsController(uid: uid, budgetApi: budgetApi);
 });
@@ -26,22 +26,19 @@ class GoalsController extends StateNotifier<List<BudgetModel>> {
   final String _uid;
   final BudgetApi _budgetApi;
 
-  final String _goalKeyDefault = 'spe_goal_default';
+  final String goalKeyDefault = 'spe_goal_default';
 
   List<BudgetModel> _goals = [];
 
-  BudgetModel get goalDefault =>
-      _goals.firstWhere((e) => e.id == _goalKeyDefault);
-
-  Future<void> fetchGoals() async {
+  Future<List<BudgetModel>> fetchGoals() async {
     _goals = await _budgetApi.fetchGoals(_uid);
 
     // add data urgent default if not exits
-    final urgentGoal = _goals.firstWhereOrNull((e) => e.id == _goalKeyDefault);
-    if (urgentGoal == null) {
+    final goalDefaultTemp = _goals.firstWhereOrNull((e) => e.id == goalKeyDefault);
+    if (goalDefaultTemp == null) {
       DateTime now = DateTime.now();
       final urgentDefault = BudgetModel(
-          id: _goalKeyDefault,
+          id: goalKeyDefault,
           userId: _uid,
           month: BDateTime.month(now),
           name: 'Urgent',
@@ -54,7 +51,7 @@ class GoalsController extends StateNotifier<List<BudgetModel>> {
       _goals.add(urgentDefault);
     }
 
-    _notifier();
+   return _goals;
   }
 
   void addGoal(BudgetModel model) {
