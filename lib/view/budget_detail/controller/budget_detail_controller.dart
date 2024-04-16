@@ -1,10 +1,10 @@
 import 'package:budget_app/apis/transaction_api.dart';
 import 'package:budget_app/models/transaction_model.dart';
-import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
+import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final budgetDetailControllerProvider = Provider((ref) {
-  final uid = ref.watch(uidProvider);
+  final uid = ref.watch(uidControllerProvider);
   final transactionApi = ref.watch(transactionApiProvider);
   return BudgetDetailController(transactionApi: transactionApi, uid: uid);
 });

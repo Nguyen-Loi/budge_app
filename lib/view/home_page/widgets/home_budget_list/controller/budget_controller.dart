@@ -1,11 +1,11 @@
 import 'package:budget_app/apis/budget_api.dart';
 import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
+import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final budgetControllerProvider =
     StateNotifierProvider<BudgetController, List<BudgetModel>>((ref) {
-  final uid = ref.watch(uidProvider);
+  final uid = ref.watch(uidControllerProvider);
   final budgetApi = ref.watch(budgetAPIProvider);
   return BudgetController(budgetApi: budgetApi, uid: uid);
 });

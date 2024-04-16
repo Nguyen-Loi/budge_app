@@ -2,12 +2,12 @@ import 'package:budget_app/apis/get_id.dart';
 import 'package:budget_app/apis/statistical_api.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/models/statistical_model.dart';
-import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
+import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final statisticalControllerProvider =
     StateNotifierProvider<StatisticalController, StatisticalModel?>((ref) {
-  final uid = ref.watch(uidProvider);
+  final uid = ref.watch(uidControllerProvider);
   final statisticalApi = ref.watch(statisticalApiProvider);
   return StatisticalController(uid: uid, statisticalApi: statisticalApi);
 });

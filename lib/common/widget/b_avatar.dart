@@ -1,21 +1,34 @@
+import 'dart:io';
+
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
-enum _ImageType { network, asset }
+enum _ImageType { network, asset, file }
 
 class BAvatar extends StatelessWidget {
   const BAvatar.network(
     this.url, {
     super.key,
     this.size,
-  }) : _imageType = _ImageType.network;
+  })  : _imageType = _ImageType.network,
+        file = null;
 
   const BAvatar.asset(String asset, {super.key, this.size})
       : _imageType = _ImageType.asset,
-        url = asset;
+        url = asset,
+        file = null;
 
-  final String url;
+  const BAvatar.file(
+    this.file, {
+    super.key,
+    this.size,
+  })  : _imageType = _ImageType.file,
+        url = null;
+
+  final String? url;
+  final File? file;
   final double? size;
   final _ImageType _imageType;
 
@@ -26,22 +39,31 @@ class BAvatar extends StatelessWidget {
         return _asset();
       case _ImageType.network:
         return _network();
+      case _ImageType.file:
+        return _file();
     }
   }
 
   Widget _asset() {
     return CircleAvatar(
       radius: size,
-      child: Image.asset(url),
+      child: Image.asset(url!),
+    );
+  }
+
+  Widget _file() {
+    return CircleAvatar(
+      radius: size,
+      child: Image.file(file!),
     );
   }
 
   Widget _network() {
     return CachedNetworkImage(
-      imageUrl: url,
+      imageUrl: url!,
       placeholder: (context, url) => CircleAvatar(
         radius: size,
-        child: Image.asset(AssetsConstants.avatarDefault),
+        child: Lottie.asset(LottieAssets.loadingImage),
       ),
       imageBuilder: (context, image) => CircleAvatar(
         backgroundImage: image,

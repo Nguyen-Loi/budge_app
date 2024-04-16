@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
@@ -11,8 +12,7 @@ class UserModel {
   final String name;
   final int accountTypeValue;
   final int currencyTypeValue;
-  final String? phoneNumber;
-  final String? dialCode;
+  final PhoneNumber? phoneNumber;
   final DateTime createdDate;
   final DateTime updatedDate;
   UserModel({
@@ -23,7 +23,6 @@ class UserModel {
     required this.accountTypeValue,
     required this.currencyTypeValue,
     this.phoneNumber,
-    this.dialCode,
     required this.createdDate,
     required this.updatedDate,
   });
@@ -38,8 +37,7 @@ class UserModel {
     String? name,
     int? accountTypeValue,
     int? currencyTypeValue,
-    String? phoneNumber,
-    String? dialCode,
+    PhoneNumber? phoneNumber,
     DateTime? createdDate,
     DateTime? updatedDate,
   }) {
@@ -51,7 +49,6 @@ class UserModel {
       accountTypeValue: accountTypeValue ?? this.accountTypeValue,
       currencyTypeValue: currencyTypeValue ?? this.currencyTypeValue,
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      dialCode: dialCode ?? this.dialCode,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
     );
@@ -65,14 +62,20 @@ class UserModel {
       'name': name,
       'accountTypeValue': accountTypeValue,
       'currencyTypeValue': currencyTypeValue,
-      'phoneNumber': phoneNumber,
-      'dialCode': dialCode,
+      'phoneNumber': phoneNumber?.toMap(),
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
+    Map<String, dynamic>? objectPhone = map['phoneNumber'];
+    PhoneNumber? phoneNumber = objectPhone != null
+        ? PhoneNumber(
+            phoneNumber: objectPhone["phoneNumber"],
+            dialCode: objectPhone["dialCode"],
+            isoCode: objectPhone["isoCode"])
+        : null;
     return UserModel(
       id: map['id'] as String,
       email: map['email'] as String,
@@ -80,50 +83,60 @@ class UserModel {
       name: map['name'] as String,
       accountTypeValue: map['accountTypeValue'] as int,
       currencyTypeValue: map['currencyTypeValue'] as int,
-      phoneNumber: map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
-      dialCode: map['dialCode'] != null ? map['dialCode'] as String : null,
-      createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
-      updatedDate: DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
+      phoneNumber: phoneNumber,
+      createdDate:
+          DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
+      updatedDate:
+          DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UserModel.fromJson(String source) => UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserModel.fromJson(String source) =>
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountTypeValue: $accountTypeValue, currencyTypeValue: $currencyTypeValue, phoneNumber: $phoneNumber, dialCode: $dialCode, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountTypeValue: $accountTypeValue, currencyTypeValue: $currencyTypeValue, phoneNumber: $phoneNumber, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
   bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.email == email &&
-      other.profileUrl == profileUrl &&
-      other.name == name &&
-      other.accountTypeValue == accountTypeValue &&
-      other.currencyTypeValue == currencyTypeValue &&
-      other.phoneNumber == phoneNumber &&
-      other.dialCode == dialCode &&
-      other.createdDate == createdDate &&
-      other.updatedDate == updatedDate;
+
+    return other.id == id &&
+        other.email == email &&
+        other.profileUrl == profileUrl &&
+        other.name == name &&
+        other.accountTypeValue == accountTypeValue &&
+        other.currencyTypeValue == currencyTypeValue &&
+        other.phoneNumber == phoneNumber &&
+        other.createdDate == createdDate &&
+        other.updatedDate == updatedDate;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      email.hashCode ^
-      profileUrl.hashCode ^
-      name.hashCode ^
-      accountTypeValue.hashCode ^
-      currencyTypeValue.hashCode ^
-      phoneNumber.hashCode ^
-      dialCode.hashCode ^
-      createdDate.hashCode ^
-      updatedDate.hashCode;
+        email.hashCode ^
+        profileUrl.hashCode ^
+        name.hashCode ^
+        accountTypeValue.hashCode ^
+        currencyTypeValue.hashCode ^
+        phoneNumber.hashCode ^
+        createdDate.hashCode ^
+        updatedDate.hashCode;
+  }
+}
+
+extension PhoneUserModel on PhoneNumber? {
+  Map<String, String>? toMap() {
+    final phone = this!;
+    return {
+      "phoneNumber": phone.phoneNumber ?? "",
+      "dialCode": phone.dialCode ?? "",
+      "isoCode": phone.isoCode ?? "",
+    };
   }
 }

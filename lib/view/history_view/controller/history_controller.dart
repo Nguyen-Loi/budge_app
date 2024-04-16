@@ -4,14 +4,14 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
-import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:budget_app/view/history_view/model/budget_transaction_custom_model.dart';
+import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final historyControllerProvider =
     StateNotifierProvider<HistoryController, void>((ref) {
-  final uid = ref.watch(uidProvider);
+  final uid = ref.watch(uidControllerProvider);
   final transactionApi = ref.watch(transactionApiProvider);
   final db = ref.watch(dbProvider);
   return HistoryController(transactionApi: transactionApi, uid: uid, db: db);

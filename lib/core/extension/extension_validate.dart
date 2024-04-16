@@ -1,3 +1,5 @@
+import 'package:budget_app/common/log.dart';
+
 extension ValidateForm on String? {
   String? get validateEmail {
     final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -17,7 +19,9 @@ extension ValidateForm on String? {
   }
 
   String? get validatePhoneNumber {
-    final phoneRegExp = RegExp(r"^\+?0[0-9]{10}$");
+    logError(this!.toString());
+    final phoneRegExp = RegExp(
+        r"(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})");
     String textError = 'Phone number invalid';
     if (this == null || !phoneRegExp.hasMatch(this!)) {
       return textError;
@@ -26,8 +30,7 @@ extension ValidateForm on String? {
   }
 
   String? get validateName {
-    final nameRegExp =
-        RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+    final nameRegExp = RegExp(r"^[A-Za-z\s'-]+$");
     String textError = 'Name invalid';
     if (this == null || !nameRegExp.hasMatch(this!)) {
       return textError;

@@ -5,20 +5,20 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
+import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage>   with  AutomaticKeepAliveClientMixin {
-
+class _ProfilePageState extends ConsumerState<ProfilePage>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -62,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage>   with  AutomaticKeepAliveCli
 
   Widget _info() {
     return Consumer(builder: (_, ref, __) {
-      final user = ref.watch(homeControllerProvider)!;
+      final user = ref.watch(userControllerProvider)!;
       return ListTile(
         title: BText.b1(user.name, color: ColorManager.white),
         leading: BAvatar.network(user.profileUrl, size: 20),
@@ -89,11 +89,12 @@ class _ProfilePageState extends State<ProfilePage>   with  AutomaticKeepAliveCli
               }),
           _item(
               icon: IconConstants.setting, text: 'Settings', onPressed: () {}),
+          _item(icon: IconConstants.contact, text: 'Contact', onPressed: () {}),
           _item(
-              icon: IconConstants.contact,
-              text: 'Contact',
+              icon: IconConstants.signOut,
+              text: 'Sign Out',
               onPressed: () {
-                FirebaseAuth.instance.signOut();
+                ref.read(profileController.notifier).signOut(context);
               }),
           Expanded(child: _content())
         ],

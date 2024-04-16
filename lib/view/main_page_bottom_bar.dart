@@ -42,7 +42,7 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
     _selectedIndex = 0;
     _pageController = PageController(initialPage: _selectedIndex);
     _screens = [
-      HomePage(),
+      const HomePage(),
       const HistoryPage(),
       const GoalsView(),
       const ProfilePage(),

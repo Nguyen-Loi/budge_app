@@ -5,7 +5,7 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/models/transaction_model.dart';
-import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
+import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_statistical_card/controller/statistical_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,7 +15,7 @@ final expenseControllerProvider = Provider<NewExpenseController>((ref) {
   final transactionApi = ref.watch(transactionApiProvider);
   final statisticalController =
       ref.watch(statisticalControllerProvider.notifier);
-  final uid = ref.watch(uidProvider);
+  final uid = ref.watch(uidControllerProvider);
   return NewExpenseController(
       transactionApi: transactionApi,
       uid: uid,

@@ -1,5 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/b_status.dart';
+import 'package:budget_app/common/widget/async/b_async_list.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/custom/goal_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -40,20 +40,22 @@ class _GoalsViewState extends State<GoalsView>
 
   Widget _builder() {
     return Consumer(builder: (_, ref, __) {
-      final goals = ref.watch(goalsControllerProvider);
-      final goalDefault =
-          ref.watch(goalsControllerProvider.notifier).goalDefault;
-      bool isLoading = ref.watch(goalFutureProvider).isLoading;
-      return isLoading
-          ? const BStatus.loading(text: 'Loading,,,')
-          : ListView(
+      return BListAsync.customList(
+          data: ref.watch(goalFutureProvider),
+          itemsBuilder: (context, goals) {
+            String keyDefault =
+                ref.watch(goalsControllerProvider.notifier).goalKeyDefault;
+            final goalDefault = goals.firstWhere((e) => e.id == keyDefault);
+            final listGoal = goals.where((e) => e.id != keyDefault).toList();
+            return ListView(
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               children: [
                 _urgentMoney(goalDefault),
                 gapH16,
-                _listGoalCustom(goals),
+                _listGoalCustom(listGoal),
               ],
             );
+          });
     });
   }
 

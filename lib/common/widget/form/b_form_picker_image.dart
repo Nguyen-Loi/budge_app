@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/type_def.dart';
+import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
@@ -11,19 +12,28 @@ import 'package:image_picker/image_picker.dart';
 class BFormPickerImage extends FormField<File> {
   final OnChangeImage onChanged;
   final double size;
+  final bool disable;
   final String? initialUrl;
+
   BFormPickerImage(
-      {super.key, required this.onChanged, this.size = 40, this.initialUrl})
+      {super.key,
+      required this.onChanged,
+      this.size = 40,
+      this.disable = false,
+      this.initialUrl})
       : super(builder: (field) {
           final _BFormPickerImage state = field as _BFormPickerImage;
           return SizedBox(
             height: 80,
             child: InkWell(
-              onTap: state.onTap,
+              onTap: disable ? null : state.onTap,
               child: Ink(
-                decoration: BoxDecoration(
-                    color: ColorManager.grey2,
-                    borderRadius: const BorderRadius.all(Radius.circular(16))),
+                decoration: disable
+                    ? null
+                    : BoxDecoration(
+                        color: ColorManager.grey2,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(16))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -82,20 +92,19 @@ class _BFormPickerImage extends FormFieldState<File> {
   }
 
   Widget _showImageNetwork() {
-    return Image.network(
+    return BAvatar.network(
       widget.initialUrl!,
-      fit: BoxFit.contain,
-      width: widget.size * 2,
-      height: widget.size * 2,
+      size: widget.size,
     );
   }
 
   Widget _showImageFile() {
-    return Image.file(
-      super.value!,
-      fit: BoxFit.contain,
-      width: widget.size * 2,
-      height: widget.size * 2,
+    return CircleAvatar(
+      radius: widget.size,
+      child: Image.file(
+        super.value!,
+        fit: BoxFit.contain,
+      ),
     );
   }
 

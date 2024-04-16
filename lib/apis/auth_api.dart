@@ -60,12 +60,13 @@ class AuthAPI implements IAuthApi {
       }
     }
     final DateTime now = DateTime.now();
+    String email = user.email ?? 'member@gmail.com';
     final newUser = UserModel(
       id: user.uid,
-      email: user.email ?? '',
+      email: email,
       profileUrl: user.photoURL ??
           'https://static.vecteezy.com/system/resources/previews/023/220/595/non_2x/3d-robot-illustration-kawaii-friendly-suitable-for-tech-mascot-free-png.png',
-      name: user.displayName ?? '',
+      name: user.displayName ?? email.split('@')[0],
       accountTypeValue: accountType.value,
       currencyTypeValue: CurrencyType.vnd.value,
       createdDate: now,
