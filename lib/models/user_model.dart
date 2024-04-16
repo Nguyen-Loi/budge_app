@@ -9,8 +9,10 @@ class UserModel {
   final String email;
   final String profileUrl;
   final String name;
-  final int accountValue;
-  final int currencyValue;
+  final int accountTypeValue;
+  final int currencyTypeValue;
+  final String? phoneNumber;
+  final String? dialCode;
   final DateTime createdDate;
   final DateTime updatedDate;
   UserModel({
@@ -18,22 +20,26 @@ class UserModel {
     required this.email,
     required this.profileUrl,
     required this.name,
-    required this.accountValue,
-    required this.currencyValue,
+    required this.accountTypeValue,
+    required this.currencyTypeValue,
+    this.phoneNumber,
+    this.dialCode,
     required this.createdDate,
     required this.updatedDate,
   });
 
-  AccountType get accountType => AccountType.fromValue(accountValue);
-  CurrencyType get currencyType => CurrencyType.fromValue(currencyValue);
+  AccountType get accountType => AccountType.fromValue(accountTypeValue);
+  CurrencyType get currencyType => CurrencyType.fromValue(currencyTypeValue);
 
   UserModel copyWith({
     String? id,
     String? email,
     String? profileUrl,
     String? name,
-    int? accountValue,
-    int? currencyValue,
+    int? accountTypeValue,
+    int? currencyTypeValue,
+    String? phoneNumber,
+    String? dialCode,
     DateTime? createdDate,
     DateTime? updatedDate,
   }) {
@@ -42,8 +48,10 @@ class UserModel {
       email: email ?? this.email,
       profileUrl: profileUrl ?? this.profileUrl,
       name: name ?? this.name,
-      accountValue: accountValue ?? this.accountValue,
-      currencyValue: currencyValue ?? this.currencyValue,
+      accountTypeValue: accountTypeValue ?? this.accountTypeValue,
+      currencyTypeValue: currencyTypeValue ?? this.currencyTypeValue,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      dialCode: dialCode ?? this.dialCode,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
     );
@@ -55,8 +63,10 @@ class UserModel {
       'email': email,
       'profileUrl': profileUrl,
       'name': name,
-      'accountValue': accountValue,
-      'currencyValue': currencyValue,
+      'accountTypeValue': accountTypeValue,
+      'currencyTypeValue': currencyTypeValue,
+      'phoneNumber': phoneNumber,
+      'dialCode': dialCode,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
@@ -68,8 +78,10 @@ class UserModel {
       email: map['email'] as String,
       profileUrl: map['profileUrl'] as String,
       name: map['name'] as String,
-      accountValue: map['accountValue'] as int,
-      currencyValue: map['currencyValue'] as int,
+      accountTypeValue: map['accountTypeValue'] as int,
+      currencyTypeValue: map['currencyTypeValue'] as int,
+      phoneNumber: map['phoneNumber'] != null ? map['phoneNumber'] as String : null,
+      dialCode: map['dialCode'] != null ? map['dialCode'] as String : null,
       createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       updatedDate: DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
     );
@@ -81,7 +93,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountValue: $accountValue, currencyValue: $currencyValue, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountTypeValue: $accountTypeValue, currencyTypeValue: $currencyTypeValue, phoneNumber: $phoneNumber, dialCode: $dialCode, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -93,8 +105,10 @@ class UserModel {
       other.email == email &&
       other.profileUrl == profileUrl &&
       other.name == name &&
-      other.accountValue == accountValue &&
-      other.currencyValue == currencyValue &&
+      other.accountTypeValue == accountTypeValue &&
+      other.currencyTypeValue == currencyTypeValue &&
+      other.phoneNumber == phoneNumber &&
+      other.dialCode == dialCode &&
       other.createdDate == createdDate &&
       other.updatedDate == updatedDate;
   }
@@ -105,8 +119,10 @@ class UserModel {
       email.hashCode ^
       profileUrl.hashCode ^
       name.hashCode ^
-      accountValue.hashCode ^
-      currencyValue.hashCode ^
+      accountTypeValue.hashCode ^
+      currencyTypeValue.hashCode ^
+      phoneNumber.hashCode ^
+      dialCode.hashCode ^
       createdDate.hashCode ^
       updatedDate.hashCode;
   }
