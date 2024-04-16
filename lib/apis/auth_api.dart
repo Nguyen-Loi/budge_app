@@ -3,6 +3,7 @@ import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -58,15 +59,19 @@ class AuthAPI implements IAuthApi {
         return;
       }
     }
-    return _db.doc(FirestorePath.user(user.uid)).customSet({
-      'id': user.uid,
-      'email': user.email,
-      'name': user.displayName ?? user.email!.split('@')[0],
-      'accountValue': accountType.value,
-      'profileUrl': user.photoURL ??
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSItlIyMon238HFkvhWIJidKnw2lEVhtmB3sEuBdOMr5A&s',
-      'currencyValue': CurrencyType.vnd.value
-    });
+    final DateTime now = DateTime.now();
+    final newUser = UserModel(
+      id: user.uid,
+      email: user.email ?? '',
+      profileUrl: user.photoURL ??
+          'https://static.vecteezy.com/system/resources/previews/023/220/595/non_2x/3d-robot-illustration-kawaii-friendly-suitable-for-tech-mascot-free-png.png',
+      name: user.displayName ?? '',
+      accountTypeValue: accountType.value,
+      currencyTypeValue: CurrencyType.vnd.value,
+      createdDate: now,
+      updatedDate: now,
+    );
+    return _db.doc(FirestorePath.user(user.uid)).set(newUser.toMap());
   }
 
   @override

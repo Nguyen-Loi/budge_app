@@ -13,7 +13,7 @@ final goalsControllerProvider =
   return GoalsController(uid: uid, budgetApi: budgetApi);
 });
 
-final goalsFetchProvider = FutureProvider((ref) {
+final goalFutureProvider = FutureProvider((ref) {
   final controller = ref.watch(goalsControllerProvider.notifier);
   return controller.fetchGoals();
 });

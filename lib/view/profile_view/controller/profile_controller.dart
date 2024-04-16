@@ -1,41 +1,26 @@
+import 'dart:io';
+
 import 'package:budget_app/apis/user_api.dart';
 import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 final profileControllerProvider = Provider((ref) {
   final userApi = ref.watch(userApiProvider);
   return ProfileController(userApi: userApi);
 });
 
-final loadUserControllerProvider =FutureProvider.family((ref, String uid)async {
-  final profileController = ref.watch(profileControllerProvider);
-  return profileController.loadUser(uid);
-});
-
-final currentUserProvider = Provider((ref) {
-  final profileController = ref.watch(profileControllerProvider);
-  return profileController.currentUser;
-});
-
-// final uidProvider = Provider((ref) {
-//   final profileController = ref.watch(profileControllerProvider);
-//   return profileController.uid;
-// });
-
-final class ProfileController extends StateNotifier<bool> {
+final class ProfileController extends StateNotifier<UserModel?> {
   final UserApi _userApi;
-  ProfileController({required UserApi userApi})
+  final HomeController _homeController;
+  ProfileController(
+      {required UserApi userApi, required HomeController homeController})
       : _userApi = userApi,
-        super(false);
-  late UserModel _currentUser;
-  late String _uid;
+        _homeController = homeController,
+        super(null);
 
-  UserModel get currentUser => _currentUser;
-  String get uid => _uid;
-
-  Future<void> loadUser(String uid) async {
-    UserModel data = await _userApi.getUserById(uid);
-    _currentUser = data;
-    _uid = data.id;
+  Future<void> updateUser ({required File? file,required String name, required String }){
+    PhoneNumber d= PhoneNumber()
   }
 }

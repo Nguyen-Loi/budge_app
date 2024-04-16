@@ -18,12 +18,11 @@ class ProfileDetailView extends StatefulWidget {
 
 class _ProfileDetailViewState extends State<ProfileDetailView> {
   late TextEditingController _nameFieldController;
-  late TextEditingController _emailFieldController;
 
   @override
   void initState() {
     _nameFieldController = TextEditingController();
-    _emailFieldController = TextEditingController();
+
     super.initState();
   }
 
@@ -60,8 +59,8 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
   }
 
   List<Widget> get _fields => [
+        const BText('Email: '),
         BFormFieldText(_nameFieldController, label: 'Name'),
-        BFormFieldText(_emailFieldController, label: 'E-mail'),
         BFormFieldPhoneNumber(
           onInputChanged: (PhoneNumber value) {},
         ),

@@ -15,9 +15,15 @@ class GoalStatus extends StatelessWidget {
   final BudgetModel goal;
   final CrossAxisAlignment crossAxisAlignment;
 
-  int get progress => goal.currentAmount <= goal.limit
-      ? (goal.currentAmount / goal.limit * 100).round()
-      : 100;
+  int get progress {
+    int amount = goal.currentAmount;
+    int limit = goal.limit;
+    if (limit == 0) {
+      return 0;
+    }
+    return amount <= limit ? (amount / limit * 100).round() : 100;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
