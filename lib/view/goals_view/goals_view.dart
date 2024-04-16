@@ -1,6 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/async/b_async_data.dart';
-
+import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/custom/goal_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -9,7 +8,6 @@ import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:budget_app/view/goals_view/controller/goals_controller.dart';
-import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -34,27 +32,28 @@ class _GoalsViewState extends State<GoalsView>
         const BText.h2('Goals'),
         gapH32,
         Expanded(
-          child: _body(),
+          child: _builder(),
         ),
       ],
     );
   }
 
-  Widget _body() {
+  Widget _builder() {
     return Consumer(builder: (_, ref, __) {
       final goals = ref.watch(goalsControllerProvider);
       final goalDefault =
           ref.watch(goalsControllerProvider.notifier).goalDefault;
-      return BAsyncData(
-          async: ref.watch(budgetsFetchProvider),
-          builder: (_) => ListView(
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                children: [
-                  _urgentMoney(goalDefault),
-                  gapH16,
-                  _listGoalCustom(goals),
-                ],
-              ));
+      bool isLoading = ref.watch(goalFutureProvider).isLoading;
+      return isLoading
+          ? const BStatus.loading(text: 'Loading,,,')
+          : ListView(
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+              children: [
+                _urgentMoney(goalDefault),
+                gapH16,
+                _listGoalCustom(goals),
+              ],
+            );
     });
   }
 

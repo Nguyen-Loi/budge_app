@@ -1,13 +1,14 @@
 import 'dart:io';
+
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:collection/collection.dart';
 import 'package:fpdart/fpdart.dart';
 
 final storageAPIProvider = Provider((ref) {
-  return StorageAPI(
+  return StorageApi(
     storage: ref.watch(storageProvider),
   );
 });
@@ -18,14 +19,14 @@ abstract class IStorageAPI {
       {required String filePath});
 }
 
-class StorageAPI extends IStorageAPI {
+class StorageApi extends IStorageAPI {
   final FirebaseStorage _storage;
-  StorageAPI({required FirebaseStorage storage}) : _storage = storage;
+  StorageApi({required FirebaseStorage storage}) : _storage = storage;
 
   @override
   FutureEither<String> uploadFile(File file, {required String filePath}) async {
     try {
-      String fileName = '$filePath/${DateTime.now()}-${file.path}';
+      String fileName = '$filePath/${DateTime.now().millisecondsSinceEpoch}-${file.path}';
       UploadTask uploadTask = _storage.ref().child(fileName).putFile(file);
       String url = await (await uploadTask).ref.getDownloadURL();
       return right(url);
@@ -42,18 +43,19 @@ class StorageAPI extends IStorageAPI {
     Either<Failure, String>? failured =
         imageUrls.firstWhereOrNull((element) => element.isLeft());
     if (failured != null) {
-      return left(failured.getLeft().getOrElse(() => const Failure(error: 'Error when upload multiple file')));
+      return left(failured.getLeft().getOrElse(
+          () => const Failure(error: 'Error when upload multiple file')));
     }
     List<String> urls = [];
-      for (final imageUrl in imageUrls) {
-        List<String> urls = [];
-        imageUrl.fold(
-          (_) {},
-          (url) {
-            urls.add(url);
-          },
-        );
-      }
-      return right(urls);
+    for (final imageUrl in imageUrls) {
+      List<String> urls = [];
+      imageUrl.fold(
+        (_) {},
+        (url) {
+          urls.add(url);
+        },
+      );
+    }
+    return right(urls);
   }
 }
