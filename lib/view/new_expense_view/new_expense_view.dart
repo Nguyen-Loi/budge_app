@@ -43,23 +43,28 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseView(
-        title: 'New expense',
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Form(
-            key: _formKey,
-            child: ListViewWithSpacing(
-              children: [
-                _amount(),
-                _note(),
-                _chooseCategory(),
-                gapH24,
-                _buttonAddMoney()
-              ],
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: BaseView(
+          title: 'New expense',
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+              key: _formKey,
+              child: ListViewWithSpacing(
+                children: [
+                  _amount(),
+                  _note(),
+                  _chooseCategory(),
+                  gapH24,
+                  _buttonAddMoney()
+                ],
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 
   Widget _note() {
@@ -77,7 +82,7 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
   Widget _chooseCategory() {
     return BFormCategoryBudget(
       label: 'Choose your budget',
-      list: ref.watch(budgetControllerProvider),
+      list: ref.watch(budgetsCurMonthControllerProvider),
       validator: (p0) {
         if (p0 == null) {
           return 'Please choose your budget';

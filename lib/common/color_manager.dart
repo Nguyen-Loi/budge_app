@@ -15,11 +15,16 @@ class ColorManager {
   static Color purple24 = HexColor.fromHex("#D2AFF5");
   static Color purple25 = HexColor.fromHex("#D2AFF5");
 
-  static Color red = HexColor.fromHex("#E85962");
+  static Color red1 = HexColor.fromHex("#E85962");
+  static Color red2 = HexColor.fromHex("#DE4C5F");
+
   static Color blue = HexColor.fromHex("#2D98FE");
   static Color yellow = HexColor.fromHex("#FC9736");
-  static Color green1 = HexColor.fromHex("#017A47");
-  static Color green2 = HexColor.fromHex("#D1FADF");
+
+  static Color green1 = HexColor.fromHex("#6ABC2C");
+  static Color green2 = HexColor.fromHex("#017A47");
+  static Color green3 = HexColor.fromHex("#D1FADF");
+
   static Color white = HexColor.fromHex("#FFFFFF");
   static Color black = HexColor.fromHex("#000000");
   static Color orange = HexColor.fromHex("#FE7C2F");
@@ -65,7 +70,7 @@ class ColorManager {
     HexColor.fromHex('#2E3192'),
     HexColor.fromHex('#1BFFFF'),
   ]);
-   static LinearGradient linearPrimary = LinearGradient(colors: [
+  static LinearGradient linearPrimary = LinearGradient(colors: [
     HexColor.fromHex('#614385'),
     HexColor.fromHex('#516395'),
   ]);

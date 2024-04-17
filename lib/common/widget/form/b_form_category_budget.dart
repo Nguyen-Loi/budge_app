@@ -26,7 +26,7 @@ class BFormCategoryBudget extends FormField<BudgetModel> {
                     Text(
                       field.errorText ?? "Invalid",
                       style: AppTextTheme.bodySmall
-                          .copyWith(color: ColorManager.red),
+                          .copyWith(color: ColorManager.red1),
                     ),
                   gapH16,
                   list.isEmpty

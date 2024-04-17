@@ -1,11 +1,12 @@
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/view/auth_view/sign_up_view.dart';
-import 'package:budget_app/view/budget_detail/budget_detail_view.dart';
+import 'package:budget_app/view/budget_view/budget_detail_view/budget_detail_view.dart';
 import 'package:budget_app/view/goals_view/goals_view.dart';
+import 'package:budget_app/view/goals_view/new_goal_view/new_goal_view.dart';
 import 'package:budget_app/view/income_view/income_view.dart';
 import 'package:budget_app/view/main_page_bottom_bar.dart';
-import 'package:budget_app/view/new_budget_view/new_budget_view.dart';
+import 'package:budget_app/view/budget_view/new_budget_view/new_budget_view.dart';
 import 'package:budget_app/view/new_expense_view/new_expense_view.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,8 @@ class RoutePath {
   static const String goal = "/goal";
   static const String income = "/income";
   static const String expense = "/expense";
-  static const String newLimit = "/newLimit";
+  static const String newBudget = "/newBudget";
+  static const String newGoal = "/newGoal";
   static const String profileDetail = "/profileDetail";
   static const String budgetDetail = "/budgetDetail";
 }
@@ -41,8 +43,10 @@ class MainRouter {
         return MaterialPageRoute(builder: (_) => const IncomeView());
       case RoutePath.expense:
         return MaterialPageRoute(builder: (_) => const NewExpenseView());
-      case RoutePath.newLimit:
+      case RoutePath.newBudget:
         return MaterialPageRoute(builder: (_) => const NewBudgetView());
+      case RoutePath.newGoal:
+        return MaterialPageRoute(builder: (_) => const NewGoalView());
       case RoutePath.profileDetail:
         return MaterialPageRoute(builder: (_) => const ProfileDetailView());
       case RoutePath.budgetDetail:

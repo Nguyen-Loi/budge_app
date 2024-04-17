@@ -1,5 +1,6 @@
-import 'package:budget_app/apis/get_id.dart';
+import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/apis/transaction_api.dart';
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
@@ -40,15 +41,18 @@ class NewExpenseController extends StateNotifier<bool> {
       {required String budgetId,
       required int amount,
       required String? note}) async {
-    
     StatisticalModel statisticalModel = _statisticalController.state!;
-    if(statisticalModel.income<amount){
-      showDia
+    int currentIncome = statisticalModel.income;
+    if (currentIncome > amount) {
+      showBDialogInfoError(context,
+          message:
+              'Expenses exceed income (${currentIncome.toMoneyStr()}). Increase your income and try again');
+      return;
     }
 
     final now = DateTime.now();
     final newTransaction = TransactionModel(
-        id: GetId.time,
+        id: GenId.income,
         budgetId: budgetId,
         amount: amount.toAmountMoney(),
         note: note ?? '',

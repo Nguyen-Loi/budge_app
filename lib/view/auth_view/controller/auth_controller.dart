@@ -1,5 +1,4 @@
 import 'package:budget_app/apis/auth_api.dart';
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/utils.dart';
@@ -16,14 +15,18 @@ final authControllerProvider =
 class AuthController extends StateNotifier<void> {
   final AuthAPI _authAPI;
   final StateNotifierProviderRef<AuthController, void> _ref;
-  AuthController({
-    required AuthAPI authApi,
-    required  StateNotifierProviderRef<AuthController, void> ref,
-  })  : _authAPI = authApi,
+  AuthController(
+      {required AuthAPI authApi,
+      required StateNotifierProviderRef<AuthController, void> ref})
+      : _authAPI = authApi,
         _ref = ref,
         super(null);
 
   bool get isLogin => _authAPI.isLogin;
+
+  void initBaseUid() {
+    _ref.read(uidControllerProvider.notifier).init(_authAPI.uid);
+  }
 
   void loginWithEmailPassword(BuildContext context,
       {required String email, required String password}) async {
@@ -31,17 +34,11 @@ class AuthController extends StateNotifier<void> {
     final res = await _authAPI.loginWithEmailAndPassword(
         email: email, password: password);
     closeLoading();
-    res.fold((l) {
-      showSnackBar(context, l.message);
-    }, (r) {
-      _setUid();
+    res.fold((l) => showSnackBar(context, l.message), (r) {
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
+      initBaseUid();
     });
-  }
-
-  void _setUid() {
-    _ref.read(uidControllerProvider.notifier).setUid(_authAPI.uid);
   }
 
   void signUp(
@@ -60,13 +57,10 @@ class AuthController extends StateNotifier<void> {
 
   void loginWithFacebook(BuildContext context) async {
     final res = await _authAPI.loginWithFacebook();
-    res.fold((l) {
-      logError(l.error);
-      showSnackBar(context, l.message);
-    }, (r) {
-      _setUid();
+    res.fold((l) => showSnackBar(context, l.message), (r) {
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
+      initBaseUid();
     });
   }
 
@@ -75,9 +69,9 @@ class AuthController extends StateNotifier<void> {
   ) async {
     final res = await _authAPI.loginWithGoogle();
     res.fold((l) => showSnackBar(context, l.message), (r) {
-      _setUid();
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
+      initBaseUid();
     });
   }
 }

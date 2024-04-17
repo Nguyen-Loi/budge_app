@@ -1,4 +1,4 @@
-import 'package:budget_app/apis/get_id.dart';
+import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/apis/statistical_api.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/models/statistical_model.dart';
@@ -34,7 +34,7 @@ class StatisticalController extends StateNotifier<StatisticalModel?> {
       return;
     }
     final dataDefault = StatisticalModel(
-        id: GetId.currentMonth,
+        id: GenId.statistical,
         userId: _uid,
         income: 0,
         expense: 0,

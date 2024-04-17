@@ -8,7 +8,7 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/models/transaction_model.dart';
-import 'package:budget_app/view/budget_detail/controller/budget_detail_controller.dart';
+import 'package:budget_app/view/budget_view/budget_detail_view/widget/controller/budget_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,7 +18,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(fetchBudgetDetailController(budgetId));
+    final data = ref.watch(budgetDetailFutureProvider(budgetId));
     return BListAsync.customList(
         data: data,
         itemsBuilder: (context, items) {
@@ -62,8 +62,8 @@ class BudgetDetailTransactions extends ConsumerWidget {
                         Row(
                           children: [
                             Expanded(
-                                child: BText(e.note,
-                                    fontWeight: FontWeightManager.semiBold)),
+                                child:
+                                    BText(e.note.isEmpty ? 'No Data' : e.note)),
                             gapW16,
                             _itemStatusTransaction(type: e.transactionType)
                           ],
@@ -111,10 +111,10 @@ class BudgetDetailTransactions extends ConsumerWidget {
     switch (type) {
       case TransactionType.expense:
         return BText('-$amountMoney',
-            color: ColorManager.red, fontWeight: FontWeightManager.bold);
+            color: ColorManager.red1, fontWeight: FontWeightManager.bold);
       case TransactionType.income:
         return BText('+$amountMoney',
-            color: ColorManager.green1, fontWeight: FontWeightManager.bold);
+            color: ColorManager.green2, fontWeight: FontWeightManager.bold);
     }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:budget_app/apis/transaction_api.dart';
-import 'package:budget_app/apis/get_id.dart';
+import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
@@ -39,7 +39,7 @@ class IncomeController extends StateNotifier<bool> {
     final now = DateTime.now();
     final closeDialog = showLoading(context: context);
     final newTransaction = TransactionModel(
-        id: GetId.time,
+        id: GenId.income,
         budgetId: 'income',
         amount: amount.toAmountMoney(),
         note: note ?? '',

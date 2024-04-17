@@ -72,7 +72,7 @@ class HistoryItemTab extends StatelessWidget {
 
         // Right
         BText('+ ${transaction.amount.toMoneyStr()}',
-            color: ColorManager.green1)
+            color: ColorManager.green2)
       ],
     );
   }
