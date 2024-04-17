@@ -27,6 +27,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'Twitter Clone',
       theme: AppTheme.lightTheme,
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: MainRouter.generateRoute,
       home: ref.read(authControllerProvider.notifier).isLogin
           ? const MainPageBottomBar()

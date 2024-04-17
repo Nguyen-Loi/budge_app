@@ -1,7 +1,9 @@
 import 'package:budget_app/apis/budget_api.dart';
 import 'package:budget_app/apis/user_api.dart';
+import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userControllerProvider =
@@ -12,7 +14,7 @@ final userControllerProvider =
       userApi: ref.watch(userApiProvider));
 });
 
-final fetchUserProvider = FutureProvider((ref) {
+final userFutureProvider = FutureProvider((ref) {
   final loadUser = ref.watch(userControllerProvider.notifier);
   return loadUser.fetchUserInfo();
 });
@@ -29,12 +31,13 @@ class HomeController extends StateNotifier<UserModel?> {
         _uid = uid,
         super(null);
 
-  Future<void> fetchUserInfo() async {
+  Future<UserModel> fetchUserInfo() async {
     UserModel data = await _userApi.getUserById(_uid);
     updateUser(data);
+    return state!;
   }
 
-  void updateUser(UserModel user){
-    state=user;
+  void updateUser(UserModel user) {
+    state = user;
   }
 }

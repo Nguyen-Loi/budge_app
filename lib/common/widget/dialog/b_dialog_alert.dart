@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class BAlertDialogModel<T> {
+class BDialogAlertModel<T> {
   final String title;
   final String message;
   final Map<String, T> buttons;
 
-  const BAlertDialogModel(
+  const BDialogAlertModel(
       {required this.title, required this.message, required this.buttons});
 }
 
-class BDeleteDialog extends BAlertDialogModel<bool> {
-  const BDeleteDialog({required String objName})
+class BDialogDelete extends BDialogAlertModel<bool> {
+  const BDialogDelete({required String objName})
       : super(
           title: 'Delete $objName?',
           message: 'Are you sure you want to delete this $objName?',
@@ -22,12 +22,12 @@ class BDeleteDialog extends BAlertDialogModel<bool> {
 }
 
 Future<bool> displayDeleteDialog(BuildContext context) =>
-    const BDeleteDialog(objName: 'comment').present(context).then(
+    const BDialogDelete(objName: 'comment').present(context).then(
           (value) => value ?? false,
         );
 
 
-extension Present<T> on BAlertDialogModel<T> {
+extension Present<T> on BDialogAlertModel<T> {
   Future<T?> present(BuildContext context) {
     return showDialog<T?>(
       context: context,

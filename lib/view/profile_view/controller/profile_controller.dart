@@ -25,9 +25,10 @@ class ProfileController extends StateNotifier<void> {
     res.fold((l) {
       showSnackBar(context, l.message);
     }, (r) {
-      _uidController.clear();
       Navigator.pushNamedAndRemoveUntil(
-          context, RoutePath.login, (route) => false);
+          context, RoutePath.login, (route) => false).then((value) {
+        _uidController.clear();
+      });
     });
   }
 }

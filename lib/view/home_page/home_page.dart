@@ -30,7 +30,7 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ref.watch(fetchUserProvider).when(
+    return ref.watch(userFutureProvider).when(
         data: (_) => body(),
         error: (_, __) => const BStatus.error(),
         loading: () => const BStatus.loading());
