@@ -19,6 +19,8 @@ class BText extends StatelessWidget {
   final TextAlign textAlign;
   final _BTextType _textType;
   final int? maxLines;
+  final double? wordSpacing;
+  final double? letterSpacing;
 
   const BText.h1(
     this.text, {
@@ -26,6 +28,8 @@ class BText extends StatelessWidget {
     this.fontWeight,
     this.textAlign = TextAlign.left,
     this.maxLines,
+    this.wordSpacing,
+    this.letterSpacing,
     super.key,
   }) : _textType = _BTextType.heading1;
 
@@ -35,6 +39,8 @@ class BText extends StatelessWidget {
     this.fontWeight,
     this.textAlign = TextAlign.left,
     this.maxLines,
+    this.wordSpacing,
+    this.letterSpacing,
     super.key,
   }) : _textType = _BTextType.heading2;
 
@@ -44,6 +50,8 @@ class BText extends StatelessWidget {
     this.fontWeight,
     this.textAlign = TextAlign.left,
     this.maxLines,
+    this.wordSpacing,
+    this.letterSpacing,
     super.key,
   }) : _textType = _BTextType.bodyLarge;
 
@@ -53,6 +61,8 @@ class BText extends StatelessWidget {
     this.fontWeight,
     this.textAlign = TextAlign.left,
     this.maxLines,
+    this.wordSpacing,
+    this.letterSpacing,
     super.key,
   }) : _textType = _BTextType.bodyMedium;
 
@@ -62,6 +72,8 @@ class BText extends StatelessWidget {
     this.fontWeight,
     this.textAlign = TextAlign.left,
     this.maxLines,
+    this.wordSpacing,
+    this.letterSpacing,
     super.key,
   }) : _textType = _BTextType.bodySmall;
 
@@ -71,6 +83,8 @@ class BText extends StatelessWidget {
     this.fontWeight,
     this.textAlign = TextAlign.left,
     this.maxLines,
+    this.wordSpacing,
+    this.letterSpacing,
     super.key,
   }) : _textType = _BTextType.caption;
 
@@ -79,7 +93,12 @@ class BText extends StatelessWidget {
       text,
       textAlign: textAlign,
       maxLines: maxLines,
-      style: BTextStyle.heading1(color: color, fontWeight: fontWeight),
+      style: BTextStyle.heading1(
+        color: color,
+        fontWeight: fontWeight,
+        wordSpacing: wordSpacing,
+        letterSpacing: letterSpacing,
+      ),
     );
   }
 
@@ -88,7 +107,12 @@ class BText extends StatelessWidget {
       text,
       textAlign: textAlign,
       maxLines: maxLines,
-      style: BTextStyle.heading2(color: color, fontWeight: fontWeight),
+      style: BTextStyle.heading2(
+        color: color,
+        fontWeight: fontWeight,
+        wordSpacing: wordSpacing,
+        letterSpacing: letterSpacing,
+      ),
     );
   }
 
@@ -97,7 +121,12 @@ class BText extends StatelessWidget {
       text,
       textAlign: textAlign,
       maxLines: maxLines,
-      style: BTextStyle.bodyLarge(color: color, fontWeight: fontWeight),
+      style: BTextStyle.bodyLarge(
+        color: color,
+        fontWeight: fontWeight,
+        wordSpacing: wordSpacing,
+        letterSpacing: letterSpacing,
+      ),
     );
   }
 
@@ -106,7 +135,12 @@ class BText extends StatelessWidget {
       text,
       textAlign: textAlign,
       maxLines: maxLines,
-      style: BTextStyle.bodyMedium(color: color, fontWeight: fontWeight),
+      style: BTextStyle.bodyMedium(
+        color: color,
+        fontWeight: fontWeight,
+        wordSpacing: wordSpacing,
+        letterSpacing: letterSpacing,
+      ),
     );
   }
 
@@ -115,7 +149,12 @@ class BText extends StatelessWidget {
       text,
       textAlign: textAlign,
       maxLines: maxLines,
-      style: BTextStyle.bodySmall(fontWeight: fontWeight, color: color),
+      style: BTextStyle.bodySmall(
+        fontWeight: fontWeight,
+        color: color,
+        wordSpacing: wordSpacing,
+        letterSpacing: letterSpacing,
+      ),
     );
   }
 
@@ -124,7 +163,12 @@ class BText extends StatelessWidget {
       text,
       textAlign: textAlign,
       maxLines: maxLines,
-      style: BTextStyle.caption(color: color, fontWeight: fontWeight),
+      style: BTextStyle.caption(
+        color: color,
+        fontWeight: fontWeight,
+        wordSpacing: wordSpacing,
+        letterSpacing: letterSpacing,
+      ),
     );
   }
 
@@ -148,46 +192,95 @@ class BText extends StatelessWidget {
 }
 
 class BTextStyle {
-  static TextStyle heading1({FontWeight? fontWeight, Color? color}) =>
+  static TextStyle heading1(
+          {FontWeight? fontWeight,
+          Color? color,
+          double? wordSpacing,
+          double? letterSpacing,
+          Color? backgroundColor}) =>
       TextStyle(
           fontFamily: _fontName,
           fontWeight: fontWeight ?? FontWeightManager.bold,
           fontSize: 24,
-          color: color ?? _ColorFontDefault.heading1);
+          color: color ?? _ColorFontDefault.heading1,
+          wordSpacing: wordSpacing,
+          letterSpacing: letterSpacing,
+          backgroundColor: backgroundColor);
 
-  static TextStyle heading2({FontWeight? fontWeight, Color? color}) =>
+  static TextStyle heading2(
+          {FontWeight? fontWeight,
+          Color? color,
+          double? wordSpacing,
+          double? letterSpacing,
+          Color? backgroundColor}) =>
       TextStyle(
           fontFamily: _fontName,
           fontWeight: fontWeight ?? FontWeightManager.semiBold,
           fontSize: 20,
-          color: color ?? _ColorFontDefault.heading2);
+          color: color ?? _ColorFontDefault.heading2,
+          wordSpacing: wordSpacing,
+          letterSpacing: letterSpacing,
+          backgroundColor: backgroundColor);
 
-  static TextStyle bodyLarge({FontWeight? fontWeight, Color? color}) =>
+  static TextStyle bodyLarge(
+          {FontWeight? fontWeight,
+          Color? color,
+          double? wordSpacing,
+          double? letterSpacing,
+          Color? backgroundColor}) =>
       TextStyle(
           fontFamily: _fontName,
           fontWeight: FontWeightManager.semiBold,
           fontSize: 18,
-          color: color ?? _ColorFontDefault.bodyLarge);
+          color: color ?? _ColorFontDefault.bodyLarge,
+          wordSpacing: wordSpacing,
+          letterSpacing: letterSpacing,
+          backgroundColor: backgroundColor);
 
-  static TextStyle bodyMedium({FontWeight? fontWeight, Color? color}) =>
+  static TextStyle bodyMedium(
+          {FontWeight? fontWeight,
+          Color? color,
+          double? wordSpacing,
+          double? letterSpacing,
+          Color? backgroundColor}) =>
       TextStyle(
           fontFamily: _fontName,
           fontWeight: fontWeight ?? FontWeightManager.regular,
           fontSize: 16,
-          color: color ?? _ColorFontDefault.bodyRegular);
+          color: color ?? _ColorFontDefault.bodyRegular,
+          wordSpacing: wordSpacing,
+          letterSpacing: letterSpacing,
+          backgroundColor: backgroundColor);
 
-  static TextStyle bodySmall({FontWeight? fontWeight, Color? color}) =>
+  static TextStyle bodySmall(
+          {FontWeight? fontWeight,
+          Color? color,
+          double? wordSpacing,
+          double? letterSpacing,
+          Color? backgroundColor}) =>
       TextStyle(
           fontFamily: _fontName,
           fontWeight: fontWeight ?? FontWeightManager.regular,
           fontSize: 14,
-          color: color ?? _ColorFontDefault.bodySmall);
+          color: color ?? _ColorFontDefault.bodySmall,
+          wordSpacing: wordSpacing,
+          letterSpacing: letterSpacing,
+          backgroundColor: backgroundColor);
 
-  static TextStyle caption({FontWeight? fontWeight, Color? color}) => TextStyle(
-      fontFamily: _fontName,
-      fontWeight: fontWeight ?? FontWeightManager.medium,
-      fontSize: 12,
-      color: color ?? _ColorFontDefault.caption);
+  static TextStyle caption(
+          {FontWeight? fontWeight,
+          Color? color,
+          double? wordSpacing,
+          double? letterSpacing,
+          Color? backgroundColor}) =>
+      TextStyle(
+          fontFamily: _fontName,
+          fontWeight: fontWeight ?? FontWeightManager.medium,
+          fontSize: 12,
+          color: color ?? _ColorFontDefault.caption,
+          wordSpacing: wordSpacing,
+          letterSpacing: letterSpacing,
+          backgroundColor: backgroundColor);
 }
 
 class FontWeightManager {

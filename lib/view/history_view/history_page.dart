@@ -6,6 +6,7 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/view/history_view/controller/history_controller.dart';
 import 'package:budget_app/view/history_view/model/budget_transaction_custom_model.dart';
 import 'package:budget_app/view/history_view/widgets/history_item_tab.dart';
+import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -84,7 +85,8 @@ class _HistoryPageState extends State<HistoryPage>
                     initialDate: ref
                         .watch(historyControllerProvider.notifier)
                         .dateTimePicker,
-                    firstDate: DateTime(2024),
+                    firstDate: ref.watch(userControllerProvider
+                        .select((value) => value!.createdDate)),
                     lastDate: DateTime.now(),
                     onChange: (date) async {
                       ref
@@ -106,5 +108,3 @@ class _HistoryPageState extends State<HistoryPage>
     });
   }
 }
-// ref.watch(homeControllerProvider
-//                         .select((value) => value!.createdDate))

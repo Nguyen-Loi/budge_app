@@ -4,12 +4,13 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:flutter/material.dart';
 
-class BFormModifyLimit extends FormField<int> {
+class BFormFieldCustomAmount extends FormField<int> {
   final void Function(int value) onChanged;
-  BFormModifyLimit({
+  BFormFieldCustomAmount({
     Key? key,
     int? initialValue,
     FormFieldValidator<int>? validator,
+    required String label,
     required this.onChanged,
     String? hint,
   }) : super(
@@ -25,7 +26,7 @@ class BFormModifyLimit extends FormField<int> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   BText.h2(
-                    'Monthly limit',
+                    label,
                     color: ColorManager.purple12,
                     fontWeight: FontWeightManager.semiBold,
                   ),
@@ -48,26 +49,41 @@ class BFormModifyLimit extends FormField<int> {
                       _IconButtonLimit(
                           icon: IconConstants.minus,
                           onTap: () {
-                            int newValue =
-                                int.parse(state.controller.text) - 10;
-                            state.controller.text = newValue.toString();
+                            int value =
+                                int.tryParse(state.controller.text) ?? -1;
+                            if (value > 10) {
+                              int newValue =
+                                  int.parse(state.controller.text) - 10;
+                              state.controller.text = newValue.toString();
+                            } else {
+                              state.controller.text = '0';
+                            }
                           }),
                       gapW16,
                       SizedBox(
-                        width: 90,
+                        width: 150,
                         child: TextField(
                           controller: state.controller,
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            suffixText: '.000 đ',
+                          ),
                         ),
                       ),
                       gapW16,
                       _IconButtonLimit(
                           icon: IconConstants.add,
                           onTap: () {
-                            int newValue =
-                                int.parse(state.controller.text) + 10;
-                            state.controller.text = newValue.toString();
+                            int value =
+                                int.tryParse(state.controller.text) ?? -1;
+                            if (value >= 0) {
+                              int newValue =
+                                  int.parse(state.controller.text) + 10;
+                              state.controller.text = newValue.toString();
+                            } else {
+                              state.controller.text = '10';
+                            }
                           })
                     ],
                   ),
@@ -85,7 +101,7 @@ class BFormModifyLimit extends FormField<int> {
 
 class _FormFieldState extends FormFieldState<int> {
   @override
-  BFormModifyLimit get widget => super.widget as BFormModifyLimit;
+  BFormFieldCustomAmount get widget => super.widget as BFormFieldCustomAmount;
   late final TextEditingController controller;
   @override
   void initState() {

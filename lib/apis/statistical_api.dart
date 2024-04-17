@@ -1,5 +1,5 @@
 import 'package:budget_app/apis/firestore_path.dart';
-import 'package:budget_app/apis/get_id.dart';
+import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
@@ -69,7 +69,7 @@ class StatisticalApi extends IStatisticalApi {
       {required String uid}) async {
     final document = await _db
         .collection(FirestorePath.statistical(uid: uid))
-        .doc(GetId.currentMonth)
+        .doc(GenId.statistical)
         .mapModel(
             modelFrom: StatisticalModel.fromMap, modelTo: (e) => e.toMap())
         .get();

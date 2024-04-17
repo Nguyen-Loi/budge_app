@@ -29,7 +29,7 @@ class MyApp extends ConsumerWidget {
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: MainRouter.generateRoute,
-      home: ref.read(authControllerProvider.notifier).isLogin
+      home: ref.watch(authControllerProvider.notifier).isLogin
           ? const MainPageBottomBar()
           : const LoginView(),
     );

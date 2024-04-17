@@ -1,17 +1,19 @@
 import 'package:budget_app/apis/budget_api.dart';
+import 'package:budget_app/core/gen_id.dart';
+import 'package:budget_app/core/b_datetime.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final budgetControllerProvider =
+final budgetsCurMonthControllerProvider =
     StateNotifierProvider<BudgetController, List<BudgetModel>>((ref) {
   final uid = ref.watch(uidControllerProvider);
   final budgetApi = ref.watch(budgetAPIProvider);
   return BudgetController(budgetApi: budgetApi, uid: uid);
 });
-final budgetsFetchProvider = FutureProvider((ref) {
-  final data = ref.watch(budgetControllerProvider.notifier);
-  return data.fetchBudgets();
+final budgetsCurFutureProvider = FutureProvider((ref) {
+  final data = ref.watch(budgetsCurMonthControllerProvider.notifier);
+  return data.fetchBudgetsCurMonth();
 });
 
 class BudgetController extends StateNotifier<List<BudgetModel>> {
@@ -25,15 +27,21 @@ class BudgetController extends StateNotifier<List<BudgetModel>> {
 
   List<BudgetModel> _budgets = [];
 
-  Future<List<BudgetModel>> fetchBudgets() async {
-    final budgets = await _budgetApi.fetchBudgets(_uid);
+  Future<List<BudgetModel>> fetchBudgetsCurMonth() async {
+    final budgets = await _budgetApi.fetchBudgetsByMonth(_uid,
+        month: BDateTime.month(DateTime.now()));
     _budgets = budgets;
     _notifier();
     return _budgets;
   }
 
-  void addBudget(BudgetModel model) {
+  void addBudgetState(BudgetModel model) {
     _budgets.add(model);
+    _notifier();
+  }
+
+  void updateBudgetState(BudgetModel model) {
+    _budgets.
     _notifier();
   }
 

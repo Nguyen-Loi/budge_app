@@ -13,11 +13,12 @@ final budgetAPIProvider = Provider((ref) {
 });
 
 abstract class IBudgetApi {
-  Future<List<BudgetModel>> fetchBudgets(String uid);
+  Future<List<BudgetModel>> fetchBudgetsByMonth(String uid,
+      {required int month});
   Future<List<BudgetModel>> fetchGoals(String uid);
   FutureEitherVoid addBudget({required BudgetModel model});
-  Future<void> updateBudget(
-      {required String budgetId, required BudgetModel model});
+  FutureEitherVoid updateBudget(
+      {required BudgetModel model});
 }
 
 class BudgetApi implements IBudgetApi {
@@ -26,19 +27,21 @@ class BudgetApi implements IBudgetApi {
     required this.db,
   });
 
+  /// [month] is type millisecondsSinceEpoch. With DateTime using BDateTime.month to convert this type
   @override
-  Future<List<BudgetModel>> fetchBudgets(String uid) async {
+  Future<List<BudgetModel>> fetchBudgetsByMonth(String uid,
+      {required int month}) async {
     final data = await db
         .collection(FirestorePath.budgets(uid: uid))
         .where('budgetTypeValue', isEqualTo: BudgetTypeEnum.budget.value)
+        .where('month', isEqualTo: month)
         .mapModel<BudgetModel>(
             modelFrom: BudgetModel.fromMap, modelTo: (model) => model.toMap())
         .get();
     return data.docs.map((e) => e.data()).toList();
   }
 
-
-   @override
+  @override
   Future<List<BudgetModel>> fetchGoals(String uid) async {
     final data = await db
         .collection(FirestorePath.budgets(uid: uid))
@@ -64,11 +67,16 @@ class BudgetApi implements IBudgetApi {
   }
 
   @override
-  Future<void> updateBudget(
-      {required String budgetId, required BudgetModel model}) {
-    return db
-        .collection(FirestorePath.budgets(uid: model.userId))
-        .doc(budgetId)
+  FutureEitherVoid updateBudget(
+      { required BudgetModel model}) async{
+    try{
+     await db
+        .doc(FirestorePath.budget(uid: model.userId, budgetId: model.id))
         .update(model.toMap());
+     return right(null);
+    }catch(e){
+      logError(e.toString());
+      return left(Failure(error: e.toString()));
+    }
   }
 }

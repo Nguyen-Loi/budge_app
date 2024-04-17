@@ -1,50 +1,53 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/form/b_form_field_custom_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
-import 'package:budget_app/common/widget/form/b_form_modify_limit.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/view/new_budget_view/new_budget_controller/new_budget_controller.dart';
+import 'package:budget_app/view/goals_view/new_goal_view/controller/new_goal_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewBudgetView extends ConsumerStatefulWidget {
-  const NewBudgetView({super.key});
+class NewGoalView extends ConsumerStatefulWidget {
+  const NewGoalView({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _NewBudgetViewState();
 }
 
-class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
-  late TextEditingController _budgetNameController;
+class _NewBudgetViewState extends ConsumerState<NewGoalView> {
+  late TextEditingController _goalNameController;
   late int _iconId;
   late int _limit;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    _budgetNameController = TextEditingController();
+    _goalNameController = TextEditingController();
     super.initState();
   }
 
-  void _addNewBudget() {
+  void _addNewGoal() {
     if (_formKey.currentState!.validate()) {
-      ref.read(newBudgetControllerProvider).addBudget(context,
-          budgetName: _budgetNameController.text,
-          iconId: _iconId,
-          limit: _limit);
+      ref.read(newGoalControllerProvider).addGoal(context,
+          goalName: _goalNameController.text, iconId: _iconId, limit: _limit);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BaseView.customBackground(
-      title: 'New Budget',
-      buildTop: gapH32,
-      child: _form(),
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).unfocus();
+      },
+      child: BaseView.customBackground(
+        title: 'New Goal',
+        buildTop: gapH32,
+        child: _form(),
+      ),
     );
   }
 
@@ -54,9 +57,9 @@ class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
       child: ListView(
         children: [
           BFormFieldText(
-            _budgetNameController,
-            label: 'Budget Name',
-            hint: 'Water',
+            _goalNameController,
+            label: 'Goal Name',
+            hint: 'Iphone 15 prm',
             validator: (p0) => p0.validateNotNull,
           ),
           gapH16,
@@ -69,13 +72,14 @@ class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
             },
             validator: (p0) {
               if (p0 == null) {
-                return 'Please choose your budget icon';
+                return 'Please choose your goal icon';
               }
               return null;
             },
           ),
           gapH16,
-          BFormModifyLimit(
+          BFormFieldCustomAmount(
+            label: 'Target',
             onChanged: (v) {
               _limit = v;
             },
@@ -88,7 +92,7 @@ class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
           ),
           const SizedBox(height: 64),
           FilledButton(
-              onPressed: _addNewBudget,
+              onPressed: _addNewGoal,
               child: BText('Add', color: ColorManager.white))
         ],
       ),

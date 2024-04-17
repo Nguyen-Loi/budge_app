@@ -176,6 +176,7 @@ class AppTheme {
           textStyle: AppTextTheme.labelMedium.copyWith(color: darkColors.error),
         ),
       ),
+      dialogBackgroundColor: darkColors.background,
       filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsets>(
@@ -288,6 +289,7 @@ class AppTheme {
               AppTextTheme.labelMedium.copyWith(color: lightColors.error),
         ),
       ),
+      dialogBackgroundColor: lightColors.background,
       filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
               padding: MaterialStateProperty.all<EdgeInsets>(

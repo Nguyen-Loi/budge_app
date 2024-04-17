@@ -93,7 +93,7 @@ class _HomeStaisticalCardBase extends StatelessWidget {
               children: [
                 BText(title, color: ColorManager.white),
                 gapH16,
-                BText.h2(money.toMoneyStr(), color: ColorManager.white),
+                BText.b1(money.toMoneyStr(), color: ColorManager.white),
               ],
             ),
             gapW24,

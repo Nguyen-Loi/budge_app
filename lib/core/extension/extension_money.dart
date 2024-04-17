@@ -12,7 +12,8 @@ extension NumExtensions on num {
         return numberFormat.format(this);
     }
   }
-
+  
+  /// Increase to 1000 with currency vnd
   int toAmountMoney({CurrencyType currencyType = CurrencyType.vnd}) {
     switch (currencyType) {
       case CurrencyType.vnd:

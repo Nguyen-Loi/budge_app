@@ -20,15 +20,14 @@ class ProfileController extends StateNotifier<void> {
         _uidController = uidController,
         super(false);
 
-  void signOut(BuildContext context) async {
+  Future<void> signOut(BuildContext context) async {
     final res = await _authApi.signOut();
     res.fold((l) {
       showSnackBar(context, l.message);
-    }, (r) {
+    }, (_) {
       Navigator.pushNamedAndRemoveUntil(
-          context, RoutePath.login, (route) => false).then((value) {
-        _uidController.clear();
-      });
+          context, RoutePath.login, (route) => false);
+      _uidController.clear();
     });
   }
 }
