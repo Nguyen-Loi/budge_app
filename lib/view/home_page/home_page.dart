@@ -7,6 +7,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/home_budget_list.dart';
@@ -30,6 +31,8 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    // ref.read(uidControllerProvider.notifier).init(context);
+    //// ref.watch();
     return ref.watch(userFutureProvider).when(
         data: (_) => body(),
         error: (_, __) => const BStatus.error(),
@@ -62,6 +65,12 @@ class _HomePageState extends ConsumerState<HomePage>
           gapH16,
           const HomeBudgetList()
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, RoutePath.newBudget);
+        },
+        child: Icon(IconConstants.add, color: ColorManager.white),
       ),
     );
   }

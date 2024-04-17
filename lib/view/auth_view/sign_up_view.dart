@@ -1,4 +1,3 @@
-
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_app_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
@@ -47,25 +46,30 @@ class _LoginViewState extends ConsumerState<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BAppBar(text: 'Sign up'),
-      body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          children: [
-            // gapH24,
-            gapH32,
-            const BText.h1(
-              'Welecome to PocketPenny!',
-              textAlign: TextAlign.left,
-            ),
-            gapH16,
-            const BText(
-              'Complete then sign up to get started',
-              textAlign: TextAlign.left,
-            ),
-            gapH48,
-            _form()
-          ]),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: BAppBar(text: 'Sign up'),
+        body: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            children: [
+              // gapH24,
+              gapH32,
+              const BText.h1(
+                'Welecome to PocketPenny!',
+                textAlign: TextAlign.left,
+              ),
+              gapH16,
+              const BText(
+                'Complete then sign up to get started',
+                textAlign: TextAlign.left,
+              ),
+              gapH48,
+              _form()
+            ]),
+      ),
     );
   }
 

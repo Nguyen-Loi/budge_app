@@ -1,13 +1,15 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/async/b_async_list.dart';
+import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/custom/goal_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
+import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
-import 'package:budget_app/view/goals_view/controller/goals_controller.dart';
+import 'package:budget_app/view/goals_view/controller/goal_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -42,9 +44,10 @@ class _GoalsViewState extends State<GoalsView>
     return Consumer(builder: (_, ref, __) {
       return BListAsync.customList(
           data: ref.watch(goalFutureProvider),
-          itemsBuilder: (context, goals) {
+          itemsBuilder: (context, _) {
+            final goals = ref.watch(goalControllerProvider);
             String keyDefault =
-                ref.watch(goalsControllerProvider.notifier).goalKeyDefault;
+                ref.watch(goalControllerProvider.notifier).goalKeyDefault;
             final goalDefault = goals.firstWhere((e) => e.id == keyDefault);
             final listGoal = goals.where((e) => e.id != keyDefault).toList();
             return ListView(
@@ -52,7 +55,7 @@ class _GoalsViewState extends State<GoalsView>
               children: [
                 _urgentMoney(goalDefault),
                 gapH16,
-                _listGoalCustom(listGoal),
+                _listGoalCustom(listGoal)
               ],
             );
           });
@@ -72,7 +75,9 @@ class _GoalsViewState extends State<GoalsView>
             CircleAvatar(
               backgroundColor: ColorManager.purple25,
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, RoutePath.newGoal);
+                },
                 icon: Icon(IconConstants.add),
               ),
             ),
@@ -80,21 +85,23 @@ class _GoalsViewState extends State<GoalsView>
         ),
         gapH16,
         // List data
-        LayoutBuilder(builder: (context, constraints) {
-          return GridView.builder(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: goals.length,
-            itemBuilder: (_, index) => _cardGoal(goals[index]),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: constraints.maxWidth > 700 ? 3 : 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1.1,
-            ),
-          );
-        })
+        goals.isEmpty
+            ? const BStatus.empty()
+            : LayoutBuilder(builder: (context, constraints) {
+                return GridView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: goals.length,
+                  itemBuilder: (_, index) => _cardGoal(goals[index]),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: constraints.maxWidth > 700 ? 3 : 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.1,
+                  ),
+                );
+              })
       ],
     );
   }

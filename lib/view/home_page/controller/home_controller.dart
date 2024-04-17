@@ -1,9 +1,7 @@
 import 'package:budget_app/apis/budget_api.dart';
 import 'package:budget_app/apis/user_api.dart';
-import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userControllerProvider =

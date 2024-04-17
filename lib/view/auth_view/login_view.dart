@@ -66,25 +66,30 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BAppBar(text: 'Sign in'),
-      body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          children: [
-            // gapH24,
-            gapH32,
-            const BText.h1(
-              'Welecome back!',
-              textAlign: TextAlign.left,
-            ),
-            gapH16,
-            const BText(
-              'Hey you\'re back, fill in your details to get back in',
-              textAlign: TextAlign.left,
-            ),
-            gapH48,
-            _form()
-          ]),
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: BAppBar(text: 'Sign in'),
+        body: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            children: [
+              // gapH24,
+              gapH32,
+              const BText.h1(
+                'Welecome back!',
+                textAlign: TextAlign.left,
+              ),
+              gapH16,
+              const BText(
+                'Hey you\'re back, fill in your details to get back in',
+                textAlign: TextAlign.left,
+              ),
+              gapH48,
+              _form()
+            ]),
+      ),
     );
   }
 

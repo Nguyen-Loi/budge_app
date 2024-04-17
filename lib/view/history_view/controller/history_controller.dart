@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final historyControllerProvider =
     StateNotifierProvider<HistoryController, void>((ref) {
-  final uid = ref.watch(uidControllerProvider);
+  final uid = ref.watch(uidControllerProvider).toString();
   final transactionApi = ref.watch(transactionApiProvider);
   final db = ref.watch(dbProvider);
   return HistoryController(transactionApi: transactionApi, uid: uid, db: db);

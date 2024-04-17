@@ -11,17 +11,15 @@ class HomeBudgetList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<BudgetModel> list = ref.watch(budgetControllerProvider);
-    return ref.watch(budgetsFetchProvider).when(
+    List<BudgetModel> list = ref.watch(budgetsCurMonthControllerProvider);
+    return ref.watch(budgetsCurFutureProvider).when(
         data: (_) {
           return list.isEmpty
               ? const BStatus.empty(
                   text: 'You don\'t have any budget yet.',
                 )
               : ColumnWithSpacing(
-                  children: list
-                      .map((e) => HomeBudgetCard(model: e))
-                      .toList(),
+                  children: list.map((e) => HomeBudgetCard(model: e)).toList(),
                 );
         },
         error: (_, __) => const BStatus.error(),

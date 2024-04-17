@@ -58,7 +58,7 @@ class HomeBudgetCard extends StatelessWidget {
       case StatusBudgetProgress.progress:
         return baseStatus(
             textStatus: 'Left',
-            iconColor: ColorManager.green1,
+            iconColor: ColorManager.green2,
             textColor: ColorManager.black,
             iconData: IconConstants.emojiSmile);
       case StatusBudgetProgress.almostDone:
@@ -70,8 +70,8 @@ class HomeBudgetCard extends StatelessWidget {
       case StatusBudgetProgress.complete:
         return baseStatus(
             textStatus: 'Exceeded',
-            iconColor: ColorManager.red,
-            textColor: ColorManager.red,
+            iconColor: ColorManager.red1,
+            textColor: ColorManager.red1,
             iconData: IconConstants.emojiFrown);
     }
   }

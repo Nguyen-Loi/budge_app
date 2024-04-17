@@ -60,7 +60,7 @@ class BFormPickerIcon extends FormField<IconModel> {
                         decoration: BoxDecoration(
                             color: ColorManager.white,
                             border: Border.all(
-                                width: 0.5, color: ColorManager.green1),
+                                width: 0.5, color: ColorManager.green2),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(8))),
                         child: field.value == null

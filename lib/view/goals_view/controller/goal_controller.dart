@@ -6,27 +6,27 @@ import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final goalsControllerProvider =
-    StateNotifierProvider<GoalsController, List<BudgetModel>>((ref) {
+final goalControllerProvider =
+    StateNotifierProvider<GoalController, List<BudgetModel>>((ref) {
   final uid = ref.watch(uidControllerProvider);
   final budgetApi = ref.watch(budgetAPIProvider);
-  return GoalsController(uid: uid, budgetApi: budgetApi);
+  return GoalController(uid: uid, budgetApi: budgetApi);
 });
 
 final goalFutureProvider = FutureProvider((ref) {
-  final controller = ref.watch(goalsControllerProvider.notifier);
+  final controller = ref.watch(goalControllerProvider.notifier);
   return controller.fetchGoals();
 });
 
-class GoalsController extends StateNotifier<List<BudgetModel>> {
-  GoalsController({required String uid, required BudgetApi budgetApi})
+class GoalController extends StateNotifier<List<BudgetModel>> {
+  GoalController({required String uid, required BudgetApi budgetApi})
       : _uid = uid,
         _budgetApi = budgetApi,
         super([]);
   final String _uid;
   final BudgetApi _budgetApi;
 
-  final String goalKeyDefault = 'spe_goal_default';
+  final String goalKeyDefault = 'goal-default';
 
   List<BudgetModel> _goals = [];
 
@@ -34,7 +34,8 @@ class GoalsController extends StateNotifier<List<BudgetModel>> {
     _goals = await _budgetApi.fetchGoals(_uid);
 
     // add data urgent default if not exits
-    final goalDefaultTemp = _goals.firstWhereOrNull((e) => e.id == goalKeyDefault);
+    final goalDefaultTemp =
+        _goals.firstWhereOrNull((e) => e.id == goalKeyDefault);
     if (goalDefaultTemp == null) {
       DateTime now = DateTime.now();
       final urgentDefault = BudgetModel(
@@ -51,7 +52,7 @@ class GoalsController extends StateNotifier<List<BudgetModel>> {
       _goals.add(urgentDefault);
     }
 
-   return _goals;
+    return _goals;
   }
 
   void addGoal(BudgetModel model) {
