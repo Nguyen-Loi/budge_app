@@ -1,9 +1,10 @@
-import 'package:budget_app/apis/transaction_api.dart';
 import 'package:budget_app/apis/get_id.dart';
+import 'package:budget_app/apis/transaction_api.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/utils.dart';
+import 'package:budget_app/models/statistical_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_statistical_card/controller/statistical_controller.dart';
@@ -39,6 +40,12 @@ class NewExpenseController extends StateNotifier<bool> {
       {required String budgetId,
       required int amount,
       required String? note}) async {
+    
+    StatisticalModel statisticalModel = _statisticalController.state!;
+    if(statisticalModel.income<amount){
+      showDia
+    }
+
     final now = DateTime.now();
     final newTransaction = TransactionModel(
         id: GetId.time,

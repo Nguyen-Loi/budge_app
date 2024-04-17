@@ -8,6 +8,7 @@ import 'package:budget_app/common/widget/form/b_form_picker_image.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/controller/profile_detail_controller.dart';
@@ -25,7 +26,7 @@ class ProfileDetailView extends StatefulWidget {
 class _ProfileDetailViewState extends State<ProfileDetailView> {
   late String _name;
   File? _file;
-  late PhoneNumber _phoneNumber;
+  PhoneNumber? _phoneNumber;
   final _keyState = GlobalKey<FormState>();
 
   @override
@@ -40,10 +41,19 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
 
   Widget _form() {
     return Consumer(builder: (_, ref, __) {
-      final user = ref.watch(userControllerProvider)!;
+      final user = ref.watch(userControllerProvider) ??
+          UserModel(
+              id: '123',
+              email: 'abc@gmail.com',
+              profileUrl: 'sd',
+              name: 'Ga',
+              accountTypeValue: 1,
+              currencyTypeValue: 1,
+              createdDate: DateTime.now(),
+              updatedDate: DateTime.now());
       final disable = ref.watch(profileDetailControllerProvider);
       _name = user.name;
-      _phoneNumber = user.phoneNumber!;
+      _phoneNumber = user.phoneNumber;
       return Form(
         key: _keyState,
         child: ListView(
@@ -103,7 +113,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                           file: _file,
                           user: user,
                           name: _name,
-                          phoneNumber: _phoneNumber);
+                          phoneNumber: _phoneNumber!);
                     }
                   },
                   child: BText(
