@@ -3,6 +3,7 @@ import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/picker/b_picker_datetime.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
+import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
@@ -32,7 +33,7 @@ class _IncomeViewState extends ConsumerState<IncomeView> {
     if (_formKey.currentState!.validate()) {
       ref.read(incomeControllerProvider).addMoney(context,
           uid: uid,
-          amount: int.parse(_controllerAmount.text),
+          amount: int.parse(_controllerAmount.text).toAmountMoney(),
           transactionDate: _transactionDate,
           note: _controllerNote.text);
     }

@@ -5,18 +5,20 @@ import 'package:flutter/material.dart';
 enum _TypeView { base, customBackground }
 
 class BaseView extends StatelessWidget {
-  const BaseView({Key? key, required this.title, required this.child})
+  const BaseView(
+      {Key? key, required this.title, required this.child, this.actions})
       : _type = _TypeView.base,
         buildTop = null,
         super(
           key: key,
         );
-  const BaseView.customBackground({
-    Key? key,
-    required this.title,
-    required this.buildTop,
-    required this.child,
-  })  : _type = _TypeView.customBackground,
+  const BaseView.customBackground(
+      {Key? key,
+      required this.title,
+      required this.buildTop,
+      required this.child,
+      this.actions})
+      : _type = _TypeView.customBackground,
         super(
           key: key,
         );
@@ -24,6 +26,7 @@ class BaseView extends StatelessWidget {
   final Widget child;
   final _TypeView _type;
   final Widget? buildTop;
+  final List<Widget>? actions;
   @override
   Widget build(BuildContext context) {
     switch (_type) {
@@ -39,6 +42,7 @@ class BaseView extends StatelessWidget {
       appBar: AppBar(
         title: BText.h2(title),
         centerTitle: true,
+        actions: actions,
       ),
       body: child,
     );
@@ -52,6 +56,7 @@ class BaseView extends StatelessWidget {
         centerTitle: true,
         iconTheme: IconThemeData(color: colorAppbar),
         backgroundColor: ColorManager.purple12,
+        actions: actions,
       ),
       body: ColoredBox(
         color: ColorManager.purple12,

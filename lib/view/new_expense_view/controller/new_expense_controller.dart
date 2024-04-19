@@ -54,7 +54,7 @@ class NewExpenseController extends StateNotifier<bool> {
     final newTransaction = TransactionModel(
         id: GenId.income,
         budgetId: budgetId,
-        amount: amount.toAmountMoney(),
+        amount: amount,
         note: note ?? '',
         transactionTypeValue: TransactionType.expense.value,
         createdDate: now,
