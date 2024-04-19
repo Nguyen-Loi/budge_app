@@ -10,10 +10,12 @@ class GoalStatus extends StatelessWidget {
   const GoalStatus(
       {Key? key,
       required this.goal,
+      this.showText = true,
       this.crossAxisAlignment = CrossAxisAlignment.center})
       : super(key: key);
   final BudgetModel goal;
   final CrossAxisAlignment crossAxisAlignment;
+  final bool showText;
 
   int get progress {
     int amount = goal.currentAmount;
@@ -33,11 +35,16 @@ class GoalStatus extends StatelessWidget {
           percent: progress,
           gradient: _gradient(),
         ),
-        gapH8,
-        BText.b3(
-            '${goal.currentAmount.toMoneyStr()}/${goal.limit.toMoneyStr()}')
+        if (showText) ..._textInfo()
       ],
     );
+  }
+
+  List<Widget> _textInfo() {
+    return [
+      gapH8,
+      BText.b3('${goal.currentAmount.toMoneyStr()}/${goal.limit.toMoneyStr()}')
+    ];
   }
 
   LinearGradient _gradient() {

@@ -7,18 +7,18 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/view/budget_view/new_budget_view/controller/new_budget_controller.dart';
+import 'package:budget_app/view/budget_view/budget_new_view/controller/budget_new_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewBudgetView extends ConsumerStatefulWidget {
-  const NewBudgetView({super.key});
+class BudgetNewView extends ConsumerStatefulWidget {
+  const BudgetNewView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _NewBudgetViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _BudgetNewViewState();
 }
 
-class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
+class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
   late TextEditingController _budgetNameController;
   late int _iconId;
   late int _limit;
@@ -32,7 +32,7 @@ class _NewBudgetViewState extends ConsumerState<NewBudgetView> {
 
   void _addNewBudget() {
     if (_formKey.currentState!.validate()) {
-      ref.read(newBudgetControllerProvider).addBudget(context,
+      ref.read(budgetNewControllerProvider).addBudget(context,
           budgetName: _budgetNameController.text,
           iconId: _iconId,
           limit: _limit);

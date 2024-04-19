@@ -4,6 +4,7 @@ import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
@@ -36,7 +37,7 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
     if (_formKey.currentState!.validate()) {
       ref.read(expenseControllerProvider).addMoneyExpense(context,
           budgetId: _budgetId,
-          amount: int.parse(_amountController.text),
+          amount: int.parse(_amountController.text).toAmountMoney(),
           note: _noteController.text);
     }
   }

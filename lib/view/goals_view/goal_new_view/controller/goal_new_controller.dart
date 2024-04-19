@@ -5,69 +5,68 @@ import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/b_datetime.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
-import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/view/goals_view/goals_page/controller/goals_controller.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
-import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final newBudgetControllerProvider = Provider((ref) {
+final newGoalControllerProvider = Provider((ref) {
   final budgetApi = ref.watch(budgetAPIProvider);
   final uid = ref.watch(uidControllerProvider);
-  final budgetController =
-      ref.watch(budgetsCurMonthControllerProvider.notifier);
-  return NewBudgetController(
-      budgetApi: budgetApi, uid: uid, budgetController: budgetController);
+  final budgetController = ref.watch(goalsControllerProvider.notifier);
+  return GoalNewController(
+      budgetApi: budgetApi, uid: uid, goalController: budgetController);
 });
 
-class NewBudgetController extends StateNotifier<bool> {
+class GoalNewController extends StateNotifier<void> {
   final BudgetApi _budgetApi;
-  final BudgetController _budgetController;
+  final GoalsController _goalController;
   final String _uid;
 
-  NewBudgetController(
+  GoalNewController(
       {required BudgetApi budgetApi,
       required String uid,
-      required BudgetController budgetController})
+      required GoalsController goalController})
       : _budgetApi = budgetApi,
         _uid = uid,
-        _budgetController = budgetController,
-        super(false);
+        _goalController = goalController,
+        super(null);
 
-  String? _errorValidate({required String budgetName}) {
-    List<BudgetModel> list = _budgetController.state;
-    final currentId = GenId.budget(budgetName);
-    final budgetExits = list.firstWhereOrNull((e) => e.id == currentId);
-    if (budgetExits != null) {
-      return 'Budget name $budgetName already exist. Please change budget name and try again';
+  String? _errorValidate({required String goalName}) {
+    List<BudgetModel> list = _goalController.state;
+    final currentId = GenId.goal(goalName);
+    final goalExits = list.firstWhereOrNull((e) => e.id == currentId);
+    if (goalExits != null) {
+      return 'Goal name $goalName already exist. Please change goal name and try again';
     }
+
     return null;
   }
 
-  void addBudget(
+  void addGoal(
     BuildContext context, {
-    required String budgetName,
+    required String goalName,
     required int iconId,
     required int limit,
   }) async {
-    //Check valid
-    String? error = _errorValidate(budgetName: budgetName);
+    String? error = _errorValidate(goalName: goalName);
     if (error != null) {
       showBDialogInfoError(context, message: error);
     }
 
-    final now = DateTime.now();
+    final DateTime now = DateTime.now();
     BudgetModel model = BudgetModel(
-      id: GenId.budget(budgetName),
+      id: GenId.budget(goalName),
       userId: _uid,
-      name: budgetName,
+      name: goalName,
       month: BDateTime.month(now),
       iconId: iconId,
       currentAmount: 0,
-      budgetTypeValue: BudgetTypeEnum.budget.value,
-      limit: limit.toAmountMoney(),
+      budgetTypeValue: BudgetTypeEnum.goal.value,
+      limit: limit,
       createdDate: now,
       updatedDate: now,
     );
@@ -77,7 +76,7 @@ class NewBudgetController extends StateNotifier<bool> {
     res.fold((failure) {
       showSnackBar(context, failure.message);
     }, (r) {
-      _budgetController.addBudgetState(model);
+      _goalController.addGoalState(model);
       Navigator.pop(context);
     });
   }

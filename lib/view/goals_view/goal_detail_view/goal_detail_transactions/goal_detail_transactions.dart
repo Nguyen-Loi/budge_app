@@ -8,17 +8,17 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/models/transaction_model.dart';
-import 'package:budget_app/view/budget_view/budget_detail_view/widget/controller/budget_detail_controller.dart';
+import 'package:budget_app/view/goals_view/goal_detail_view/goal_detail_transactions/controller/goal_detail_transactions_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BudgetDetailTransactions extends ConsumerWidget {
-  const BudgetDetailTransactions(this.budgetId, {super.key});
-  final String budgetId;
+class GoalDetailTransactions extends ConsumerWidget {
+  const GoalDetailTransactions(this.goalId, {super.key});
+  final String goalId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(budgetDetailFutureProvider(budgetId));
+    final data = ref.watch(goalDetailFutureProvider(goalId));
     return BListAsync.customList(
         data: data,
         itemsBuilder: (context, items) {

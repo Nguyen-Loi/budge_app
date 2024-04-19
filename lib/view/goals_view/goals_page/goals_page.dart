@@ -9,18 +9,18 @@ import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
-import 'package:budget_app/view/goals_view/controller/goal_controller.dart';
+import 'package:budget_app/view/goals_view/goals_page/controller/goals_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GoalsView extends StatefulWidget {
-  const GoalsView({super.key});
+class GoalsPage extends StatefulWidget {
+  const GoalsPage({super.key});
 
   @override
-  State<GoalsView> createState() => _GoalsViewState();
+  State<GoalsPage> createState() => _GoalsPageState();
 }
 
-class _GoalsViewState extends State<GoalsView>
+class _GoalsPageState extends State<GoalsPage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
@@ -43,19 +43,19 @@ class _GoalsViewState extends State<GoalsView>
   Widget _builder() {
     return Consumer(builder: (_, ref, __) {
       return BListAsync.customList(
-          data: ref.watch(goalFutureProvider),
+          data: ref.watch(goalsFutureProvider),
           itemsBuilder: (context, _) {
-            final goals = ref.watch(goalControllerProvider);
-            String keyDefault =
-                ref.watch(goalControllerProvider.notifier).goalKeyDefault;
-            final goalDefault = goals.firstWhere((e) => e.id == keyDefault);
-            final listGoal = goals.where((e) => e.id != keyDefault).toList();
+            ref.watch(goalsControllerProvider);
+            final goalDefault =
+                ref.watch(goalsControllerProvider.notifier).goalDefault;
+            final goalList =
+                ref.watch(goalsControllerProvider.notifier).listGoal;
             return ListView(
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               children: [
                 _urgentMoney(goalDefault),
                 gapH16,
-                _listGoalCustom(listGoal)
+                _listGoalCustom(goalList)
               ],
             );
           });
@@ -76,7 +76,7 @@ class _GoalsViewState extends State<GoalsView>
               backgroundColor: ColorManager.purple25,
               child: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, RoutePath.newGoal);
+                  Navigator.pushNamed(context, RoutePath.goalNew);
                 },
                 icon: Icon(IconConstants.add),
               ),
@@ -107,41 +107,52 @@ class _GoalsViewState extends State<GoalsView>
   }
 
   Widget _urgentMoney(BudgetModel goal) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            const Expanded(child: BText.b1('My Urgent Money')),
-            gapW16,
-            Icon(IconConstants.arrowNext)
-          ],
-        ),
-        gapH16,
-        GoalStatus(goal: goal, crossAxisAlignment: CrossAxisAlignment.end)
-      ],
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, RoutePath.goalDetail, arguments: goal);
+      },
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Expanded(child: BText.b1('My Urgent Money')),
+              gapW16,
+              Icon(IconConstants.arrowNext)
+            ],
+          ),
+          gapH16,
+          GoalStatus(goal: goal, crossAxisAlignment: CrossAxisAlignment.end)
+        ],
+      ),
     );
   }
 
   Widget _cardGoal(BudgetModel goal) {
     IconModel icon = IconDataConstant.getIconModel(goal.iconId);
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Icon(icon.iconData, color: icon.color),
-            gapH16,
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              decoration: BoxDecoration(
-                color: ColorManager.grey2,
-                borderRadius: const BorderRadius.all(Radius.circular(16)),
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, RoutePath.goalDetail, arguments: goal);
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Icon(icon.iconData, color: icon.color),
+              gapH16,
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                decoration: BoxDecoration(
+                  color: ColorManager.grey2,
+                  borderRadius: const BorderRadius.all(Radius.circular(16)),
+                ),
+                child: BText.b3(goal.name, color: icon.color),
               ),
-              child: BText.b3(goal.name, color: icon.color),
-            ),
-            gapH16,
-            GoalStatus(goal: goal)
-          ],
+              gapH16,
+              GoalStatus(goal: goal)
+            ],
+          ),
         ),
       ),
     );

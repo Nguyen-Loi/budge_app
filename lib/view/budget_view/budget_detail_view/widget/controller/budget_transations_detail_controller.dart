@@ -4,23 +4,24 @@ import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Get lastest transaction of this budget
-final budgetDetailControllerProvider =
-    StateNotifierProvider<BudgetDetailController, TransactionModel?>((ref) {
+final budgetTransactionDetailControllerProvider =
+    StateNotifierProvider<BudgetTransactionsDetailController, TransactionModel?>((ref) {
   final uid = ref.watch(uidControllerProvider);
   final transactionApi = ref.watch(transactionApiProvider);
-  return BudgetDetailController(transactionApi: transactionApi, uid: uid);
+  return BudgetTransactionsDetailController(transactionApi: transactionApi, uid: uid);
 });
 
 final budgetDetailFutureProvider =
     FutureProvider.autoDispose.family((ref, String budgetId) {
-  final controller = ref.watch(budgetDetailControllerProvider.notifier);
+  final controller =
+      ref.watch(budgetTransactionDetailControllerProvider.notifier);
   return controller.fetchListTransaction(budgetId);
 });
 
-class BudgetDetailController extends StateNotifier<TransactionModel?> {
+class BudgetTransactionsDetailController extends StateNotifier<TransactionModel?> {
   final TransactionApi _transactionApi;
   final String _uid;
-  BudgetDetailController(
+  BudgetTransactionsDetailController(
       {required TransactionApi transactionApi, required String uid})
       : _transactionApi = transactionApi,
         _uid = uid,

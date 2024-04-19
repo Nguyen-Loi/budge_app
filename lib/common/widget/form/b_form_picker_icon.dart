@@ -20,6 +20,7 @@ class BFormPickerIcon extends FormField<IconModel> {
   }) : super(
           key: key,
           validator: validator,
+          initialValue: initialValue,
           builder: (field) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -6,7 +6,7 @@ class GenId {
   GenId._();
 
   static String get _time => _uuid.v1();
-  static String get _random => _uuid.v4();
+  // static String get _random => _uuid.v4();
   static String get _currentMonth {
     final DateTime now = DateTime.now();
     final month = DateTime(now.year, now.month).millisecondsSinceEpoch;
@@ -15,6 +15,7 @@ class GenId {
 
   static String get income => _time;
   static String get statistical => _currentMonth;
-  static String budget(String budgetName) => '$_currentMonth-$budgetName';
+  static String budget(String budgetName) =>
+      'budget-$_currentMonth-$budgetName';
   static String goal(String goalName) => 'goal-$goalName';
 }

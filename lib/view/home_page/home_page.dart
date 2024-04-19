@@ -68,7 +68,7 @@ class _HomePageState extends ConsumerState<HomePage>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, RoutePath.newBudget);
+          Navigator.pushNamed(context, RoutePath.budgetNew);
         },
         child: Icon(IconConstants.add, color: ColorManager.white),
       ),
