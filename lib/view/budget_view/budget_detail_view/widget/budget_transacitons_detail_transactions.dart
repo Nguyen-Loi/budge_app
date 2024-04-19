@@ -8,12 +8,12 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/models/transaction_model.dart';
-import 'package:budget_app/view/budget_view/budget_detail_view/widget/controller/budget_detail_controller.dart';
+import 'package:budget_app/view/budget_view/budget_detail_view/widget/controller/budget_transations_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GoalDetailTransactions extends ConsumerWidget {
-  const GoalDetailTransactions(this.budgetId, {super.key});
+class BudgetDetailTransactions extends ConsumerWidget {
+  const BudgetDetailTransactions(this.budgetId, {super.key});
   final String budgetId;
 
   @override

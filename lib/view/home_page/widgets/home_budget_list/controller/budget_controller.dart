@@ -1,5 +1,4 @@
 import 'package:budget_app/apis/budget_api.dart';
-import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/b_datetime.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
@@ -40,8 +39,9 @@ class BudgetController extends StateNotifier<List<BudgetModel>> {
     _notifier();
   }
 
-  void updateBudgetState(BudgetModel model) {
-    _budgets.
+  void updateListBudgetState(BudgetModel model) {
+    int budgetIndex = _budgets.indexWhere((e) => e.id == model.id);
+    _budgets[budgetIndex] = model;
     _notifier();
   }
 

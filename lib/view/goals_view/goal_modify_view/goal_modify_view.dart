@@ -5,46 +5,52 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
-import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/view/goals_view/new_goal_view/controller/new_goal_controller.dart';
+import 'package:budget_app/view/goals_view/goal_modify_view/controller/goal_modify_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewGoalView extends ConsumerStatefulWidget {
-  const NewGoalView({super.key});
+class GoalModifyView extends ConsumerStatefulWidget {
+  final BudgetModel goalModel;
+  const GoalModifyView({super.key, required this.goalModel});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _NewBudgetViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ModifyBudgetViewState();
 }
 
-class _NewBudgetViewState extends ConsumerState<NewGoalView> {
-  late TextEditingController _goalNameController;
+class _ModifyBudgetViewState extends ConsumerState<GoalModifyView> {
   late int _iconId;
   late int _limit;
   final _formKey = GlobalKey<FormState>();
-
+  late BudgetModel _goal;
   @override
   void initState() {
-    _goalNameController = TextEditingController();
+    _goal = widget.goalModel;
+    _iconId = _goal.iconId;
+    _limit = _goal.limit;
     super.initState();
   }
 
-  void _addNewGoal() {
+  void _updateGoal() {
     if (_formKey.currentState!.validate()) {
-      ref.read(newGoalControllerProvider).addGoal(context,
-          goalName: _goalNameController.text, iconId: _iconId, limit: _limit);
+      ref
+          .read(
+            goalModifyControllerProvider(_goal),
+          )
+          .updateBudget(context, budget: _goal, iconId: _iconId, limit: _limit);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: BaseView.customBackground(
-        title: 'New Goal',
+        title: 'Modify Goal',
         buildTop: gapH32,
         child: _form(),
       ),
@@ -56,14 +62,11 @@ class _NewBudgetViewState extends ConsumerState<NewGoalView> {
       key: _formKey,
       child: ListView(
         children: [
-          BFormFieldText(
-            _goalNameController,
-            label: 'Goal Name',
-            hint: 'Iphone 15 prm',
-            validator: (p0) => p0.validateNotNull,
-          ),
+          BFormFieldText.init(
+              label: 'Goal name', initialValue: _goal.name, disable: true),
           gapH16,
           BFormPickerIcon(
+            initialValue: IconDataConstant.getIconModel(_goal.iconId),
             items: IconDataConstant.listIcon,
             onChanged: (value) {
               if (value != null) {
@@ -79,7 +82,8 @@ class _NewBudgetViewState extends ConsumerState<NewGoalView> {
           ),
           gapH16,
           BFormFieldCustomAmount(
-            label: 'Target',
+            initialValue: _goal.limit,
+            label: 'Limit',
             onChanged: (v) {
               _limit = v;
             },
@@ -92,8 +96,8 @@ class _NewBudgetViewState extends ConsumerState<NewGoalView> {
           ),
           const SizedBox(height: 64),
           FilledButton(
-              onPressed: _addNewGoal,
-              child: BText('Add', color: ColorManager.white))
+              onPressed: _updateGoal,
+              child: BText('Update', color: ColorManager.white))
         ],
       ),
     );

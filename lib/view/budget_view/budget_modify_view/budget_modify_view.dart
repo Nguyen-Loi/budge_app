@@ -5,32 +5,42 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
-import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/view/budget_view/new_budget_view/controller/new_budget_controller.dart';
+import 'package:budget_app/view/budget_view/budget_modify_view/controller/budget_modify_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ModifyBudgetView extends ConsumerStatefulWidget {
-  const ModifyBudgetView({super.key});
+class BudgetModifyView extends ConsumerStatefulWidget {
+  final BudgetModel budgetModel;
+  const BudgetModifyView({super.key, required this.budgetModel});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _NewBudgetViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ModifyBudgetViewState();
 }
 
-class _NewBudgetViewState extends ConsumerState<ModifyBudgetView> {
+class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
   late int _iconId;
   late int _limit;
   final _formKey = GlobalKey<FormState>();
+  late BudgetModel _budget;
+  @override
+  void initState() {
+    _budget = widget.budgetModel;
+    _iconId = _budget.iconId;
+    _limit = _budget.limit;
+    super.initState();
+  }
 
-
-
-  void _addNewBudget() {
+  void _updateBudget() {
     if (_formKey.currentState!.validate()) {
-      ref.read(newBudgetControllerProvider).addBudget(context,
-          budgetName: _budgetNameController.text,
-          iconId: _iconId,
-          limit: _limit);
+      ref
+          .read(
+            budgetModifyControllerProvider(_budget),
+          )
+          .updateBudget(context,
+              budget: _budget, iconId: _iconId, limit: _limit);
     }
   }
 
@@ -41,7 +51,7 @@ class _NewBudgetViewState extends ConsumerState<ModifyBudgetView> {
         FocusScope.of(context).unfocus();
       },
       child: BaseView.customBackground(
-        title: 'New Budget',
+        title: 'Modify Budget',
         buildTop: gapH32,
         child: _form(),
       ),
@@ -53,14 +63,11 @@ class _NewBudgetViewState extends ConsumerState<ModifyBudgetView> {
       key: _formKey,
       child: ListView(
         children: [
-          BFormFieldText(
-            _budgetNameController,
-            label: 'Budget Name',
-            hint: 'Water',
-            validator: (p0) => p0.validateNotNull,
-          ),
+          BFormFieldText.init(
+              label: 'Budget name', initialValue: _budget.name, disable: true),
           gapH16,
           BFormPickerIcon(
+            initialValue: IconDataConstant.getIconModel(_budget.iconId),
             items: IconDataConstant.listIcon,
             onChanged: (value) {
               if (value != null) {
@@ -76,6 +83,7 @@ class _NewBudgetViewState extends ConsumerState<ModifyBudgetView> {
           ),
           gapH16,
           BFormFieldCustomAmount(
+            initialValue: _budget.limit,
             label: 'Monthly limit',
             onChanged: (v) {
               _limit = v;
@@ -89,8 +97,8 @@ class _NewBudgetViewState extends ConsumerState<ModifyBudgetView> {
           ),
           const SizedBox(height: 64),
           FilledButton(
-              onPressed: _addNewBudget,
-              child: BText('Add', color: ColorManager.white))
+              onPressed: _updateBudget,
+              child: BText('Update', color: ColorManager.white))
         ],
       ),
     );

@@ -18,6 +18,7 @@ class IconConstants {
   static IconData emojiFrown = FontAwesomeIcons.faceFrown;
   static IconData galley = Icons.image;
   static IconData signOut = Icons.logout;
+  static IconData modify = FontAwesomeIcons.pen;
 
   static IconData account = FontAwesomeIcons.user;
   static IconData setting = Icons.settings_outlined;

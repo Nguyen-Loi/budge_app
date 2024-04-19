@@ -2,20 +2,25 @@ import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/enums/currency_type_enum.dart';
+import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:flutter/material.dart';
 
 class BFormFieldCustomAmount extends FormField<int> {
   final void Function(int value) onChanged;
+  final CurrencyType currencyType;
   BFormFieldCustomAmount({
     Key? key,
     int? initialValue,
     FormFieldValidator<int>? validator,
     required String label,
     required this.onChanged,
+    this.currencyType = CurrencyType.vnd,
     String? hint,
   }) : super(
           key: key,
           validator: validator,
+          initialValue: initialValue,
           builder: (field) {
             final _FormFieldState state = field as _FormFieldState;
             return GestureDetector(
@@ -119,7 +124,10 @@ class _FormFieldState extends FormFieldState<int> {
   @override
   void didChange(int? value) {
     if (value != null) {
-      widget.onChanged(value);
+      if (widget.currencyType == CurrencyType.vnd) {
+        widget
+            .onChanged(value.toAmountMoney(currencyType: widget.currencyType));
+      }
     }
     super.didChange(value);
   }
