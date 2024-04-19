@@ -8,11 +8,16 @@ import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/localization/app_localizations_provider.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/home_budget_list.dart';
 import 'package:budget_app/view/home_page/widgets/home_statistical_card/home_income_and_expense_card.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -121,9 +126,9 @@ class _HomePageState extends ConsumerState<HomePage>
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BTextRichSpace(text1: 'Hello ', text2: user.name),
+          BTextRichSpace(text1: '${context.loc.hello} ', text2: user.name),
           gapH8,
-          const BText.caption('Your finances are looking good'),
+          BText.caption('Your finances are looking good'.hardcoded),
         ],
       );
     });

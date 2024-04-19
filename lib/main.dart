@@ -6,6 +6,7 @@ import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/view/main_page_bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'firebase_options.dart'; // generated via `flutterfire` CLI
@@ -29,6 +30,8 @@ class MyApp extends ConsumerWidget {
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       onGenerateRoute: MainRouter.generateRoute,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: ref.watch(authControllerProvider.notifier).isLogin
           ? const MainPageBottomBar()
           : const LoginView(),
