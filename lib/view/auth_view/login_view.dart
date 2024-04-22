@@ -11,6 +11,7 @@ import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -71,19 +72,19 @@ class _LoginViewState extends ConsumerState<LoginView> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: BAppBar(text: 'Sign in'),
+        appBar: BAppBar(text: 'Sign in'.hardcoded),
         body: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
-              // gapH24,
+              
               gapH32,
-              const BText.h1(
-                'Welecome back!',
+              BText.h1(
+                'Welecome back!'.hardcoded,
                 textAlign: TextAlign.left,
               ),
               gapH16,
-              const BText(
-                'Hey you\'re back, fill in your details to get back in',
+              BText(
+                'signInDes'.hardcoded,
                 textAlign: TextAlign.left,
               ),
               gapH48,
@@ -130,7 +131,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget _bFieldEmail() {
     return BFormFieldText(
       _emailController,
-      label: 'Email',
+      label: 'Email'.hardcoded,
       validator: (e) => e.validateEmail,
     );
   }
@@ -146,18 +147,18 @@ class _LoginViewState extends ConsumerState<LoginView> {
     return FilledButton(
       onPressed: _onLogin,
       child: BText.b1(
-        'Sign In',
+        'Sign In'.hardcoded,
         color: ColorManager.white,
       ),
     );
   }
 
   Widget _orLoginWidth() {
-    return const Row(
+    return  Row(
       children: [
         Expanded(child: BDivider.h()),
         gapW8,
-        BText('Or login with'),
+        BText('Or login with'.hardcoded),
         gapW8,
         Expanded(child: BDivider.h()),
       ],

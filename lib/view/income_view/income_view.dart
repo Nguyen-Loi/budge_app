@@ -5,6 +5,8 @@ import 'package:budget_app/common/widget/picker/b_picker_datetime.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:budget_app/view/income_view/controller/income_controller.dart';
@@ -47,18 +49,18 @@ class _IncomeViewState extends ConsumerState<IncomeView> {
         children: [
           BFormFieldAmount(
             _controllerAmount,
-            label: 'Amount',
+            label: 'Amount'.hardcoded,
             hint: '',
-            validator: (p0) => p0.validateInteger(textError: 'Amount invalid'),
+            validator: (p0) => p0.validateInteger(textError: 'Amount invalid'.hardcoded),
           ),
           BFormFieldText(
             _controllerNote,
             maxLines: 2,
-            label: 'Note',
-            hint: 'Money from salary',
+            label: 'Note'.hardcoded,
+            hint: 'Money from salary'.hardcoded,
           ),
           BPickerDatetime(
-            title: 'Date',
+            title: 'Date'.hardcoded,
             firstDate: firstDate,
             onChanged: (date) {
               _transactionDate = date;
@@ -68,7 +70,7 @@ class _IncomeViewState extends ConsumerState<IncomeView> {
           BButton(
               padding: const EdgeInsets.only(bottom: 16),
               onPressed: () => _addMoney(uid: uid),
-              title: 'Add money')
+              title: 'Add money'.hardcoded)
         ],
       ),
     );
@@ -81,7 +83,7 @@ class _IncomeViewState extends ConsumerState<IncomeView> {
         FocusScope.of(context).unfocus();
       },
       child: BaseView(
-          title: 'Income',
+          title: context.loc.income,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: _form(context),

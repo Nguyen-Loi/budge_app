@@ -8,6 +8,7 @@ import 'package:budget_app/common/widget/form/b_form_picker_image.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
@@ -32,7 +33,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
   @override
   Widget build(BuildContext context) {
     return BaseView(
-        title: 'My Account',
+        title: 'My Account'.hardcoded,
         child: Padding(
             padding:
                 const EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
@@ -67,10 +68,10 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                         .updateDisable(!disable);
                   },
                   child: disable
-                      ? const BText.caption(
-                          'Modify',
+                      ?  BText.caption(
+                          'Modify'.hardcoded,
                         )
-                      : const BText.caption('Read Only')),
+                      :  BText.caption('Read Only'.hardcoded)),
             ),
             gapH16,
             BFormPickerImage(
@@ -85,7 +86,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                 BFormFieldText.init(
                     label: 'Email', disable: true, initialValue: user.email),
                 BFormFieldText.init(
-                  label: 'Name',
+                  label: 'name'.hardcoded,
                   disable: disable,
                   initialValue: user.name,
                   validator: (v) => v.validateName,
@@ -117,7 +118,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                     }
                   },
                   child: BText(
-                    'Save',
+                    'Save'.hardcoded,
                     color: ColorManager.white,
                   ))
           ],
