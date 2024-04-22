@@ -8,6 +8,7 @@ import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/base_view.dart';
@@ -44,7 +45,7 @@ class BudgetDetailView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BText.h1('Monthly Expense', color: ColorManager.white),
+          BText.h1('Monthly Expense'.hardcoded, color: ColorManager.white),
           gapH16,
           Consumer(builder: (_, res, __) {
             TransactionModel? lastestTransaction =
@@ -52,12 +53,12 @@ class BudgetDetailView extends StatelessWidget {
 
             return lastestTransaction == null
                 ? BText(
-                    'You don\'t have any transactions with this budget.',
+                    'noTransactionThisBudget'.hardcoded,
                     color: textColor,
                   )
                 : BTextRich(BTextSpan(children: [
                     BTextSpan(
-                        text: 'You\'ve spent ',
+                        text: 'youSpent '.hardcoded,
                         style: BTextStyle.bodyMedium(color: textColor)),
                     BTextSpan(
                         text: ' ${lastestTransaction.amount.toMoneyStr()} ',
@@ -67,7 +68,7 @@ class BudgetDetailView extends StatelessWidget {
                             fontWeight: FontWeightManager.semiBold)),
                     BTextSpan(
                         text:
-                            ' for the past ${lastestTransaction.createdDate.toTimeAgo()}',
+                            ' forThePast ${lastestTransaction.createdDate.toTimeAgo()}',
                         style: BTextStyle.bodyMedium(color: textColor))
                   ]));
           }),
@@ -96,9 +97,9 @@ class BudgetDetailView extends StatelessWidget {
           // info
           Row(
             children: [
-              BText.b3('You\'ve already spent', color: ColorManager.grey),
+              BText.b3('youAlreadySpent'.hardcoded, color: ColorManager.grey),
               gapW16,
-              const Expanded(
+               Expanded(
                   child: BText.b3('Spend limit per Month',
                       textAlign: TextAlign.end)),
             ],
@@ -120,7 +121,7 @@ class BudgetDetailView extends StatelessWidget {
           BudgetStatus(budget: model),
           gapH8,
           // Content
-          const BText.b3('Cool! Let\'t keep your expense below the limit.')
+          BText.b3('expenseGood'.hardcoded)
         ],
       );
     });

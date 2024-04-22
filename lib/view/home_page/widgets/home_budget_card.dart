@@ -7,6 +7,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:flutter/material.dart';
 
@@ -57,19 +58,19 @@ class HomeBudgetCard extends StatelessWidget {
       case StatusBudgetProgress.start:
       case StatusBudgetProgress.progress:
         return baseStatus(
-            textStatus: 'Left',
+            textStatus: 'left'.hardcoded,
             iconColor: ColorManager.green2,
             textColor: ColorManager.black,
             iconData: IconConstants.emojiSmile);
       case StatusBudgetProgress.almostDone:
         return baseStatus(
-            textStatus: 'Approaced',
+            textStatus: 'Approaced'.hardcoded,
             iconColor: ColorManager.orange,
             textColor: ColorManager.orange,
             iconData: IconConstants.emojiSurprise);
       case StatusBudgetProgress.complete:
         return baseStatus(
-            textStatus: 'Exceeded',
+            textStatus: 'Exceeded'.hardcoded,
             iconColor: ColorManager.red1,
             textColor: ColorManager.red1,
             iconData: IconConstants.emojiFrown);

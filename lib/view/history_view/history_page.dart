@@ -2,6 +2,7 @@ import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 
 import 'package:budget_app/view/history_view/controller/history_controller.dart';
 import 'package:budget_app/view/history_view/model/budget_transaction_custom_model.dart';
@@ -37,11 +38,11 @@ class _HistoryPageState extends State<HistoryPage>
   }
 
   List<Widget> get _tabs => [
-        const Tab(
-          text: 'Income',
+        Tab(
+          text: 'Income'.hardcoded,
         ),
-        const Tab(
-          text: 'Expense',
+        Tab(
+          text: 'Expense'.hardcoded,
         ),
       ];
 

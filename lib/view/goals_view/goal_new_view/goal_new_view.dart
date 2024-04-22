@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/goals_view/goal_new_view/controller/goal_new_controller.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class _NewBudgetViewState extends ConsumerState<GoalNewView> {
         children: [
           BFormFieldText(
             _goalNameController,
-            label: 'Goal Name',
+            label: 'goalName'.hardcoded,
             hint: 'Iphone 15 prm',
             validator: (p0) => p0.validateNotNull,
           ),
@@ -72,20 +73,20 @@ class _NewBudgetViewState extends ConsumerState<GoalNewView> {
             },
             validator: (p0) {
               if (p0 == null) {
-                return 'Please choose your goal icon';
+                return 'chooseYourGoalIcon'.hardcoded;
               }
               return null;
             },
           ),
           gapH16,
           BFormFieldCustomAmount(
-            label: 'Target',
+            label: 'Target'.hardcoded,
             onChanged: (v) {
               _limit = v;
             },
             validator: (value) {
               if (value == null) {
-                return 'Number invalid';
+                return 'numberInvalid'.hardcoded;
               }
               return null;
             },
@@ -93,7 +94,7 @@ class _NewBudgetViewState extends ConsumerState<GoalNewView> {
           const SizedBox(height: 64),
           FilledButton(
               onPressed: _addNewGoal,
-              child: BText('Add', color: ColorManager.white))
+              child: BText('Add'.hardcoded, color: ColorManager.white))
         ],
       ),
     );
