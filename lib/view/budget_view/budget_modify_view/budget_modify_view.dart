@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_modify_view/controller/budget_modify_controller.dart';
@@ -51,7 +52,7 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
         FocusScope.of(context).unfocus();
       },
       child: BaseView.customBackground(
-        title: 'Modify Budget',
+        title: 'Modify Budget'.hardcoded,
         buildTop: gapH32,
         child: _form(),
       ),
@@ -64,7 +65,7 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
       child: ListView(
         children: [
           BFormFieldText.init(
-              label: 'Budget name', initialValue: _budget.name, disable: true),
+              label: 'Budget name'.hardcoded, initialValue: _budget.name, disable: true),
           gapH16,
           BFormPickerIcon(
             initialValue: IconDataConstant.getIconModel(_budget.iconId),
@@ -76,7 +77,7 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
             },
             validator: (p0) {
               if (p0 == null) {
-                return 'Please choose your budget icon';
+                return 'chooseYourBudgetIcon'.hardcoded;
               }
               return null;
             },
@@ -84,13 +85,13 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
           gapH16,
           BFormFieldCustomAmount(
             initialValue: _budget.limit,
-            label: 'Monthly limit',
+            label: 'Monthly limit'.hardcoded,
             onChanged: (v) {
               _limit = v;
             },
             validator: (value) {
               if (value == null) {
-                return 'Number invalid';
+                return 'Number invalid'.hardcoded;
               }
               return null;
             },
@@ -98,7 +99,7 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
           const SizedBox(height: 64),
           FilledButton(
               onPressed: _updateBudget,
-              child: BText('Update', color: ColorManager.white))
+              child: BText('Update'.hardcoded, color: ColorManager.white))
         ],
       ),
     );

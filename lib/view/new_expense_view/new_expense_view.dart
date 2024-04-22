@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
 import 'package:budget_app/view/new_expense_view/controller/new_expense_controller.dart';
@@ -86,7 +87,7 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
       list: ref.watch(budgetsCurMonthControllerProvider),
       validator: (p0) {
         if (p0 == null) {
-          return 'Please choose your budget';
+          return 'chooseYourBudgetIcon'.hardcoded;
         }
         return null;
       },
@@ -97,6 +98,6 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
   }
 
   Widget _buttonAddMoney() {
-    return BButton(onPressed: _addExpense, title: 'Add money');
+    return BButton(onPressed: _addExpense, title: 'addMoney'.hardcoded);
   }
 }

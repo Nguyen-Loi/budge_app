@@ -1,5 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/goals_view/goals_page/goals_page.dart';
 import 'package:budget_app/view/history_view/history_page.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
@@ -16,19 +17,19 @@ class MainPageBottomBar extends StatefulWidget {
 final _navBarItems = [
   BottomNavigationBarItem(
     icon: Icon(IconConstants.home),
-    label: 'Home',
+    label: 'Home'.hardcoded,
   ),
   BottomNavigationBarItem(
     icon: Icon(IconConstants.history),
-    label: 'History',
+    label: 'History'.hardcoded,
   ),
   BottomNavigationBarItem(
     icon: Icon(IconConstants.goals),
-    label: 'Goals',
+    label: 'goals'.hardcoded,
   ),
   BottomNavigationBarItem(
     icon: Icon(IconConstants.profile),
-    label: 'Profile',
+    label: 'Profile'.hardcoded,
   )
 ];
 

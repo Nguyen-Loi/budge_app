@@ -18,4 +18,6 @@ class SvgAssets {
   static const String google = '$_svgsPath/google.svg';
   static const String facebook = '$_svgsPath/facebook.svg';
   static const String budget = '$_svgsPath/budget.svg';
+  static const String vi = '$_svgsPath/vi.svg';
+  static const String en = '$_svgsPath/en.svg';
 }

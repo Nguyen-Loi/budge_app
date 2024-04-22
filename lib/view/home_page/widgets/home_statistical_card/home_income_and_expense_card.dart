@@ -4,6 +4,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/statistical_model.dart';
 import 'package:budget_app/view/home_page/widgets/home_statistical_card/controller/statistical_controller.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class HomeIncomeAndExpenseCard extends ConsumerWidget {
       children: [
         Expanded(
           child: _HomeStaisticalCardBase(
-              title: 'Income',
+              title: context.loc.income,
               money: model.income,
               color: ColorManager.purple11,
               onTap: () {
@@ -34,7 +35,7 @@ class HomeIncomeAndExpenseCard extends ConsumerWidget {
         gapW16,
         Expanded(
           child: _HomeStaisticalCardBase(
-              title: 'Expense',
+              title: context.loc.expense,
               money: model.expense,
               color: ColorManager.purple21,
               onTap: () {

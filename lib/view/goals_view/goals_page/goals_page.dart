@@ -7,6 +7,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:budget_app/view/goals_view/goals_page/controller/goals_controller.dart';
@@ -31,7 +32,7 @@ class _GoalsPageState extends State<GoalsPage>
     return Column(
       children: [
         gapH40,
-        const BText.h2('Goals'),
+        BText.h2('Goals'.hardcoded),
         gapH32,
         Expanded(
           child: _builder(),
@@ -68,7 +69,7 @@ class _GoalsPageState extends State<GoalsPage>
         //Title
         Row(
           children: [
-            const Expanded(
+             Expanded(
               child: BText.b1('My Saving Plan'),
             ),
             gapW16,
@@ -115,7 +116,7 @@ class _GoalsPageState extends State<GoalsPage>
         children: [
           Row(
             children: [
-              const Expanded(child: BText.b1('My Urgent Money')),
+              Expanded(child: BText.b1('myUrgentMoney'.hardcoded)),
               gapW16,
               Icon(IconConstants.arrowNext)
             ],

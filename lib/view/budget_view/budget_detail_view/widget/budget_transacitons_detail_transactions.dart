@@ -7,6 +7,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/widget/controller/budget_transations_detail_controller.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const BText.h2('Transactions', textAlign: TextAlign.left),
+             BText.h2('Transactions'.hardcoded, textAlign: TextAlign.left),
               gapH16,
               listGroupTransactionByDay.isEmpty
                   ? _transactionEmpty()
@@ -63,7 +64,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
                           children: [
                             Expanded(
                                 child:
-                                    BText(e.note.isEmpty ? 'No Data' : e.note)),
+                                    BText(e.note.isEmpty ? 'No Data'.hardcoded : e.note)),
                             gapW16,
                             _itemStatusTransaction(type: e.transactionType)
                           ],
@@ -93,15 +94,15 @@ class BudgetDetailTransactions extends ConsumerWidget {
   }
 
   Widget _transactionEmpty() {
-    return const BStatus.empty(text: 'You don\'t have any transactions yet');
+    return  BStatus.empty(text: 'noTransactionDescription'.hardcoded);
   }
 
   Widget _itemStatusTransaction({required TransactionType type}) {
     switch (type) {
       case TransactionType.expense:
-        return const BText.caption('Expense');
+        return  BText.caption('Expense'.hardcoded);
       case TransactionType.income:
-        return const BText.caption('Income');
+        return  BText.caption('Income'.hardcoded);
     }
   }
 
