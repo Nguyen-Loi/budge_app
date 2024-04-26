@@ -24,12 +24,12 @@
     "@nEnableServiceDescription": {
         "description": "A plural message",
         "placeholders": {
-          "count": {
-            "type": "num",
-            "format": "compact"
-          }
+            "count": {
+                "type": "num",
+                "format": "compact"
+            }
         }
-      },
+    },
     "emailHint": "peter@gmail.com",
     "password": "Mật khẩu",
     "passwordHint": "*******",
@@ -84,10 +84,23 @@
     "settings": "Cài đặt",
     "contact": "Liên hệ",
     "signOut": "Đăng xuất",
-    "userJoinDescriptions": "Bạn đã tham gia BudgetApp vào ngày {Date}. Đã qua 1 tháng từ đó và sứ mệnh của chúng tôi vẫn là giúp bạn quản lý tiền của mình tốt hơn",
+    "pUserJoinDescriptions": "Bạn đã tham gia BudgetSS vào ngày {dateTime}. Đã qua {numberMonth} tháng từ đó và sứ mệnh của chúng tôi vẫn là giúp bạn quản lý tiền của mình tốt hơn",
+    "@pUserJoinDescription": {
+        "description": "A plural message",
+        "placeholders": {
+            "dateTime": {
+                "type": "String",
+                "example": "November 2023"
+            },
+            "numberMonth": {
+                "type": "String",
+                "example": "2"
+            }
+        }
+    },
     "home": "Trang chủ",
     "history": "Lịch sử",
-    "budgetSS": "Presupuesto SS",
+    "appName": "Budget SS",
     "left": "Còn lại",
     "approaced": "Tiếp cận",
     "exceeded": "Vượt quá",
@@ -101,7 +114,7 @@
     "errorUp": "LỖI",
     "successUp": "THÀNH CÔNG",
     "close": "Đóng",
-    "continue": "Tiếp tục",
+    "continueText": "Tiếp tục",
     "invalid": "Không hợp lệ",
     "noBudget": "Không có ngân sách nào",
     "textFieldHintDefault": "Nhập văn bản của bạn",
@@ -143,5 +156,22 @@
         }
     },
     "newGoal": "Mục tiêu mới",
-    "budgetEmpty": "Bạn chưa có ngân sách nào."
+    "budgetEmpty": "Bạn chưa có ngân sách nào.",
+    "pExpensesExceedIncome": "Chi phí vượt quá thu nhập ({money}). Tăng thu nhập của bạn và thử lại",
+    "@pExpensesExceedIncome": {
+        "placeholders": {
+            "money": {
+                "type": "String",
+                "example": "value"
+            }
+        }
+    },
+    "darkMode": "Chế độ tối",
+    "language": "Ngôn ngữ",
+    "passwordTooWeak": "Mật khẩu quá yếu.",
+    "emailAlreadyExits": "Email đã tồn tại.",
+    "errorSignInGoogle": "Đã xảy ra lỗi khi đăng nhập bằng Google. Hãy thử lại.",
+    "errorSignInFacebook": "Đã xảy ra lỗi khi đăng nhập bằng Facebook. Hãy thử lại.",
+    "accountAlreadyExits": "Tài khoản đã tồn tại.",
+    "errorCredentials": "Đã xảy ra lỗi khi truy cập thông tin đăng nhập. Hãy thử lại."
 }

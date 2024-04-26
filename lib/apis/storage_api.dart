@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:collection/collection.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +11,7 @@ import 'package:fpdart/fpdart.dart';
 final storageAPIProvider = Provider((ref) {
   return StorageApi(
     storage: ref.watch(storageProvider),
+    ref: ref
   );
 });
 
@@ -22,7 +23,11 @@ abstract class IStorageAPI {
 
 class StorageApi extends IStorageAPI {
   final FirebaseStorage _storage;
-  StorageApi({required FirebaseStorage storage}) : _storage = storage;
+  final ProviderRef<Object?> _ref;
+  StorageApi(
+      {required FirebaseStorage storage, required ProviderRef<Object?> ref})
+      : _storage = storage,
+        _ref = ref;
 
   @override
   FutureEither<String> uploadFile(File file, {required String filePath}) async {
@@ -46,8 +51,9 @@ class StorageApi extends IStorageAPI {
     Either<Failure, String>? failured =
         imageUrls.firstWhereOrNull((element) => element.isLeft());
     if (failured != null) {
-      return left(failured.getLeft().getOrElse(
-          () =>  Failure(error: 'errorUploadFiles'.hardcoded)));
+      return left(failured
+          .getLeft()
+          .getOrElse(() => Failure(error: _ref.read(appLocalizationsProvider).errorUploadFiles)));
     }
     List<String> urls = [];
     for (final imageUrl in imageUrls) {

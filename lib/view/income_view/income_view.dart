@@ -6,7 +6,6 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:budget_app/view/income_view/controller/income_controller.dart';

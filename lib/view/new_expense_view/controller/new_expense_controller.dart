@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/utils.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/statistical_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
@@ -46,7 +47,7 @@ class NewExpenseController extends StateNotifier<bool> {
     if (currentIncome > amount) {
       showBDialogInfoError(context,
           message:
-              'Expenses exceed income (${currentIncome.toMoneyStr()}). Increase your income and try again');
+             context.loc.pExpensesExceedIncome(currentIncome.toMoneyStr()));
       return;
     }
 
@@ -65,7 +66,7 @@ class NewExpenseController extends StateNotifier<bool> {
 
     if (res.isLeft() && context.mounted) {
       closeDialog();
-      showSnackBar(context, 'An error unexpected occur!');
+      showSnackBar(context, context.loc.anErrorUnexpectedOccur);
       return;
     }
     await _statisticalController.updateStatistical(transaction: newTransaction);

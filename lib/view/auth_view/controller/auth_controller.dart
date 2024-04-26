@@ -2,7 +2,7 @@ import 'package:budget_app/apis/auth_api.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/utils.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,7 +51,7 @@ class AuthController extends StateNotifier<void> {
     final res = await _authAPI.signUp(email: email, password: password);
     closeLoading();
     res.fold((l) => showSnackBar(context, l.error), (r) {
-      showSnackBar(context, 'accountCreatePleaseLogin'.hardcoded);
+      showSnackBar(context, context.loc.accountCreatePleaseLogin);
       Navigator.pop(context);
     });
   }

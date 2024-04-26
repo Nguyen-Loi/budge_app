@@ -1,7 +1,7 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +35,7 @@ class BFormPickerIcon extends FormField<IconModel> {
                     children: [
                       gapH8,
                       Text(
-                        field.errorText ?? 'Invalid'.hardcoded,
+                        field.errorText ?? field.context.loc.invalid,
                         style: Theme.of(field.context)
                             .inputDecorationTheme
                             .errorStyle,
@@ -68,7 +68,7 @@ class BFormPickerIcon extends FormField<IconModel> {
                         child: field.value == null
                             ?  _ShowItem(
                                 child: BText(
-                                  'chooseIcon',
+                                  field.context.loc.chooseIcon,
                                 ),
                               )
                             : _ShowItem(

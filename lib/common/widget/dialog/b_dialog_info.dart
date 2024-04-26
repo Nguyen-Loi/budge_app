@@ -2,7 +2,7 @@ import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
 
 enum DialogInfoType { error, success }
@@ -49,13 +49,13 @@ extension Present<T> on BDialogInfo {
     switch (dialogInfoType) {
       case DialogInfoType.error:
         bIcon = icon ?? IconConstants.emojiFrown;
-        bTextConfirm = textSubmit ?? 'Close'.hardcoded;
-        bTitle = title ?? 'ERROR'.hardcoded;
+        bTextConfirm = textSubmit ?? context.loc.close;
+        bTitle = title ?? context.loc.errorUp;
         bColor = ColorManager.red2;
       case DialogInfoType.success:
         bIcon = icon ?? IconConstants.success;
-        bTextConfirm = textSubmit ?? 'Continue';
-        bTitle = title ?? 'SUCCESS';
+        bTextConfirm = textSubmit ?? context.loc.continueText;
+        bTitle = title ?? context.loc.successUp;
         bColor = ColorManager.green1;
     }
     return showDialog<T?>(

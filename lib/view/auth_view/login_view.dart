@@ -13,7 +13,6 @@ import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -133,6 +132,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     return BFormFieldText(
       _emailController,
       label: context.loc.email,
+      hint: context.loc.emailHint,
       validator: (e) => e.validateEmail,
     );
   }

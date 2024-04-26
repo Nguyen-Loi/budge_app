@@ -3,6 +3,7 @@ import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +15,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 final authApiProvider = Provider((ref) {
   final auth = ref.watch(authProvider);
   final db = ref.watch(dbProvider);
-  return AuthAPI(auth: auth, db: db);
+  return AuthAPI(auth: auth, db: db, ref: ref);
 });
 
 abstract class IAuthApi {
@@ -35,10 +36,13 @@ abstract class IAuthApi {
 class AuthAPI implements IAuthApi {
   final FirebaseAuth _auth;
   final FirebaseFirestore _db;
+  final ProviderRef<Object?> _ref;
   AuthAPI({
     required FirebaseAuth auth,
     required FirebaseFirestore db,
+    required ProviderRef<Object?> ref,
   })  : _auth = auth,
+        _ref = ref,
         _db = db;
   String get uid => _auth.currentUser!.uid;
 
@@ -86,10 +90,10 @@ class AuthAPI implements IAuthApi {
       return right(account.user!);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        return left(const Failure(error: 'The password provided is too weak.'));
+        return left(Failure(error: _ref.read(appLocalizationsProvider).passwordTooWeak));
       } else if (e.code == 'email-already-in-use') {
         return left(
-            const Failure(error: 'The account already exists for that email.'));
+            Failure(error: _ref.read(appLocalizationsProvider).emailAlreadyExits));
       }
       return left(Failure(error: e.code));
     } catch (e) {
@@ -121,7 +125,7 @@ class AuthAPI implements IAuthApi {
 
   @override
   FutureEitherVoid loginWithFacebook() async {
-    String defaultError = 'Error occurred using Facebook Sign-In. Try again.';
+    String defaultError =  _ref.read(appLocalizationsProvider).errorSignInFacebook;
     try {
       // This code ios not working
       final LoginResult result = await FacebookAuth.instance.login();
@@ -137,7 +141,7 @@ class AuthAPI implements IAuthApi {
 
   @override
   FutureEitherVoid loginWithGoogle() async {
-    String defaultError = 'Error occurred using Google Sign-In. Try again.';
+    String defaultError = _ref.read(appLocalizationsProvider).errorSignInGoogle;
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -157,15 +161,15 @@ class AuthAPI implements IAuthApi {
       return left(Failure(message: defaultError));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
-        return left(const Failure(
-            error: 'The account already exists.',
+        return left( Failure(
+            error:_ref.read(appLocalizationsProvider).accountAlreadyExits,
             message:
-                'The account already exists with a different credential.'));
+                _ref.read(appLocalizationsProvider).accountAlreadyExits));
       } else if (e.code == 'invalid-credential') {
         return left(
-          const Failure(
-            error: 'Error occurred while accessing credentials.',
-            message: 'Error occurred while accessing credentials. Try again.',
+          Failure(
+            error: _ref.read(appLocalizationsProvider).errorCredentials,
+            message: _ref.read(appLocalizationsProvider).errorCredentials,
           ),
         );
       }

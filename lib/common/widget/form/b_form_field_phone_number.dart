@@ -1,6 +1,5 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
@@ -33,7 +32,7 @@ class BFormFieldPhoneNumber extends StatelessWidget {
           isEnabled: !disable,
           onInputChanged: onInputChanged,
           initialValue: initialValue,
-          hintText: 'noData'.hardcoded,
+          hintText: '012345678',
           countries: const ['VN', 'SG', 'JP'],
         ),
       ],

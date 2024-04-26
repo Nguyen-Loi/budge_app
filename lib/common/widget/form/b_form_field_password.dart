@@ -17,7 +17,7 @@ class BFormFieldPassword extends StatefulWidget {
     super.key,
     this.maxLength,
     this.label,
-    this.hint = 'Enter your password',
+    this.hint = '********',
     this.validator,
     this.initialValue,
   });

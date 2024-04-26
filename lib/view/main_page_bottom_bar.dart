@@ -1,6 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/icon_constants.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/goals_view/goals_page/goals_page.dart';
 import 'package:budget_app/view/history_view/history_page.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
@@ -14,22 +14,22 @@ class MainPageBottomBar extends StatefulWidget {
   State<MainPageBottomBar> createState() => _MainPageBottomBarState();
 }
 
-final _navBarItems = [
+List<BottomNavigationBarItem> _navBarItems (BuildContext context) => [
   BottomNavigationBarItem(
     icon: Icon(IconConstants.home),
-    label: 'Home'.hardcoded,
+    label: context.loc.home,
   ),
   BottomNavigationBarItem(
     icon: Icon(IconConstants.history),
-    label: 'History'.hardcoded,
+    label: context.loc.history,
   ),
   BottomNavigationBarItem(
     icon: Icon(IconConstants.goals),
-    label: 'goals'.hardcoded,
+    label: context.loc.goals,
   ),
   BottomNavigationBarItem(
     icon: Icon(IconConstants.profile),
-    label: 'Profile'.hardcoded,
+    label: context.loc.profile,
   )
 ];
 
@@ -67,7 +67,7 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
       bottomNavigationBar: isSmallScreen
           ? BottomNavigationBar(
               unselectedItemColor: ColorManager.black,
-              items: _navBarItems,
+              items: _navBarItems(context),
               currentIndex: _selectedIndex,
               selectedItemColor: ColorManager.purple11,
               onTap: (int index) {
@@ -88,7 +88,7 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
                 });
               },
               extended: isLargeScreen,
-              destinations: _navBarItems
+              destinations: _navBarItems(context)
                   .map((item) => NavigationRailDestination(
                       icon: item.icon,
                       selectedIcon: item.activeIcon,
