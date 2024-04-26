@@ -7,6 +7,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/icon_model.dart';
@@ -54,7 +55,7 @@ class _GoalsPageState extends State<GoalsPage>
             return ListView(
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
               children: [
-                _urgentMoney(goalDefault),
+                _urgentMoney(context,goal: goalDefault),
                 gapH16,
                 _listGoalCustom(goalList)
               ],
@@ -107,7 +108,7 @@ class _GoalsPageState extends State<GoalsPage>
     );
   }
 
-  Widget _urgentMoney(BudgetModel goal) {
+  Widget _urgentMoney(BuildContext context,{required BudgetModel goal}) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, RoutePath.goalDetail, arguments: goal);
@@ -116,7 +117,7 @@ class _GoalsPageState extends State<GoalsPage>
         children: [
           Row(
             children: [
-              Expanded(child: BText.b1('myUrgentMoney'.hardcoded)),
+              Expanded(child: BText.b1(context.loc.myUrgentMoney)),
               gapW16,
               Icon(IconConstants.arrowNext)
             ],

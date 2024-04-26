@@ -1,9 +1,10 @@
 import 'package:budget_app/common/log.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 
 extension ValidateForm on String? {
   String? get validateEmail {
     final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    String textError = 'Email invalid';
+    String textError = 'emailInvalid'.hardcoded;
     if (this == null || !emailRegExp.hasMatch(this!)) {
       return textError;
     }
@@ -11,7 +12,7 @@ extension ValidateForm on String? {
   }
 
   String? get validateNotNull {
-    String textError = 'Data emtpy';
+    String textError = 'dataEmpty'.hardcoded;
     if (this == null || this == '') {
       return textError;
     }
@@ -22,7 +23,7 @@ extension ValidateForm on String? {
     logError(this!.toString());
     final phoneRegExp = RegExp(
         r"(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})");
-    String textError = 'Phone number invalid';
+    String textError = 'phoneNumberInvalid'.hardcoded;
     if (this == null || !phoneRegExp.hasMatch(this!)) {
       return textError;
     }
@@ -31,7 +32,7 @@ extension ValidateForm on String? {
 
   String? get validateName {
     final nameRegExp = RegExp(r"^[A-Za-z\s'-]+$");
-    String textError = 'Name invalid';
+    String textError = 'nameInvalid'.hardcoded;
     if (this == null || !nameRegExp.hasMatch(this!)) {
       return textError;
     }
@@ -39,7 +40,7 @@ extension ValidateForm on String? {
   }
 
   String? get validatePassword {
-    String textError = 'Password minimum is 6 characters';
+    String textError = 'passwordMininum6'.hardcoded;
     if (this == null || this!.length < 6) {
       return textError;
     }
@@ -55,7 +56,7 @@ extension ValidateForm on String? {
   }
 
   String? get validateAmount {
-    String textError = 'Number invalid';
+    String textError = 'amountInvalid';
     final intRegExp = RegExp(r'^[1-9]\d*$');
     if (this == null || !intRegExp.hasMatch(this!)) {
       return textError;
@@ -64,7 +65,7 @@ extension ValidateForm on String? {
   }
 
   String? validateMatchPassword(String password) {
-    String textError = 'Confirm password invalid';
+    String textError = 'confirmPasswordInvalid';
     if (this == null || this! != password) {
       return textError;
     }

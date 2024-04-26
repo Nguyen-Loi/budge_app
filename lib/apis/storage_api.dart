@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,7 +47,7 @@ class StorageApi extends IStorageAPI {
         imageUrls.firstWhereOrNull((element) => element.isLeft());
     if (failured != null) {
       return left(failured.getLeft().getOrElse(
-          () => const Failure(error: 'Error when upload multiple file')));
+          () =>  Failure(error: 'errorUploadFiles'.hardcoded)));
     }
     List<String> urls = [];
     for (final imageUrl in imageUrls) {

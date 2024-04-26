@@ -31,7 +31,7 @@ class BFormCategoryBudget extends FormField<BudgetModel> {
                   gapH16,
                   list.isEmpty
                       ? const BText(
-                          'No budget available',
+                          'noBudget',
                           textAlign: TextAlign.center,
                         )
                       : _CategoryBudget(field.context,

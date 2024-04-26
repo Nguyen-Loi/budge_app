@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/async/b_async_list.dart';
 import 'package:budget_app/common/widget/b_status.dart';
@@ -7,6 +9,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/goals_view/goal_detail_view/goal_detail_transactions/controller/goal_detail_transactions_controller.dart';
@@ -28,14 +31,14 @@ class GoalDetailTransactions extends ConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              BText.h2('Transactions'.hardcoded, textAlign: TextAlign.left),
+              BText.h2(context.loc.transactions, textAlign: TextAlign.left),
               gapH16,
               listGroupTransactionByDay.isEmpty
                   ? _transactionEmpty()
                   : ColumnWithSpacing(
                       spacing: 24,
                       children: listGroupTransactionByDay
-                          .map((e) => _groupDateTransactionsCard(e))
+                          .map((e) => _groupDateTransactionsCard(context,e))
                           .toList(),
                     )
             ],
@@ -43,7 +46,7 @@ class GoalDetailTransactions extends ConsumerWidget {
         });
   }
 
-  Widget _groupDateTransactionsCard(
+  Widget _groupDateTransactionsCard(BuildContext context,
       _GroupDateTransactionModel groupDateTransactionModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +67,7 @@ class GoalDetailTransactions extends ConsumerWidget {
                           children: [
                             Expanded(
                                 child:
-                                    BText(e.note.isEmpty ? 'No Data'.hardcoded : e.note)),
+                                    BText(e.note.isEmpty ? context.loc.noData : e.note)),
                             gapW16,
                             _itemStatusTransaction(type: e.transactionType)
                           ],
