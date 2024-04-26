@@ -31,8 +31,10 @@ class GoalsController extends StateNotifier<List<BudgetModel>> {
 
   List<BudgetModel> _goals = [];
 
-  BudgetModel get goalDefault =>
-      _goals.firstWhere((e) => e.id == _goalKeyDefault);
+  BudgetModel get goalDefault => _goals.firstWhere((e) {
+        return e.id == _goalKeyDefault;
+      });
+
   List<BudgetModel> get listGoal =>
       _goals.where((e) => e.id != _goalKeyDefault).toList();
 
@@ -58,7 +60,7 @@ class GoalsController extends StateNotifier<List<BudgetModel>> {
           id: _goalKeyDefault,
           userId: _uid,
           month: BDateTime.month(now),
-          name: 'Urgent',
+          name: '',
           iconId: 1,
           currentAmount: 0,
           limit: 0,
@@ -73,7 +75,7 @@ class GoalsController extends StateNotifier<List<BudgetModel>> {
     state = _goals.toList();
   }
 
-   void updateListGoalState(BudgetModel model) {
+  void updateListGoalState(BudgetModel model) {
     int budgetIndex = _goals.indexWhere((e) => e.id == model.id);
     _goals[budgetIndex] = model;
     _notifier();

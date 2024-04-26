@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -86,7 +87,7 @@ class _BFormPickerImage extends FormFieldState<File> {
       children: [
         Icon(IconConstants.galley, size: 30),
         gapW16,
-        const BText('No Image')
+        BText('No Image'.hardcoded)
       ],
     );
   }

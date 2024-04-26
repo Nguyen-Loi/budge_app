@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/goals_view/goal_new_view/controller/goal_new_controller.dart';
@@ -45,7 +46,7 @@ class _NewBudgetViewState extends ConsumerState<GoalNewView> {
         FocusScope.of(context).unfocus();
       },
       child: BaseView.customBackground(
-        title: 'New Goal',
+        title: context.loc.newGoal,
         buildTop: gapH32,
         child: _form(),
       ),
@@ -59,8 +60,8 @@ class _NewBudgetViewState extends ConsumerState<GoalNewView> {
         children: [
           BFormFieldText(
             _goalNameController,
-            label: 'goalName'.hardcoded,
-            hint: 'Iphone 15 prm',
+            label: context.loc.goalName,
+            hint: context.loc.goalNameHint,
             validator: (p0) => p0.validateNotNull,
           ),
           gapH16,
@@ -73,20 +74,20 @@ class _NewBudgetViewState extends ConsumerState<GoalNewView> {
             },
             validator: (p0) {
               if (p0 == null) {
-                return 'chooseYourGoalIcon'.hardcoded;
+                return context.loc.chooseYourGoalIcon;
               }
               return null;
             },
           ),
           gapH16,
           BFormFieldCustomAmount(
-            label: 'Target'.hardcoded,
+            label: context.loc.target,
             onChanged: (v) {
               _limit = v;
             },
             validator: (value) {
               if (value == null) {
-                return 'numberInvalid'.hardcoded;
+                return context.loc.amountInvalid;
               }
               return null;
             },
@@ -94,7 +95,7 @@ class _NewBudgetViewState extends ConsumerState<GoalNewView> {
           const SizedBox(height: 64),
           FilledButton(
               onPressed: _addNewGoal,
-              child: BText('Add'.hardcoded, color: ColorManager.white))
+              child: BText(context.loc.add, color: ColorManager.white))
         ],
       ),
     );

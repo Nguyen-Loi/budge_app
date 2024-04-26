@@ -81,7 +81,7 @@ class _HomePageState extends ConsumerState<HomePage>
         Expanded(
           child: BSearchBar(
             controller: _searchController,
-            hintText: 'searchHint',
+            hintText: context.loc.searchHint,
           ),
         ),
         gapW16,
@@ -106,7 +106,7 @@ class _HomePageState extends ConsumerState<HomePage>
               children: [
                 BAvatar.network(user.profileUrl),
                 gapH24,
-                BText('yourAvailableBalanceIs', color: ColorManager.white),
+                BText(context.loc.yourAvailableBalanceIs, color: ColorManager.white),
                 gapH16,
                 BText.h1('\$ 2028', color: ColorManager.white),
               ],
@@ -123,7 +123,7 @@ class _HomePageState extends ConsumerState<HomePage>
         children: [
           BTextRichSpace(text1: '${context.loc.hello} ', text2: user.name),
           gapH8,
-          BText.caption('financesGood'.hardcoded),
+          BText.caption(context.loc.financesGood),
         ],
       );
     });

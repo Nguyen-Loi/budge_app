@@ -3,6 +3,7 @@ import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/utils.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/home_page/widgets/home_statistical_card/controller/statistical_controller.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class IncomeController extends StateNotifier<bool> {
 
     if (res.isLeft() && context.mounted) {
       closeDialog();
-      showSnackBar(context, 'An error unexpected occur!');
+      showSnackBar(context, context.loc.anErrorUnexpectedOccur);
       return;
     }
 

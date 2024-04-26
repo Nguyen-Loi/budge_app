@@ -1,5 +1,147 @@
 {
     "hello": "Xin chào",
     "income": "Thu nhập",
-    "expense": "Chi phí"
+    "expense": "Chi tiêu",
+    "balanceAvailableDescription": "Số dư khả dụng của bạn là",
+    "searchHint": "Tìm kiếm...",
+    "statusFinancesGood": "Tình hình tài chính của bạn trông tốt",
+    "amount": "Số tiền",
+    "amountInvalid": "Số tiền không hợp lệ",
+    "note": "Ghi chú",
+    "noteHint": "Tiền từ lương",
+    "date": "Ngày",
+    "addMoney": "Thêm tiền",
+    "signIn": "Đăng nhập",
+    "welecomeBack": "Chào mừng trở lại!",
+    "signInDescription": "Xin chào, bạn đã quay lại, điền thông tin của bạn để tiếp tục",
+    "email": "Email",
+    "orLoginWith": "Hoặc đăng nhập bằng",
+    "signUp": "Đăng ký",
+    "welecomeAppName": "Chào mừng đến với BudgetSS!",
+    "signUpToStart": "Hoàn thành sau đó đăng ký để bắt đầu",
+    "pleaseEnableService": "Vui lòng bật điều khoản dịch vụ của chúng tôi",
+    "nEableServiceDescription": "{count, plural, =0{Bằng việc đăng ký, bạn đồng ý với  } =1{điều khoản dịch vụ và chính sách quyền riêng tư} other{{count} errorText}}",
+    "@nEnableServiceDescription": {
+        "description": "A plural message",
+        "placeholders": {
+          "count": {
+            "type": "num",
+            "format": "compact"
+          }
+        }
+      },
+    "emailHint": "peter@gmail.com",
+    "password": "Mật khẩu",
+    "passwordHint": "*******",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "create": "Tạo",
+    "transactions": "Giao dịch",
+    "noData": "Không có dữ liệu",
+    "noTransactionDescription": "Bạn chưa có giao dịch nào",
+    "monthlyExpense": "Chi tiêu hàng tháng",
+    "noTransactionThisBudget": "Bạn chưa có giao dịch nào với ngân sách này.",
+    "nYouSpentForThePast": "{count, plural, =0{Bạn đã chi tiêu } =1{Giá trị} =2{ trong thời gian} other{{count} erorText}}",
+    "@nYouSpentForThePast": {
+        "description": "A plural message",
+        "placeholders": {
+            "count": {
+                "type": "num",
+                "format": "compact"
+            }
+        }
+    },
+    "youAlreadySpent": "Bạn đã chi tiêu",
+    "spendLimitPerMonth": "Giới hạn chi tiêu hàng tháng",
+    "expenseGood": "Tuyệt vời! Hãy giữ chi tiêu của bạn dưới mức giới hạn.",
+    "modifyBudget": "Sửa đổi ngân sách",
+    "budgetName": "Tên ngân sách",
+    "chooseYourBudgetIcon": "Vui lòng chọn biểu tượng ngân sách của bạn",
+    "monthlyLimit": "Giới hạn hàng tháng",
+    "numberInvalid": "Số không hợp lệ",
+    "update": "Cập nhật",
+    "newBudget": "Ngân sách mới",
+    "budgetNameHint": "Nước",
+    "add": "Thêm",
+    "modifyGoal": "Sửa đổi mục tiêu",
+    "goalName": "Tên mục tiêu",
+    "goalNameHint": "iPhone 15 prm",
+    "chooseYourGoalIcon": "Vui lòng chọn biểu tượng mục tiêu của bạn",
+    "limit": "Giới hạn",
+    "target": "Mục tiêu",
+    "goals": "Mục tiêu",
+    "mySavingPlan": "Kế hoạch tiết kiệm của tôi",
+    "myUrgentMoney": "Tiền gấp của tôi",
+    "thereAreNoTransactions": "Không có giao dịch nào",
+    "yourAvailableBalanceIs": "Số dư khả dụng của bạn là",
+    "financesGood": "Tình hình tài chính của bạn trông tốt",
+    "newExpense": "Chi tiêu mới",
+    "myAccount": "Tài khoản của tôi",
+    "modify": "Sửa đổi",
+    "readOnly": "Chỉ đọc",
+    "name": "Tên",
+    "save": "Lưu",
+    "profile": "Hồ sơ",
+    "settings": "Cài đặt",
+    "contact": "Liên hệ",
+    "signOut": "Đăng xuất",
+    "userJoinDescriptions": "Bạn đã tham gia BudgetApp vào ngày {Date}. Đã qua 1 tháng từ đó và sứ mệnh của chúng tôi vẫn là giúp bạn quản lý tiền của mình tốt hơn",
+    "home": "Trang chủ",
+    "history": "Lịch sử",
+    "budgetSS": "Presupuesto SS",
+    "left": "Còn lại",
+    "approaced": "Tiếp cận",
+    "exceeded": "Vượt quá",
+    "anErrorUnexpectedOccur": "Đã xảy ra một lỗi không mong muốn",
+    "errorUploadFiles": "Lỗi khi tải lên tệp",
+    "errorUploadFile": "Đã xảy ra lỗi khi tải lên hình ảnh",
+    "deleteTitle": "Xóa {obj}",
+    "deleteMessage": "Bạn có chắc chắn muốn xóa {obj} này không?",
+    "deleteUp": "XÓA",
+    "cancelUp": "HỦY",
+    "errorUp": "LỖI",
+    "successUp": "THÀNH CÔNG",
+    "close": "Đóng",
+    "continue": "Tiếp tục",
+    "invalid": "Không hợp lệ",
+    "noBudget": "Không có ngân sách nào",
+    "textFieldHintDefault": "Nhập văn bản của bạn",
+    "chooseIcon": "Chọn biểu tượng",
+    "noImage": "Không có ảnh",
+    "emailInvalid": "Email không hợp lệ",
+    "dataEmpty": "Dữ liệu trống",
+    "phoneNumberInvalid": "Số điện thoại không hợp lệ",
+    "nameInvalid": "Tên không hợp lệ",
+    "passwordMininum6": "Mật khẩu tối thiểu là 6 ký tự",
+    "confirmPasswordInvalid": "Xác nhận mật khẩu không hợp lệ",
+    "accountCreatePleaseLogin": "Tài khoản đã được tạo! Vui lòng đăng nhập",
+    "nForgotPassword": "{count, plural, =0{Quên} =1{ mật khẩu?} other{{count} errorText}}",
+    "@nForgotPassword": {
+        "description": "A plural message",
+        "placeholders": {
+            "count": {
+                "type": "num",
+                "format": "compact"
+            }
+        }
+    },
+    "pBudgetNameExits": "Ngân sách {budgetName} đã tồn tại. Vui lòng thay đổi tên ngân sách và thử lại",
+    "@pBudgetNameExits": {
+        "placeholders": {
+            "budgetName": {
+                "type": "String",
+                "example": "Tiền nước"
+            }
+        }
+    },
+    "pGoalNameExits": "Mục tiêu {goalName} đã tồn tại. Vui lòng thay đổi tên mục tiêu và thử lại",
+    "@pGoalNameExits": {
+        "placeholders": {
+            "goalName": {
+                "type": "String",
+                "example": "Tiền nước"
+            }
+        }
+    },
+    "newGoal": "Mục tiêu mới",
+    "budgetEmpty": "Bạn chưa có ngân sách nào."
 }

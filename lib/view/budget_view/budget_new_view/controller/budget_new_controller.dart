@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/b_datetime.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
@@ -35,12 +36,12 @@ class BudgetNewController extends StateNotifier<bool> {
         _budgetController = budgetController,
         super(false);
 
-  String? _errorValidate({required String budgetName}) {
+  String? _errorValidate(BuildContext context,{required String budgetName}) {
     List<BudgetModel> list = _budgetController.state;
     final currentId = GenId.budget(budgetName);
     final budgetExits = list.firstWhereOrNull((e) => e.id == currentId);
     if (budgetExits != null) {
-      return 'Budget name $budgetName already exist. Please change budget name and try again';
+      return context.loc.pBudgetNameExits(budgetName);
     }
     return null;
   }
@@ -52,7 +53,7 @@ class BudgetNewController extends StateNotifier<bool> {
     required int limit,
   }) async {
     //Check valid
-    String? error = _errorValidate(budgetName: budgetName);
+    String? error = _errorValidate(context,budgetName: budgetName);
     if (error != null) {
       showBDialogInfoError(context, message: error);
     }

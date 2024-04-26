@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
@@ -7,6 +9,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +48,7 @@ class HomeBudgetCard extends StatelessWidget {
                 ],
               ),
               gapH8,
-              ..._showStatusType()
+              ..._showStatusType(context)
             ],
           ),
         ),
@@ -53,24 +56,24 @@ class HomeBudgetCard extends StatelessWidget {
     );
   }
 
-  List<Widget> _showStatusType() {
+  List<Widget> _showStatusType(BuildContext context) {
     switch (model.status) {
       case StatusBudgetProgress.start:
       case StatusBudgetProgress.progress:
         return baseStatus(
-            textStatus: 'left'.hardcoded,
+            textStatus: context.loc.left,
             iconColor: ColorManager.green2,
             textColor: ColorManager.black,
             iconData: IconConstants.emojiSmile);
       case StatusBudgetProgress.almostDone:
         return baseStatus(
-            textStatus: 'Approaced'.hardcoded,
+            textStatus: context.loc.approaced,
             iconColor: ColorManager.orange,
             textColor: ColorManager.orange,
             iconData: IconConstants.emojiSurprise);
       case StatusBudgetProgress.complete:
         return baseStatus(
-            textStatus: 'Exceeded'.hardcoded,
+            textStatus: context.loc.exceeded,
             iconColor: ColorManager.red1,
             textColor: ColorManager.red1,
             iconData: IconConstants.emojiFrown);

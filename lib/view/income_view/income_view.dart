@@ -49,18 +49,18 @@ class _IncomeViewState extends ConsumerState<IncomeView> {
         children: [
           BFormFieldAmount(
             _controllerAmount,
-            label: 'Amount'.hardcoded,
+            label: context.loc.amount,
             hint: '',
-            validator: (p0) => p0.validateInteger(textError: 'Amount invalid'.hardcoded),
+            validator: (p0) => p0.validateInteger(textError: context.loc.amountInvalid),
           ),
           BFormFieldText(
             _controllerNote,
             maxLines: 2,
-            label: 'Note'.hardcoded,
-            hint: 'Money from salary'.hardcoded,
+            label: context.loc.note,
+            hint: context.loc.noteHint,
           ),
           BPickerDatetime(
-            title: 'Date'.hardcoded,
+            title: context.loc.date,
             firstDate: firstDate,
             onChanged: (date) {
               _transactionDate = date;
@@ -70,7 +70,7 @@ class _IncomeViewState extends ConsumerState<IncomeView> {
           BButton(
               padding: const EdgeInsets.only(bottom: 16),
               onPressed: () => _addMoney(uid: uid),
-              title: 'Add money'.hardcoded)
+              title: context.loc.addMoney)
         ],
       ),
     );

@@ -9,6 +9,7 @@ import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
@@ -52,19 +53,19 @@ class _LoginViewState extends ConsumerState<SignUpView> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: BAppBar(text: 'Sign up'),
+        appBar: BAppBar(text: context.loc.signUp),
         body: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
               // gapH24,
               gapH32,
                BText.h1(
-                'WelecomeAppName!'.hardcoded,
+                context.loc.welecomeAppName,
                 textAlign: TextAlign.left,
               ),
               gapH16,
                BText(
-                'signUpToStart'.hardcoded,
+                context.loc.signUpToStart,
                 textAlign: TextAlign.left,
               ),
               gapH48,
@@ -97,15 +98,15 @@ class _LoginViewState extends ConsumerState<SignUpView> {
     return BFormCheckbox(
         validator: (p0) {
           if (p0 == false) {
-            return 'Please enable our terms of service'.hardcoded;
+            return context.loc.pleaseEnableService;
           }
           return null;
         },
         title: BTextRich(
           BTextSpan(children: [
-            BTextSpan(text: 'enableServiceDescription1'.hardcoded),
+            BTextSpan(text: context.loc.nEableServiceDescription(0)),
             BTextSpan(
-              text: 'enableServiceDescription2'.hardcoded,
+              text: context.loc.nEableServiceDescription(1),
               style: BTextStyle.bodyMedium(color: ColorManager.primary),
             ),
           ]),
@@ -116,8 +117,8 @@ class _LoginViewState extends ConsumerState<SignUpView> {
   Widget _bEmailFormField() {
     return BFormFieldText(
       _emailController,
-      label: 'Email'.hardcoded,
-      hint: 'peter@gmail.com'.hardcoded,
+      label: context.loc.email,
+      hint: context.loc.emailHint,
       validator: (p0) => p0.validateEmail,
     );
   }
@@ -125,21 +126,22 @@ class _LoginViewState extends ConsumerState<SignUpView> {
   Widget _bPasswordFormField() {
     return BFormFieldPassword(
       _confirmPasswordController,
-      label: 'Password'.hardcoded,
-      hint: '******'.hardcoded,
+      label: context.loc.password,
+      hint: context.loc.passwordHint,
+      validator: (p0) => p0.validatePassword,
     );
   }
 
   Widget _bConfirmPassword() {
     return BFormFieldPassword(_passwordController,
-        label: 'Confirm password'.hardcoded,
-        hint: '******'.hardcoded,
+        label: context.loc.confirmPassword,
+        hint: context.loc.passwordHint,
         validator: (p0) => p0.validateMatchPassword(
               _confirmPasswordController.text,
             ));
   }
 
   Widget _button() {
-    return BButton(onPressed: _onSignUp, title: 'Create'.hardcoded);
+    return BButton(onPressed: _onSignUp, title: context.loc.create);
   }
 }

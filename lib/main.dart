@@ -2,7 +2,6 @@
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/common/shared_pref/theme_controller.dart';
-import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/core/logger_observer.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';

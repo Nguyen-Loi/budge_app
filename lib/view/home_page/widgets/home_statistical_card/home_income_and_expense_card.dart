@@ -17,7 +17,7 @@ class HomeIncomeAndExpenseCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(statisticalControllerProvider);
     final isLoading = ref.watch(statisticalFetchProvider).isLoading;
-    return isLoading ? _loading() : _hasData(context, state!);
+    return isLoading ? _loading(context) : _hasData(context, state!);
   }
 
   Widget _hasData(BuildContext context, StatisticalModel model) {
@@ -46,12 +46,12 @@ class HomeIncomeAndExpenseCard extends ConsumerWidget {
     );
   }
 
-  Widget _loading() {
+  Widget _loading(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: _HomeStaisticalCardBase(
-              title: 'Income',
+              title: context.loc.income,
               money: 0,
               color: ColorManager.purple11,
               onTap: () {}),
@@ -59,7 +59,7 @@ class HomeIncomeAndExpenseCard extends ConsumerWidget {
         gapW16,
         Expanded(
           child: _HomeStaisticalCardBase(
-              title: 'Expense',
+              title: context.loc.expense,
               money: 0,
               color: ColorManager.purple21,
               onTap: () {}),

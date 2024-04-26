@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_new_view/controller/budget_new_controller.dart';
@@ -47,7 +48,7 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
         FocusScope.of(context).unfocus();
       },
       child: BaseView.customBackground(
-        title: 'New Budget'.hardcoded,
+        title: context.loc.newBudget,
         buildTop: gapH32,
         child: _form(),
       ),
@@ -61,8 +62,8 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
         children: [
           BFormFieldText(
             _budgetNameController,
-            label: 'Budget Name'.hardcoded,
-            hint: 'budgetNameHint',
+            label: context.loc.budgetName,
+            hint: context.loc.budgetNameHint,
             validator: (p0) => p0.validateNotNull,
           ),
           gapH16,
@@ -75,20 +76,20 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
             },
             validator: (p0) {
               if (p0 == null) {
-                return 'chooseYourBudgetIcon'.hardcoded;
+                return context.loc.chooseYourBudgetIcon;
               }
               return null;
             },
           ),
           gapH16,
           BFormFieldCustomAmount(
-            label: 'Monthly limit'.hardcoded,
+            label: context.loc.monthlyLimit,
             onChanged: (v) {
               _limit = v;
             },
             validator: (value) {
               if (value == null) {
-                return 'Number invalid'.hardcoded;
+                return context.loc.amountInvalid;
               }
               return null;
             },
@@ -96,7 +97,7 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
           const SizedBox(height: 64),
           FilledButton(
               onPressed: _addNewBudget,
-              child: BText('Add'.hardcoded, color: ColorManager.white))
+              child: BText(context.loc.add, color: ColorManager.white))
         ],
       ),
     );

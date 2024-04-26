@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/b_datetime.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/goals_view/goals_page/controller/goals_controller.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
@@ -35,12 +36,12 @@ class GoalNewController extends StateNotifier<void> {
         _goalController = goalController,
         super(null);
 
-  String? _errorValidate({required String goalName}) {
+  String? _errorValidate(BuildContext context,{required String goalName}) {
     List<BudgetModel> list = _goalController.state;
     final currentId = GenId.goal(goalName);
     final goalExits = list.firstWhereOrNull((e) => e.id == currentId);
     if (goalExits != null) {
-      return 'Goal name $goalName already exist. Please change goal name and try again';
+      return context.loc.pGoalNameExits(goalName);
     }
 
     return null;
@@ -52,7 +53,7 @@ class GoalNewController extends StateNotifier<void> {
     required int iconId,
     required int limit,
   }) async {
-    String? error = _errorValidate(goalName: goalName);
+    String? error = _errorValidate(context,goalName: goalName);
     if (error != null) {
       showBDialogInfoError(context, message: error);
     }
