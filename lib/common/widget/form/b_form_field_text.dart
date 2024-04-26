@@ -1,6 +1,6 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
 
 enum _TypeField { controller, init }
@@ -56,21 +56,21 @@ class BFormFieldText extends StatelessWidget {
           fontWeight: FontWeightManager.semiBold,
         ),
         gapH8,
-        _field(),
+        _field(context),
       ],
     );
   }
 
-  Widget _field() {
+  Widget _field(BuildContext context) {
     switch (_typeField) {
       case _TypeField.controller:
-        return _controller();
+        return _controller(context);
       case _TypeField.init:
-        return _init();
+        return _init(context);
     }
   }
 
-  Widget _controller() {
+  Widget _controller(BuildContext context) {
     return TextFormField(
       readOnly: disable,
       maxLength: maxLength,
@@ -79,7 +79,7 @@ class BFormFieldText extends StatelessWidget {
       validator: validator,
       keyboardType: textInputType,
       decoration: InputDecoration(
-        hintText: hint??'textFieldHintDefault'.hardcoded,
+        hintText: hint ?? context.loc.textFieldHintDefault,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -87,7 +87,7 @@ class BFormFieldText extends StatelessWidget {
     );
   }
 
-  Widget _init() {
+  Widget _init(BuildContext context) {
     return TextFormField(
       readOnly: disable,
       initialValue: initialValue,
@@ -97,7 +97,7 @@ class BFormFieldText extends StatelessWidget {
       keyboardType: textInputType,
       onChanged: onChanged,
       decoration: InputDecoration(
-        hintText: hint??'textFieldHintDefault'.hardcoded,
+        hintText: hint ?? context.loc.textFieldHintDefault,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
         ),

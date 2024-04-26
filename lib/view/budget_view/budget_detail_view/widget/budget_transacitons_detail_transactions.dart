@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/async/b_async_list.dart';
 import 'package:budget_app/common/widget/b_status.dart';
@@ -10,7 +8,7 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/widget/controller/budget_transations_detail_controller.dart';
 import 'package:flutter/material.dart';

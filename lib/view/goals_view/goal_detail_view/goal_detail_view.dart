@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
@@ -11,7 +9,6 @@ import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/base_view.dart';

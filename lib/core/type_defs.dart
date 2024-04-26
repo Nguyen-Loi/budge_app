@@ -1,4 +1,5 @@
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/main.dart';
 import 'package:fpdart/fpdart.dart';
 
 class Failure {
@@ -9,8 +10,10 @@ class Failure {
     _message = message!;
   }
 
-  String get error => _error ?? 'anErrorUnexpectedOccur'.hardcoded;
-  String get message => _message ?? 'anErrorUnexpectedOccur'.hardcoded;
+  String get error =>
+      _error ?? navigatorKey.currentContext!.loc.anErrorUnexpectedOccur;
+  String get message =>
+      _message ?? navigatorKey.currentContext!.loc.anErrorUnexpectedOccur;
 }
 
 typedef FutureEither<T> = Future<Either<Failure, T>>;

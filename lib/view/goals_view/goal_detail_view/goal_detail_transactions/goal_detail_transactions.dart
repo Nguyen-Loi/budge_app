@@ -1,4 +1,4 @@
-import 'dart:js';
+
 
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/async/b_async_list.dart';
@@ -10,7 +10,6 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/goals_view/goal_detail_view/goal_detail_transactions/controller/goal_detail_transactions_controller.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,7 @@ class GoalDetailTransactions extends ConsumerWidget {
               BText.h2(context.loc.transactions, textAlign: TextAlign.left),
               gapH16,
               listGroupTransactionByDay.isEmpty
-                  ? _transactionEmpty()
+                  ? _transactionEmpty(context)
                   : ColumnWithSpacing(
                       spacing: 24,
                       children: listGroupTransactionByDay
@@ -69,7 +68,7 @@ class GoalDetailTransactions extends ConsumerWidget {
                                 child:
                                     BText(e.note.isEmpty ? context.loc.noData : e.note)),
                             gapW16,
-                            _itemStatusTransaction(type: e.transactionType)
+                            _itemStatusTransaction(context,type: e.transactionType)
                           ],
                         ),
                         gapH16,
@@ -96,16 +95,16 @@ class GoalDetailTransactions extends ConsumerWidget {
     );
   }
 
-  Widget _transactionEmpty() {
-    return  BStatus.empty(text: 'noTransactionDescription'.hardcoded);
+  Widget _transactionEmpty(BuildContext context) {
+    return  BStatus.empty(text: context.loc.noTransactionDescription);
   }
 
-  Widget _itemStatusTransaction({required TransactionType type}) {
+  Widget _itemStatusTransaction(BuildContext context,{required TransactionType type}) {
     switch (type) {
       case TransactionType.expense:
-        return  BText.caption('Expense'.hardcoded);
+        return  BText.caption(context.loc.expense);
       case TransactionType.income:
-        return  BText.caption('Income'.hardcoded);
+        return  BText.caption(context.loc.income);
     }
   }
 

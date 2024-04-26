@@ -7,7 +7,6 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_new_view/controller/budget_new_controller.dart';
 import 'package:flutter/material.dart';

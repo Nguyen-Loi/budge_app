@@ -4,7 +4,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/language_enum.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,16 +16,19 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView(
-        title: 'Settings'.hardcoded,
+        title: context.loc.settings,
         child: ListViewWithSpacing(
-          children: [_themeSwitch(), _languageDropdown()],
+          children: [
+            _themeSwitch(context),
+            _languageDropdown(context),
+          ],
         ));
   }
 
-  Widget _themeSwitch() {
+  Widget _themeSwitch(BuildContext context) {
     return Consumer(builder: (_, ref, __) {
       return SwitchListTile(
-          title: BText('Dark Mode'.hardcoded),
+          title: BText(context.loc.darkMode),
           value: ref.watch(isDarkControllerProvider),
           onChanged: (_) {
             ref.read(isDarkControllerProvider.notifier).toggleTheme();
@@ -33,10 +36,10 @@ class SettingsView extends StatelessWidget {
     });
   }
 
-  Widget _languageDropdown() {
+  Widget _languageDropdown(BuildContext context) {
     return Consumer(builder: (_, ref, __) {
       return ListTile(
-        title: BText('Language'.hardcoded),
+        title: BText(context.loc.language),
         trailing: DropdownButton<LanguageEnum>(
             value: ref.watch(languageControllerProvider),
             items: LanguageEnum.values

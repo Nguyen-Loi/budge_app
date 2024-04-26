@@ -5,7 +5,7 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/route_path.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
@@ -54,7 +54,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          BText.h2('profile'.hardcoded, color: ColorManager.white),
+          BText.h2(context.loc.profile, color: ColorManager.white),
           gapH24,
           _info(),
         ],
@@ -80,7 +80,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         children: [
           _item(
               icon: IconConstants.account,
-              text: 'My Account'.hardcoded,
+              text: context.loc.myAccount,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -91,14 +91,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
               }),
           _item(
               icon: IconConstants.setting,
-              text: 'settings'.hardcoded,
+              text: context.loc.settings,
               onPressed: () {
                 Navigator.pushNamed(context, RoutePath.settings);
               }),
-          _item(icon: IconConstants.contact, text: 'contact'.hardcoded, onPressed: () {}),
+          _item(
+              icon: IconConstants.contact,
+              text: context.loc.contact,
+              onPressed: () {}),
           _item(
               icon: IconConstants.signOut,
-              text: 'signOut'.hardcoded,
+              text: context.loc.signOut,
               onPressed: () {
                 ref.read(profileController.notifier).signOut(context);
               }),
@@ -109,13 +112,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
   }
 
   Widget _content() {
-    return  Align(
+    return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: EdgeInsets.only(bottom: 24),
+        padding: const EdgeInsets.only(bottom: 24),
         child: BText.caption(
-            'November 2023'
-            'userJoinDescriptions'.hardcoded,
+            context.loc.pUserJoinDescriptions('Novemer2023', '4'),
             textAlign: TextAlign.center),
       ),
     );
