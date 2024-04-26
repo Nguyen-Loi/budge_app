@@ -6,7 +6,7 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
 import 'package:budget_app/view/new_expense_view/controller/new_expense_controller.dart';
@@ -50,7 +50,7 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
         FocusScope.of(context).unfocus();
       },
       child: BaseView(
-          title: 'New expense',
+          title: context.loc.newExpense,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Form(
@@ -70,7 +70,7 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
   }
 
   Widget _note() {
-    return BFormFieldText(_noteController, label: 'Note', maxLines: 2);
+    return BFormFieldText(_noteController, label: context.loc.note, maxLines: 2);
   }
 
   Widget _amount() {
@@ -83,11 +83,11 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
 
   Widget _chooseCategory() {
     return BFormCategoryBudget(
-      label: 'Choose your budget',
+      label: context.loc.chooseIcon,
       list: ref.watch(budgetsCurMonthControllerProvider),
       validator: (p0) {
         if (p0 == null) {
-          return 'chooseYourBudgetIcon'.hardcoded;
+          return context.loc.chooseYourBudgetIcon;
         }
         return null;
       },
@@ -98,6 +98,6 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
   }
 
   Widget _buttonAddMoney() {
-    return BButton(onPressed: _addExpense, title: 'addMoney'.hardcoded);
+    return BButton(onPressed: _addExpense, title: context.loc.addMoney);
   }
 }

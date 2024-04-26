@@ -1,10 +1,9 @@
-
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/common/shared_pref/theme_controller.dart';
 import 'package:budget_app/core/logger_observer.dart';
 import 'package:budget_app/core/route_path.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/theme/app_theme.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:budget_app/view/auth_view/login_view.dart';
@@ -32,6 +31,8 @@ Future<void> main() async {
   ));
 }
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
@@ -40,8 +41,8 @@ class MyApp extends ConsumerWidget {
     final language = ref.watch(languageControllerProvider);
     final isDark = ref.watch(isDarkControllerProvider);
     return MaterialApp(
-      title: 'budgetSS'.hardcoded,
       theme: AppTheme.lightTheme,
+      navigatorKey: navigatorKey,
       darkTheme: AppTheme.darkTheme,
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,

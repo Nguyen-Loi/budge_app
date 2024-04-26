@@ -1,6 +1,6 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
 
 class BFormFieldAmount extends StatelessWidget {
@@ -36,7 +36,7 @@ class BFormFieldAmount extends StatelessWidget {
           validator: validator,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-            hintText: hint??'textFieldHintDefault'.hardcoded,
+            hintText: hint??context.loc.textFieldHintDefault,
             suffixText: '.000 đ',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),

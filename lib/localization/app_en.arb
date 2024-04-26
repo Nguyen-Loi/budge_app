@@ -84,10 +84,23 @@
     "settings": "Settings",
     "contact": "Contact",
     "signOut": "Sign Out",
-    "userJoinDescriptions": "You joined BudgetApp on {Date}. It\\'s been 1 month since then and our mission is still the same and help you better manage your money",
+    "pUserJoinDescriptions": "You joined BudgetApp on {dateTime}. It\\'s been {numberMonth} month since then and our mission is still the same and help you better manage your money",
+    "@pUserJoinDescription": {
+        "description": "A plural message",
+        "placeholders": {
+            "dateTime": {
+                "type": "String",
+                "example": "November 2023"
+            },
+            "numberMonth":{
+                "type": "String",
+                "example": "2"
+            }
+        }
+    },
     "home": "Home",
     "history": "History",
-    "budgetSS": "Budget SS",
+    "appName": "Budget SS",
     "left": "Left",
     "approaced": "Approaced",
     "exceeded": "Exceeded",
@@ -101,7 +114,7 @@
     "errorUp": "ERRROR",
     "successUp": "SUCCESS",
     "close": "Close",
-    "continue": "Continue",
+    "continueText": "Continue",
     "invalid": "Invalid",
     "noBudget": "No budget available",
     "textFieldHintDefault": "Enter your text",
@@ -143,5 +156,22 @@
         }
     },
     "newGoal": "New goal",
-    "budgetEmpty": "You don\\'t have any budget yet."
+    "budgetEmpty": "You don\\'t have any budget yet.",
+    "pExpensesExceedIncome": "Expenses exceed income ({money}). Increase your income and try again",
+    "@pExpensesExceedIncome": {
+        "placeholders": {
+            "money": {
+                "type": "String",
+                "example": "value"
+            }
+        }
+    },
+    "darkMode": "Dark mode",
+    "language": "Language",
+    "passwordTooWeak": "The password provided is too weak.",
+    "emailAlreadyExits": "The account already exists for that email.",
+    "errorSignInGoogle": "Error occurred using Google Sign-In. Try again.",
+    "errorSignInFacebook": "Error occurred using Facebook Sign-In. Try again.",
+    "accountAlreadyExits": "The account already exists with a different credential.",
+    "errorCredentials": "Error occurred while accessing credentials. Try again."
 }

@@ -3,8 +3,6 @@ import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
-
 import 'package:budget_app/view/history_view/controller/history_controller.dart';
 import 'package:budget_app/view/history_view/model/budget_transaction_custom_model.dart';
 import 'package:budget_app/view/history_view/widgets/history_item_tab.dart';
