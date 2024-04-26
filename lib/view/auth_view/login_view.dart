@@ -11,6 +11,8 @@ import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
@@ -68,23 +70,22 @@ class _LoginViewState extends ConsumerState<LoginView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: BAppBar(text: 'Sign in'.hardcoded),
+        appBar: BAppBar(text: context.loc.signIn),
         body: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
-              
               gapH32,
               BText.h1(
-                'Welecome back!'.hardcoded,
+                context.loc.welecomeBack,
                 textAlign: TextAlign.left,
               ),
               gapH16,
               BText(
-                'signInDes'.hardcoded,
+                context.loc.signInDescription,
                 textAlign: TextAlign.left,
               ),
               gapH48,
@@ -118,9 +119,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget _forgotPassword() {
     return BTextRich(
       BTextSpan(children: [
-        BTextSpan(text: 'Forgot '),
+        BTextSpan(text: AppLocalizations.of(context).nForgotPassword(0)),
         BTextSpan(
-          text: 'Password?',
+          text: AppLocalizations.of(context).nForgotPassword(1),
           style: BTextStyle.bodyMedium(color: ColorManager.primary),
         ),
       ]),
@@ -131,7 +132,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget _bFieldEmail() {
     return BFormFieldText(
       _emailController,
-      label: 'Email'.hardcoded,
+      label: context.loc.email,
       validator: (e) => e.validateEmail,
     );
   }
@@ -147,20 +148,20 @@ class _LoginViewState extends ConsumerState<LoginView> {
     return FilledButton(
       onPressed: _onLogin,
       child: BText.b1(
-        'Sign In'.hardcoded,
+        context.loc.signIn,
         color: ColorManager.white,
       ),
     );
   }
 
   Widget _orLoginWidth() {
-    return  Row(
+    return Row(
       children: [
-        Expanded(child: BDivider.h()),
+        const Expanded(child: BDivider.h()),
         gapW8,
-        BText('Or login with'.hardcoded),
+        BText(context.loc.orLoginWith),
         gapW8,
-        Expanded(child: BDivider.h()),
+        const Expanded(child: BDivider.h()),
       ],
     );
   }

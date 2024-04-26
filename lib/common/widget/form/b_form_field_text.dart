@@ -1,5 +1,6 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 enum _TypeField { controller, init }
@@ -24,7 +25,7 @@ class BFormFieldText extends StatelessWidget {
     this.maxLength,
     this.disable = false,
     required this.label,
-    this.hint = 'Enter your text',
+    this.hint,
     this.validator,
     this.textInputType,
   })  : _typeField = _TypeField.controller,
@@ -38,7 +39,7 @@ class BFormFieldText extends StatelessWidget {
       this.initialValue,
       this.disable = false,
       required this.label,
-      this.hint = 'Enter your text',
+      this.hint,
       this.validator,
       this.textInputType,
       this.onChanged})
@@ -78,7 +79,7 @@ class BFormFieldText extends StatelessWidget {
       validator: validator,
       keyboardType: textInputType,
       decoration: InputDecoration(
-        hintText: hint,
+        hintText: hint??'textFieldHintDefault'.hardcoded,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -96,7 +97,7 @@ class BFormFieldText extends StatelessWidget {
       keyboardType: textInputType,
       onChanged: onChanged,
       decoration: InputDecoration(
-        hintText: hint,
+        hintText: hint??'textFieldHintDefault'.hardcoded,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
         ),

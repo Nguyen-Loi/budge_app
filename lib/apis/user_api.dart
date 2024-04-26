@@ -5,6 +5,7 @@ import 'package:budget_app/apis/storage_api.dart';
 import 'package:budget_app/apis/storage_path.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,7 +56,7 @@ class UserApi extends IUserApi {
         await _storageApi.uploadFile(file, filePath: StoragePath.user(user.id));
     res.fold((l) {
       return left(Failure(
-          message: 'An error occur when upload image', error: l.message));
+          message: 'errorUploadFile'.hardcoded, error: l.message));
     }, (r) {
       profileUrl = r;
     });

@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
@@ -8,6 +10,7 @@ import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
@@ -25,7 +28,7 @@ class GoalDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseView.customBackground(
       title: goal.name,
-      buildTop: _buildTop(),
+      buildTop: _buildTop(context),
       actions: [
         IconButton(
             onPressed: () {
@@ -34,18 +37,18 @@ class GoalDetailView extends StatelessWidget {
             },
             icon: Icon(IconConstants.modify, size: 16))
       ],
-      child: _body(),
+      child: _body(context),
     );
   }
 
-  Widget _buildTop() {
+  Widget _buildTop(BuildContext context) {
     Color textColor = ColorManager.white;
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BText.h1('monthlyExpense'.hardcoded, color: ColorManager.white),
+          BText.h1(context.loc.monthlyExpense, color: ColorManager.white),
           gapH16,
           Consumer(builder: (_, res, __) {
             TransactionModel? lastestTransaction =
@@ -53,22 +56,22 @@ class GoalDetailView extends StatelessWidget {
 
             return lastestTransaction == null
                 ? BText(
-                    'noTransactionThisBudget'.hardcoded,
+                    context.loc.noTransactionThisBudget,
                     color: textColor,
                   )
                 : BTextRich(BTextSpan(children: [
                     BTextSpan(
-                        text: 'youSpent '.hardcoded,
+                        text: context.loc.nYouSpentForThePast(0),
                         style: BTextStyle.bodyMedium(color: textColor)),
                     BTextSpan(
-                        text: ' ${lastestTransaction.amount.toMoneyStr()} ',
+                        text: lastestTransaction.amount.toMoneyStr(),
                         style: BTextStyle.bodyMedium(
                             color: textColor,
                             backgroundColor: ColorManager.purple22,
                             fontWeight: FontWeightManager.semiBold)),
                     BTextSpan(
                         text:
-                            ' forThePast ${lastestTransaction.createdDate.toTimeAgo()}',
+                            '${context.loc.nYouSpentForThePast(0)} ${lastestTransaction.createdDate.toTimeAgo()}',
                         style: BTextStyle.bodyMedium(color: textColor))
                   ]));
           }),
@@ -78,17 +81,17 @@ class GoalDetailView extends StatelessWidget {
     );
   }
 
-  Widget _body() {
+  Widget _body(BuildContext context) {
     return ListView(
       children: [
-        _status(),
+        _status(context),
         gapH24,
         BudgetDetailTransactions(goal.id),
       ],
     );
   }
 
-  Widget _status() {
+  Widget _status(BuildContext context) {
     return Consumer(builder: (_, ref, __) {
       BudgetModel model = ref.watch(goalDetailControllerProvider(goal));
       return Column(
@@ -97,10 +100,10 @@ class GoalDetailView extends StatelessWidget {
           // info
           Row(
             children: [
-              BText.b3('youAlreadySpent'.hardcoded, color: ColorManager.grey),
+              BText.b3(context.loc.youAlreadySpent, color: ColorManager.grey),
               gapW16,
               Expanded(
-                  child: BText.b3('spendLimitPerMonth'.hardcoded,
+                  child: BText.b3(context.loc.spendLimitPerMonth,
                       textAlign: TextAlign.end)),
             ],
           ),
@@ -121,7 +124,7 @@ class GoalDetailView extends StatelessWidget {
           GoalStatus(goal: model, showText: false),
           gapH8,
           // Content
-          BText.b3('expenseGood')
+          BText.b3(context.loc.expenseGood)
         ],
       );
     });

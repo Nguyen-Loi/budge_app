@@ -1,5 +1,6 @@
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_card.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
@@ -15,8 +16,8 @@ class HomeBudgetList extends ConsumerWidget {
     return ref.watch(budgetsCurFutureProvider).when(
         data: (_) {
           return list.isEmpty
-              ? const BStatus.empty(
-                  text: 'You don\'t have any budget yet.',
+              ?  BStatus.empty(
+                  text: context.loc.budgetEmpty,
                 )
               : ColumnWithSpacing(
                   children: list.map((e) => HomeBudgetCard(model: e)).toList(),
