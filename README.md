@@ -12,3 +12,7 @@
     ```
     dart run build_runner watch -d
     ```
+- Rebuild launch icon:
+    ```
+    flutter pub run flutter_launcher_icons
+    ```
