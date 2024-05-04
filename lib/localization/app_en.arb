@@ -7,6 +7,7 @@
     "statusFinancesGood": "Your finances are looking good",
     "amount": "Amount",
     "amountInvalid": "Amount invalid",
+    "amountHint": "$10",
     "note": "Note",
     "noteHint": "Money from salary",
     "date": "Date",
