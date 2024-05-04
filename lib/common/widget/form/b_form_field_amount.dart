@@ -36,7 +36,7 @@ class BFormFieldAmount extends StatelessWidget {
           validator: validator,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-            hintText: hint??context.loc.textFieldHintDefault,
+            hintText: hint ?? context.loc.amountHint,
             suffixText: '.000 đ',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),

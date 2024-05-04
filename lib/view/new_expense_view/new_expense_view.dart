@@ -70,7 +70,8 @@ class _ExpenseViewState extends ConsumerState<NewExpenseView> {
   }
 
   Widget _note() {
-    return BFormFieldText(_noteController, label: context.loc.note, maxLines: 2);
+    return BFormFieldText(_noteController,
+        label: context.loc.note, maxLines: 2);
   }
 
   Widget _amount() {

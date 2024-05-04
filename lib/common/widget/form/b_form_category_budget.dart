@@ -2,6 +2,7 @@ import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +31,8 @@ class BFormCategoryBudget extends FormField<BudgetModel> {
                     ),
                   gapH16,
                   list.isEmpty
-                      ? const BText(
-                          'noBudget',
+                      ? BText(
+                          field.context.loc.noBudget,
                           textAlign: TextAlign.center,
                         )
                       : _CategoryBudget(field.context,
