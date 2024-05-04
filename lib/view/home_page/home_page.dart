@@ -55,15 +55,7 @@ class _HomePageState extends ConsumerState<HomePage>
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        children: [
-          _cardBalance(),
-          gapH16,
-          const HomeIncomeAndExpenseCard(),
-          gapH16,
-          _searchAndCategory(),
-          gapH16,
-          const HomeBudgetList()
-        ],
+        children: const [HomeIncomeAndExpenseCard(), gapH16, HomeBudgetList()],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -105,7 +97,8 @@ class _HomePageState extends ConsumerState<HomePage>
               children: [
                 BAvatar.network(user.profileUrl),
                 gapH24,
-                BText(context.loc.yourAvailableBalanceIs, color: ColorManager.white),
+                BText(context.loc.yourAvailableBalanceIs,
+                    color: ColorManager.white),
                 gapH16,
                 BText.h1('\$ 2028', color: ColorManager.white),
               ],

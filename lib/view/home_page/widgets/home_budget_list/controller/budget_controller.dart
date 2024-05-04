@@ -39,9 +39,24 @@ class BudgetController extends StateNotifier<List<BudgetModel>> {
     _notifier();
   }
 
-  void updateListBudgetState(BudgetModel model) {
+  void updateItemBudget(BudgetModel model) {
     int budgetIndex = _budgets.indexWhere((e) => e.id == model.id);
     _budgets[budgetIndex] = model;
+    _notifier();
+  }
+
+  Future<void> updateAddAmountItemBudget(
+      {required String budgetId, required int amount}) async {
+    BudgetModel currentBudget = _budgets.firstWhere((e) => e.id == budgetId);
+    BudgetModel newDataBudget = currentBudget.copyWith(
+        currentAmount: currentBudget.currentAmount + amount);
+
+    // Update data
+    await _budgetApi.updateBudget(model: newDataBudget);
+
+    // update state
+    int budgetIndex = _budgets.indexWhere((e) => e.id == budgetId);
+    _budgets[budgetIndex] = newDataBudget;
     _notifier();
   }
 
