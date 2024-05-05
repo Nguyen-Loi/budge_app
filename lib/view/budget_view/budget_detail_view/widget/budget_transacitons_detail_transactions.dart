@@ -8,7 +8,6 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/widget/controller/budget_transations_detail_controller.dart';
 import 'package:flutter/material.dart';
@@ -29,14 +28,14 @@ class BudgetDetailTransactions extends ConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-             BText.h2(context.loc.transactions, textAlign: TextAlign.left),
+              BText.h2(context.loc.transactions, textAlign: TextAlign.left),
               gapH16,
               listGroupTransactionByDay.isEmpty
                   ? _transactionEmpty(context)
                   : ColumnWithSpacing(
                       spacing: 24,
                       children: listGroupTransactionByDay
-                          .map((e) => _groupDateTransactionsCard(context,e))
+                          .map((e) => _groupDateTransactionsCard(context, e))
                           .toList(),
                     )
             ],
@@ -64,10 +63,12 @@ class BudgetDetailTransactions extends ConsumerWidget {
                         Row(
                           children: [
                             Expanded(
-                                child:
-                                    BText(e.note.isEmpty ? context.loc.noData : e.note)),
+                                child: BText(e.note.isEmpty
+                                    ? context.loc.noData
+                                    : e.note)),
                             gapW16,
-                            _itemStatusTransaction(context,type: e.transactionType)
+                            _itemStatusTransaction(context,
+                                type: e.transactionType)
                           ],
                         ),
                         gapH16,
@@ -95,15 +96,16 @@ class BudgetDetailTransactions extends ConsumerWidget {
   }
 
   Widget _transactionEmpty(BuildContext context) {
-    return  BStatus.empty(text: context.loc.noTransactionDescription);
+    return BStatus.empty(text: context.loc.noTransactionDescription);
   }
 
-  Widget _itemStatusTransaction(BuildContext context,{required TransactionType type}) {
+  Widget _itemStatusTransaction(BuildContext context,
+      {required TransactionType type}) {
     switch (type) {
-      case TransactionType.expense:
-        return  BText.caption(context.loc.expense);
-      case TransactionType.income:
-        return  BText.caption(context.loc.income);
+      case TransactionType.decrease:
+        return BText.caption(context.loc.expense);
+      case TransactionType.increase:
+        return BText.caption(context.loc.income);
     }
   }
 
@@ -111,10 +113,10 @@ class BudgetDetailTransactions extends ConsumerWidget {
       {required TransactionType type, required int amount}) {
     String amountMoney = amount.toMoneyStr();
     switch (type) {
-      case TransactionType.expense:
+      case TransactionType.decrease:
         return BText('-$amountMoney',
             color: ColorManager.red1, fontWeight: FontWeightManager.bold);
-      case TransactionType.income:
+      case TransactionType.increase:
         return BText('+$amountMoney',
             color: ColorManager.green2, fontWeight: FontWeightManager.bold);
     }

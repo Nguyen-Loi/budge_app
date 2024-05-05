@@ -20,4 +20,5 @@ class SvgAssets {
   static const String budget = '$_svgsPath/budget.svg';
   static const String vi = '$_svgsPath/vi.svg';
   static const String en = '$_svgsPath/en.svg';
+  static const String wallet = '$_svgsPath/wallet.svg';
 }

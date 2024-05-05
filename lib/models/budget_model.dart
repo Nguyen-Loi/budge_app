@@ -1,10 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
-import 'package:budget_app/core/enums/budget_type_enum.dart';
+import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/models/transaction_model.dart';
+import 'package:flutter/foundation.dart';
 
 enum StatusBudgetProgress { start, progress, almostDone, complete }
 
@@ -17,7 +16,8 @@ class BudgetModel {
   final int limit;
   final List<TransactionModel>? transactions;
   final int budgetTypeValue;
-  final int month;
+  final DateTime startDate;
+  final DateTime endDate;
   final DateTime createdDate;
   final DateTime updatedDate;
   BudgetModel({
@@ -29,12 +29,14 @@ class BudgetModel {
     required this.limit,
     this.transactions,
     required this.budgetTypeValue,
-    required this.month,
+    required this.startDate,
+    required this.endDate,
     required this.createdDate,
     required this.updatedDate,
   });
 
-  BudgetTypeEnum get budgetType => BudgetTypeEnum.fromValue(budgetTypeValue);
+  RangeDateTimeEnum get rangeDateTimeType =>
+      RangeDateTimeEnum.fromValue(budgetTypeValue);
 
   StatusBudgetProgress get status {
     if (currentAmount <= limit / 4) {
@@ -57,7 +59,8 @@ class BudgetModel {
     int? limit,
     List<TransactionModel>? transactions,
     int? budgetTypeValue,
-    int? month,
+    DateTime? startDate,
+    DateTime? endDate,
     DateTime? createdDate,
     DateTime? updatedDate,
   }) {
@@ -70,7 +73,8 @@ class BudgetModel {
       limit: limit ?? this.limit,
       transactions: transactions ?? this.transactions,
       budgetTypeValue: budgetTypeValue ?? this.budgetTypeValue,
-      month: month ?? this.month,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
     );
@@ -84,8 +88,10 @@ class BudgetModel {
       'iconId': iconId,
       'currentAmount': currentAmount,
       'limit': limit,
+      'transactions': transactions?.map((x) => x.toMap()).toList(),
       'budgetTypeValue': budgetTypeValue,
-      'month': month,
+      'startDate': startDate.millisecondsSinceEpoch,
+      'endDate': endDate.millisecondsSinceEpoch,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
@@ -107,7 +113,8 @@ class BudgetModel {
             )
           : null,
       budgetTypeValue: map['budgetTypeValue'] as int,
-      month: map['month'] as int,
+      startDate: DateTime.fromMillisecondsSinceEpoch(map['startDate'] as int),
+      endDate: DateTime.fromMillisecondsSinceEpoch(map['endDate'] as int),
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       updatedDate:
@@ -122,7 +129,7 @@ class BudgetModel {
 
   @override
   String toString() {
-    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, transactions: $transactions, budgetTypeValue: $budgetTypeValue, month: $month, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, transactions: $transactions, budgetTypeValue: $budgetTypeValue, startDate: $startDate, endDate: $endDate, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -137,7 +144,8 @@ class BudgetModel {
         other.limit == limit &&
         listEquals(other.transactions, transactions) &&
         other.budgetTypeValue == budgetTypeValue &&
-        other.month == month &&
+        other.startDate == startDate &&
+        other.endDate == endDate &&
         other.createdDate == createdDate &&
         other.updatedDate == updatedDate;
   }
@@ -152,7 +160,8 @@ class BudgetModel {
         limit.hashCode ^
         transactions.hashCode ^
         budgetTypeValue.hashCode ^
-        month.hashCode ^
+        startDate.hashCode ^
+        endDate.hashCode ^
         createdDate.hashCode ^
         updatedDate.hashCode;
   }

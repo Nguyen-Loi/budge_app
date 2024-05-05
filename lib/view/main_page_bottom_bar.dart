@@ -1,7 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/view/goals_view/goals_page/goals_page.dart';
 import 'package:budget_app/view/history_view/history_page.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
 import 'package:budget_app/view/profile_view/profile_page.dart';
@@ -44,7 +43,6 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
     _screens = [
       const HomePage(),
       const HistoryPage(),
-      const GoalsPage(),
       const ProfilePage(),
     ];
     super.initState();

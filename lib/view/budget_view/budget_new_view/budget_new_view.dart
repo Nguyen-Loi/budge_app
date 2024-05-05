@@ -1,5 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/dropdown/b_dropdown_range_datetime.dart';
 import 'package:budget_app/common/widget/form/b_form_field_custom_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
@@ -7,6 +8,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/models/models_widget/range_datetime_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_new_view/controller/budget_new_controller.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
   late TextEditingController _budgetNameController;
   late int _iconId;
   late int _limit;
+  late RangeDatetimeModel _rangeDatetimeModel;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -35,6 +38,7 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
     if (_formKey.currentState!.validate()) {
       ref.read(budgetNewControllerProvider).addBudget(context,
           budgetName: _budgetNameController.text,
+          rangeDatetimeModel: _rangeDatetimeModel,
           iconId: _iconId,
           limit: _limit);
     }
@@ -93,6 +97,9 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
               return null;
             },
           ),
+          BDropdownRangeDatetime(onChanged: (e) {
+            _rangeDatetimeModel = e;
+          }),
           const SizedBox(height: 64),
           FilledButton(
               onPressed: _addNewBudget,
