@@ -70,14 +70,14 @@ class HistoryController extends StateNotifier<void> {
       required List<TransactionModel> transactions}) {
     List<BudgetTransactionCustomModel> list = [];
     for (var transaction in transactions) {
-      if (transaction.transactionType == TransactionType.income) {
+      if (transaction.transactionType == TransactionType.increase) {
         final data = BudgetTransactionCustomModel(
             budget: null, transaction: transaction);
         list.add(data);
         continue;
       }
       final budget = budgets.firstWhere((e) =>
-          transaction.transactionType == TransactionType.expense &&
+          transaction.transactionType == TransactionType.decrease &&
           transaction.budgetId == e.id);
       final data = BudgetTransactionCustomModel(
           budget: budget, transaction: transaction);

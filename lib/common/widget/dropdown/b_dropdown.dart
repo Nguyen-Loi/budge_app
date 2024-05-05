@@ -5,7 +5,7 @@ import 'package:budget_app/constants/icon_constants.dart';
 import 'package:flutter/material.dart';
 
 class BDropdown<T> extends StatefulWidget {
-  final T? value;
+  final T? inittialValue;
   final List<T> items;
   final void Function(T?) onChanged;
   final String Function(T?) label;
@@ -14,7 +14,7 @@ class BDropdown<T> extends StatefulWidget {
 
   const BDropdown({
     Key? key,
-    this.value,
+    this.inittialValue,
     this.hint,
     required this.label,
     required this.items,
@@ -27,11 +27,14 @@ class BDropdown<T> extends StatefulWidget {
 }
 
 class _BDropdownState<T> extends State<BDropdown<T?>> {
-  late T? value;
+  late T? _value;
 
   @override
   void initState() {
-    value = widget.value;
+    _value = widget.inittialValue;
+    if (_value != null) {
+      widget.onChanged(_value);
+    }
     super.initState();
   }
 
@@ -61,7 +64,7 @@ class _BDropdownState<T> extends State<BDropdown<T?>> {
           color: Theme.of(context).colorScheme.onSecondary,
           border: Border.all(color: ColorManager.grey, width: 0.4)),
       child: DropdownButton<T>(
-        value: value,
+        value: _value,
         dropdownColor: Theme.of(context).colorScheme.onSecondary,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         underline: const SizedBox.shrink(),
@@ -74,9 +77,9 @@ class _BDropdownState<T> extends State<BDropdown<T?>> {
         ),
         elevation: 16,
         onChanged: (T? v) {
-          if (value != null) {
+          if (_value != null) {
             setState(() {
-              value = v;
+              _value = v;
               widget.onChanged(v);
             });
           }

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import 'package:budget_app/core/enums/account_type_enum.dart';
@@ -12,6 +13,7 @@ class UserModel {
   final String name;
   final int accountTypeValue;
   final int currencyTypeValue;
+  final int balance;
   final PhoneNumber? phoneNumber;
   final DateTime createdDate;
   final DateTime updatedDate;
@@ -22,6 +24,7 @@ class UserModel {
     required this.name,
     required this.accountTypeValue,
     required this.currencyTypeValue,
+    required this.balance,
     this.phoneNumber,
     required this.createdDate,
     required this.updatedDate,
@@ -29,6 +32,7 @@ class UserModel {
 
   AccountType get accountType => AccountType.fromValue(accountTypeValue);
   CurrencyType get currencyType => CurrencyType.fromValue(currencyTypeValue);
+  String get balanceMoney => balance.toMoneyStr(currencyType: currencyType);
 
   UserModel copyWith({
     String? id,
@@ -37,6 +41,7 @@ class UserModel {
     String? name,
     int? accountTypeValue,
     int? currencyTypeValue,
+    int? balance,
     PhoneNumber? phoneNumber,
     DateTime? createdDate,
     DateTime? updatedDate,
@@ -48,6 +53,7 @@ class UserModel {
       name: name ?? this.name,
       accountTypeValue: accountTypeValue ?? this.accountTypeValue,
       currencyTypeValue: currencyTypeValue ?? this.currencyTypeValue,
+      balance: balance ?? this.currencyTypeValue,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
@@ -62,6 +68,7 @@ class UserModel {
       'name': name,
       'accountTypeValue': accountTypeValue,
       'currencyTypeValue': currencyTypeValue,
+      'balance': balance,
       'phoneNumber': phoneNumber?.toMap(),
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
@@ -83,6 +90,7 @@ class UserModel {
       name: map['name'] as String,
       accountTypeValue: map['accountTypeValue'] as int,
       currencyTypeValue: map['currencyTypeValue'] as int,
+      balance: map['balance'] as int,
       phoneNumber: phoneNumber,
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
@@ -99,34 +107,6 @@ class UserModel {
   @override
   String toString() {
     return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountTypeValue: $accountTypeValue, currencyTypeValue: $currencyTypeValue, phoneNumber: $phoneNumber, createdDate: $createdDate, updatedDate: $updatedDate)';
-  }
-
-  @override
-  bool operator ==(covariant UserModel other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.email == email &&
-        other.profileUrl == profileUrl &&
-        other.name == name &&
-        other.accountTypeValue == accountTypeValue &&
-        other.currencyTypeValue == currencyTypeValue &&
-        other.phoneNumber == phoneNumber &&
-        other.createdDate == createdDate &&
-        other.updatedDate == updatedDate;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        email.hashCode ^
-        profileUrl.hashCode ^
-        name.hashCode ^
-        accountTypeValue.hashCode ^
-        currencyTypeValue.hashCode ^
-        phoneNumber.hashCode ^
-        createdDate.hashCode ^
-        updatedDate.hashCode;
   }
 }
 

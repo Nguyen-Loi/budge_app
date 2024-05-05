@@ -68,6 +68,7 @@ class AuthAPI implements IAuthApi {
     final newUser = UserModel(
       id: user.uid,
       email: email,
+      balance: 0,
       profileUrl: user.photoURL ??
           'https://static.vecteezy.com/system/resources/previews/023/220/595/non_2x/3d-robot-illustration-kawaii-friendly-suitable-for-tech-mascot-free-png.png',
       name: user.displayName ?? email.split('@')[0],

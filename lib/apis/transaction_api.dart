@@ -20,6 +20,8 @@ abstract class ITransactionApi {
   FutureEitherVoid add(String uid, {required TransactionModel transaction});
   Future<List<TransactionModel>> fetchTransactionOfMonth(
       {required String uid, required DateTime dateTime});
+  Future<List<TransactionModel>> fetchTransactionsRecently(
+      {required String uid});
 }
 
 class TransactionApi extends ITransactionApi {
@@ -71,6 +73,19 @@ class TransactionApi extends ITransactionApi {
         .filterByMonth(time: dateTime)
         .mapModel<TransactionModel>(
             modelFrom: TransactionModel.fromMap, modelTo: (e) => e.toMap())
+        .get();
+    return data.docs.map((e) => e.data()).toList();
+  }
+
+  @override
+  Future<List<TransactionModel>> fetchTransactionsRecently(
+      {required String uid}) async {
+    final data = await _db
+        .collection(FirestorePath.transactions(uid: uid))
+        .mapModel<TransactionModel>(
+            modelFrom: TransactionModel.fromMap, modelTo: (e) => e.toMap())
+        .orderBy('createdDate')
+        .limit(6)
         .get();
     return data.docs.map((e) => e.data()).toList();
   }

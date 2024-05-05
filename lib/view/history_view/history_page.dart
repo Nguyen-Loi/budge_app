@@ -73,11 +73,11 @@ class _HistoryPageState extends State<HistoryPage>
           data: (items) {
             final listIn = items
                 .where((e) =>
-                    e.transaction.transactionType == TransactionType.income)
+                    e.transaction.transactionType == TransactionType.increase)
                 .toList();
             final listEx = items
                 .where((e) =>
-                    e.transaction.transactionType == TransactionType.expense)
+                    e.transaction.transactionType == TransactionType.decrease)
                 .toList();
             return Column(
               children: [

@@ -48,9 +48,9 @@ class HistoryItemTab extends StatelessWidget {
 
   Widget _card(BudgetTransactionCustomModel model) {
     switch (model.transaction.transactionType) {
-      case TransactionType.income:
+      case TransactionType.increase:
         return _cardIncome(model.transaction);
-      case TransactionType.expense:
+      case TransactionType.decrease:
         return _cardExpense(model);
     }
   }

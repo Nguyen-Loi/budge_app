@@ -9,7 +9,6 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/controller/profile_detail_controller.dart';
@@ -42,88 +41,87 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
 
   Widget _form() {
     return Consumer(builder: (_, ref, __) {
-      final user = ref.watch(userControllerProvider) ??
-          UserModel(
-              id: '123',
-              email: 'abc@gmail.com',
-              profileUrl: 'sd',
-              name: 'Ga',
-              accountTypeValue: 1,
-              currencyTypeValue: 1,
-              createdDate: DateTime.now(),
-              updatedDate: DateTime.now());
+      final user = ref.watch(userControllerProvider);
       final disable = ref.watch(profileDetailControllerProvider);
-      _name = user.name;
-      _phoneNumber = user.phoneNumber;
-      return Form(
-        key: _keyState,
-        child: ListView(
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: OutlinedButton(
-                  onPressed: () {
-                    ref
-                        .read(profileDetailControllerProvider.notifier)
-                        .updateDisable(!disable);
-                  },
-                  child: disable
-                      ?  BText.caption(
-                          context.loc.modify,
-                        )
-                      :  BText.caption(context.loc.readOnly)),
-            ),
-            gapH16,
-            BFormPickerImage(
-                initialUrl: user.profileUrl,
-                disable: disable,
-                onChanged: (f) {
-                  _file = f;
-                }),
-            gapH24,
-            ColumnWithSpacing(
-              children: [
-                BFormFieldText.init(
-                    label: context.loc.email, disable: true, initialValue: user.email),
-                BFormFieldText.init(
-                  label: context.loc.name,
-                  disable: disable,
-                  initialValue: user.name,
-                  validator: (v) => v.validateName,
-                  onChanged: (v) {
-                    _name = v;
-                  },
-                ),
-                BFormFieldPhoneNumber(
-                  disable: disable,
-                  initialValue: user.phoneNumber,
-                  validator: (v) => v.validatePhoneNumber,
-                  onInputChanged: (PhoneNumber value) {
-                    _phoneNumber = value;
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 80),
-            if (!disable)
-              FilledButton(
-                  onPressed: () {
-                    if (_keyState.currentState!.validate()) {
-                      ref.read(profileDetailControllerProvider.notifier).update(
-                          context,
-                          file: _file,
-                          user: user,
-                          name: _name,
-                          phoneNumber: _phoneNumber!);
-                    }
-                  },
-                  child: BText(
-                    context.loc.save,
-                    color: ColorManager.white,
-                  ))
-          ],
-        ),
-      );
+      if (user != null) {
+        _name = user.name;
+        _phoneNumber = user.phoneNumber;
+      }
+
+      return user == null
+          ? const SizedBox.shrink()
+          : Form(
+              key: _keyState,
+              child: ListView(
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: OutlinedButton(
+                        onPressed: () {
+                          ref
+                              .read(profileDetailControllerProvider.notifier)
+                              .updateDisable(!disable);
+                        },
+                        child: disable
+                            ? BText.caption(
+                                context.loc.modify,
+                              )
+                            : BText.caption(context.loc.readOnly)),
+                  ),
+                  gapH16,
+                  BFormPickerImage(
+                      initialUrl: user.profileUrl,
+                      disable: disable,
+                      onChanged: (f) {
+                        _file = f;
+                      }),
+                  gapH24,
+                  ColumnWithSpacing(
+                    children: [
+                      BFormFieldText.init(
+                          label: context.loc.email,
+                          disable: true,
+                          initialValue: user.email),
+                      BFormFieldText.init(
+                        label: context.loc.name,
+                        disable: disable,
+                        initialValue: user.name,
+                        validator: (v) => v.validateName,
+                        onChanged: (v) {
+                          _name = v;
+                        },
+                      ),
+                      BFormFieldPhoneNumber(
+                        disable: disable,
+                        initialValue: user.phoneNumber,
+                        validator: (v) => v.validatePhoneNumber,
+                        onInputChanged: (PhoneNumber value) {
+                          _phoneNumber = value;
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 80),
+                  if (!disable)
+                    FilledButton(
+                        onPressed: () {
+                          if (_keyState.currentState!.validate()) {
+                            ref
+                                .read(profileDetailControllerProvider.notifier)
+                                .update(context,
+                                    file: _file,
+                                    user: user,
+                                    name: _name,
+                                    phoneNumber: _phoneNumber!);
+                          }
+                        },
+                        child: BText(
+                          context.loc.save,
+                          color: ColorManager.white,
+                        ))
+                ],
+              ),
+            );
     });
   }
 }

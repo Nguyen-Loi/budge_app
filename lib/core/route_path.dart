@@ -4,14 +4,12 @@ import 'package:budget_app/view/auth_view/sign_up_view.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/budget_detail_view.dart';
 import 'package:budget_app/view/budget_view/budget_modify_view/budget_modify_view.dart';
 import 'package:budget_app/view/budget_view/budget_new_view/budget_new_view.dart';
-import 'package:budget_app/view/goals_view/goal_detail_view/goal_detail_view.dart';
-import 'package:budget_app/view/goals_view/goal_modify_view/goal_modify_view.dart';
-import 'package:budget_app/view/goals_view/goal_new_view/goal_new_view.dart';
 import 'package:budget_app/view/income_view/income_view.dart';
 import 'package:budget_app/view/main_page_bottom_bar.dart';
 import 'package:budget_app/view/new_expense_view/new_expense_view.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
 import 'package:budget_app/view/settings_view/settings_view.dart';
+import 'package:budget_app/view/update_wallet_view/update_wallet_view.dart';
 import 'package:flutter/material.dart';
 
 class RoutePath {
@@ -27,10 +25,8 @@ class RoutePath {
   static const String budgetNew = "/budgetNew";
   static const String budgetDetail = "/budgetDetail";
   static const String budgetModify = "/budgetModify";
-  static const String goalNew = "/newGoal";
-  static const String goalDetail = "/goalDetail";
-  static const String goalModify = "/goalModify";
   static const String profileDetail = "/profileDetail";
+  static const String updateWallet = "/updateWallet";
 
   //Base
   static const String settings = "/settings";
@@ -60,17 +56,10 @@ class MainRouter {
         final data = settings.arguments as BudgetModel;
         return MaterialPageRoute(
             builder: (_) => BudgetModifyView(budgetModel: data));
-      case RoutePath.goalNew:
-        return MaterialPageRoute(builder: (_) => const GoalNewView());
-      case RoutePath.goalDetail:
-        final data = settings.arguments as BudgetModel;
-        return MaterialPageRoute(builder: (_) => GoalDetailView(goal: data));
-      case RoutePath.goalModify:
-        final data = settings.arguments as BudgetModel;
-        return MaterialPageRoute(
-            builder: (_) => GoalModifyView(goalModel: data));
       case RoutePath.profileDetail:
         return MaterialPageRoute(builder: (_) => const ProfileDetailView());
+         case RoutePath.updateWallet:
+        return MaterialPageRoute(builder: (_) =>  UpdateWalletView());
 
       case RoutePath.settings:
         return MaterialPageRoute(builder: (_) => const SettingsView());
