@@ -47,28 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyArjyNEvxS_39-ygzfNj4WS2vwRLeG1i8o',
-    appId: '1:856201938981:web:5b9b082cbdfdabb18897cc',
-    messagingSenderId: '856201938981',
-    projectId: 'budget-app-5b1bb',
-    authDomain: 'budget-app-5b1bb.firebaseapp.com',
-    storageBucket: 'budget-app-5b1bb.appspot.com',
+    apiKey: 'AIzaSyD8OtTSNqQplHUYUOl9RKvxdANsfUzgQnM',
+    appId: '1:79455569094:web:104b3ee25b8b69dd8643c7',
+    messagingSenderId: '79455569094',
+    projectId: 'budget-ss',
+    authDomain: 'budget-ss.firebaseapp.com',
+    storageBucket: 'budget-ss.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAPIuIgB3oda5hyF4PXov2W58MbUFpv7BY',
-    appId: '1:856201938981:android:aa4af5b157d706088897cc',
-    messagingSenderId: '856201938981',
-    projectId: 'budget-app-5b1bb',
-    storageBucket: 'budget-app-5b1bb.appspot.com',
+    apiKey: 'AIzaSyCBf35WTLVC6chSowshmne23vRVdxGHbAQ',
+    appId: '1:79455569094:android:a48a2488a696f0138643c7',
+    messagingSenderId: '79455569094',
+    projectId: 'budget-ss',
+    storageBucket: 'budget-ss.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBTQSq0LIyGHQagFQimnssJoiLQ4sM-aAk',
-    appId: '1:856201938981:ios:bb4ab522af202b6e8897cc',
-    messagingSenderId: '856201938981',
-    projectId: 'budget-app-5b1bb',
-    storageBucket: 'budget-app-5b1bb.appspot.com',
-    iosBundleId: 'com.example.budgetApp',
+    apiKey: 'AIzaSyDthASfB3FYm95XO6IFZNfidpnNJRMUi_Q',
+    appId: '1:79455569094:ios:c62570e24eb2a6288643c7',
+    messagingSenderId: '79455569094',
+    projectId: 'budget-ss',
+    storageBucket: 'budget-ss.appspot.com',
+    iosClientId: '79455569094-bjp0n8njj02v9esqhq0dmhtd1upntjk3.apps.googleusercontent.com',
+    iosBundleId: 'com.NguyenLoi.BudgetSS',
   );
 }

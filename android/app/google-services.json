@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "856201938981",
-    "project_id": "budget-app-5b1bb",
-    "storage_bucket": "budget-app-5b1bb.appspot.com"
+    "project_number": "79455569094",
+    "project_id": "budget-ss",
+    "storage_bucket": "budget-ss.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:856201938981:android:aa4af5b157d706088897cc",
+        "mobilesdk_app_id": "1:79455569094:android:a48a2488a696f0138643c7",
         "android_client_info": {
-          "package_name": "com.example.budget_app"
+          "package_name": "com.NguyenLoi.BudgetSS"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "79455569094-jo4ng8fulo1ng9mc4bcd79im4kh7kfsr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAPIuIgB3oda5hyF4PXov2W58MbUFpv7BY"
+          "current_key": "AIzaSyCBf35WTLVC6chSowshmne23vRVdxGHbAQ"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79455569094-jo4ng8fulo1ng9mc4bcd79im4kh7kfsr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
