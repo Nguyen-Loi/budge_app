@@ -1,6 +1,5 @@
 import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/common/log.dart';
-import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/models/budget_model.dart';
@@ -15,7 +14,6 @@ final budgetAPIProvider = Provider((ref) {
 abstract class IBudgetApi {
   Future<List<BudgetModel>> fetchBudgetsByMonth(String uid,
       {required int month});
-  Future<List<BudgetModel>> fetchGoals(String uid);
   FutureEitherVoid addBudget({required BudgetModel model});
   FutureEitherVoid updateBudget(
       {required BudgetModel model});
@@ -33,24 +31,12 @@ class BudgetApi implements IBudgetApi {
       {required int month}) async {
     final data = await db
         .collection(FirestorePath.budgets(uid: uid))
-        .where('budgetTypeValue', isEqualTo: BudgetTypeEnum.budget.value)
-        .where('month', isEqualTo: month)
         .mapModel<BudgetModel>(
             modelFrom: BudgetModel.fromMap, modelTo: (model) => model.toMap())
         .get();
     return data.docs.map((e) => e.data()).toList();
   }
 
-  @override
-  Future<List<BudgetModel>> fetchGoals(String uid) async {
-    final data = await db
-        .collection(FirestorePath.budgets(uid: uid))
-        .where('budgetTypeValue', isEqualTo: BudgetTypeEnum.goal.value)
-        .mapModel<BudgetModel>(
-            modelFrom: BudgetModel.fromMap, modelTo: (model) => model.toMap())
-        .get();
-    return data.docs.map((e) => e.data()).toList();
-  }
 
   @override
   FutureEitherVoid addBudget({required BudgetModel model}) async {
