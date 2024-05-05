@@ -64,12 +64,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
 
   Widget _info() {
     return Consumer(builder: (_, ref, __) {
-      final user = ref.watch(userControllerProvider)!;
-      return ListTile(
-        title: BText.b1(user.name, color: ColorManager.white),
-        leading: BAvatar.network(user.profileUrl, size: 20),
-        subtitle: BText.caption(user.email, color: ColorManager.white),
-      );
+      final user = ref.watch(userControllerProvider);
+      return user == null
+          ? const SizedBox.shrink()
+          : ListTile(
+              title: BText.b1(user.name, color: ColorManager.white),
+              leading: BAvatar.network(user.profileUrl, size: 20),
+              subtitle: BText.caption(user.email, color: ColorManager.white),
+            );
     });
   }
 

@@ -1,4 +1,5 @@
 import 'package:budget_app/apis/auth_api.dart';
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/utils.dart';
@@ -35,7 +36,10 @@ class AuthController extends StateNotifier<void> {
     final res = await _authAPI.loginWithEmailAndPassword(
         email: email, password: password);
     closeLoading();
-    res.fold((l) => showSnackBar(context, l.message), (r) {
+    res.fold((l) {
+      logError(l.error);
+      showSnackBar(context, l.message);
+    }, (r) {
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
       initBaseUid();
@@ -58,7 +62,10 @@ class AuthController extends StateNotifier<void> {
 
   void loginWithFacebook(BuildContext context) async {
     final res = await _authAPI.loginWithFacebook();
-    res.fold((l) => showSnackBar(context, l.message), (r) {
+    res.fold((l) {
+      logError(l.error);
+      showSnackBar(context, l.message);
+    }, (r) {
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
       initBaseUid();
@@ -69,7 +76,10 @@ class AuthController extends StateNotifier<void> {
     BuildContext context,
   ) async {
     final res = await _authAPI.loginWithGoogle();
-    res.fold((l) => showSnackBar(context, l.message), (r) {
+    res.fold((l) {
+      logError(l.error);
+      showSnackBar(context, l.message);
+    }, (r) {
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
       initBaseUid();
