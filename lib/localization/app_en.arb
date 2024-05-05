@@ -174,5 +174,6 @@
     "errorSignInGoogle": "Error occurred using Google Sign-In. Try again.",
     "errorSignInFacebook": "Error occurred using Facebook Sign-In. Try again.",
     "accountAlreadyExits": "The account already exists with a different credential.",
-    "errorCredentials": "Error occurred while accessing credentials. Try again."
+    "errorCredentials": "Error occurred while accessing credentials. Try again.",
+    "invalidEmailOrPassword": "Invalid email or password. Please try again."
 }

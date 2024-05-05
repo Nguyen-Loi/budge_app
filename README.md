@@ -16,3 +16,8 @@
     ```
     flutter pub run flutter_launcher_icons
     ```
+- Build abb:
+    ```
+    flutter build appbundle
+    ```
+

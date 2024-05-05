@@ -90,10 +90,11 @@ class AuthAPI implements IAuthApi {
       return right(account.user!);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        return left(Failure(error: _ref.read(appLocalizationsProvider).passwordTooWeak));
+        return left(Failure(
+            error: _ref.read(appLocalizationsProvider).passwordTooWeak));
       } else if (e.code == 'email-already-in-use') {
-        return left(
-            Failure(error: _ref.read(appLocalizationsProvider).emailAlreadyExits));
+        return left(Failure(
+            error: _ref.read(appLocalizationsProvider).emailAlreadyExits));
       }
       return left(Failure(error: e.code));
     } catch (e) {
@@ -119,13 +120,17 @@ class AuthAPI implements IAuthApi {
       await _writeNewInfoToDB(accountType: AccountType.emailAndPassword);
       return right(_currentUserAccount());
     } on FirebaseAuthException catch (e) {
-      return left(Failure(error: e.message.toString()));
+      return left(Failure(
+        error: e.message.toString(),
+        message: _ref.read(appLocalizationsProvider).invalidEmailOrPassword,
+      ));
     }
   }
 
   @override
   FutureEitherVoid loginWithFacebook() async {
-    String defaultError =  _ref.read(appLocalizationsProvider).errorSignInFacebook;
+    String defaultError =
+        _ref.read(appLocalizationsProvider).errorSignInFacebook;
     try {
       // This code ios not working
       final LoginResult result = await FacebookAuth.instance.login();
@@ -161,10 +166,9 @@ class AuthAPI implements IAuthApi {
       return left(Failure(message: defaultError));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
-        return left( Failure(
-            error:_ref.read(appLocalizationsProvider).accountAlreadyExits,
-            message:
-                _ref.read(appLocalizationsProvider).accountAlreadyExits));
+        return left(Failure(
+            error: _ref.read(appLocalizationsProvider).accountAlreadyExits,
+            message: _ref.read(appLocalizationsProvider).accountAlreadyExits));
       } else if (e.code == 'invalid-credential') {
         return left(
           Failure(

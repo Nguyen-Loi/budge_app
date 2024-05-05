@@ -1,7 +1,4 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/b_avatar.dart';
-import 'package:budget_app/common/widget/b_dropdown.dart';
-import 'package:budget_app/common/widget/b_search_bar.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
@@ -27,8 +24,6 @@ class _HomePageState extends ConsumerState<HomePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  final TextEditingController _searchController = TextEditingController();
-  List<String> get listCategory => ['A', 'B', 'C', 'D'];
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -64,47 +59,6 @@ class _HomePageState extends ConsumerState<HomePage>
         child: Icon(IconConstants.add, color: ColorManager.white),
       ),
     );
-  }
-
-  Widget _searchAndCategory() {
-    return Row(
-      children: [
-        Expanded(
-          child: BSearchBar(
-            controller: _searchController,
-            hintText: context.loc.searchHint,
-          ),
-        ),
-        gapW16,
-        BDropdown<String>(
-            value: listCategory.isNotEmpty ? listCategory.first : null,
-            label: (v) => v.toString(),
-            items: listCategory,
-            onChanged: (v) => {})
-      ],
-    );
-  }
-
-  Widget _cardBalance() {
-    return Consumer(builder: (_, ref, __) {
-      final UserModel user = ref.watch(userControllerProvider)!;
-      return Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        color: ColorManager.primary,
-        child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                BAvatar.network(user.profileUrl),
-                gapH24,
-                BText(context.loc.yourAvailableBalanceIs,
-                    color: ColorManager.white),
-                gapH16,
-                BText.h1('\$ 2028', color: ColorManager.white),
-              ],
-            )),
-      );
-    });
   }
 
   Widget _appbarInfo() {
