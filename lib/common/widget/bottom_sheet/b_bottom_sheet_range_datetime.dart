@@ -1,3 +1,4 @@
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/bottom_sheet/b_bottom_sheet.dart';
@@ -5,15 +6,16 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
+import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
-import 'package:budget_app/models/models_widget/range_datetime_model.dart';
+import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:flutter/material.dart';
 
 class BBottomsheetRangeDatetime extends StatefulWidget {
   const BBottomsheetRangeDatetime(
       {Key? key, required this.initialValue, required this.onChanged})
       : super(key: key);
-  final void Function(RangeDatetimeModel rangeTime) onChanged;
+  final void Function(DatetimeRangeModel rangeTime) onChanged;
   final RangeDateTimeEnum initialValue;
 
   @override
@@ -22,64 +24,46 @@ class BBottomsheetRangeDatetime extends StatefulWidget {
 }
 
 class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
-  late RangeDatetimeModel _rangeDatetimeModel;
-  late List<RangeDatetimeModel> _list;
+  late DatetimeRangeModel _rangeDatetimeModel;
+  late List<DatetimeRangeModel> _list;
   late String _title;
+  final now = DateTime.now();
 
-  Map<String, DateTime> getWeekRange(DateTime time) {
+  DatetimeRangeModel getWeekRange(DateTime time) {
     int currentWeekday = time.weekday;
     DateTime firstDayOfWeek = time.subtract(Duration(days: currentWeekday - 1));
     DateTime lastDayOfWeek = time.add(Duration(days: 7 - currentWeekday));
-
-    return {
-      "firstDay": firstDayOfWeek,
-      "lastDay": lastDayOfWeek,
-    };
+    return DatetimeRangeModel(
+        startDate: firstDayOfWeek,
+        endDate: lastDayOfWeek,
+        rangeDateTimeType: RangeDateTimeEnum.week);
   }
 
-  Map<String, DateTime> getMonthRange(DateTime time) {
-    DateTime firstDayOfWeek = DateTime(time.year, time.month, 1);
-    DateTime lastDayOfWeek = DateTime(time.year, time.month + 1, 0);
-
-    return {
-      "firstDay": firstDayOfWeek,
-      "lastDay": lastDayOfWeek,
-    };
+  DatetimeRangeModel getMonthRange(DateTime time) {
+    DateTime firstDayOfMonth = DateTime(time.year, time.month, 1);
+    DateTime lastDayOfMonth = DateTime(time.year, time.month + 1, 0);
+    return DatetimeRangeModel(
+        startDate: firstDayOfMonth,
+        endDate: lastDayOfMonth,
+        rangeDateTimeType: RangeDateTimeEnum.month);
   }
 
-  Map<String, DateTime> getYearRange(DateTime time) {
+  DatetimeRangeModel getYearRange(DateTime time) {
     DateTime firstDayOfYear = DateTime(time.year, 1, 1);
     DateTime lastDayOfYear = DateTime(time.year, 12, 31);
-
-    return {
-      "firstDay": firstDayOfYear,
-      "lastDay": lastDayOfYear,
-    };
+    return DatetimeRangeModel(
+        startDate: firstDayOfYear,
+        endDate: lastDayOfYear,
+        rangeDateTimeType: RangeDateTimeEnum.year);
   }
 
   @override
   void initState() {
-    final now = DateTime.now();
-    final weekTime = getWeekRange(now);
-    final monthTime = getMonthRange(now);
-    final yearTime = getYearRange(now);
     _list = [
-      RangeDatetimeModel(
-          startDate: weekTime['firstDay']!,
-          endDate: weekTime['lastDay']!,
-          rangeDateTimeType: RangeDateTimeEnum.week),
-      RangeDatetimeModel(
-          startDate: monthTime['firstDay']!,
-          endDate: monthTime['lastDay']!,
-          rangeDateTimeType: RangeDateTimeEnum.month),
-      RangeDatetimeModel(
-          startDate: yearTime['firstDay']!,
-          endDate: yearTime['lastDay']!,
-          rangeDateTimeType: RangeDateTimeEnum.year),
-      RangeDatetimeModel(
-          startDate: monthTime['firstDay']!,
-          endDate: monthTime['lastDay']!,
-          rangeDateTimeType: RangeDateTimeEnum.custom),
+      getWeekRange(now),
+      getMonthRange(now),
+      getYearRange(now),
+      getMonthRange(now).copyWith(rangeDateTimeType: RangeDateTimeEnum.custom),
     ];
 
     _rangeDatetimeModel =
@@ -90,52 +74,130 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
   }
 
   void _loadTitle() {
+    logError(_rangeDatetimeModel.rangeDateTimeType.toString());
     _title = _rangeDatetimeModel.rangeDateTimeType
         .content(rangeDatetimeModel: _rangeDatetimeModel);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(IconConstants.calendar),
-      title: BText(_title),
-      trailing: Icon(IconConstants.tap),
+    return InkWell(
       onTap: () {
         BBottomSheet.show(context, builder: (context) {
-          return _options(context);
+          return StatefulBuilder(builder: (BuildContext context,
+              StateSetter stateSetter /*You can rename this!*/) {
+            return SizedBox(child: _options(context, stateSetter: stateSetter));
+          });
         });
       },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            border: Border.all(color: ColorManager.grey1, width: 0.6)),
+        child: Row(
+          children: [
+            Icon(IconConstants.calendar),
+            gapW16,
+            Expanded(child: BText(_title)),
+            gapW8,
+            Icon(IconConstants.tap)
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _options(BuildContext context) {
-    return Column(
-      children: [
-        BText.b1('Khoảng thời gian'.hardcoded, fontWeight: FontWeight.bold),
-        gapH16,
-        ColumnWithSpacing(
-          children: _list
-              .map((e) => RadioListTile(
+  Widget _options(BuildContext context, {required StateSetter stateSetter}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BText.b1('Khoảng thời gian'.hardcoded, fontWeight: FontWeight.bold),
+          gapH16,
+          ColumnWithSpacing(
+            mainAxisSize: MainAxisSize.min,
+            children: _list.map((e) {
+              String title = e.rangeDateTimeType.content(rangeDatetimeModel: e);
+              bool isChooseCustom =
+                  e.rangeDateTimeType == RangeDateTimeEnum.custom &&
+                      _rangeDatetimeModel.rangeDateTimeType ==
+                          RangeDateTimeEnum.custom;
+              if (isChooseCustom) {
+                title = 'Tùy chỉnh';
+              }
+
+              // For custom
+
+              String customFormat = 'dd/MM/yyyy';
+              final dateRangeCustom = _list[3];
+              String dateRangeForCustom =
+                  '${dateRangeCustom.startDate.toFormatDate(strFormat: customFormat)} - ${dateRangeCustom.endDate.toFormatDate(strFormat: customFormat)}';
+              return RadioListTile(
                   value: e,
                   groupValue: _rangeDatetimeModel,
-                  title:
-                      BText(e.rangeDateTimeType.content(rangeDatetimeModel: e)),
-                  onChanged: (e) {
+                  title: isChooseCustom
+                      ? Column(
+                          children: [
+                            BText(title),
+                            gapH16,
+                            BText(
+                              dateRangeForCustom,
+                            )
+                          ],
+                        )
+                      : BText(title),
+                  onChanged: (e) async {
+                    if (e?.rangeDateTimeType == RangeDateTimeEnum.custom) {
+                      DateTimeRange? newDateRangeCustom =
+                          await showDateRangePicker(
+                        context: context,
+                        initialDateRange: DateTimeRange(
+                            start: dateRangeCustom.startDate,
+                            end: dateRangeCustom.endDate),
+                        firstDate: DateTime(now.year, now.month - 2),
+                        lastDate: DateTime(now.year + 1),
+                      );
+                      if (newDateRangeCustom == null) {
+                        return;
+                      }
+                      stateSetter(() {
+                        _list[3] = DatetimeRangeModel(
+                            startDate: newDateRangeCustom.start,
+                            endDate: newDateRangeCustom.end,
+                            rangeDateTimeType: RangeDateTimeEnum.custom);
+                        widget.onChanged(e!);
+                        _rangeDatetimeModel = e;
+                      });
+                      setState(() {
+                        _list[3] = DatetimeRangeModel(
+                            startDate: newDateRangeCustom.start,
+                            endDate: newDateRangeCustom.end,
+                            rangeDateTimeType: RangeDateTimeEnum.custom);
+                        _loadTitle();
+                      });
+
+                      logError(_list[3].toString());
+                      logError(newDateRangeCustom.toString());
+                      return;
+                    }
                     if (e != null &&
                         e.rangeDateTimeType !=
                             _rangeDatetimeModel.rangeDateTimeType) {
-                      setState(() {
+                      stateSetter(() {
                         widget.onChanged(e);
                         _rangeDatetimeModel = e;
+                      });
+                      setState(() {
                         _loadTitle();
-                        logError(
-                            _rangeDatetimeModel.rangeDateTimeType.toString());
                       });
                     }
-                  }))
-              .toList(),
-        )
-      ],
+                  });
+            }).toList(),
+          )
+        ],
+      ),
     );
   }
 }

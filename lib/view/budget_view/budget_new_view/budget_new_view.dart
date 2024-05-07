@@ -9,7 +9,7 @@ import 'package:budget_app/constants/icon_data_constant.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/models_widget/range_datetime_model.dart';
+import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_new_view/controller/budget_new_controller.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,7 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
   late TextEditingController _budgetNameController;
   late int _iconId;
   late int _limit;
-  late RangeDatetimeModel _rangeDatetimeModel;
+  late DatetimeRangeModel _rangeDatetimeModel;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -98,6 +98,7 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
               return null;
             },
           ),
+          gapH16,
           BBottomsheetRangeDatetime(
               initialValue: RangeDateTimeEnum.month,
               onChanged: (e) {

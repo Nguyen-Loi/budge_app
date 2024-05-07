@@ -1,5 +1,5 @@
 import 'package:budget_app/core/extension/extension_datetime.dart';
-import 'package:budget_app/models/models_widget/range_datetime_model.dart';
+import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 
 enum RangeDateTimeEnum {
   week(1),
@@ -12,19 +12,19 @@ enum RangeDateTimeEnum {
         .firstWhere((element) => element.value == value);
   }
 
-  String content({required RangeDatetimeModel rangeDatetimeModel}) {
+  String content({required DatetimeRangeModel rangeDatetimeModel}) {
     switch (rangeDatetimeModel.rangeDateTimeType) {
       case RangeDateTimeEnum.week:
         String strFormat = 'MM/dd';
         return 'Tuần này (${rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat)} - ${rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat)})';
       case RangeDateTimeEnum.month:
-       String strFormat = 'MM/dd';
+        String strFormat = 'MM/dd';
         return 'Tháng này (${rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat)} - ${rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat)})';
       case RangeDateTimeEnum.year:
         String strFormat = 'dd/MM/yyyy';
         return 'Năm nay (${rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat)} - ${rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat)})';
       case RangeDateTimeEnum.custom:
-      String strFormat = 'dd/MM/yyyy';
+        String strFormat = 'dd/MM/yyyy';
         return 'Tùy chỉnh (${rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat)} - ${rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat)})';
     }
   }

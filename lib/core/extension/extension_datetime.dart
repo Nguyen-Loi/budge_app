@@ -10,8 +10,12 @@ extension HandleDateTime on DateTime {
     return DateFormat.jm().format(this);
   }
 
-   String toTimeAgo() {
+  String toTimeAgo() {
     return GetTimeAgo.parse(this);
+  }
+
+  bool isSameDate(DateTime other) {
+    return year == other.year && month == other.month && day == other.day;
   }
 }
 
@@ -32,7 +36,7 @@ extension HandleDateTimeNull on DateTime? {
   }
 
   String toTimeAgo({String defaultValue = 'NoData'}) {
-     if (this == null) {
+    if (this == null) {
       return defaultValue;
     }
     return GetTimeAgo.parse(this!);

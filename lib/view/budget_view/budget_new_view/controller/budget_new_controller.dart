@@ -5,7 +5,7 @@ import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/models/models_widget/range_datetime_model.dart';
+import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
 import 'package:collection/collection.dart';
@@ -50,7 +50,7 @@ class BudgetNewController extends StateNotifier<bool> {
     required String budgetName,
     required int iconId,
     required int limit,
-    required RangeDatetimeModel rangeDatetimeModel,
+    required DatetimeRangeModel rangeDatetimeModel,
   }) async {
     //Check valid
     String? error = _errorValidate(context, budgetName: budgetName);

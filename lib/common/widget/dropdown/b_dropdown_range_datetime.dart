@@ -1,12 +1,12 @@
 import 'package:budget_app/common/widget/dropdown/b_dropdown.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
-import 'package:budget_app/models/models_widget/range_datetime_model.dart';
+import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:flutter/material.dart';
 
 class BDropdownRangeDatetime extends StatelessWidget {
   const BDropdownRangeDatetime({Key? key, required this.onChanged})
       : super(key: key);
-  final void Function(RangeDatetimeModel rangeTime) onChanged;
+  final void Function(DatetimeRangeModel rangeTime) onChanged;
 
   Map<String, DateTime> getWeekRange(DateTime time) {
     int currentWeekday = time.weekday;
@@ -39,25 +39,25 @@ class BDropdownRangeDatetime extends StatelessWidget {
     };
   }
 
-  List<RangeDatetimeModel> get list {
+  List<DatetimeRangeModel> get list {
     final now = DateTime.now();
     final weekTime = getWeekRange(now);
     final monthTime = getMonthRange(now);
     final yearTime = getYearRange(now);
     return [
-      RangeDatetimeModel(
+      DatetimeRangeModel(
           startDate: weekTime['firstDay']!,
           endDate: weekTime['lastDay']!,
           rangeDateTimeType: RangeDateTimeEnum.week),
-      RangeDatetimeModel(
+      DatetimeRangeModel(
           startDate: monthTime['firstDay']!,
           endDate: monthTime['lastDay']!,
           rangeDateTimeType: RangeDateTimeEnum.month),
-      RangeDatetimeModel(
+      DatetimeRangeModel(
           startDate: yearTime['firstDay']!,
           endDate: yearTime['lastDay']!,
           rangeDateTimeType: RangeDateTimeEnum.year),
-      RangeDatetimeModel(
+      DatetimeRangeModel(
           startDate: monthTime['firstDay']!,
           endDate: monthTime['lastDay']!,
           rangeDateTimeType: RangeDateTimeEnum.custom),
@@ -66,7 +66,7 @@ class BDropdownRangeDatetime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BDropdown<RangeDatetimeModel>(
+    return BDropdown<DatetimeRangeModel>(
         inittialValue: list.first,
         label: (e) => e!.rangeDateTimeType.content(rangeDatetimeModel: e),
         items: list,
