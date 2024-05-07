@@ -9,6 +9,7 @@ class IconConstants {
   static IconData notification = Icons.notifications_none_outlined;
   static IconData search = Icons.search;
   static IconData clear = Icons.clear;
+  static IconData tap = Icons.touch_app_sharp;
 
   static IconData arrowNext = Icons.arrow_forward_ios_rounded;
   static IconData dropdown = Icons.keyboard_arrow_down;
