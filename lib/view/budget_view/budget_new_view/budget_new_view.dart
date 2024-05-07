@@ -1,11 +1,12 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/dropdown/b_dropdown_range_datetime.dart';
+import 'package:budget_app/common/widget/bottom_sheet/b_bottom_sheet_range_datetime.dart';
 import 'package:budget_app/common/widget/form/b_form_field_custom_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_data_constant.dart';
+import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/models_widget/range_datetime_model.dart';
@@ -97,9 +98,11 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
               return null;
             },
           ),
-          BDropdownRangeDatetime(onChanged: (e) {
-            _rangeDatetimeModel = e;
-          }),
+          BBottomsheetRangeDatetime(
+              initialValue: RangeDateTimeEnum.month,
+              onChanged: (e) {
+                _rangeDatetimeModel = e;
+              }),
           const SizedBox(height: 64),
           FilledButton(
               onPressed: _addNewBudget,
