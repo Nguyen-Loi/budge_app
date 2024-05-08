@@ -10,7 +10,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/view/home_page/controller/home_controller.dart';
+import 'package:budget_app/view/home_page/controller/user_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/controller/profile_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -86,7 +86,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                         label: context.loc.name,
                         disable: disable,
                         initialValue: user.name,
-                        validator: (v) => v.validateName,
+                        validator: (v) => v.validateName(context),
                         onChanged: (v) {
                           _name = v;
                         },
@@ -94,7 +94,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                       BFormFieldPhoneNumber(
                         disable: disable,
                         initialValue: user.phoneNumber,
-                        validator: (v) => v.validatePhoneNumber,
+                        validator: (v) => v.validatePhoneNumber(context),
                         onInputChanged: (PhoneNumber value) {
                           _phoneNumber = value;
                         },

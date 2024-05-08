@@ -50,7 +50,7 @@ class _BFormFieldPasswordState extends State<BFormFieldPassword> {
           maxLines: 1,
           obscureText: !_passwordVisible,
           controller: widget.controller,
-          validator: widget.validator ?? (v) => v.validatePassword,
+          validator: widget.validator ?? (v) => v.validatePassword(context),
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             hintText: widget.hint,

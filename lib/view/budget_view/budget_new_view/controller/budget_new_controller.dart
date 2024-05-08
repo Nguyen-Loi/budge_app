@@ -3,12 +3,10 @@ import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/gen_id.dart';
-import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,12 +34,12 @@ class BudgetNewController extends StateNotifier<bool> {
         super(false);
 
   String? _errorValidate(BuildContext context, {required String budgetName}) {
-    List<BudgetModel> list = _budgetController.state;
-    final currentId = GenId.budget(budgetName);
-    final budgetExits = list.firstWhereOrNull((e) => e.id == currentId);
-    if (budgetExits != null) {
-      return context.loc.pBudgetNameExits(budgetName);
-    }
+    // List<BudgetModel> list = _budgetController.state;
+    // final currentId = GenId.budget(budgetName);
+    // final budgetExits = list.firstWhereOrNull((e) => e.id == currentId);
+    // if (budgetExits != null) {
+    //   return context.loc.pBudgetNameExits(budgetName);
+    // }
     return null;
   }
 
@@ -60,7 +58,7 @@ class BudgetNewController extends StateNotifier<bool> {
 
     final now = DateTime.now();
     BudgetModel model = BudgetModel(
-      id: GenId.budget(budgetName),
+      id: GenId.budget(),
       userId: _uid,
       name: budgetName,
       iconId: iconId,
