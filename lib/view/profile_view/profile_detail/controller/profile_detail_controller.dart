@@ -4,7 +4,7 @@ import 'package:budget_app/apis/user_api.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/models/user_model.dart';
-import 'package:budget_app/view/home_page/controller/home_controller.dart';
+import 'package:budget_app/view/home_page/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -19,12 +19,12 @@ final profileDetailControllerProvider =
 
 class ProfileDetailController extends StateNotifier<bool> {
   ProfileDetailController(
-      {required UserApi userApi, required HomeController userController})
+      {required UserApi userApi, required UserController userController})
       : _userApi = userApi,
         _userController = userController,
         super(true);
   final UserApi _userApi;
-  final HomeController _userController;
+  final UserController _userController;
 
   void updateDisable(bool status) {
     state = status;

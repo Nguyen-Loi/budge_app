@@ -15,7 +15,8 @@ class GenId {
 
   static String get income => _time;
   static String get statistical => _currentMonth;
-  static String budget(String budgetName) =>
-      'budget-$_currentMonth-$budgetName';
+  static String budget() =>
+      _time;
   static String goal(String goalName) => 'goal-$goalName';
+  static String transaction() => _time;
 }

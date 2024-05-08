@@ -1,14 +1,15 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/bottom_sheet/b_bottom_sheet_range_datetime.dart';
-import 'package:budget_app/common/widget/form/b_form_field_custom_amount.dart';
+import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_data_constant.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_new_view/controller/budget_new_controller.dart';
@@ -24,14 +25,17 @@ class BudgetNewView extends ConsumerStatefulWidget {
 
 class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
   late TextEditingController _budgetNameController;
+
   late int _iconId;
   late int _limit;
   late DatetimeRangeModel _rangeDatetimeModel;
+
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     _budgetNameController = TextEditingController();
+    _limit = 0;
     super.initState();
   }
 
@@ -68,11 +72,11 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
             _budgetNameController,
             label: context.loc.budgetName,
             hint: context.loc.budgetNameHint,
-            validator: (p0) => p0.validateNotNull,
+            validator: (p0) => p0.validateNotNull(context),
           ),
           gapH16,
           BFormPickerIcon(
-            items: IconDataConstant.listIcon,
+            items: IconManager.listIconSelect(),
             onChanged: (value) {
               if (value != null) {
                 _iconId = value;
@@ -86,16 +90,12 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
             },
           ),
           gapH16,
-          BFormFieldCustomAmount(
-            label: context.loc.monthlyLimit,
-            onChanged: (v) {
-              _limit = v;
-            },
-            validator: (value) {
-              if (value == null) {
-                return context.loc.amountInvalid;
+          BFormFieldAmount(
+            label: 'Limit'.hardcoded,
+            onChanged: (e) {
+              if (e != null) {
+                _limit = e;
               }
-              return null;
             },
           ),
           gapH16,

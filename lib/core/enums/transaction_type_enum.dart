@@ -9,6 +9,16 @@ enum TransactionType {
         TransactionType.increase;
   }
 
+  factory TransactionType.fromAmount(int amount){
+    if (amount.sign==0){
+      throw Exception('Not supported for this amount: $amount');
+    }
+    if(amount.sign==1){
+      return TransactionType.increase;
+    }
+    return TransactionType.decrease;
+  }
+
   final int value;
   const TransactionType(this.value);
 }

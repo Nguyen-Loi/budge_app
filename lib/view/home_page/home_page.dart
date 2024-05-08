@@ -7,9 +7,10 @@ import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/user_model.dart';
-import 'package:budget_app/view/home_page/controller/home_controller.dart';
+import 'package:budget_app/view/home_page/controller/user_controller.dart';
 import 'package:budget_app/view/home_page/widgets/home_budget_list/home_budget_list.dart';
-import 'package:budget_app/view/home_page/widgets/home_statistical_card/update_wallet_card.dart';
+import 'package:budget_app/view/home_page/widgets/home_transactions_recently/home_transactions_recently.dart';
+import 'package:budget_app/view/home_page/widgets/home_update_wallet_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -50,7 +51,13 @@ class _HomePageState extends ConsumerState<HomePage>
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        children: const [UpdateWalletCard(), gapH16, HomeBudgetList()],
+        children: const [
+          HomeUpdateWalletCard(),
+          gapH16,
+          HomeBudgetList(),
+          gapH16,
+          HomeTransactionsRecently()
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

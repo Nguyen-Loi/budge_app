@@ -1,0 +1,122 @@
+import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/widget/b_status.dart';
+import 'package:budget_app/common/widget/b_text_rich.dart';
+import 'package:budget_app/common/widget/b_text_span.dart';
+import 'package:budget_app/common/widget/picker/b_picker_month.dart';
+import 'package:budget_app/common/widget/with_spacing.dart';
+import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/theme/app_text_theme.dart';
+import 'package:budget_app/view/transactions_view/controller/transaction_controller.dart';
+import 'package:budget_app/view/transactions_view/widget/transaction_card.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class TransactionView extends StatefulWidget {
+  const TransactionView({Key? key}) : super(key: key);
+
+  @override
+  State<TransactionView> createState() => _TransactionViewState();
+}
+
+class _TransactionViewState extends State<TransactionView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: _builder(),
+    );
+  }
+
+  Widget _builder() {
+    return Consumer(builder: (_, ref, __) {
+      return ref.watch(transactionsFutureProvider).when(
+          data: (items) {
+            final currentTime = ref
+                .watch(transactionsControllerProvider.notifier)
+                .dateTimePicker;
+            final list = ref.watch(transactionsControllerProvider);
+            return Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _summaryText(
+                          ref: ref,
+                          label: 'Income',
+                          value: ref
+                              .watch(transactionsControllerProvider.notifier)
+                              .sumIncome,
+                          color: ColorManager.green2,
+                        ),
+                        const SizedBox(height: 16),
+                        _summaryText(
+                          ref: ref,
+                          label: 'Expense',
+                          value: ref
+                              .watch(transactionsControllerProvider.notifier)
+                              .sumExpense,
+                          color: ColorManager.red1,
+                        ),
+                      ],
+                    ),
+                    BPickerMonth(
+                        initialDate: ref
+                            .watch(transactionsControllerProvider.notifier)
+                            .dateTimePicker,
+                        firstDate: ref
+                            .watch(transactionsControllerProvider.notifier)
+                            .firstDateTransactions,
+                        lastDate: ref
+                            .watch(transactionsControllerProvider.notifier)
+                            .lastDateTransactions,
+                        onChange: (date) async {
+                          if (!date.isSameDate(currentTime)) {
+                            ref
+                                .read(transactionsControllerProvider.notifier)
+                                .updateDate(date);
+                          }
+                        })
+                  ],
+                ),
+                gapH16,
+                list.isEmpty
+                    ? const Expanded(child: BStatus.empty())
+                    : Expanded(
+                        child: ListViewWithSpacing(
+                          children: list
+                              .map((e) => TransactionCard(model: e))
+                              .toList(),
+                        ),
+                      )
+              ],
+            );
+          },
+          error: (_, __) => const BStatus.error(),
+          loading: () => const BStatus.loading());
+    });
+  }
+
+  Widget _summaryText(
+      {required WidgetRef ref,
+      required String label,
+      required int value,
+      required Color color}) {
+    return BTextRich(BTextSpan(children: [
+      BTextSpan(text: '$label: '),
+      BTextSpan(
+        text: value.toString(),
+        style: context.textTheme.bodyLarge!
+            .copyWith(color: color, fontWeight: FontWeight.bold),
+      )
+    ]));
+  }
+}

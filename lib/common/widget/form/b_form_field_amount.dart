@@ -1,36 +1,63 @@
+import 'package:budget_app/common/type_def.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/view/home_page/controller/home_controller.dart';
+import 'package:budget_app/view/home_page/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class BFormFieldAmount extends StatelessWidget {
+class BFormFieldAmount extends StatefulWidget {
   final String label;
   final String? hint;
+  final int? initialValue;
+  final OnChangeNumber onChanged;
   final String? Function(String?)? validator;
-  final TextEditingController controller;
-  final String? initialValue;
 
-  BFormFieldAmount(
-    this.controller, {
+  const BFormFieldAmount({
     super.key,
     required this.label,
-    this.hint,
     this.validator,
+    this.hint,
     this.initialValue,
+    required this.onChanged,
   });
 
-  String _formatNumber(String s) {
+  @override
+  State<BFormFieldAmount> createState() => _BFormFieldAmountState();
+}
+
+class _BFormFieldAmountState extends State<BFormFieldAmount> {
+  void _reload(String str) {
+    String strFormat = str.replaceAll(',', '');
     try {
-      return NumberFormat.decimalPattern('en').format(int.parse(s));
+      strFormat =
+          NumberFormat.decimalPattern('en').format(int.parse(strFormat));
     } catch (e) {
-      return s;
+      strFormat = str;
     }
+    _controller.value = TextEditingValue(
+      text: strFormat,
+      selection: TextSelection.collapsed(offset: strFormat.length),
+    );
+
+    widget.onChanged(value);
   }
 
-  final _controller = TextEditingController();
+  late TextEditingController _controller;
+  late int? value;
+
+  @override
+  void initState() {
+    _controller = TextEditingController();
+    value = widget.initialValue;
+    if (widget.initialValue != null) {
+      _reload(widget.initialValue.toString());
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +65,7 @@ class BFormFieldAmount extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         BText(
-          label,
+          widget.label,
           fontWeight: FontWeightManager.semiBold,
         ),
         gapH8,
@@ -49,25 +76,21 @@ class BFormFieldAmount extends StatelessWidget {
               NumberFormat.compactSimpleCurrency(locale: userCurrency)
                   .currencySymbol;
           return TextFormField(
-            initialValue: initialValue,
             textInputAction: TextInputAction.done,
             controller: _controller,
-            validator: validator,
+            validator: widget.validator ?? (_) => value.validateAmount(context),
             maxLength: 16,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               prefixText: currency,
-              hintText: hint ?? context.loc.amountHint,
+              hintText: widget.hint ?? context.loc.amountHint,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
             onChanged: (string) {
-              string = _formatNumber(string.replaceAll(',', ''));
-              _controller.value = TextEditingValue(
-                text: string,
-                selection: TextSelection.collapsed(offset: string.length),
-              );
+              value = int.parse(string.replaceAll(',', ''));
+              _reload(string);
             },
           );
         }),

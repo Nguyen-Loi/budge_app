@@ -58,12 +58,12 @@ class _LoginViewState extends ConsumerState<SignUpView> {
             children: [
               // gapH24,
               gapH32,
-               BText.h1(
+              BText.h1(
                 context.loc.welecomeAppName,
                 textAlign: TextAlign.left,
               ),
               gapH16,
-               BText(
+              BText(
                 context.loc.signUpToStart,
                 textAlign: TextAlign.left,
               ),
@@ -118,7 +118,7 @@ class _LoginViewState extends ConsumerState<SignUpView> {
       _emailController,
       label: context.loc.email,
       hint: context.loc.emailHint,
-      validator: (p0) => p0.validateEmail,
+      validator: (p0) => p0.validateEmail(context),
     );
   }
 
@@ -127,7 +127,7 @@ class _LoginViewState extends ConsumerState<SignUpView> {
       _confirmPasswordController,
       label: context.loc.password,
       hint: context.loc.passwordHint,
-      validator: (p0) => p0.validatePassword,
+      validator: (p0) => p0.validatePassword(context),
     );
   }
 
@@ -136,7 +136,8 @@ class _LoginViewState extends ConsumerState<SignUpView> {
         label: context.loc.confirmPassword,
         hint: context.loc.passwordHint,
         validator: (p0) => p0.validateMatchPassword(
-              _confirmPasswordController.text,
+              context,
+              otherPassword: _confirmPasswordController.text,
             ));
   }
 

@@ -1,10 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 
 class TransactionModel {
   final String id;
-  final String budgetId;
+  //Empty is wallet
+  final String? budgetId;
   final int amount;
   final String note;
   final int transactionTypeValue;
@@ -13,7 +15,7 @@ class TransactionModel {
   final DateTime updatedDate;
   TransactionModel({
     required this.id,
-    required this.budgetId,
+    this.budgetId,
     required this.amount,
     required this.note,
     required this.transactionTypeValue,
@@ -21,9 +23,12 @@ class TransactionModel {
     required this.transactionDate,
     required this.updatedDate,
   });
+ 
 
   TransactionType get transactionType =>
       TransactionType.fromValue(transactionTypeValue);
+
+  
 
   TransactionModel copyWith({
     String? id,
@@ -63,23 +68,19 @@ class TransactionModel {
   factory TransactionModel.fromMap(Map<String, dynamic> map) {
     return TransactionModel(
       id: map['id'] as String,
-      budgetId: map['budgetId'] as String,
+      budgetId: map['budgetId'] != null ? map['budgetId'] as String : null,
       amount: map['amount'] as int,
       note: map['note'] as String,
       transactionTypeValue: map['transactionTypeValue'] as int,
-      createdDate:
-          DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
-      transactionDate:
-          DateTime.fromMillisecondsSinceEpoch(map['transactionDate'] as int),
-      updatedDate:
-          DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
+      createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
+      transactionDate: DateTime.fromMillisecondsSinceEpoch(map['transactionDate'] as int),
+      updatedDate: DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory TransactionModel.fromJson(String source) =>
-      TransactionModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory TransactionModel.fromJson(String source) => TransactionModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -89,26 +90,27 @@ class TransactionModel {
   @override
   bool operator ==(covariant TransactionModel other) {
     if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.budgetId == budgetId &&
-        other.amount == amount &&
-        other.note == note &&
-        other.transactionTypeValue == transactionTypeValue &&
-        other.createdDate == createdDate &&
-        other.transactionDate == transactionDate &&
-        other.updatedDate == updatedDate;
+  
+    return 
+      other.id == id &&
+      other.budgetId == budgetId &&
+      other.amount == amount &&
+      other.note == note &&
+      other.transactionTypeValue == transactionTypeValue &&
+      other.createdDate == createdDate &&
+      other.transactionDate == transactionDate &&
+      other.updatedDate == updatedDate;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-        budgetId.hashCode ^
-        amount.hashCode ^
-        note.hashCode ^
-        transactionTypeValue.hashCode ^
-        createdDate.hashCode ^
-        transactionDate.hashCode ^
-        updatedDate.hashCode;
+      budgetId.hashCode ^
+      amount.hashCode ^
+      note.hashCode ^
+      transactionTypeValue.hashCode ^
+      createdDate.hashCode ^
+      transactionDate.hashCode ^
+      updatedDate.hashCode;
   }
 }
