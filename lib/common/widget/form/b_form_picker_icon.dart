@@ -56,28 +56,26 @@ class BFormPickerIcon extends FormField<IconModel> {
                         onChanged(icon.id);
                       }
                     },
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Ink(
-                        decoration: BoxDecoration(
-                            color: ColorManager.white,
-                            border: Border.all(
-                                width: 0.5, color: ColorManager.green2),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8))),
-                        child: field.value == null
-                            ?  _ShowItem(
-                                child: BText(
-                                  field.context.loc.chooseIcon,
-                                ),
-                              )
-                            : _ShowItem(
-                                child: Icon(
-                                field.value!.iconData,
-                                size: _sizeIconMain,
-                                color: field.value!.color,
-                              )),
-                      ),
+                    child: Ink(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: ColorManager.white,
+                          border: Border.all(
+                              width: 0.5, color: ColorManager.green2),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8))),
+                      child: field.value == null
+                          ? _ShowItem(
+                              child: BText(
+                                field.context.loc.chooseIcon,
+                              ),
+                            )
+                          : _ShowItem(
+                              child: Icon(
+                              field.value!.iconData,
+                              size: _sizeIconMain,
+                              color: field.value!.color,
+                            )),
                     )),
               ],
             );
@@ -94,9 +92,8 @@ class _ShowItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       decoration: BoxDecoration(
-        color: ColorManager.purple25,
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-        border: Border.all(color: ColorManager.grey2),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        border: Border.all(color: ColorManager.grey1, width: 0.5),
       ),
       child: child,
     );

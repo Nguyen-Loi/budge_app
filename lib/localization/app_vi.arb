@@ -175,5 +175,6 @@
     "errorSignInFacebook": "Đã xảy ra lỗi khi đăng nhập bằng Facebook. Hãy thử lại.",
     "accountAlreadyExits": "Tài khoản đã tồn tại.",
     "errorCredentials": "Đã xảy ra lỗi khi truy cập thông tin đăng nhập. Hãy thử lại.",
-    "invalidEmailOrPassword": "Email hoặc mật khẩu không hợp lệ."
+    "invalidEmailOrPassword": "Email hoặc mật khẩu không hợp lệ.",
+    "walletInvalidMatches":"Giá trị hiện tại của ví đang trùng"
 }

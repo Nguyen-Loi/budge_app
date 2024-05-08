@@ -133,14 +133,14 @@ class _LoginViewState extends ConsumerState<LoginView> {
       _emailController,
       label: context.loc.email,
       hint: context.loc.emailHint,
-      validator: (e) => e.validateEmail,
+      validator: (e) => e.validateEmail(context),
     );
   }
 
   Widget _bFieldPassword() {
     return BFormFieldPassword(
       _passwordController,
-      validator: (e) => e.validatePassword,
+      validator: (e) => e.validatePassword(context),
     );
   }
 

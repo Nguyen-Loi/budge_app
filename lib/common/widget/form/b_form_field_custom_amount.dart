@@ -3,7 +3,6 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
-import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:flutter/material.dart';
 
 class BFormFieldCustomAmount extends FormField<int> {
@@ -126,7 +125,7 @@ class _FormFieldState extends FormFieldState<int> {
     if (value != null) {
       if (widget.currencyType == CurrencyType.vnd) {
         widget
-            .onChanged(value.toAmountMoney(currencyType: widget.currencyType));
+            .onChanged(value);
       }
     }
     super.didChange(value);

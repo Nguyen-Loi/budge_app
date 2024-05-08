@@ -1,6 +1,8 @@
 import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/common/log.dart';
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_query.dart';
+import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/models/transaction_model.dart';
@@ -17,7 +19,11 @@ abstract class ITransactionApi {
   Future<List<TransactionModel>> fetchTransaction(String uid);
   Future<List<TransactionModel>> getTransactionsByBudgetId(
       {required String uid, required String budgetId});
-  FutureEitherVoid add(String uid, {required TransactionModel transaction});
+  FutureEither<TransactionModel> add(String uid,
+      {required String? budgetId,
+      required int amount,
+      required String note,
+      required TransactionType transactionType});
   Future<List<TransactionModel>> fetchTransactionOfMonth(
       {required String uid, required DateTime dateTime});
   Future<List<TransactionModel>> fetchTransactionsRecently(
@@ -28,14 +34,27 @@ class TransactionApi extends ITransactionApi {
   final FirebaseFirestore _db;
   TransactionApi({required FirebaseFirestore db}) : _db = db;
   @override
-  FutureEitherVoid add(String uid,
-      {required TransactionModel transaction}) async {
+ FutureEither<TransactionModel> add(String uid,
+      {required String? budgetId,
+      required int amount,
+      required String note,
+      required TransactionType transactionType}) async {
+    final now = DateTime.now();
+    TransactionModel transaction = TransactionModel(
+        id: GenId.transaction(),
+        budgetId: budgetId,
+        amount: amount,
+        note: note,
+        transactionTypeValue: transactionType.value,
+        createdDate: now,
+        transactionDate: now,
+        updatedDate: now);
     try {
       await _db
           .collection(FirestorePath.transactions(uid: uid))
           .doc(transaction.id)
           .customSet(transaction.toMap());
-      return right(null);
+      return right(transaction);
     } catch (e) {
       logError(e.toString());
       return left(Failure(error: e.toString()));

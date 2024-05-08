@@ -1,7 +1,7 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/view/history_view/history_page.dart';
+import 'package:budget_app/view/transactions_view/transaction_view.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
 import 'package:budget_app/view/profile_view/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -13,24 +13,20 @@ class MainPageBottomBar extends StatefulWidget {
   State<MainPageBottomBar> createState() => _MainPageBottomBarState();
 }
 
-List<BottomNavigationBarItem> _navBarItems (BuildContext context) => [
-  BottomNavigationBarItem(
-    icon: Icon(IconConstants.home),
-    label: context.loc.home,
-  ),
-  BottomNavigationBarItem(
-    icon: Icon(IconConstants.history),
-    label: context.loc.history,
-  ),
-  BottomNavigationBarItem(
-    icon: Icon(IconConstants.goals),
-    label: context.loc.goals,
-  ),
-  BottomNavigationBarItem(
-    icon: Icon(IconConstants.profile),
-    label: context.loc.profile,
-  )
-];
+List<BottomNavigationBarItem> _navBarItems(BuildContext context) => [
+      BottomNavigationBarItem(
+        icon: Icon(IconConstants.home),
+        label: context.loc.home,
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(IconConstants.history),
+        label: context.loc.history,
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(IconConstants.profile),
+        label: context.loc.profile,
+      )
+    ];
 
 class _MainPageBottomBarState extends State<MainPageBottomBar> {
   late int _selectedIndex;
@@ -42,7 +38,7 @@ class _MainPageBottomBarState extends State<MainPageBottomBar> {
     _pageController = PageController(initialPage: _selectedIndex);
     _screens = [
       const HomePage(),
-      const HistoryPage(),
+      const TransactionView(),
       const ProfilePage(),
     ];
     super.initState();

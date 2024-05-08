@@ -4,9 +4,7 @@ import 'package:budget_app/view/auth_view/sign_up_view.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/budget_detail_view.dart';
 import 'package:budget_app/view/budget_view/budget_modify_view/budget_modify_view.dart';
 import 'package:budget_app/view/budget_view/budget_new_view/budget_new_view.dart';
-import 'package:budget_app/view/income_view/income_view.dart';
 import 'package:budget_app/view/main_page_bottom_bar.dart';
-import 'package:budget_app/view/new_expense_view/new_expense_view.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
 import 'package:budget_app/view/settings_view/settings_view.dart';
 import 'package:budget_app/view/update_wallet_view/update_wallet_view.dart';
@@ -20,8 +18,6 @@ class RoutePath {
 
   static const String home = "/home";
   static const String goal = "/goal";
-  static const String income = "/income";
-  static const String expense = "/expense";
   static const String budgetNew = "/budgetNew";
   static const String budgetDetail = "/budgetDetail";
   static const String budgetModify = "/budgetModify";
@@ -42,10 +38,6 @@ class MainRouter {
       case RoutePath.home:
         return MaterialPageRoute(builder: (_) => const MainPageBottomBar());
 
-      case RoutePath.income:
-        return MaterialPageRoute(builder: (_) => const IncomeView());
-      case RoutePath.expense:
-        return MaterialPageRoute(builder: (_) => const NewExpenseView());
       case RoutePath.budgetNew:
         return MaterialPageRoute(builder: (_) => const BudgetNewView());
       case RoutePath.budgetDetail:

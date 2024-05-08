@@ -1,37 +1,81 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
+import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/base_view.dart';
+import 'package:budget_app/view/home_page/controller/user_controller.dart';
+import 'package:budget_app/view/home_page/widgets/home_transactions_recently/controller/transactions_recently_controller.dart';
+import 'package:budget_app/view/update_wallet_view/controller/update_wallet_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class UpdateWalletView extends ConsumerWidget {
-  UpdateWalletView({super.key});
-  final TextEditingController _amountController = TextEditingController();
+class UpdateWalletView extends ConsumerStatefulWidget {
+  const UpdateWalletView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _UpdateWalletViewState();
+}
+
+class _UpdateWalletViewState extends ConsumerState<UpdateWalletView> {
+  final _formKey = GlobalKey<FormState>();
+  late int _newBalance;
+
+  void _save(UserModel user) async {
+    final navigator = Navigator.of(context);
+    if (_formKey.currentState!.validate()) {
+      bool isSuccess = await ref
+          .read(updateWalletControllerProvider)
+          .updateWallet(context, newValue: _newBalance, userModel: user);
+      if (isSuccess) {
+        ref.invalidate(transactionsRecentlyControllerProvider);
+        navigator.pop();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = ref.watch(userControllerProvider)!;
     return BaseView(
         actions: [
           TextButton(
-              onPressed: () {}, child: BText(context.loc.save.toUpperCase()))
+              onPressed: () {
+                _save(user);
+              },
+              child: BText(context.loc.save.toUpperCase()))
         ],
-        title: 'Điều chỉnh số dư'.hardcoded,
+        title: 'Cập nhật số dư'.hardcoded,
         child: Padding(
           padding: const EdgeInsets.only(top: 16),
           child: ColoredBox(
             color: ColorManager.purple25,
-            child: Padding(padding: const EdgeInsets.all(16), child: _wallet()),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: _form(user),
+            ),
           ),
         ));
   }
 
-  Widget _wallet() {
+  Widget _form(UserModel user) {
+    return Form(
+        key: _formKey,
+        child: ColumnWithSpacing(
+          children: [
+            _walletField(user.balance),
+          ],
+        ));
+  }
+
+  Widget _walletField(int balance) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -43,7 +87,16 @@ class UpdateWalletView extends ConsumerWidget {
           ],
         ),
         gapH16,
-        BFormFieldAmount(_amountController, label: 'Nhập số dư hiện tại'),
+        BFormFieldAmount(
+          initialValue: balance,
+          label: 'Điều chỉnh số dư',
+          validator: (s) => s.validateWallet(context, newValue: balance),
+          onChanged: (v) {
+            if (v != null) {
+              _newBalance = v;
+            }
+          },
+        ),
       ],
     );
   }

@@ -1,62 +1,53 @@
-import 'package:budget_app/common/log.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:flutter/material.dart';
 
 extension ValidateForm on String? {
-  String? get validateEmail {
+  String? validateEmail(BuildContext context) {
     final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    String textError = 'emailInvalid'.hardcoded;
+    String textError = context.loc.emailInvalid;
     if (this == null || !emailRegExp.hasMatch(this!)) {
       return textError;
     }
     return null;
   }
 
-  String? get validateNotNull {
-    String textError = 'dataEmpty'.hardcoded;
+  String? validateNotNull(BuildContext context) {
+    String textError = context.loc.dataEmpty;
     if (this == null || this == '') {
       return textError;
     }
     return null;
   }
 
-  String? get validatePhoneNumber {
-    logError(this!.toString());
+  String? validatePhoneNumber(BuildContext context) {
     final phoneRegExp = RegExp(
         r"(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})");
-    String textError = 'phoneNumberInvalid'.hardcoded;
+    String textError = context.loc.phoneNumberInvalid;
     if (this == null || !phoneRegExp.hasMatch(this!)) {
       return textError;
     }
     return null;
   }
 
-  String? get validateName {
+  String? validateName(BuildContext context) {
     final nameRegExp = RegExp(r"^[A-Za-z\s'-]+$");
-    String textError = 'nameInvalid'.hardcoded;
+    String textError = context.loc.nameInvalid;
     if (this == null || !nameRegExp.hasMatch(this!)) {
       return textError;
     }
     return null;
   }
 
-  String? get validatePassword {
-    String textError = 'passwordMininum6'.hardcoded;
+  String? validatePassword(BuildContext context) {
+    String textError = context.loc.passwordMininum6;
     if (this == null || this!.length < 6) {
       return textError;
     }
     return null;
   }
 
-  String? validateInteger({String textError = 'Invalid'}) {
-    final intRegExp = RegExp(r'^[0-9]+$');
-    if (this == null || !intRegExp.hasMatch(this!)) {
-      return textError;
-    }
-    return null;
-  }
-
-  String? get validateAmount {
-    String textError = 'amountInvalid';
+  String? validateAmount(BuildContext context) {
+    String textError = context.loc.amountInvalid;
     final intRegExp = RegExp(r'^[1-9]\d*$');
     if (this == null || !intRegExp.hasMatch(this!)) {
       return textError;
@@ -64,9 +55,40 @@ extension ValidateForm on String? {
     return null;
   }
 
-  String? validateMatchPassword(String password) {
-    String textError = 'confirmPasswordInvalid';
-    if (this == null || this! != password) {
+  String? validateWallet(BuildContext context, {required int newValue}) {
+    String textAmountInvalid = context.loc.amountInvalid;
+    String textWalletMatches = context.loc.walletInvalidMatches;
+    if (this == null) {
+      return textAmountInvalid;
+    }
+
+    final intRegExp = RegExp(r'^[1-9]\d*$');
+    String formatCurrentValue = this!.replaceAll(',', '');
+
+    if (!intRegExp.hasMatch(formatCurrentValue)) {
+      return textAmountInvalid;
+    }
+    if (int.parse(formatCurrentValue) == newValue) {
+      return textWalletMatches;
+    }
+    return null;
+  }
+
+  String? validateMatchPassword(BuildContext context,
+      {required String otherPassword}) {
+    String textError = context.loc.confirmPasswordInvalid;
+    if (this == null || this! != otherPassword) {
+      return textError;
+    }
+    return null;
+  }
+}
+
+extension ValidateFormInteger on int? {
+  String? validateAmount(BuildContext context) {
+    String textError = context.loc.amountInvalid;
+    final intRegExp = RegExp(r'^[1-9]\d*$');
+    if (!intRegExp.hasMatch(toString())) {
       return textError;
     }
     return null;

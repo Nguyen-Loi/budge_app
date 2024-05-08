@@ -1,7 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/bottom_sheet/b_bottom_sheet.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
@@ -24,7 +22,9 @@ class BBottomsheetRangeDatetime extends StatefulWidget {
 }
 
 class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
-  late DatetimeRangeModel _rangeDatetimeModel;
+  late DatetimeRangeModel _rangeDatetimeModelSelected;
+  late DatetimeRangeModel _rangeDatetimeModelCurrent;
+
   late List<DatetimeRangeModel> _list;
   late String _title;
   final now = DateTime.now();
@@ -66,29 +66,52 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
       getMonthRange(now).copyWith(rangeDateTimeType: RangeDateTimeEnum.custom),
     ];
 
-    _rangeDatetimeModel =
+    _rangeDatetimeModelSelected =
         _list.firstWhere((e) => e.rangeDateTimeType == widget.initialValue);
-    widget.onChanged(_rangeDatetimeModel);
+    _rangeDatetimeModelCurrent = _rangeDatetimeModelSelected;
+    widget.onChanged(_rangeDatetimeModelSelected);
     _loadTitle();
     super.initState();
   }
 
   void _loadTitle() {
-    logError(_rangeDatetimeModel.rangeDateTimeType.toString());
-    _title = _rangeDatetimeModel.rangeDateTimeType
-        .content(rangeDatetimeModel: _rangeDatetimeModel);
+    _title = _rangeDatetimeModelCurrent.rangeDateTimeType
+        .content(rangeDatetimeModel: _rangeDatetimeModelCurrent);
+  }
+
+  void _save() {
+    _rangeDatetimeModelCurrent = _rangeDatetimeModelSelected;
+    setState(() {
+      _loadTitle();
+    });
+
+    widget.onChanged(_rangeDatetimeModelCurrent);
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        BBottomSheet.show(context, builder: (context) {
-          return StatefulBuilder(builder: (BuildContext context,
-              StateSetter stateSetter /*You can rename this!*/) {
-            return SizedBox(child: _options(context, stateSetter: stateSetter));
-          });
-        });
+      onTap: () async {
+        showModalBottomSheet(
+            context: context,
+            isDismissible: false,
+            builder: (context) {
+              return StatefulBuilder(
+                  builder: (BuildContext context, StateSetter stateSetter) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _options(context, stateSetter: stateSetter),
+                      gapH16,
+                      _buttons()
+                    ],
+                  ),
+                );
+              });
+            });
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -108,96 +131,119 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
     );
   }
 
-  Widget _options(BuildContext context, {required StateSetter stateSetter}) {
+  Widget _buttons() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          BText.b1('Khoảng thời gian'.hardcoded, fontWeight: FontWeight.bold),
-          gapH16,
-          ColumnWithSpacing(
-            mainAxisSize: MainAxisSize.min,
-            children: _list.map((e) {
-              String title = e.rangeDateTimeType.content(rangeDatetimeModel: e);
-              bool isChooseCustom =
-                  e.rangeDateTimeType == RangeDateTimeEnum.custom &&
-                      _rangeDatetimeModel.rangeDateTimeType ==
-                          RangeDateTimeEnum.custom;
-              if (isChooseCustom) {
-                title = 'Tùy chỉnh';
-              }
-
-              // For custom
-
-              String customFormat = 'dd/MM/yyyy';
-              final dateRangeCustom = _list[3];
-              String dateRangeForCustom =
-                  '${dateRangeCustom.startDate.toFormatDate(strFormat: customFormat)} - ${dateRangeCustom.endDate.toFormatDate(strFormat: customFormat)}';
-              return RadioListTile(
-                  value: e,
-                  groupValue: _rangeDatetimeModel,
-                  title: isChooseCustom
-                      ? Column(
-                          children: [
-                            BText(title),
-                            gapH16,
-                            BText(
-                              dateRangeForCustom,
-                            )
-                          ],
-                        )
-                      : BText(title),
-                  onChanged: (e) async {
-                    if (e?.rangeDateTimeType == RangeDateTimeEnum.custom) {
-                      DateTimeRange? newDateRangeCustom =
-                          await showDateRangePicker(
-                        context: context,
-                        initialDateRange: DateTimeRange(
-                            start: dateRangeCustom.startDate,
-                            end: dateRangeCustom.endDate),
-                        firstDate: DateTime(now.year, now.month - 2),
-                        lastDate: DateTime(now.year + 1),
-                      );
-                      if (newDateRangeCustom == null) {
-                        return;
-                      }
-                      stateSetter(() {
-                        _list[3] = DatetimeRangeModel(
-                            startDate: newDateRangeCustom.start,
-                            endDate: newDateRangeCustom.end,
-                            rangeDateTimeType: RangeDateTimeEnum.custom);
-                        widget.onChanged(e!);
-                        _rangeDatetimeModel = e;
-                      });
-                      setState(() {
-                        _list[3] = DatetimeRangeModel(
-                            startDate: newDateRangeCustom.start,
-                            endDate: newDateRangeCustom.end,
-                            rangeDateTimeType: RangeDateTimeEnum.custom);
-                        _loadTitle();
-                      });
-
-                      logError(_list[3].toString());
-                      logError(newDateRangeCustom.toString());
-                      return;
-                    }
-                    if (e != null &&
-                        e.rangeDateTimeType !=
-                            _rangeDatetimeModel.rangeDateTimeType) {
-                      stateSetter(() {
-                        widget.onChanged(e);
-                        _rangeDatetimeModel = e;
-                      });
-                      setState(() {
-                        _loadTitle();
-                      });
-                    }
-                  });
-            }).toList(),
+          SizedBox(
+            width: 130,
+            child: OutlinedButton(
+              onPressed: () {
+                _rangeDatetimeModelSelected = _rangeDatetimeModelCurrent;
+                Navigator.of(context).pop();
+              },
+              child: BText('Hủy'.hardcoded),
+            ),
+          ),
+          gapW16,
+          SizedBox(
+            width: 130,
+            child: FilledButton(
+              onPressed: _save,
+              child: BText('Lưu'.hardcoded, color: ColorManager.white),
+            ),
           )
         ],
       ),
+    );
+  }
+
+  void updateState(
+      {required BuildContext context,
+      required DatetimeRangeModel? e,
+      required StateSetter stateSetter}) async {
+    if (e == null) {
+      return;
+    }
+    // If choose type custom then picker dialog
+    if (e.rangeDateTimeType == RangeDateTimeEnum.custom) {
+      DateTimeRange? newDateRangeCustom = await showDateRangePicker(
+        context: context,
+        initialDateRange:
+            DateTimeRange(start: _list[3].startDate, end: _list[3].endDate),
+        firstDate: DateTime(now.year, now.month - 2),
+        lastDate: DateTime(now.year + 1),
+      );
+      if (newDateRangeCustom == null) {
+        return;
+      }
+
+      DatetimeRangeModel newData = DatetimeRangeModel(
+          startDate: newDateRangeCustom.start,
+          endDate: newDateRangeCustom.end,
+          rangeDateTimeType: RangeDateTimeEnum.custom);
+      stateSetter(() {
+        _list[3] = newData;
+        _rangeDatetimeModelSelected = newData;
+      });
+      return;
+    }
+
+    //
+    if (e.rangeDateTimeType != _rangeDatetimeModelSelected.rangeDateTimeType) {
+      stateSetter(() {
+        _rangeDatetimeModelSelected = e;
+      });
+    }
+  }
+
+  Widget _options(BuildContext context, {required StateSetter stateSetter}) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        BText.b1('Khoảng thời gian'.hardcoded, fontWeight: FontWeight.bold),
+        gapH16,
+        ColumnWithSpacing(
+          mainAxisSize: MainAxisSize.min,
+          children: _list.map((e) {
+            String title = e.rangeDateTimeType.content(rangeDatetimeModel: e);
+            bool isChooseCustom =
+                e.rangeDateTimeType == RangeDateTimeEnum.custom &&
+                    _rangeDatetimeModelSelected.rangeDateTimeType ==
+                        RangeDateTimeEnum.custom;
+            if (e.rangeDateTimeType == RangeDateTimeEnum.custom) {
+              title = 'Tùy chỉnh';
+            }
+
+            // For custom
+
+            String customFormat = 'dd/MM/yyyy';
+            final dateRangeCustom = _list[3];
+            String dateRangeForCustom =
+                '${dateRangeCustom.startDate.toFormatDate(strFormat: customFormat)} - ${dateRangeCustom.endDate.toFormatDate(strFormat: customFormat)}';
+            return RadioListTile(
+                value: e,
+                groupValue: _rangeDatetimeModelSelected,
+                title: isChooseCustom
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          BText(title),
+                          gapH16,
+                          BText(
+                            dateRangeForCustom,
+                          )
+                        ],
+                      )
+                    : BText(title),
+                onChanged: (e) async {
+                  updateState(context: context, e: e, stateSetter: stateSetter);
+                });
+          }).toList(),
+        )
+      ],
     );
   }
 }

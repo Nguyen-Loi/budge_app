@@ -5,14 +5,14 @@ import 'package:budget_app/constants/constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/icon_constants.dart';
 import 'package:budget_app/core/route_path.dart';
-import 'package:budget_app/view/home_page/controller/home_controller.dart';
+import 'package:budget_app/view/home_page/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 
-class UpdateWalletCard extends ConsumerWidget {
-  const UpdateWalletCard({super.key});
+class HomeUpdateWalletCard extends ConsumerWidget {
+  const HomeUpdateWalletCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
