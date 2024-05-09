@@ -5,7 +5,7 @@ import 'package:budget_app/common/type_def.dart';
 import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -85,7 +85,7 @@ class _BFormPickerImage extends FormFieldState<File> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(IconConstants.galley, size: 30),
+        Icon(IconManager.galley, size: 30),
         gapW16,
         BText(context.loc.noImage)
       ],

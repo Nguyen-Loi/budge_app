@@ -3,9 +3,10 @@ import 'package:budget_app/common/widget/b_divider.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
-import 'package:budget_app/view/home_page/controller/user_controller.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,8 +17,7 @@ class HomeUpdateWalletCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final balance = ref
-        .watch(userControllerProvider.select((value) => value!.balanceMoney));
+    final balance = ref.watch(userBaseControllerProvider)!.balance;
     return _item(
         value: balance,
         onPressed: () {
@@ -25,7 +25,7 @@ class HomeUpdateWalletCard extends ConsumerWidget {
         });
   }
 
-  Widget _item({required String value, required void Function()? onPressed}) {
+  Widget _item({required int value, required void Function()? onPressed}) {
     Color color = ColorManager.white;
     return GestureDetector(
       onTap: onPressed,
@@ -43,7 +43,7 @@ class HomeUpdateWalletCard extends ConsumerWidget {
                     'Ví của tôi',
                     color: color,
                   ),
-                  Icon(IconConstants.arrowNext, color: color)
+                  Icon(IconManager.arrowNext, color: color)
                 ],
               ),
               BDivider.h(
@@ -62,7 +62,7 @@ class HomeUpdateWalletCard extends ConsumerWidget {
                   gapW8,
                   Expanded(
                       child: BText(
-                    value,
+                    value.toMoneyStr(),
                     color: color,
                     textAlign: TextAlign.right,
                   ))

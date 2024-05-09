@@ -1,7 +1,7 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
 
@@ -48,12 +48,12 @@ extension Present<T> on BDialogInfo {
     Color bColor;
     switch (dialogInfoType) {
       case DialogInfoType.error:
-        bIcon = icon ?? IconConstants.emojiFrown;
+        bIcon = icon ?? IconManager.emojiFrown;
         bTextConfirm = textSubmit ?? context.loc.close;
         bTitle = title ?? context.loc.errorUp;
         bColor = ColorManager.red2;
       case DialogInfoType.success:
-        bIcon = icon ?? IconConstants.success;
+        bIcon = icon ?? IconManager.success;
         bTextConfirm = textSubmit ?? context.loc.continueText;
         bTitle = title ?? context.loc.successUp;
         bColor = ColorManager.green1;

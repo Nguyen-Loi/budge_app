@@ -1,12 +1,12 @@
 import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
+import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final budgetDetailControllerProvider = StateNotifierProvider.family<
     BudgetDetailController, BudgetModel, BudgetModel>(
   (ref, budgetModel) {
     final budgetCurMonthController =
-        ref.watch(budgetsCurMonthControllerProvider.notifier);
+        ref.watch(budgetBaseControllerProvider.notifier);
     return BudgetDetailController(
         budgetCurMonthController: budgetCurMonthController,
         initialValue: budgetModel);
@@ -14,9 +14,9 @@ final budgetDetailControllerProvider = StateNotifierProvider.family<
 );
 
 class BudgetDetailController extends StateNotifier<BudgetModel> {
-  final BudgetController _budgetController;
+  final BudgetBaseController _budgetController;
   BudgetDetailController(
-      {required BudgetController budgetCurMonthController,
+      {required BudgetBaseController budgetCurMonthController,
       required BudgetModel initialValue})
       : _budgetController = budgetCurMonthController,
         super(initialValue);

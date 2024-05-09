@@ -2,6 +2,10 @@
 import 'dart:convert';
 
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/models/merge_model/transaction_card_model.dart';
+import 'package:budget_app/view/transactions_view/widget/transaction_card.dart';
 
 class TransactionModel {
   final String id;
@@ -23,12 +27,9 @@ class TransactionModel {
     required this.transactionDate,
     required this.updatedDate,
   });
- 
 
   TransactionType get transactionType =>
       TransactionType.fromValue(transactionTypeValue);
-
-  
 
   TransactionModel copyWith({
     String? id,
@@ -65,6 +66,33 @@ class TransactionModel {
     };
   }
 
+  TransactionCardModel toTransactionCard({required List<BudgetModel> budgets}) {
+    if (budgetId == null) {
+        int iconId;
+        String transactionName;
+        switch (transactionType) {
+          case TransactionType.increase:
+            iconId = 100;
+            transactionName = 'Tiền chuyển đến'.hardcoded;
+            break;
+          case TransactionType.decrease:
+            iconId = 101;
+            transactionName = 'Tiền chuyển đi'.hardcoded;
+            break;
+        }
+        return TransactionCardModel(
+            transaction: this,
+            transactionName: transactionName,
+            iconId: iconId);
+      } else {
+        final budget = budgets.firstWhere((e) => e.id == budgetId);
+        return  TransactionCardModel(
+            transaction: this,
+            transactionName: budget.name,
+            iconId: budget.iconId);
+      }
+  }
+
   factory TransactionModel.fromMap(Map<String, dynamic> map) {
     return TransactionModel(
       id: map['id'] as String,
@@ -72,15 +100,19 @@ class TransactionModel {
       amount: map['amount'] as int,
       note: map['note'] as String,
       transactionTypeValue: map['transactionTypeValue'] as int,
-      createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
-      transactionDate: DateTime.fromMillisecondsSinceEpoch(map['transactionDate'] as int),
-      updatedDate: DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
+      createdDate:
+          DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
+      transactionDate:
+          DateTime.fromMillisecondsSinceEpoch(map['transactionDate'] as int),
+      updatedDate:
+          DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory TransactionModel.fromJson(String source) => TransactionModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory TransactionModel.fromJson(String source) =>
+      TransactionModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -90,27 +122,26 @@ class TransactionModel {
   @override
   bool operator ==(covariant TransactionModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.budgetId == budgetId &&
-      other.amount == amount &&
-      other.note == note &&
-      other.transactionTypeValue == transactionTypeValue &&
-      other.createdDate == createdDate &&
-      other.transactionDate == transactionDate &&
-      other.updatedDate == updatedDate;
+
+    return other.id == id &&
+        other.budgetId == budgetId &&
+        other.amount == amount &&
+        other.note == note &&
+        other.transactionTypeValue == transactionTypeValue &&
+        other.createdDate == createdDate &&
+        other.transactionDate == transactionDate &&
+        other.updatedDate == updatedDate;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      budgetId.hashCode ^
-      amount.hashCode ^
-      note.hashCode ^
-      transactionTypeValue.hashCode ^
-      createdDate.hashCode ^
-      transactionDate.hashCode ^
-      updatedDate.hashCode;
+        budgetId.hashCode ^
+        amount.hashCode ^
+        note.hashCode ^
+        transactionTypeValue.hashCode ^
+        createdDate.hashCode ^
+        transactionDate.hashCode ^
+        updatedDate.hashCode;
   }
 }
