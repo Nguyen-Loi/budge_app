@@ -12,11 +12,9 @@ final budgetAPIProvider = Provider((ref) {
 });
 
 abstract class IBudgetApi {
-  Future<List<BudgetModel>> fetchBudgetsByMonth(String uid,
-      {required int month});
+  Future<List<BudgetModel>> fetch(String uid);
   FutureEitherVoid addBudget({required BudgetModel model});
-  FutureEitherVoid updateBudget(
-      {required BudgetModel model});
+  FutureEitherVoid updateBudget({required BudgetModel model});
 }
 
 class BudgetApi implements IBudgetApi {
@@ -25,10 +23,9 @@ class BudgetApi implements IBudgetApi {
     required this.db,
   });
 
-  /// [month] is type millisecondsSinceEpoch. With DateTime using BDateTime.month to convert this type
+
   @override
-  Future<List<BudgetModel>> fetchBudgetsByMonth(String uid,
-      {required int month}) async {
+  Future<List<BudgetModel>> fetch(String uid) async {
     final data = await db
         .collection(FirestorePath.budgets(uid: uid))
         .mapModel<BudgetModel>(
@@ -36,7 +33,6 @@ class BudgetApi implements IBudgetApi {
         .get();
     return data.docs.map((e) => e.data()).toList();
   }
-
 
   @override
   FutureEitherVoid addBudget({required BudgetModel model}) async {
@@ -53,14 +49,13 @@ class BudgetApi implements IBudgetApi {
   }
 
   @override
-  FutureEitherVoid updateBudget(
-      { required BudgetModel model}) async{
-    try{
-     await db
-        .doc(FirestorePath.budget(uid: model.userId, budgetId: model.id))
-        .update(model.toMap());
-     return right(null);
-    }catch(e){
+  FutureEitherVoid updateBudget({required BudgetModel model}) async {
+    try {
+      await db
+          .doc(FirestorePath.budget(uid: model.userId, budgetId: model.id))
+          .update(model.toMap());
+      return right(null);
+    } catch (e) {
       logError(e.toString());
       return left(Failure(error: e.toString()));
     }

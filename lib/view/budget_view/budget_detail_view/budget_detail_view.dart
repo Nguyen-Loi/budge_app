@@ -4,7 +4,7 @@ import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/common/widget/b_text_span.dart';
 import 'package:budget_app/common/widget/custom/budget_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
@@ -32,7 +32,7 @@ class BudgetDetailView extends StatelessWidget {
               Navigator.pushNamed(context, RoutePath.budgetModify,
                   arguments: budget);
             },
-            icon: Icon(IconConstants.modify, size: 16))
+            icon: Icon(IconManager.modify, size: 16))
       ],
       child: _body(context),
     );

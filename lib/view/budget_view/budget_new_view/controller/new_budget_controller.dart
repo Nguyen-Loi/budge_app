@@ -6,28 +6,27 @@ import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
-import 'package:budget_app/view/home_page/widgets/home_budget_list/controller/budget_controller.dart';
+import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final budgetNewControllerProvider = Provider((ref) {
+final newBudgetControllerProvider = Provider((ref) {
   final budgetApi = ref.watch(budgetAPIProvider);
   final uid = ref.watch(uidControllerProvider);
-  final budgetController =
-      ref.watch(budgetsCurMonthControllerProvider.notifier);
-  return BudgetNewController(
+  final budgetController = ref.watch(budgetBaseControllerProvider.notifier);
+  return NewBudgetController(
       budgetApi: budgetApi, uid: uid, budgetController: budgetController);
 });
 
-class BudgetNewController extends StateNotifier<bool> {
+class NewBudgetController extends StateNotifier<bool> {
   final BudgetApi _budgetApi;
-  final BudgetController _budgetController;
+  final BudgetBaseController _budgetController;
   final String _uid;
 
-  BudgetNewController(
+  NewBudgetController(
       {required BudgetApi budgetApi,
       required String uid,
-      required BudgetController budgetController})
+      required BudgetBaseController budgetController})
       : _budgetApi = budgetApi,
         _uid = uid,
         _budgetController = budgetController,

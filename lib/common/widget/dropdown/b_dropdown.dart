@@ -1,7 +1,7 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:flutter/material.dart';
 
 class BDropdown<T> extends StatefulWidget {
@@ -72,7 +72,7 @@ class _BDropdownState<T> extends State<BDropdown<T?>> {
             ? BText('Empty', color: ColorManager.grey1)
             : BText(widget.hint!, color: ColorManager.grey1),
         icon: Icon(
-          IconConstants.dropdown,
+          IconManager.dropdown,
           color: ColorManager.black,
         ),
         elevation: 16,

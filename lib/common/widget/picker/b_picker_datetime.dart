@@ -1,7 +1,7 @@
 import 'package:budget_app/common/type_def.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:flutter/material.dart';
 
@@ -9,13 +9,13 @@ class BPickerDatetime extends StatefulWidget {
   const BPickerDatetime(
       {Key? key,
       this.initialDate,
-      required this.firstDate,
+      this.firstDate,
       this.lastDate,
       required this.onChanged,
       required this.title})
       : super(key: key);
   final DateTime? initialDate;
-  final DateTime firstDate;
+  final DateTime? firstDate;
   final DateTime? lastDate;
   final OnChangeDate onChanged;
   final String title;
@@ -54,7 +54,7 @@ class _BPickerDatetimeState extends State<BPickerDatetime> {
             _selectDate(context);
           },
           decoration: InputDecoration(
-            suffix: Icon(IconConstants.calendar),
+            suffix: Icon(IconManager.calendar),
           ),
         ),
       ],
@@ -62,11 +62,12 @@ class _BPickerDatetimeState extends State<BPickerDatetime> {
   }
 
   void _selectDate(BuildContext context) async {
+    final now = DateTime.now();
     DateTime? newSelectedDate = await showDatePicker(
       context: context,
-      initialDate: widget.initialDate ?? DateTime.now(),
-      firstDate: widget.firstDate,
-      lastDate: widget.lastDate ?? DateTime.now(),
+      initialDate: widget.initialDate ?? now,
+      firstDate: widget.firstDate ?? now.subtract(const Duration(days: 7)),
+      lastDate: widget.lastDate ?? now.add(const Duration(days: 7)),
     );
 
     if (newSelectedDate != null) {

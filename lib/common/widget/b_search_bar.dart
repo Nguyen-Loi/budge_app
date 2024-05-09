@@ -1,4 +1,4 @@
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:flutter/material.dart';
 
 class BSearchBar extends StatefulWidget {
@@ -20,7 +20,7 @@ class _BSearchBarState extends State<BSearchBar> {
       onChanged: (value) {
         setState(() {});
       },
-      leading: Icon(IconConstants.search),
+      leading: Icon(IconManager.search),
       padding: const MaterialStatePropertyAll<EdgeInsets>(
           EdgeInsets.symmetric(horizontal: 16.0)),
       trailing: <Widget>[
@@ -31,7 +31,7 @@ class _BSearchBarState extends State<BSearchBar> {
                   widget.controller.clear();
                   setState(() {});
                 },
-                icon: Icon(IconConstants.clear),
+                icon: Icon(IconManager.clear),
               )
             : const SizedBox.shrink()
       ],

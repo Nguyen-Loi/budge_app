@@ -3,10 +3,10 @@ import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/view/home_page/controller/user_controller.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
 
   Widget _info() {
     return Consumer(builder: (_, ref, __) {
-      final user = ref.watch(userControllerProvider);
+      final user = ref.watch(userBaseControllerProvider);
       return user == null
           ? const SizedBox.shrink()
           : ListTile(
@@ -81,7 +81,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       child: ColumnWithSpacing(
         children: [
           _item(
-              icon: IconConstants.account,
+              icon: IconManager.account,
               text: context.loc.myAccount,
               onPressed: () {
                 Navigator.push(
@@ -92,17 +92,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                 );
               }),
           _item(
-              icon: IconConstants.setting,
+              icon: IconManager.setting,
               text: context.loc.settings,
               onPressed: () {
                 Navigator.pushNamed(context, RoutePath.settings);
               }),
           _item(
-              icon: IconConstants.contact,
+              icon: IconManager.contact,
               text: context.loc.contact,
               onPressed: () {}),
           _item(
-              icon: IconConstants.signOut,
+              icon: IconManager.signOut,
               text: context.loc.signOut,
               onPressed: () {
                 ref.read(profileController.notifier).signOut(context);
@@ -133,7 +133,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       title: BText(text, fontWeight: FontWeightManager.semiBold),
       onTap: onPressed,
       trailing: Icon(
-        IconConstants.arrowNext,
+        IconManager.arrowNext,
         size: 15,
         color: ColorManager.black,
       ),

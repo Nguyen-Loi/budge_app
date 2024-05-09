@@ -38,42 +38,47 @@ class BaseView extends StatelessWidget {
   }
 
   Widget _base() {
-    return Scaffold(
-      appBar: AppBar(
-        title: BText.h2(title),
-        centerTitle: true,
-        actions: actions,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: BText.h2(title),
+          centerTitle: true,
+          actions: actions,
+        ),
+        body: child,
       ),
-      body: child,
     );
   }
 
   Widget _customBackground() {
     Color colorAppbar = ColorManager.white;
-    return Scaffold(
-      appBar: AppBar(
-        title: BText.h2(title, color: colorAppbar),
-        centerTitle: true,
-        iconTheme: IconThemeData(color: colorAppbar),
-        backgroundColor: ColorManager.purple12,
-        actions: actions,
-      ),
-      body: ColoredBox(
-        color: ColorManager.purple12,
-        child: Column(
-          children: [
-            if (buildTop != null) buildTop!,
-            Expanded(
-              child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      color: ColorManager.white,
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(32),
-                          topRight: Radius.circular(32))),
-                  child: child),
-            )
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: BText.h2(title, color: colorAppbar),
+          centerTitle: true,
+          iconTheme: IconThemeData(color: colorAppbar),
+          backgroundColor: ColorManager.purple12,
+          actions: actions,
+        ),
+        body: ColoredBox(
+          color: ColorManager.purple12,
+          child: Column(
+            children: [
+              if (buildTop != null) buildTop!,
+              Expanded(
+                child: Container(
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, top: 16),
+                    decoration: BoxDecoration(
+                        color: ColorManager.white,
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(32),
+                            topRight: Radius.circular(32))),
+                    child: child),
+              )
+            ],
+          ),
         ),
       ),
     );

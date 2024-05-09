@@ -1,7 +1,7 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +51,7 @@ class BFormFieldCustomAmount extends FormField<int> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _IconButtonLimit(
-                          icon: IconConstants.minus,
+                          icon: IconManager.minus,
                           onTap: () {
                             int value =
                                 int.tryParse(state.controller.text) ?? -1;
@@ -77,7 +77,7 @@ class BFormFieldCustomAmount extends FormField<int> {
                       ),
                       gapW16,
                       _IconButtonLimit(
-                          icon: IconConstants.add,
+                          icon: IconManager.add,
                           onTap: () {
                             int value =
                                 int.tryParse(state.controller.text) ?? -1;
@@ -124,8 +124,7 @@ class _FormFieldState extends FormFieldState<int> {
   void didChange(int? value) {
     if (value != null) {
       if (widget.currencyType == CurrencyType.vnd) {
-        widget
-            .onChanged(value);
+        widget.onChanged(value);
       }
     }
     super.didChange(value);

@@ -10,7 +10,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/view/home_page/controller/user_controller.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/controller/profile_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,7 +41,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
 
   Widget _form() {
     return Consumer(builder: (_, ref, __) {
-      final user = ref.watch(userControllerProvider);
+      final user = ref.watch(userBaseControllerProvider);
       final disable = ref.watch(profileDetailControllerProvider);
       if (user != null) {
         _name = user.name;
