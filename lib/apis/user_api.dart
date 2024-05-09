@@ -8,6 +8,7 @@ import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -71,7 +72,7 @@ class UserApi extends IUserApi {
     return right(newUser);
   }
 
-  FutureEither<UserModel> updateWallet(
+  FutureEither<Map<UserModel, TransactionModel>> updateWallet(
       {required UserModel user,
       required int newValue,
       required String note}) async {
@@ -83,12 +84,15 @@ class UserApi extends IUserApi {
 
       int amountChanged = newValue - user.balance;
       final transactionType = TransactionType.fromAmount(amountChanged);
-      await _transactionApi.add(user.id,
+
+      final newTransaction = await _transactionApi.add(user.id,
           budgetId: null,
           amount: amountChanged.abs(),
           note: note,
           transactionType: transactionType);
-      return right(newUser);
+      return right({user: newTransaction.getOrElse((l) {
+        throw Exception('Error when get add transaction');
+      })});
     } catch (e) {
       logError(e.toString());
       return left(Failure(error: e.toString()));

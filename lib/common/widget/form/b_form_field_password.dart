@@ -1,6 +1,6 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:flutter/material.dart';
 
@@ -60,8 +60,8 @@ class _BFormFieldPasswordState extends State<BFormFieldPassword> {
             suffixIcon: IconButton(
               icon: Icon(
                 _passwordVisible
-                    ? IconConstants.showPassword
-                    : IconConstants.hidePassword,
+                    ? IconManager.showPassword
+                    : IconManager.hidePassword,
               ),
               onPressed: () {
                 setState(() {

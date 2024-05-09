@@ -26,30 +26,34 @@ abstract class ITransactionApi {
       required TransactionType transactionType});
   Future<List<TransactionModel>> fetchTransactionOfMonth(
       {required String uid, required DateTime dateTime});
-  Future<List<TransactionModel>> fetchTransactionsRecently(
-      {required String uid});
 }
 
 class TransactionApi extends ITransactionApi {
   final FirebaseFirestore _db;
   TransactionApi({required FirebaseFirestore db}) : _db = db;
   @override
- FutureEither<TransactionModel> add(String uid,
+  FutureEither<TransactionModel> add(String uid,
       {required String? budgetId,
       required int amount,
       required String note,
-      required TransactionType transactionType}) async {
+      required TransactionType transactionType,
+      DateTime? transactionDate}) async {
     final now = DateTime.now();
-    TransactionModel transaction = TransactionModel(
-        id: GenId.transaction(),
-        budgetId: budgetId,
-        amount: amount,
-        note: note,
-        transactionTypeValue: transactionType.value,
-        createdDate: now,
-        transactionDate: now,
-        updatedDate: now);
+
     try {
+      if (amount <= 0) {
+        throw Exception("Amount must be greater than 0");
+      }
+      TransactionModel transaction = TransactionModel(
+          id: GenId.transaction(),
+          budgetId: budgetId,
+          amount: amount,
+          note: note,
+          transactionTypeValue: transactionType.value,
+          createdDate: now,
+          transactionDate: transactionDate ?? now,
+          updatedDate: now);
+
       await _db
           .collection(FirestorePath.transactions(uid: uid))
           .doc(transaction.id)
@@ -96,16 +100,4 @@ class TransactionApi extends ITransactionApi {
     return data.docs.map((e) => e.data()).toList();
   }
 
-  @override
-  Future<List<TransactionModel>> fetchTransactionsRecently(
-      {required String uid}) async {
-    final data = await _db
-        .collection(FirestorePath.transactions(uid: uid))
-        .mapModel<TransactionModel>(
-            modelFrom: TransactionModel.fromMap, modelTo: (e) => e.toMap())
-        .orderBy('createdDate')
-        .limit(6)
-        .get();
-    return data.docs.map((e) => e.data()).toList();
-  }
 }

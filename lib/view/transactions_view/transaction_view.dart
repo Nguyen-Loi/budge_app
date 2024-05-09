@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/view/transactions_view/controller/transaction_controller.dart';
 import 'package:budget_app/view/transactions_view/widget/transaction_card.dart';
@@ -35,73 +36,70 @@ class _TransactionViewState extends State<TransactionView>
 
   Widget _builder() {
     return Consumer(builder: (_, ref, __) {
-      return ref.watch(transactionsFutureProvider).when(
-          data: (items) {
-            final currentTime = ref
-                .watch(transactionsControllerProvider.notifier)
-                .dateTimePicker;
-            final list = ref.watch(transactionsControllerProvider);
-            return Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _summaryText(
-                          ref: ref,
-                          label: 'Income',
-                          value: ref
-                              .watch(transactionsControllerProvider.notifier)
-                              .sumIncome,
-                          color: ColorManager.green2,
-                        ),
-                        const SizedBox(height: 16),
-                        _summaryText(
-                          ref: ref,
-                          label: 'Expense',
-                          value: ref
-                              .watch(transactionsControllerProvider.notifier)
-                              .sumExpense,
-                          color: ColorManager.red1,
-                        ),
-                      ],
+      final currentTime =
+          ref.watch(transactionControllerProvider.notifier).dateTimePicker;
+      final list = ref.watch(transactionControllerProvider);
+      return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _summaryText(
+                    ref: ref,
+                    label: 'Income',
+                    value: ref
+                        .watch(transactionControllerProvider.notifier)
+                        .sumIncome,
+                    color: ColorManager.green2,
+                  ),
+                  const SizedBox(height: 16),
+                  _summaryText(
+                    ref: ref,
+                    label: 'Expense',
+                    value: ref
+                        .watch(transactionControllerProvider.notifier)
+                        .sumExpense,
+                    color: ColorManager.red1,
+                  ),
+                ],
+              ),
+              BPickerMonth(
+                  initialDate: ref
+                      .watch(transactionControllerProvider.notifier)
+                      .dateTimePicker,
+                  firstDate: ref
+                      .watch(transactionControllerProvider.notifier)
+                      .firstDateTransactions,
+                  lastDate: ref
+                      .watch(transactionControllerProvider.notifier)
+                      .lastDateTransactions,
+                  onChange: (date) async {
+                    if (!date.isSameDate(currentTime)) {
+                      ref
+                          .read(transactionControllerProvider.notifier)
+                          .updateDate(date);
+                    }
+                  })
+            ],
+          ),
+          gapH16,
+          list.isEmpty
+              ? const Expanded(child: BStatus.empty())
+              : Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async =>
+                        ref.invalidate(transactionControllerProvider),
+                    child: ListViewWithSpacing(
+                      children:
+                          list.map((e) => TransactionCard(model: e)).toList(),
                     ),
-                    BPickerMonth(
-                        initialDate: ref
-                            .watch(transactionsControllerProvider.notifier)
-                            .dateTimePicker,
-                        firstDate: ref
-                            .watch(transactionsControllerProvider.notifier)
-                            .firstDateTransactions,
-                        lastDate: ref
-                            .watch(transactionsControllerProvider.notifier)
-                            .lastDateTransactions,
-                        onChange: (date) async {
-                          if (!date.isSameDate(currentTime)) {
-                            ref
-                                .read(transactionsControllerProvider.notifier)
-                                .updateDate(date);
-                          }
-                        })
-                  ],
-                ),
-                gapH16,
-                list.isEmpty
-                    ? const Expanded(child: BStatus.empty())
-                    : Expanded(
-                        child: ListViewWithSpacing(
-                          children: list
-                              .map((e) => TransactionCard(model: e))
-                              .toList(),
-                        ),
-                      )
-              ],
-            );
-          },
-          error: (_, __) => const BStatus.error(),
-          loading: () => const BStatus.loading());
+                  ),
+                )
+        ],
+      );
     });
   }
 
@@ -113,7 +111,7 @@ class _TransactionViewState extends State<TransactionView>
     return BTextRich(BTextSpan(children: [
       BTextSpan(text: '$label: '),
       BTextSpan(
-        text: value.toString(),
+        text: value.toMoneyStr(),
         style: context.textTheme.bodyLarge!
             .copyWith(color: color, fontWeight: FontWeight.bold),
       )

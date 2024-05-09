@@ -5,25 +5,25 @@ import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/view/budget_view/budget_new_view/controller/budget_new_controller.dart';
+import 'package:budget_app/view/budget_view/budget_new_view/controller/new_budget_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BudgetNewView extends ConsumerStatefulWidget {
-  const BudgetNewView({super.key});
+class NewBudgetView extends ConsumerStatefulWidget {
+  const NewBudgetView({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _BudgetNewViewState();
 }
 
-class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
+class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
   late TextEditingController _budgetNameController;
 
   late int _iconId;
@@ -41,7 +41,7 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
 
   void _addNewBudget() {
     if (_formKey.currentState!.validate()) {
-      ref.read(budgetNewControllerProvider).addBudget(context,
+      ref.read(newBudgetControllerProvider).addBudget(context,
           budgetName: _budgetNameController.text,
           rangeDatetimeModel: _rangeDatetimeModel,
           iconId: _iconId,
@@ -76,7 +76,7 @@ class _BudgetNewViewState extends ConsumerState<BudgetNewView> {
           ),
           gapH16,
           BFormPickerIcon(
-            items: IconManager.listIconSelect(),
+            items: IconManagerData.listIconSelect(),
             onChanged: (value) {
               if (value != null) {
                 _iconId = value;

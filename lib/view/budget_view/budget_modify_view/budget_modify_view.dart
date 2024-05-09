@@ -4,7 +4,7 @@ import 'package:budget_app/common/widget/form/b_form_field_custom_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/icon_manager.dart';
+import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/base_view.dart';
@@ -70,8 +70,8 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
               disable: true),
           gapH16,
           BFormPickerIcon(
-            initialValue: IconManager.getIconModel(_budget.iconId),
-            items: IconManager.listIconSelect(),
+            initialValue: IconManagerData.getIconModel(_budget.iconId),
+            items: IconManagerData.listIconSelect(),
             onChanged: (value) {
               if (value != null) {
                 _iconId = value;

@@ -1,15 +1,13 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/icon_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/user_model.dart';
-import 'package:budget_app/view/home_page/controller/user_controller.dart';
-import 'package:budget_app/view/home_page/widgets/home_budget_list/home_budget_list.dart';
-import 'package:budget_app/view/home_page/widgets/home_transactions_recently/home_transactions_recently.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
+import 'package:budget_app/view/home_page/home_transactions_recently.dart';
 import 'package:budget_app/view/home_page/widgets/home_update_wallet_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,13 +26,6 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ref.watch(userFutureProvider).when(
-        data: (_) => body(),
-        error: (_, __) => const BStatus.error(),
-        loading: () => const BStatus.loading());
-  }
-
-  Widget body() {
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -44,8 +35,7 @@ class _HomePageState extends ConsumerState<HomePage>
             child: _appbarInfo(),
           ),
           gapW16,
-          GestureDetector(
-              onTap: () {}, child: Icon(IconConstants.notification)),
+          GestureDetector(onTap: () {}, child: Icon(IconManager.notification)),
           gapW16,
         ],
       ),
@@ -54,23 +44,21 @@ class _HomePageState extends ConsumerState<HomePage>
         children: const [
           HomeUpdateWalletCard(),
           gapH16,
-          HomeBudgetList(),
-          gapH16,
-          HomeTransactionsRecently()
+          HomeTransactionsRecently(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, RoutePath.budgetNew);
+          Navigator.pushNamed(context, RoutePath.newBudget);
         },
-        child: Icon(IconConstants.add, color: ColorManager.white),
+        child: Icon(IconManager.add, color: ColorManager.white),
       ),
     );
   }
 
   Widget _appbarInfo() {
     return Consumer(builder: (_, ref, __) {
-      final UserModel user = ref.watch(userControllerProvider)!;
+      final UserModel user = ref.watch(userBaseControllerProvider)!;
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

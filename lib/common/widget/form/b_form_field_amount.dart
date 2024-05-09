@@ -3,7 +3,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/view/home_page/controller/user_controller.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -70,7 +70,7 @@ class _BFormFieldAmountState extends State<BFormFieldAmount> {
         ),
         gapH8,
         Consumer(builder: (context, ref, _) {
-          String userCurrency = ref.watch(userControllerProvider
+          String userCurrency = ref.watch(userBaseControllerProvider
               .select((value) => value!.currencyType.code));
           String currency =
               NumberFormat.compactSimpleCurrency(locale: userCurrency)
@@ -89,7 +89,7 @@ class _BFormFieldAmountState extends State<BFormFieldAmount> {
               ),
             ),
             onChanged: (string) {
-              value = int.parse(string.replaceAll(',', ''));
+              value = int.tryParse(string.replaceAll(',', '')) ?? 0;
               _reload(string);
             },
           );

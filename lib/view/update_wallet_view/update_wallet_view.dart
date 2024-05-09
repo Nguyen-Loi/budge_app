@@ -9,9 +9,7 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/view/home_page/controller/user_controller.dart';
-import 'package:budget_app/view/home_page/widgets/home_transactions_recently/controller/transactions_recently_controller.dart';
-import 'package:budget_app/view/update_wallet_view/controller/update_wallet_controller.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,21 +27,16 @@ class _UpdateWalletViewState extends ConsumerState<UpdateWalletView> {
   late int _newBalance;
 
   void _save(UserModel user) async {
-    final navigator = Navigator.of(context);
     if (_formKey.currentState!.validate()) {
-      bool isSuccess = await ref
-          .read(updateWalletControllerProvider)
-          .updateWallet(context, newValue: _newBalance, userModel: user);
-      if (isSuccess) {
-        ref.invalidate(transactionsRecentlyControllerProvider);
-        navigator.pop();
-      }
+      ref
+          .read(userBaseControllerProvider.notifier)
+          .updateWallet(context, newValue: _newBalance);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userControllerProvider)!;
+    final user = ref.watch(userBaseControllerProvider)!;
     return BaseView(
         actions: [
           TextButton(
@@ -69,6 +62,7 @@ class _UpdateWalletViewState extends ConsumerState<UpdateWalletView> {
     return Form(
         key: _formKey,
         child: ColumnWithSpacing(
+          mainAxisSize: MainAxisSize.min,
           children: [
             _walletField(user.balance),
           ],
