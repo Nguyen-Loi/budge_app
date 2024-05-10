@@ -19,24 +19,26 @@ class MainPageView extends ConsumerStatefulWidget {
       _MainPageBottomBarState();
 }
 
-List<BottomNavigationBarItem> _navBarItems(BuildContext context) => [
-      BottomNavigationBarItem(
-        icon: Icon(IconManager.home),
-        label: context.loc.home,
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(IconManager.transaction),
-        label: context.loc.transactions,
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(IconManager.budget),
-        label: context.loc.budget,
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(IconManager.profile),
-        label: context.loc.profile,
-      )
-    ];
+List<BottomNavigationBarItem> _navBarItems(BuildContext context) {
+  return [
+    BottomNavigationBarItem(
+      icon: Icon(IconManager.home),
+      label: context.loc.home,
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(IconManager.transaction),
+      label: context.loc.transactions,
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(IconManager.budget),
+      label: context.loc.budget,
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(IconManager.profile),
+      label: context.loc.profile,
+    )
+  ];
+}
 
 class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   late int _selectedIndex;
@@ -93,10 +95,10 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
         bottomNavigationBar: isSmallScreen
             ? BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
-                unselectedItemColor: ColorManager.black,
                 items: _navBarItems(context),
+                unselectedItemColor: Theme.of(context).colorScheme.onSurface,
+                selectedItemColor: Theme.of(context).colorScheme.primary,
                 currentIndex: _selectedIndex,
-                selectedItemColor: ColorManager.purple11,
                 onTap: (int index) {
                   setState(() {
                     _selectedIndex = index;

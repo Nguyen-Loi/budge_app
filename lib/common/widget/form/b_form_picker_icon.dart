@@ -28,7 +28,7 @@ class BFormPickerIcon extends FormField<IconModel> {
               children: [
                 BText(
                   label,
-                  fontWeight: FontWeightManager.semiBold,
+                  fontWeight: FontWeight.w700,
                 ),
                 if (field.hasError)
                   Column(
@@ -61,7 +61,8 @@ class BFormPickerIcon extends FormField<IconModel> {
                       decoration: BoxDecoration(
                           color: ColorManager.white,
                           border: Border.all(
-                              width: 0.5, color: ColorManager.green2),
+                              width: 0.5,
+                              color: Theme.of(field.context).colorScheme.tertiary),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8))),
                       child: field.value == null

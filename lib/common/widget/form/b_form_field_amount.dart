@@ -66,7 +66,7 @@ class _BFormFieldAmountState extends State<BFormFieldAmount> {
       children: [
         BText(
           widget.label,
-          fontWeight: FontWeightManager.semiBold,
+          fontWeight: FontWeight.w700,
         ),
         gapH8,
         Consumer(builder: (context, ref, _) {

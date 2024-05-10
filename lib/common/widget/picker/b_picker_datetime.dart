@@ -44,7 +44,7 @@ class _BPickerDatetimeState extends State<BPickerDatetime> {
       children: [
         BText(
           widget.title,
-          fontWeight: FontWeightManager.semiBold,
+          fontWeight: FontWeight.w700,
         ),
         gapH8,
         TextField(

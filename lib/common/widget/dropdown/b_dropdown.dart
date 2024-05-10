@@ -49,7 +49,7 @@ class _BDropdownState<T> extends State<BDropdown<T?>> {
       children: [
         BText(
           widget.title!,
-          fontWeight: FontWeightManager.semiBold,
+          fontWeight: FontWeight.w700,
         ),
         gapH8,
         _itemDropdown(),
@@ -62,7 +62,7 @@ class _BDropdownState<T> extends State<BDropdown<T?>> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Theme.of(context).colorScheme.onSecondary,
-          border: Border.all(color: ColorManager.grey, width: 0.4)),
+          border: Border.all(color: ColorManager.grey1, width: 0.4)),
       child: DropdownButton<T>(
         value: _value,
         dropdownColor: Theme.of(context).colorScheme.onSecondary,

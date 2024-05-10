@@ -1,7 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_status.dart';
-import 'package:budget_app/common/widget/b_text_rich.dart';
-import 'package:budget_app/common/widget/b_text_span.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -53,7 +51,7 @@ class _TransactionViewState extends State<TransactionView>
                     value: ref
                         .watch(transactionControllerProvider.notifier)
                         .sumIncome,
-                    color: ColorManager.green2,
+                    color: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(height: 16),
                   _summaryText(
@@ -108,12 +106,15 @@ class _TransactionViewState extends State<TransactionView>
       required String label,
       required int value,
       required Color color}) {
-    return BTextRich(BTextSpan(children: [
-      BTextSpan(text: '$label: '),
-      BTextSpan(
+    return RichText(
+        text: TextSpan(children: [
+      TextSpan(
+        text: '$label: ',
+      ),
+      TextSpan(
         text: value.toMoneyStr(),
         style: context.textTheme.bodyLarge!
-            .copyWith(color: color, fontWeight: FontWeight.bold),
+            .copyWith(color: color, fontWeight: FontWeight.w700),
       )
     ]));
   }
