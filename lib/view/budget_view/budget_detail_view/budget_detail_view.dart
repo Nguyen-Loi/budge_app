@@ -47,9 +47,9 @@ class BudgetDetailView extends StatelessWidget {
         children: [
           BText.h1(context.loc.monthlyExpense, color: ColorManager.white),
           gapH16,
-          Consumer(builder: (_, res, __) {
+          Consumer(builder: (_, ref, __) {
             TransactionModel? lastestTransaction =
-                res.watch(budgetTransactionDetailControllerProvider);
+                ref.watch(budgetTransactionDetailControllerProvider);
 
             return lastestTransaction == null
                 ? BText(
@@ -68,7 +68,7 @@ class BudgetDetailView extends StatelessWidget {
                             fontWeight: FontWeightManager.semiBold)),
                     BTextSpan(
                         text:
-                            '${context.loc.nYouSpentForThePast(2)} ${lastestTransaction.createdDate.toTimeAgo()}',
+                            '${context.loc.nYouSpentForThePast(2)} ${lastestTransaction.createdDate.toTimeAgo(ref)}',
                         style: BTextStyle.bodyMedium(color: textColor))
                   ]));
           }),
