@@ -27,6 +27,9 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
   List<BudgetModel> _allBudgets = [];
   List<BudgetModel> get getAll => _allBudgets;
 
+  List<BudgetModel> _budgetsAvailable = [];
+  List<BudgetModel> get budgetAvailable => _budgetsAvailable;
+
   Future<List<BudgetModel>> fetch() async {
     final budgets = await _budgetApi.fetch(_uid);
     _allBudgets = budgets;
@@ -39,28 +42,21 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
     _notifier(newList: _allBudgets);
   }
 
-  void updateItemBudget(BudgetModel model) {
+  void updateState(BudgetModel model) {
     int budgetIndex = _allBudgets.indexWhere((e) => e.id == model.id);
     _allBudgets[budgetIndex] = model;
     _notifier(newList: _allBudgets);
   }
 
-  Future<void> updateAddAmountItemBudget(
-      {required String budgetId, required int amount}) async {
-    BudgetModel currentBudget = _allBudgets.firstWhere((e) => e.id == budgetId);
-    BudgetModel newDataBudget = currentBudget.copyWith(
-        currentAmount: currentBudget.currentAmount + amount);
-
-    // Update data
-    await _budgetApi.updateBudget(model: newDataBudget);
-
-    // update state
-    int budgetIndex = _allBudgets.indexWhere((e) => e.id == budgetId);
-    _allBudgets[budgetIndex] = newDataBudget;
-    _notifier(newList: _allBudgets);
-  }
-
   void _notifier({required List<BudgetModel> newList}) {
     state = newList.toList();
+    final now = DateTime.now();
+    _budgetsAvailable = newList.where((e){
+      if(now.isBefore(e.startDate)&&now.isAfter(e.endDate)){
+        return true;
+      }
+      return false;
+    }).toList();
   }
+
 }

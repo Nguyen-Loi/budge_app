@@ -3,10 +3,12 @@ import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/gen_id.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,7 +22,7 @@ final newBudgetControllerProvider = Provider((ref) {
 
 class NewBudgetController extends StateNotifier<bool> {
   final BudgetApi _budgetApi;
-  final BudgetBaseController _budgetController;
+  final BudgetBaseController _budgetBaseController;
   final String _uid;
 
   NewBudgetController(
@@ -29,16 +31,15 @@ class NewBudgetController extends StateNotifier<bool> {
       required BudgetBaseController budgetController})
       : _budgetApi = budgetApi,
         _uid = uid,
-        _budgetController = budgetController,
+        _budgetBaseController = budgetController,
         super(false);
 
   String? _errorValidate(BuildContext context, {required String budgetName}) {
-    // List<BudgetModel> list = _budgetController.state;
-    // final currentId = GenId.budget(budgetName);
-    // final budgetExits = list.firstWhereOrNull((e) => e.id == currentId);
-    // if (budgetExits != null) {
-    //   return context.loc.pBudgetNameExits(budgetName);
-    // }
+    List<BudgetModel> list = _budgetBaseController.budgetAvailable;
+    final budgetExits = list.firstWhereOrNull((e) => e.id == budgetName);
+    if (budgetExits != null) {
+      return context.loc.pBudgetNameExits(budgetName);
+    }
     return null;
   }
 
@@ -75,7 +76,7 @@ class NewBudgetController extends StateNotifier<bool> {
     res.fold((failure) {
       showSnackBar(context, failure.message);
     }, (r) {
-      _budgetController.addBudgetState(model);
+      _budgetBaseController.addBudgetState(model);
       Navigator.pop(context);
     });
   }
