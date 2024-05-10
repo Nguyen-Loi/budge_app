@@ -13,7 +13,8 @@ final transactionsBaseControllerProvider = StateNotifierProvider<
   return TransactionsBaseController(
       transactionApi: transactionApi,
       uid: uid,
-      budgetController: budgetController);
+      budgetController: budgetController,
+      ref: ref);
 });
 
 final transactionsFutureProvider = FutureProvider((ref) {
@@ -26,20 +27,23 @@ class TransactionsBaseController
   TransactionsBaseController({
     required TransactionApi transactionApi,
     required BudgetBaseController budgetController,
+    required Ref ref,
     required String uid,
   })  : _transactionApi = transactionApi,
         _uid = uid,
         _budgetController = budgetController,
+        _ref = ref,
         super([]);
   final TransactionApi _transactionApi;
   final BudgetBaseController _budgetController;
   final String _uid;
+  final Ref _ref;
 
   List<TransactionCardModel> _allCardTranctions = [];
 
   Future<List<TransactionCardModel>> fetch() async {
     final transactions = await _transactionApi.fetchTransaction(_uid);
-    _allCardTranctions = await TransactionCardModel.transactionCard(
+    _allCardTranctions = await TransactionCardModel.transactionCard(_ref,
         transactions: transactions, budgets: _budgetController.getAll);
 
     if (_allCardTranctions.isEmpty) {
@@ -52,8 +56,8 @@ class TransactionsBaseController
   }
 
   void addState(TransactionModel model) {
-    _allCardTranctions
-        .insert(0,model.toTransactionCard(budgets: _budgetController.getAll));
+    _allCardTranctions.insert(
+        0, model.toTransactionCard(_ref, budgets: _budgetController.getAll));
     state = _allCardTranctions.toList();
   }
 }

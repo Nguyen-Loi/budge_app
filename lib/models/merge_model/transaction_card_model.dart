@@ -1,5 +1,6 @@
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TransactionCardModel {
   final TransactionModel transaction;
@@ -11,7 +12,8 @@ class TransactionCardModel {
     required this.iconId,
   });
 
-  static Future<List<TransactionCardModel>> transactionCard({
+  static Future<List<TransactionCardModel>> transactionCard(
+    Ref ref, {
     required List<TransactionModel> transactions,
     required List<BudgetModel> budgets,
   }) async {
@@ -19,19 +21,19 @@ class TransactionCardModel {
       return [];
     }
 
-    final list = TransactionCardModel._mapData(
+    final list = TransactionCardModel._mapData(ref,
         budgets: budgets, transactions: transactions);
     return list;
   }
 
-  static List<TransactionCardModel> _mapData(
+  static List<TransactionCardModel> _mapData(Ref ref,
       {required List<BudgetModel> budgets,
       required List<TransactionModel> transactions}) {
     List<TransactionCardModel> list = [];
     for (var transaction in transactions) {
       // Handle transaciton type wallet
 
-      list.add(transaction.toTransactionCard(budgets: budgets));
+      list.add(transaction.toTransactionCard(ref, budgets: budgets));
     }
 
     return list;

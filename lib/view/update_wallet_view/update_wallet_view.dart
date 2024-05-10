@@ -6,7 +6,6 @@ import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
@@ -45,7 +44,7 @@ class _UpdateWalletViewState extends ConsumerState<UpdateWalletView> {
               },
               child: BText(context.loc.save.toUpperCase()))
         ],
-        title: 'Cập nhật số dư'.hardcoded,
+        title: context.loc.updateBalance,
         child: Padding(
           padding: const EdgeInsets.only(top: 16),
           child: ColoredBox(

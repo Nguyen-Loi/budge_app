@@ -2,9 +2,10 @@
 import 'dart:convert';
 
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TransactionModel {
   final String id;
@@ -65,18 +66,18 @@ class TransactionModel {
     };
   }
 
-  TransactionCardModel toTransactionCard({required List<BudgetModel> budgets}) {
+  TransactionCardModel toTransactionCard(Ref ref,{required List<BudgetModel> budgets}) {
     if (budgetId == null) {
         int iconId;
         String transactionName;
         switch (transactionType) {
           case TransactionType.increase:
             iconId = 100;
-            transactionName = 'Tiền chuyển đến'.hardcoded;
+            transactionName = ref.read(appLocalizationsProvider).deposit;
             break;
           case TransactionType.decrease:
             iconId = 101;
-            transactionName = 'Tiền chuyển đi'.hardcoded;
+            transactionName = ref.read(appLocalizationsProvider).withdrawal;
             break;
         }
         return TransactionCardModel(
