@@ -13,13 +13,13 @@ class AppTheme {
   /// colors and styles
   static AppColors get darkColors => const AppColors(
         brightness: Brightness.dark,
-        primary: Color(0xFFACDD22),
-        onPrimary: Color(0xFF002231),
-        secondary: Color(0xFF8859FF),
-        onSecondary: Color(0XFFFFFFFF),
-        background: Color(0xFF002231),
+        primary: Color(0XFFBB86FC),
+        onPrimary: Color(0xFF000000),
+        secondary: Color(0XFF03DAC5),
+        onSecondary: Color(0xFF000000),
+        background: Color(0xFF121212),
         onBackground: Color(0xFFFFFFFF),
-        surface: Color(0xFF002E42),
+        surface: Color(0xFF121212),
         onSurface: Color(0xFFFFFFFF),
         surfaceVariant: Color(0xFF406271),
         onSurfaceVariant: Color(0xFFBFCBD0),
@@ -57,7 +57,7 @@ class AppTheme {
         onSurface: const Color(0xFF002E42),
         surfaceVariant: const Color(0xFFF2F5F6),
         onSurfaceVariant: const Color(0xFF667C86),
-        success: ColorManager.green2,
+        success: const Color(0XFF017A47),
         onSuccess: ColorManager.white,
         error: Colors.red,
         onError: ColorManager.white,
@@ -141,20 +141,22 @@ class AppTheme {
       /// COLOR
       brightness: Brightness.dark,
       colorScheme: ColorScheme(
-        brightness: darkColors.brightness,
-        primary: darkColors.primary,
-        onPrimary: darkColors.onPrimary,
-        secondary: darkColors.secondary,
-        onSecondary: darkColors.onSecondary,
-        error: darkColors.error,
-        onError: darkColors.onError,
-        background: darkColors.background,
-        onBackground: darkColors.onBackground,
-        surface: darkColors.surface,
-        onSurface: darkColors.onSurface,
-        surfaceVariant: darkColors.surfaceVariant,
-        onSurfaceVariant: darkColors.onSurfaceVariant,
-      ),
+          brightness: darkColors.brightness,
+          primary: darkColors.primary,
+          onPrimary: darkColors.onPrimary,
+          secondary: darkColors.secondary,
+          onSecondary: darkColors.onSecondary,
+          error: darkColors.error,
+          onError: darkColors.onError,
+          background: darkColors.background,
+          onBackground: darkColors.onBackground,
+          surface: darkColors.surface,
+          onSurface: darkColors.onSurface,
+          surfaceVariant: darkColors.surfaceVariant,
+          onSurfaceVariant: darkColors.onSurfaceVariant,
+
+          // Green
+          tertiary: const Color(0XFF6ABC2C)),
 
       scaffoldBackgroundColor: darkColors.background,
 
@@ -173,7 +175,7 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          textStyle: AppTextTheme.labelMedium.copyWith(color: darkColors.error),
+          textStyle: AppTextTheme.labelLarge.copyWith(color: darkColors.error),
         ),
       ),
       dialogBackgroundColor: darkColors.background,
@@ -232,8 +234,8 @@ class AppTheme {
           ),
         ),
       ),
-      cardTheme: CardTheme(
-        color: darkColors.onSecondary,
+      cardTheme: const CardTheme(
+        color: Color(0XFF1E1E1E),
         margin: EdgeInsets.zero,
         elevation: 2,
       ),
@@ -266,6 +268,9 @@ class AppTheme {
         onSurface: lightColors.onSurface,
         surfaceVariant: lightColors.surfaceVariant,
         onSurfaceVariant: lightColors.onSurfaceVariant,
+
+        // Green
+        tertiary: const Color(0XFF017A47),
       ),
 
       scaffoldBackgroundColor: lightColors.background,
@@ -285,8 +290,7 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          textStyle:
-              AppTextTheme.labelMedium.copyWith(color: lightColors.error),
+          textStyle: AppTextTheme.labelLarge.copyWith(color: lightColors.error),
         ),
       ),
       dialogBackgroundColor: lightColors.background,
@@ -345,8 +349,8 @@ class AppTheme {
         ),
       ),
 
-      cardTheme: CardTheme(
-        color: lightColors.onSecondary,
+      cardTheme: const CardTheme(
+        color: Color(0XFFFFFFFF),
         margin: EdgeInsets.zero,
         elevation: 2,
       ),

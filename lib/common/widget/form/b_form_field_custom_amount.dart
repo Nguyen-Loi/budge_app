@@ -32,7 +32,7 @@ class BFormFieldCustomAmount extends FormField<int> {
                   BText.h2(
                     label,
                     color: ColorManager.purple12,
-                    fontWeight: FontWeightManager.semiBold,
+                    fontWeight: FontWeight.w700,
                   ),
                   if (field.hasError)
                     Column(
@@ -148,7 +148,7 @@ class _IconButtonLimit extends StatelessWidget {
         type: MaterialType.transparency,
         child: Ink(
           decoration: BoxDecoration(
-            border: Border.all(color: ColorManager.grey, width: 1),
+            border: Border.all(color: ColorManager.grey1, width: 1),
             color: ColorManager.white,
             shape: BoxShape.circle,
           ),

@@ -1,7 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/b_text_rich.dart';
-import 'package:budget_app/common/widget/b_text_span.dart';
 import 'package:budget_app/common/widget/custom/budget_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
@@ -11,6 +9,7 @@ import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
+import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/controller/budget_detail_controller.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/widget/controller/budget_transations_detail_controller.dart';
@@ -56,21 +55,28 @@ class BudgetDetailView extends StatelessWidget {
                     context.loc.noTransactionThisBudget,
                     color: textColor,
                   )
-                : BTextRich(BTextSpan(children: [
-                    BTextSpan(
-                        text: context.loc.nYouSpentForThePast(0),
-                        style: BTextStyle.bodyMedium(color: textColor)),
-                    BTextSpan(
-                        text: lastestTransaction.amount.toMoneyStr(),
-                        style: BTextStyle.bodyMedium(
-                            color: textColor,
-                            backgroundColor: ColorManager.purple22,
-                            fontWeight: FontWeightManager.semiBold)),
-                    BTextSpan(
-                        text:
-                            '${context.loc.nYouSpentForThePast(2)} ${lastestTransaction.createdDate.toTimeAgo(ref)}',
-                        style: BTextStyle.bodyMedium(color: textColor))
-                  ]));
+                : Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                            text: context.loc.nYouSpentForThePast(0),
+                            style: context.textTheme.bodyMedium!
+                                .copyWith(color: textColor)),
+                        TextSpan(
+                            text: lastestTransaction.amount.toMoneyStr(),
+                            style: context.textTheme.bodyMedium!.copyWith(
+                                color: textColor,
+                                fontWeight: FontWeight.w700,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.secondary)),
+                        TextSpan(
+                            text:
+                                '${context.loc.nYouSpentForThePast(2)} ${lastestTransaction.createdDate.toTimeAgo(ref)}',
+                            style: context.textTheme.bodyMedium!
+                                .copyWith(color: textColor))
+                      ],
+                    ),
+                  );
           }),
           gapH16
         ],
@@ -97,7 +103,7 @@ class BudgetDetailView extends StatelessWidget {
           // info
           Row(
             children: [
-              BText.b3(context.loc.youAlreadySpent, color: ColorManager.grey),
+              BText.b3(context.loc.youAlreadySpent, color: ColorManager.grey1),
               gapW16,
               Expanded(
                   child: BText.b3(context.loc.spendLimitPerMonth,
@@ -109,7 +115,7 @@ class BudgetDetailView extends StatelessWidget {
           Row(
             children: [
               BText.h2(model.currentAmount.toMoneyStr(),
-                  color: ColorManager.blue),
+                  color: Theme.of(context).colorScheme.secondary),
               gapW16,
               Expanded(
                   child: BText.h2('\$${model.limit.toMoneyStr()}',

@@ -53,7 +53,7 @@ class BFormFieldText extends StatelessWidget {
       children: [
         BText(
           label,
-          fontWeight: FontWeightManager.semiBold,
+          fontWeight: FontWeight.w700,
         ),
         gapH8,
         _field(context),

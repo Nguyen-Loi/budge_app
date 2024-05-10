@@ -1,4 +1,3 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
@@ -27,25 +26,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ColoredBox(
-      color: ColorManager.purple12,
-      child: Column(
-        children: [
-          gapH40,
-          _buildTop(),
-          gapH24,
-          Expanded(
-            child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    color: ColorManager.white,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(32),
-                        topRight: Radius.circular(32))),
-                child: _body(context)),
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        gapH40,
+        _buildTop(),
+        gapH24,
+        Expanded(
+          child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(32),
+                      topRight: Radius.circular(32))),
+              child: _body(context)),
+        )
+      ],
     );
   }
 
@@ -54,7 +49,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          BText.h2(context.loc.profile, color: ColorManager.white),
+          BText.h2(context.loc.profile),
           gapH24,
           _info(),
         ],
@@ -68,9 +63,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       return user == null
           ? const SizedBox.shrink()
           : ListTile(
-              title: BText.b1(user.name, color: ColorManager.white),
+              title: BText.b1(user.name),
               leading: BAvatar.network(user.profileUrl, size: 20),
-              subtitle: BText.caption(user.email, color: ColorManager.white),
+              subtitle: BText.caption(user.email),
             );
     });
   }
@@ -130,20 +125,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       required String text,
       required Function() onPressed}) {
     return ListTile(
-      title: BText(text, fontWeight: FontWeightManager.semiBold),
+     
+      title: BText(text, fontWeight: FontWeight.w700),
       onTap: onPressed,
       trailing: Icon(
         IconManager.arrowNext,
         size: 15,
-        color: ColorManager.black,
       ),
       leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(8)),
-            color: ColorManager.purple25,
+            color: Theme.of(context).colorScheme.primary,
           ),
-          child: Icon(icon, color: ColorManager.purple11)),
+          child: Icon(icon)),
     );
   }
 }
