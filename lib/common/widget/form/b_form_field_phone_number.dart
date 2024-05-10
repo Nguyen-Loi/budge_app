@@ -32,7 +32,7 @@ class BFormFieldPhoneNumber extends StatelessWidget {
           isEnabled: !disable,
           onInputChanged: onInputChanged,
           initialValue: initialValue,
-          hintText: '012345678',
+          hintText: 'x-xxx-xxx',
           countries: const ['VN', 'SG', 'JP'],
         ),
       ],

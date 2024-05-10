@@ -1,4 +1,5 @@
 {
+    "@@locale": "vi",
     "hello": "Xin chào",
     "income": "Thu nhập",
     "expense": "Chi tiêu",
@@ -154,7 +155,7 @@
     "accountAlreadyExits": "Tài khoản đã tồn tại.",
     "errorCredentials": "Đã xảy ra lỗi khi truy cập thông tin đăng nhập. Hãy thử lại.",
     "invalidEmailOrPassword": "Email hoặc mật khẩu không hợp lệ.",
-    "walletInvalidMatches":"Giá trị hiện tại của ví đang trùng",
+    "walletInvalidMatches": "Giá trị hiện tại của ví đang trùng",
     "cancel": "Hủy",
     "dateRange": "Khoảng thời gian",
     "deposit": "Tiền chuyển đến",
@@ -162,8 +163,10 @@
     "budgetInUse": "Ngân sách đang áp dụng",
     "budgetExpired": "Ngân sách đã hết hạn",
     "budgetUtilized": "Ngân sách chưa sử dụng",
-    "recentTransactions" :"Giao dịch gần đây",
+    "recentTransactions": "Giao dịch gần đây",
     "budget": "Ngân sách",
     "transactionDate": "Ngày giao dịch",
-    "updateBalance": "Cập nhật số dư"
+    "updateBalance": "Cập nhật số dư",
+    "myWallet": "Ví của tôi",
+    "cash": "Tiền mặt"
 }

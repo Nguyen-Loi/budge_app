@@ -1,3 +1,5 @@
+import 'package:budget_app/common/shared_pref/language_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:intl/intl.dart';
 
@@ -10,8 +12,8 @@ extension HandleDateTime on DateTime {
     return DateFormat.jm().format(this);
   }
 
-  String toTimeAgo() {
-    return GetTimeAgo.parse(this);
+  String toTimeAgo(WidgetRef ref) {
+    return GetTimeAgo.parse(this, locale: ref.read(languageControllerProvider).code);
   }
 
   bool isSameDate(DateTime other) {
