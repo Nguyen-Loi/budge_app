@@ -3,7 +3,6 @@ import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/budget_view/budget_page.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:budget_app/view/transactions_view/transaction_view.dart';
@@ -31,7 +30,7 @@ List<BottomNavigationBarItem> _navBarItems(BuildContext context) => [
       ),
       BottomNavigationBarItem(
         icon: Icon(IconManager.budget),
-        label: 'Budget'.hardcoded,
+        label: context.loc.budget,
       ),
       BottomNavigationBarItem(
         icon: Icon(IconManager.profile),

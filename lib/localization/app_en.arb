@@ -2,16 +2,12 @@
     "hello": "Hello",
     "income": "Income",
     "expense": "Expense",
-    "balanceAvailableDescription": "Your available balance is",
-    "searchHint": "Search ...",
-    "statusFinancesGood": "Your finances are looking good",
     "amount": "Amount",
     "amountInvalid": "Amount invalid",
     "amountHint": "$10",
     "note": "Note",
     "noteHint": "Money from salary",
     "date": "Date",
-    "addMoney": "Add money",
     "signIn": "Sign In",
     "welecomeBack": "Welecome back!",
     "signInDescription": "Hey you\\'re back, fill in your details to get back in",
@@ -38,10 +34,10 @@
     "create": "Create",
     "transactions": "Transactions",
     "noData": "No Data",
-    "noTransactionDescription": "You don\\'t have any transactions yet",
+    "noTransactionDescription": "You don't have any transactions yet",
     "monthlyExpense": "Monthly Expense",
     "noTransactionThisBudget": "You don\\'t have any transactions with this budget.",
-    "nYouSpentForThePast": "{count, plural, =0{You\\'ve spent } =1{Value} =2{ for the past} other{{count} erorText}}",
+    "nYouSpentForThePast": "{count, plural, =0{You've spent } =1{Value} =2{ for the past} other{{count} erorText}}",
     "@nYouSpentForThePast": {
         "description": "A plural message",
         "placeholders": {
@@ -51,27 +47,20 @@
             }
         }
     },
-    "youAlreadySpent": "You\\'ve already spent",
+    "youAlreadySpent": "You've already spent",
     "spendLimitPerMonth": "Spend limit per Month",
-    "expenseGood": "Cool! Let\\'t keep your expense below the limit.",
+    "expenseGood": "Cool! Let't keep your expense below the limit.",
     "modifyBudget": "Modify Budget",
     "budgetName": "Budget name",
-    "chooseYourBudgetIcon": "Please choose your budget icon",
-    "monthlyLimit": "Monthly limit",
-    "numberInvalid": "Number invalid",
+    "errorChooseYourBudgetIcon": "Please choose your budget icon",
+    "chooseYourBudget": "Choose your budget",
+    "errorChooseYourBudget": "Please choose your budget",
     "update": "Update",
     "newBudget": "New Budget",
     "budgetNameHint": "Water",
     "add": "Add",
-    "modifyGoal": "Modify Goal",
-    "goalName": "Goal name",
-    "goalNameHint": "Iphone 15 prm",
-    "chooseYourGoalIcon": "Please choose your goal icon",
     "limit": "Limit",
     "target": "Target",
-    "goals": "Goals",
-    "mySavingPlan": "My Saving Plan",
-    "myUrgentMoney": "My Urgent Money",
     "thereAreNoTransactions": "There are no transactions",
     "yourAvailableBalanceIs": "Your available balance is",
     "financesGood": "Your finances are looking good",
@@ -100,7 +89,6 @@
         }
     },
     "home": "Home",
-    "history": "History",
     "appName": "Budget SS",
     "left": "Left",
     "approaced": "Approaced",
@@ -147,16 +135,6 @@
             }
         }
     },
-    "pGoalNameExits": "Goal {goalName} already exist. Please change goal name and try again",
-    "@pGoalNameExits": {
-        "placeholders": {
-            "goalName": {
-                "type": "String",
-                "example": "Water"
-            }
-        }
-    },
-    "newGoal": "New goal",
     "budgetEmpty": "You don\\'t have any budget yet.",
     "pExpensesExceedIncome": "Expenses exceed income ({money}). Increase your income and try again",
     "@pExpensesExceedIncome": {
@@ -176,5 +154,16 @@
     "accountAlreadyExits": "The account already exists with a different credential.",
     "errorCredentials": "Error occurred while accessing credentials. Try again.",
     "invalidEmailOrPassword": "Invalid email or password. Please try again.",
-    "walletInvalidMatches":"The value matches the value currently"
+    "walletInvalidMatches":"The value matches the value currently",
+    "cancel": "Cancel",
+    "dateRange": "Date range",
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "budgetInUse": "Budget in use",
+    "budgetExpired": "Budget expired",
+    "budgetUtilized": "Budget utilized",
+    "recentTransactions" :"Recent transactions",
+    "budget": "Budget",
+    "transactionDate": "Transaction date",
+    "updateBalance": "Update balance"
 }
