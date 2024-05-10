@@ -24,6 +24,6 @@ class BudgetDetailController extends StateNotifier<BudgetModel> {
   /// This is still update state for budget at home screen
   void updateState(BudgetModel budget) {
     state = budget;
-    _budgetController.updateItemBudget(budget);
+    _budgetController.updateState(budget);
   }
 }

@@ -7,9 +7,9 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
-import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,7 +37,7 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
 
   void _addTransaction() {
     if (_formKey.currentState!.validate()) {
-      ref.read(transactionsBaseControllerProvider.notifier).addTransaction(
+      ref.read(userBaseControllerProvider.notifier).addTransaction(
           context,
           budgetId: _budgetId,
           amount: _amount,
