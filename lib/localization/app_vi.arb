@@ -168,5 +168,7 @@
     "transactionDate": "Ngày giao dịch",
     "updateBalance": "Cập nhật số dư",
     "myWallet": "Ví của tôi",
-    "cash": "Tiền mặt"
+    "cash": "Tiền mặt",
+    "createdDate": "Ngày tạo",
+    "updatedDate": "Ngày cập nhật"
 }
