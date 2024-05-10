@@ -1,6 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/form/b_form_field_custom_amount.dart';
+import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -79,25 +79,20 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
             },
             validator: (p0) {
               if (p0 == null) {
-                return context.loc.chooseYourBudgetIcon;
+                return context.loc.errorChooseYourBudgetIcon;
               }
               return null;
             },
           ),
           gapH16,
-          BFormFieldCustomAmount(
-            initialValue: _budget.limit,
-            label: context.loc.monthlyLimit,
-            onChanged: (v) {
-              _limit = v;
-            },
-            validator: (value) {
-              if (value == null) {
-                return context.loc.amountInvalid;
-              }
-              return null;
-            },
-          ),
+          BFormFieldAmount(
+              initialValue: _limit,
+              label: context.loc.limit,
+              onChanged: (v) {
+                if (v != null) {
+                  _limit = v;
+                }
+              }),
           const SizedBox(height: 64),
           FilledButton(
               onPressed: _updateBudget,

@@ -6,7 +6,6 @@ import 'package:budget_app/common/widget/picker/b_picker_datetime.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
@@ -81,7 +80,7 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
 
   Widget _amountField() {
     return BFormFieldAmount(
-      label: 'Amount'.hardcoded,
+      label: context.loc.amount,
       onChanged: (v) {
         if (v != null) {
           _amount = v;
@@ -95,16 +94,16 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
         onChanged: (date) {
           _transactionDate = date;
         },
-        title: 'Transaction date'.hardcoded);
+        title: context.loc.transactionDate);
   }
 
   Widget _chooseBudgets() {
     return BFormCategoryBudget(
-      label: 'Choose budget'.hardcoded,
+      label: context.loc.chooseYourBudget,
       list: ref.watch(budgetBaseControllerProvider.notifier).getAll,
       validator: (p0) {
         if (p0 == null) {
-          return context.loc.chooseYourBudgetIcon;
+          return context.loc.errorChooseYourBudget;
         }
         return null;
       },

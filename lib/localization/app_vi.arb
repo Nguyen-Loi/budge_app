@@ -2,16 +2,12 @@
     "hello": "Xin chào",
     "income": "Thu nhập",
     "expense": "Chi tiêu",
-    "balanceAvailableDescription": "Số dư khả dụng của bạn là",
-    "searchHint": "Tìm kiếm...",
-    "statusFinancesGood": "Tình hình tài chính của bạn trông tốt",
     "amount": "Số tiền",
     "amountInvalid": "Số tiền không hợp lệ",
     "amountHint": "10000",
     "note": "Ghi chú",
     "noteHint": "Tiền từ lương",
     "date": "Ngày",
-    "addMoney": "Thêm tiền",
     "signIn": "Đăng nhập",
     "welecomeBack": "Chào mừng trở lại!",
     "signInDescription": "Xin chào, bạn đã quay lại, điền thông tin của bạn để tiếp tục",
@@ -56,25 +52,18 @@
     "expenseGood": "Tuyệt vời! Hãy giữ chi tiêu của bạn dưới mức giới hạn.",
     "modifyBudget": "Sửa đổi ngân sách",
     "budgetName": "Tên ngân sách",
-    "chooseYourBudgetIcon": "Vui lòng chọn biểu tượng ngân sách của bạn",
-    "monthlyLimit": "Giới hạn hàng tháng",
-    "numberInvalid": "Số không hợp lệ",
+    "errorChooseYourBudgetIcon": "Vui lòng chọn biểu tượng ngân sách của bạn",
+    "chooseYourBudget": "Chọn ngân sách",
+    "errorChooseYourBudget": "Vui lòng chọn ngân sách của bạn",
     "update": "Cập nhật",
     "newBudget": "Ngân sách mới",
     "budgetNameHint": "Nước",
     "add": "Thêm",
-    "modifyGoal": "Sửa đổi mục tiêu",
-    "goalName": "Tên mục tiêu",
-    "goalNameHint": "iPhone 15 prm",
-    "chooseYourGoalIcon": "Vui lòng chọn biểu tượng mục tiêu của bạn",
     "limit": "Giới hạn",
     "target": "Mục tiêu",
-    "goals": "Mục tiêu",
-    "mySavingPlan": "Kế hoạch tiết kiệm của tôi",
-    "myUrgentMoney": "Tiền gấp của tôi",
     "thereAreNoTransactions": "Không có giao dịch nào",
     "yourAvailableBalanceIs": "Số dư khả dụng của bạn là",
-    "financesGood": "Tình hình tài chính của bạn trông tốt",
+    "financesGood": "Tình hình tài chính của bạn dường như khá tốt",
     "newExpense": "Chi tiêu mới",
     "myAccount": "Tài khoản của tôi",
     "modify": "Sửa đổi",
@@ -100,7 +89,6 @@
         }
     },
     "home": "Trang chủ",
-    "history": "Lịch sử",
     "appName": "Budget SS",
     "left": "Còn lại",
     "approaced": "Tiếp cận",
@@ -147,16 +135,6 @@
             }
         }
     },
-    "pGoalNameExits": "Mục tiêu {goalName} đã tồn tại. Vui lòng thay đổi tên mục tiêu và thử lại",
-    "@pGoalNameExits": {
-        "placeholders": {
-            "goalName": {
-                "type": "String",
-                "example": "Tiền nước"
-            }
-        }
-    },
-    "newGoal": "Mục tiêu mới",
     "budgetEmpty": "Bạn chưa có ngân sách nào.",
     "pExpensesExceedIncome": "Chi phí vượt quá thu nhập ({money}). Tăng thu nhập của bạn và thử lại",
     "@pExpensesExceedIncome": {
@@ -176,5 +154,16 @@
     "accountAlreadyExits": "Tài khoản đã tồn tại.",
     "errorCredentials": "Đã xảy ra lỗi khi truy cập thông tin đăng nhập. Hãy thử lại.",
     "invalidEmailOrPassword": "Email hoặc mật khẩu không hợp lệ.",
-    "walletInvalidMatches":"Giá trị hiện tại của ví đang trùng"
+    "walletInvalidMatches":"Giá trị hiện tại của ví đang trùng",
+    "cancel": "Hủy",
+    "dateRange": "Khoảng thời gian",
+    "deposit": "Tiền chuyển đến",
+    "withdrawal": "Tiền chuyển đi",
+    "budgetInUse": "Ngân sách đang áp dụng",
+    "budgetExpired": "Ngân sách đã hết hạn",
+    "budgetUtilized": "Ngân sách chưa sử dụng",
+    "recentTransactions" :"Giao dịch gần đây",
+    "budget": "Ngân sách",
+    "transactionDate": "Ngày giao dịch",
+    "updateBalance": "Cập nhật số dư"
 }

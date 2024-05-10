@@ -5,7 +5,6 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/budget_view/widget/budget_card.dart';
@@ -29,7 +28,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: BText.h2('Ngân sách đang áp dụng'.hardcoded),
+        title: BText.h2(context.loc.budgetExpired),
         centerTitle: true,
       ),
       body: ListView(

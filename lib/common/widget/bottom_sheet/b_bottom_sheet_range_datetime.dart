@@ -5,7 +5,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:flutter/material.dart';
 
@@ -144,7 +144,7 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
                 _rangeDatetimeModelSelected = _rangeDatetimeModelCurrent;
                 Navigator.of(context).pop();
               },
-              child: BText('Hủy'.hardcoded),
+              child: BText(context.loc.cancel),
             ),
           ),
           gapW16,
@@ -152,7 +152,7 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
             width: 130,
             child: FilledButton(
               onPressed: _save,
-              child: BText('Lưu'.hardcoded, color: ColorManager.white),
+              child: BText(context.loc.save, color: ColorManager.white),
             ),
           )
         ],
@@ -203,7 +203,7 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        BText.b1('Khoảng thời gian'.hardcoded, fontWeight: FontWeight.bold),
+        BText.b1(context.loc.dateRange, fontWeight: FontWeight.bold),
         gapH16,
         ColumnWithSpacing(
           mainAxisSize: MainAxisSize.min,

@@ -9,7 +9,6 @@ import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_new_view/controller/new_budget_controller.dart';
@@ -84,14 +83,14 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
             },
             validator: (p0) {
               if (p0 == null) {
-                return context.loc.chooseYourBudgetIcon;
+                return context.loc.errorChooseYourBudgetIcon;
               }
               return null;
             },
           ),
           gapH16,
           BFormFieldAmount(
-            label: 'Limit'.hardcoded,
+            label: context.loc.limit,
             onChanged: (e) {
               if (e != null) {
                 _limit = e;
