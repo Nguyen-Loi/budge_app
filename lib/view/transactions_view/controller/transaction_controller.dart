@@ -7,20 +7,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final transactionControllerProvider =
     StateNotifierProvider<TransactionsController, List<TransactionCardModel>>(
         (ref) {
-  final transactionBaseController =
-      ref.watch(transactionsBaseControllerProvider.notifier);
-  return TransactionsController(
-      transactionsBaseController: transactionBaseController);
+  final transactionBase = ref.watch(transactionsBaseControllerProvider);
+  return TransactionsController(transactionsState: transactionBase);
 });
 
 class TransactionsController extends StateNotifier<List<TransactionCardModel>> {
   TransactionsController({
-    required TransactionsBaseController transactionsBaseController,
-  })  : _transactionBaseController = transactionsBaseController,
+    required List<TransactionCardModel> transactionsState,
+  })  : _transactionBase = transactionsState,
         super([]) {
     updateDate(_dateTimePicker);
   }
-  final TransactionsBaseController _transactionBaseController;
+  final List<TransactionCardModel> _transactionBase;
 
   DateTime firstDateTransactions = DateTime.now();
   DateTime lastDateTransactions = DateTime.now();
@@ -35,7 +33,7 @@ class TransactionsController extends StateNotifier<List<TransactionCardModel>> {
 
   void updateDate(DateTime date) {
     _dateTimePicker = date;
-    state = _transactionBaseController.state
+    state = _transactionBase
         .filterByMonth(
             time: _dateTimePicker,
             getDate: (x) => x.transaction.transactionDate)
