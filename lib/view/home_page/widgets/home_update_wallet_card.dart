@@ -6,6 +6,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,14 +19,13 @@ class HomeUpdateWalletCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final balance = ref.watch(userBaseControllerProvider)!.balance;
-    return _item(
-        value: balance,
-        onPressed: () {
-          Navigator.pushNamed(context, RoutePath.updateWallet);
-        });
+    return _item(context, value: balance, onPressed: () {
+      Navigator.pushNamed(context, RoutePath.updateWallet);
+    });
   }
 
-  Widget _item({required int value, required void Function()? onPressed}) {
+  Widget _item(BuildContext context,
+      {required int value, required void Function()? onPressed}) {
     Color color = ColorManager.white;
     return GestureDetector(
       onTap: onPressed,
@@ -40,7 +40,7 @@ class HomeUpdateWalletCard extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BText.b1(
-                    'Ví của tôi',
+                    context.loc.myWallet,
                     color: color,
                   ),
                   Icon(IconManager.arrowNext, color: color)
@@ -58,7 +58,7 @@ class HomeUpdateWalletCard extends ConsumerWidget {
                     height: 32,
                   ),
                   gapW8,
-                  BText('Tiền mặt', color: ColorManager.white),
+                  BText(context.loc.cash, color: ColorManager.white),
                   gapW8,
                   Expanded(
                       child: BText(

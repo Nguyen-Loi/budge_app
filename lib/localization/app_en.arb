@@ -1,4 +1,5 @@
 {
+    "@@locale": "en",
     "hello": "Hello",
     "income": "Income",
     "expense": "Expense",
@@ -165,5 +166,7 @@
     "recentTransactions" :"Recent transactions",
     "budget": "Budget",
     "transactionDate": "Transaction date",
-    "updateBalance": "Update balance"
+    "updateBalance": "Update balance",
+    "myWallet": "My wallet",
+    "cash": "Cash"
 }
