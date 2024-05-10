@@ -1,4 +1,3 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -51,7 +50,7 @@ class BStatus extends StatelessWidget {
       children: [
         Lottie.asset(LottieAssets.loading1),
         gapH16,
-        BText.b1(text, color: ColorManager.grey1),
+        BText.b1(text),
       ],
     );
   }
@@ -64,7 +63,7 @@ class BStatus extends StatelessWidget {
       children: [
         Lottie.asset(LottieAssets.error),
         gapH16,
-        BText.b1(text, color: ColorManager.grey1),
+        BText.b1(text),
       ],
     );
   }
@@ -77,7 +76,7 @@ class BStatus extends StatelessWidget {
       children: [
         Lottie.asset(LottieAssets.empty),
         gapH16,
-        BText.b1(text, color: ColorManager.grey1),
+        BText.b1(text),
       ],
     );
   }

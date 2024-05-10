@@ -89,7 +89,7 @@ class _CategoryBudget extends StatelessWidget {
     return isSelected
         ? _itemCategoryBase(context,
             model: model,
-            backgroundColor: ColorManager.purple22,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             textColor: ColorManager.white)
         : InkWell(
             onTap: () {
@@ -97,7 +97,7 @@ class _CategoryBudget extends StatelessWidget {
             },
             child: _itemCategoryBase(context,
                 model: model,
-                backgroundColor: ColorManager.white,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 textColor: ColorManager.black),
           );
   }

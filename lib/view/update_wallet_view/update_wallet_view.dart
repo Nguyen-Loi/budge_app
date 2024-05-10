@@ -1,4 +1,3 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
@@ -48,7 +47,7 @@ class _UpdateWalletViewState extends ConsumerState<UpdateWalletView> {
         child: Padding(
           padding: const EdgeInsets.only(top: 16),
           child: ColoredBox(
-            color: ColorManager.purple25,
+            color: Theme.of(context).colorScheme.secondary,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: _form(user),

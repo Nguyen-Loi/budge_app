@@ -2,8 +2,6 @@ import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_app_bar.dart';
 import 'package:budget_app/common/widget/b_divider.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/b_text_rich.dart';
-import 'package:budget_app/common/widget/b_text_span.dart';
 import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
@@ -12,6 +10,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
@@ -116,16 +115,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Widget _forgotPassword() {
-    return BTextRich(
-      BTextSpan(children: [
-        BTextSpan(text: AppLocalizations.of(context).nForgotPassword(0)),
-        BTextSpan(
+    return Text.rich(TextSpan(children: [
+      TextSpan(text: AppLocalizations.of(context).nForgotPassword(0)),
+      TextSpan(
           text: AppLocalizations.of(context).nForgotPassword(1),
-          style: BTextStyle.bodyMedium(color: ColorManager.primary),
-        ),
-      ]),
-      textAlign: TextAlign.end,
-    );
+          style: context.textTheme.bodyMedium),
+    ]));
   }
 
   Widget _bFieldEmail() {

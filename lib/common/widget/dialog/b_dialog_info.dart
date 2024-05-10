@@ -56,7 +56,7 @@ extension Present<T> on BDialogInfo {
         bIcon = icon ?? IconManager.success;
         bTextConfirm = textSubmit ?? context.loc.continueText;
         bTitle = title ?? context.loc.successUp;
-        bColor = ColorManager.green1;
+        bColor = Theme.of(context).colorScheme.tertiary;
     }
     return showDialog<T?>(
       context: context,

@@ -80,7 +80,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
                               ),
                             ),
                             gapW16,
-                            _itemMoneyTransaction(
+                            _itemMoneyTransaction(context,
                                 type: e.transactionType, amount: e.amount)
                           ],
                         ),
@@ -109,16 +109,16 @@ class BudgetDetailTransactions extends ConsumerWidget {
     }
   }
 
-  Widget _itemMoneyTransaction(
+  Widget _itemMoneyTransaction(BuildContext context,
       {required TransactionType type, required int amount}) {
     String amountMoney = amount.toMoneyStr();
     switch (type) {
       case TransactionType.decrease:
         return BText('-$amountMoney',
-            color: ColorManager.red1, fontWeight: FontWeightManager.bold);
+            color: ColorManager.red1, fontWeight: FontWeight.w700);
       case TransactionType.increase:
         return BText('+$amountMoney',
-            color: ColorManager.green2, fontWeight: FontWeightManager.bold);
+            color: Theme.of(context).colorScheme.tertiary, fontWeight: FontWeight.w700);
     }
   }
 }

@@ -1,4 +1,3 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_divider.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/constants.dart';
@@ -26,11 +25,11 @@ class HomeUpdateWalletCard extends ConsumerWidget {
 
   Widget _item(BuildContext context,
       {required int value, required void Function()? onPressed}) {
-    Color color = ColorManager.white;
+    final textColor = Theme.of(context).colorScheme.onBackground;
     return GestureDetector(
       onTap: onPressed,
       child: Card(
-        color: ColorManager.purple15,
+        elevation: 5,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
@@ -41,13 +40,15 @@ class HomeUpdateWalletCard extends ConsumerWidget {
                 children: [
                   BText.b1(
                     context.loc.myWallet,
-                    color: color,
+                    color: textColor,
                   ),
-                  Icon(IconManager.arrowNext, color: color)
+                  Icon(
+                    IconManager.arrowNext,
+                    color: textColor,
+                  )
                 ],
               ),
-              BDivider.h(
-                color: color,
+              const BDivider.h(
                 thickness: 0.4,
               ),
               Row(
@@ -58,12 +59,15 @@ class HomeUpdateWalletCard extends ConsumerWidget {
                     height: 32,
                   ),
                   gapW8,
-                  BText(context.loc.cash, color: ColorManager.white),
+                  BText(
+                    context.loc.cash,
+                    color: textColor,
+                  ),
                   gapW8,
                   Expanded(
                       child: BText(
                     value.toMoneyStr(),
-                    color: color,
+                    color: textColor,
                     textAlign: TextAlign.right,
                   ))
                 ],

@@ -1,7 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/b_text_rich.dart';
 import 'package:budget_app/common/widget/custom/budget_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
@@ -9,6 +8,7 @@ import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 
 class BudgetCard extends StatelessWidget {
@@ -28,14 +28,10 @@ class BudgetCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(color: ColorManager.grey3),
-                      child: BIcon(id: model.iconId)),
+                  BIcon(id: model.iconId),
                   gapW8,
                   Expanded(
-                    child: BText(model.name,
-                        fontWeight: FontWeightManager.semiBold),
+                    child: BText(model.name, fontWeight: FontWeight.w700),
                   ),
                   gapW8,
                   Icon(
@@ -57,19 +53,19 @@ class BudgetCard extends StatelessWidget {
     switch (model.status) {
       case StatusBudgetProgress.start:
       case StatusBudgetProgress.progress:
-        return baseStatus(
+        return baseStatus(context,
             textStatus: context.loc.left,
-            iconColor: ColorManager.green2,
+            iconColor: Theme.of(context).colorScheme.tertiary,
             textColor: ColorManager.black,
             iconData: IconManager.emojiSmile);
       case StatusBudgetProgress.almostDone:
-        return baseStatus(
+        return baseStatus(context,
             textStatus: context.loc.approaced,
             iconColor: ColorManager.orange,
             textColor: ColorManager.orange,
             iconData: IconManager.emojiSurprise);
       case StatusBudgetProgress.complete:
-        return baseStatus(
+        return baseStatus(context,
             textStatus: context.loc.exceeded,
             iconColor: ColorManager.red1,
             textColor: ColorManager.red1,
@@ -77,7 +73,7 @@ class BudgetCard extends StatelessWidget {
     }
   }
 
-  List<Widget> baseStatus(
+  List<Widget> baseStatus(BuildContext context,
       {required String textStatus,
       required Color iconColor,
       required textColor,
@@ -87,24 +83,33 @@ class BudgetCard extends StatelessWidget {
       Row(
         children: [
           Expanded(
-            child: BTextRichSpace(
-              text1: model.currentAmount.toMoneyStr(),
-              text2: '/${model.limit.toMoneyStr()}',
-              styleText1: BTextStyle.bodySmall(color: ColorManager.black),
-              styleText2: BTextStyle.bodySmall(
-                  fontWeight: FontWeightManager.bold,
-                  color: ColorManager.black),
+              child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                    text: model.currentAmount.toMoneyStr(),
+                    style: context.textTheme.bodySmall!),
+                TextSpan(
+                    text: '/${model.limit.toMoneyStr()}',
+                    style: context.textTheme.bodySmall!),
+              ],
             ),
-          ),
+          )),
           gapW16,
           Row(
             children: [
-              BTextRichSpace(
-                text1: '$textStatus:',
-                text2: left.toMoneyStr(),
-                styleText1: BTextStyle.caption(),
-                styleText2: BTextStyle.bodyMedium(
-                    color: textColor, fontWeight: FontWeightManager.semiBold),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                        text: '$textStatus:',
+                        style: context.textTheme.labelLarge!),
+                    TextSpan(
+                        text: left.toMoneyStr(),
+                        style: context.textTheme.bodySmall!
+                            .copyWith(fontWeight: FontWeight.w700)),
+                  ],
+                ),
               ),
               gapW8,
               Icon(iconData, color: iconColor, size: 14)

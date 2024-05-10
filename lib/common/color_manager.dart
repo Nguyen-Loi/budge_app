@@ -21,24 +21,12 @@ class ColorManager {
   static Color blue = HexColor.fromHex("#2D98FE");
   static Color yellow = HexColor.fromHex("#FC9736");
 
-  static Color green1 = HexColor.fromHex("#6ABC2C");
-  static Color green2 = HexColor.fromHex("#017A47");
-  static Color green3 = HexColor.fromHex("#D1FADF");
-
   static Color white = HexColor.fromHex("#FFFFFF");
   static Color black = HexColor.fromHex("#000000");
   static Color orange = HexColor.fromHex("#FE7C2F");
 
   static Color grey1 = HexColor.fromHex("#707070");
   static Color grey2 = Colors.grey.shade300;
-  static Color grey3 = HexColor.fromHex("#F5E8DD");
-
-  static Color grey = HexColor.fromHex("#737477");
-  static Color lightGrey = HexColor.fromHex("#9E9E9E");
-  static Color primaryOpacity70 = HexColor.fromHex("#B3ED9728");
-
-  // new colors
-  static Color darkPrimary = HexColor.fromHex("#d17d11");
 
   static Color error = HexColor.fromHex("#e61f34");
 

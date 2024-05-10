@@ -1,8 +1,5 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_app_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/b_text_rich.dart';
-import 'package:budget_app/common/widget/b_text_span.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_checkbox.dart';
 import 'package:budget_app/common/widget/form/b_form_field_password.dart';
@@ -10,6 +7,7 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -95,22 +93,23 @@ class _LoginViewState extends ConsumerState<SignUpView> {
 
   Widget _terms() {
     return BFormCheckbox(
-        validator: (p0) {
-          if (p0 == false) {
-            return context.loc.pleaseEnableService;
-          }
-          return null;
-        },
-        title: BTextRich(
-          BTextSpan(children: [
-            BTextSpan(text: context.loc.nEableServiceDescription(0)),
-            BTextSpan(
-              text: context.loc.nEableServiceDescription(1),
-              style: BTextStyle.bodyMedium(color: ColorManager.primary),
-            ),
-          ]),
-          maxLines: 3,
-        ));
+      validator: (p0) {
+        if (p0 == false) {
+          return context.loc.pleaseEnableService;
+        }
+        return null;
+      },
+      title: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(text: context.loc.nEableServiceDescription(0)),
+            TextSpan(
+                text: context.loc.nEableServiceDescription(1),
+                style: context.textTheme.bodyMedium)
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _bEmailFormField() {

@@ -27,7 +27,7 @@ class TransactionCard extends StatelessWidget {
         trailing: BText(
           model.transaction.amount.toMoneyStr(),
           color: model.transaction.transactionType == TransactionType.increase
-              ? ColorManager.green2
+              ? Theme.of(context).colorScheme.tertiary
               : ColorManager.red1,
         ),
       ),
@@ -56,7 +56,7 @@ class TransactionCard extends StatelessWidget {
                     content: model.transaction.note.isEmpty
                         ? context.loc.noData
                         : model.transaction.note),
-                _itemAmount(
+                _itemAmount(context,
                     label: context.loc.amount,
                     amount: model.transaction.amount,
                     transactionType: model.transaction.transactionType),
@@ -102,7 +102,7 @@ class TransactionCard extends StatelessWidget {
     );
   }
 
-  Widget _itemAmount(
+  Widget _itemAmount(BuildContext context,
       {required String label,
       required int amount,
       required TransactionType transactionType}) {
@@ -111,7 +111,7 @@ class TransactionCard extends StatelessWidget {
     switch (transactionType) {
       case TransactionType.increase:
         amountStr = '+${amount.toMoneyStr()}';
-        color = ColorManager.green2;
+        color = Theme.of(context).colorScheme.tertiary;
         break;
       case TransactionType.decrease:
         amountStr = '-${amount.toMoneyStr()}';

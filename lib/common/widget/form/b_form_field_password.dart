@@ -41,7 +41,7 @@ class _BFormFieldPasswordState extends State<BFormFieldPassword> {
       children: [
         BText(
           widget.label ?? 'Password',
-          fontWeight: FontWeightManager.semiBold,
+          fontWeight: FontWeight.w700,
         ),
         gapH8,
         TextFormField(

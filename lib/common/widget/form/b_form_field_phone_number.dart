@@ -24,7 +24,7 @@ class BFormFieldPhoneNumber extends StatelessWidget {
       children: [
         BText(
           label,
-          fontWeight: FontWeightManager.semiBold,
+          fontWeight: FontWeight.w700,
         ),
         gapH8,
         InternationalPhoneNumberInput(
