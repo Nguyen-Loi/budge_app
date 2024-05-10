@@ -168,5 +168,7 @@
     "transactionDate": "Transaction date",
     "updateBalance": "Update balance",
     "myWallet": "My wallet",
-    "cash": "Cash"
+    "cash": "Cash",
+    "createdDate": "Created date",
+    "updatedDate": "Updated date"
 }
