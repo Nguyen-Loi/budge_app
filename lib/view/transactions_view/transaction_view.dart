@@ -110,6 +110,7 @@ class _TransactionViewState extends State<TransactionView>
         text: TextSpan(children: [
       TextSpan(
         text: '$label: ',
+        style: context.textTheme.bodyMedium!,
       ),
       TextSpan(
         text: value.toMoneyStr(),

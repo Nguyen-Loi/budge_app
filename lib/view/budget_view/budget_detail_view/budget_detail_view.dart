@@ -38,13 +38,12 @@ class BudgetDetailView extends StatelessWidget {
   }
 
   Widget _buildTop(BuildContext context) {
-    Color textColor = ColorManager.white;
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BText.h1(context.loc.monthlyExpense, color: ColorManager.white),
+          BText.h1(context.loc.monthlyExpense),
           gapH16,
           Consumer(builder: (_, ref, __) {
             TransactionModel? lastestTransaction =
@@ -53,27 +52,23 @@ class BudgetDetailView extends StatelessWidget {
             return lastestTransaction == null
                 ? BText(
                     context.loc.noTransactionThisBudget,
-                    color: textColor,
                   )
                 : Text.rich(
                     TextSpan(
                       children: [
                         TextSpan(
                             text: context.loc.nYouSpentForThePast(0),
-                            style: context.textTheme.bodyMedium!
-                                .copyWith(color: textColor)),
+                            style: context.textTheme.bodyMedium!),
                         TextSpan(
                             text: lastestTransaction.amount.toMoneyStr(),
                             style: context.textTheme.bodyMedium!.copyWith(
-                                color: textColor,
                                 fontWeight: FontWeight.w700,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.secondary)),
                         TextSpan(
                             text:
                                 '${context.loc.nYouSpentForThePast(2)} ${lastestTransaction.createdDate.toTimeAgo(ref)}',
-                            style: context.textTheme.bodyMedium!
-                                .copyWith(color: textColor))
+                            style: context.textTheme.bodyMedium!)
                       ],
                     ),
                   );

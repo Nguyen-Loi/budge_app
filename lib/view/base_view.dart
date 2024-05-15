@@ -1,13 +1,16 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:flutter/material.dart';
 
 enum _TypeView { base, customBackground }
 
 class BaseView extends StatelessWidget {
-  const BaseView(
-      {Key? key, required this.title, required this.child, this.actions})
-      : _type = _TypeView.base,
+  const BaseView({
+    Key? key,
+    required this.title,
+    required this.child,
+    this.actions,
+    this.floatingActionButton,
+  })  : _type = _TypeView.base,
         buildTop = null,
         super(
           key: key,
@@ -17,6 +20,7 @@ class BaseView extends StatelessWidget {
       required this.title,
       required this.buildTop,
       required this.child,
+      this.floatingActionButton,
       this.actions})
       : _type = _TypeView.customBackground,
         super(
@@ -27,42 +31,40 @@ class BaseView extends StatelessWidget {
   final _TypeView _type;
   final Widget? buildTop;
   final List<Widget>? actions;
+  final FloatingActionButton? floatingActionButton;
   @override
   Widget build(BuildContext context) {
     switch (_type) {
       case _TypeView.base:
-        return _base();
+        return _base(context);
       case _TypeView.customBackground:
-        return _customBackground();
+        return _customBackground(context);
     }
   }
 
-  Widget _base() {
+  Widget _base(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: BText.h2(title),
-          centerTitle: true,
+          title: BText.h3(title),
           actions: actions,
         ),
         body: child,
+        floatingActionButton: floatingActionButton,
       ),
     );
   }
 
-  Widget _customBackground() {
-    Color colorAppbar = ColorManager.white;
+  Widget _customBackground(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: BText.h2(title, color: colorAppbar),
-          centerTitle: true,
-          iconTheme: IconThemeData(color: colorAppbar),
-          backgroundColor: ColorManager.purple12,
+          title: BText.h3(title),
           actions: actions,
         ),
+        floatingActionButton: floatingActionButton,
         body: ColoredBox(
-          color: ColorManager.purple12,
+          color: Theme.of(context).colorScheme.background,
           child: Column(
             children: [
               if (buildTop != null) buildTop!,
@@ -71,7 +73,7 @@ class BaseView extends StatelessWidget {
                     padding:
                         const EdgeInsets.only(left: 16, right: 16, top: 16),
                     decoration: BoxDecoration(
-                        color: ColorManager.white,
+                        color: Theme.of(context).colorScheme.background,
                         borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(32),
                             topRight: Radius.circular(32))),

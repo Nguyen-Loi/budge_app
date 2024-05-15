@@ -125,7 +125,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
       required String text,
       required Function() onPressed}) {
     return ListTile(
-     
       title: BText(text, fontWeight: FontWeight.w700),
       onTap: onPressed,
       trailing: Icon(
@@ -138,7 +137,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             color: Theme.of(context).colorScheme.primary,
           ),
-          child: Icon(icon)),
+          child: Icon(
+            icon,
+            color: Theme.of(context).colorScheme.background,
+          )),
     );
   }
 }
