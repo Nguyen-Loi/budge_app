@@ -168,9 +168,10 @@ class AppTheme {
 
       /// COMPONENT THEMES
       appBarTheme: AppBarTheme(
-        elevation: 0,
-        backgroundColor: darkColors.background,
-        foregroundColor: darkColors.onBackground,
+        elevation: 1,
+        centerTitle: true,
+        backgroundColor: darkColors.surface,
+        foregroundColor: darkColors.secondary,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -283,9 +284,10 @@ class AppTheme {
 
       /// COMPONENT THEMES
       appBarTheme: AppBarTheme(
-        elevation: 0,
+        elevation: 1,
+        centerTitle: true,
         backgroundColor: lightColors.background,
-        foregroundColor: lightColors.onBackground,
+        foregroundColor: lightColors.secondary,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

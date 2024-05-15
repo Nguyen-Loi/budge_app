@@ -87,31 +87,34 @@ class _CategoryBudget extends StatelessWidget {
   Widget _itemCategory({required BudgetModel model}) {
     bool isSelected = initialValue != null && model.id == initialValue!.id;
     return isSelected
-        ? _itemCategoryBase(context,
+        ? _itemCategoryBase(
+            context,
             model: model,
             backgroundColor: Theme.of(context).colorScheme.primary,
-            textColor: ColorManager.white)
+          )
         : InkWell(
             onTap: () {
               onChanged(model);
             },
-            child: _itemCategoryBase(context,
-                model: model,
-                backgroundColor: Theme.of(context).colorScheme.background,
-                textColor: ColorManager.black),
+            child: _itemCategoryBase(
+              context,
+              model: model,
+              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+            ),
           );
   }
 
-  Widget _itemCategoryBase(BuildContext context,
-      {required BudgetModel model,
-      required Color backgroundColor,
-      required Color textColor}) {
+  Widget _itemCategoryBase(
+    BuildContext context, {
+    required BudgetModel model,
+    required Color backgroundColor,
+  }) {
     return Card(
       child: Ink(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         decoration: BoxDecoration(
             color: backgroundColor,
-            border: Border.all(color: ColorManager.grey1),
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
             borderRadius: const BorderRadius.all(Radius.circular(8))),
         child: Column(
           children: [
@@ -120,7 +123,6 @@ class _CategoryBudget extends StatelessWidget {
             BText(
               model.name,
               fontWeight: FontWeight.bold,
-              color: textColor,
               maxLines: 2,
             )
           ],

@@ -29,7 +29,7 @@ class IconManager {
   static IconData home = Icons.home_rounded;
   static IconData profile = FontAwesomeIcons.user;
   static IconData transaction = FontAwesomeIcons.receipt;
-  static IconData budget = FontAwesomeIcons.fileInvoice;
+  static IconData budget = Icons.alternate_email_outlined;
 
   //Dialog status
   static IconData warning = Icons.warning;
