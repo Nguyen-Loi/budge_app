@@ -170,7 +170,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
             Navigator.of(context).pushNamed(RoutePath.signUp);
           },
           icon: SvgPicture.asset(
-            SvgAssets.budget,
+            SvgAssets.iconApp,
             width: 48,
             height: 48,
           ),

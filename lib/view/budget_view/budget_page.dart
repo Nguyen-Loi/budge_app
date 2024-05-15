@@ -1,12 +1,12 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_status.dart';
-import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
+import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/widget/budget_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,23 +26,20 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: BText.h2(context.loc.budgetExpired),
-        centerTitle: true,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        children: [
-          _budgetList(),
-        ],
-      ),
+    return BaseView(
+      title: context.loc.budgetInUse,
       floatingActionButton: FloatingActionButton(
         heroTag: RoutePath.newBudget,
         onPressed: () {
           Navigator.pushNamed(context, RoutePath.newBudget);
         },
         child: Icon(IconManager.add, color: ColorManager.white),
+      ),
+      child: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        children: [
+          _budgetList(),
+        ],
       ),
     );
   }

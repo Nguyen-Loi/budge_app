@@ -46,28 +46,27 @@ class _UpdateWalletViewState extends ConsumerState<UpdateWalletView> {
         title: context.loc.updateBalance,
         child: Padding(
           padding: const EdgeInsets.only(top: 16),
-          child: ColoredBox(
-            color: Theme.of(context).colorScheme.secondary,
+          child: Card(
+            elevation: 5,
             child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: _form(user),
-            ),
+                padding: const EdgeInsets.all(16),
+                child: _form(context: context, user: user)),
           ),
         ));
   }
 
-  Widget _form(UserModel user) {
+  Widget _form({required BuildContext context, required UserModel user}) {
     return Form(
         key: _formKey,
         child: ColumnWithSpacing(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _walletField(user.balance),
+            _walletField(context: context, balance: user.balance),
           ],
         ));
   }
 
-  Widget _walletField(int balance) {
+  Widget _walletField({required BuildContext context, required int balance}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -75,7 +74,7 @@ class _UpdateWalletViewState extends ConsumerState<UpdateWalletView> {
           children: [
             SvgPicture.asset(SvgAssets.wallet, width: 32, height: 32),
             gapW8,
-            const BText.b1('Tiền mặt'),
+            BText.b1(context.loc.cash),
           ],
         ),
         gapH16,
