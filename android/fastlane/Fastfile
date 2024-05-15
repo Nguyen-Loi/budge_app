@@ -1,0 +1,37 @@
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :production do
+    gradle(task: "clean assembleRelease")
+    gradle(
+      task: 'bundle',
+      build_type: 'Release'
+    )
+    upload_to_play_store(
+      track: 'production', #beta, alpha, internal, production...
+      skip_upload_changelogs: true,
+      aab: '../build/app/outputs/bundle/release/app-release.aab',
+    )
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :internal do
+    gradle(task: "clean assembleRelease")
+    gradle(
+      task: 'bundle',
+      build_type: 'Release'
+    )
+    upload_to_play_store(
+      track: 'internal', 
+      skip_upload_changelogs: true,
+      aab: '../build/app/outputs/bundle/release/app-release.aab',
+    )
+  end
+end
