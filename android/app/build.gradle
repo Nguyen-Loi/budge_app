@@ -17,15 +17,7 @@ if (keystorePropertiesFile.exists()) {
     localProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
 
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
 
 android {
     namespace "com.example.budget_app"
@@ -49,8 +41,8 @@ android {
         applicationId "com.NguyenLoi.BudgetSS"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 8
+        versionName "1.0.4"
         multiDexEnabled true
     }
 

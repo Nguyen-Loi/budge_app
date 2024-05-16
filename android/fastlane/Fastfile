@@ -1,36 +1,43 @@
 
 default_platform(:android)
 
+require 'ostruct'
+
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
-  end
 
   desc "Deploy a new version to the Google Play"
-  lane :production do
-    gradle(task: "clean assembleRelease")
-    gradle(
-      task: 'bundle',
-      build_type: 'Release'
-    )
-    upload_to_play_store(
-      track: 'production', #beta, alpha, internal, production...
-      skip_upload_changelogs: true,
-      aab: '../build/app/outputs/bundle/release/app-release.aab',
-    )
-  end
+  lane :deploy do
+    mode_distribute = "internal"
 
-  desc "Deploy a new version to the Google Play"
-  lane :internal do
-    gradle(task: "clean assembleRelease")
+    # find latest version code
+    def latest_google_play_version_code
+      tracks = ["internal", "alpha", "beta", "production"]
+      version_codes = []
+      tracks.each do | track |
+          begin
+        vc = google_play_track_version_codes(track: track)
+      rescue
+      puts "No track found for " + track
+      else
+        version_codes.concat(vc)
+      end
+      end
+      version_codes.max || 0
+    end
+
+    # Auto increment build number
+    increment_version_code(
+      version_code: latest_google_play_version_code + 1
+    )
+
     gradle(
       task: 'bundle',
-      build_type: 'Release'
+      build_type: 'Release' 
     )
     upload_to_play_store(
-      track: 'internal', 
+      track: mode_distribute, 
       skip_upload_changelogs: true,
+      skip_upload_metadata: true,
       aab: '../build/app/outputs/bundle/release/app-release.aab',
     )
   end
