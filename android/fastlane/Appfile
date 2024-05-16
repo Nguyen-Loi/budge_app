@@ -1,2 +1,2 @@
-json_key_file("key_deploy.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+json_key_file("play_store_secret.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
 package_name("com.NguyenLoi.BudgetSS") # e.g. com.krausefx.app
