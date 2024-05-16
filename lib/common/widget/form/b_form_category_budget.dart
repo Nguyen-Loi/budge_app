@@ -99,7 +99,7 @@ class _CategoryBudget extends StatelessWidget {
             child: _itemCategoryBase(
               context,
               model: model,
-              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+              backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
             ),
           );
   }
