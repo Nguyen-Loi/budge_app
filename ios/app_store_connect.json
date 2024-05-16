@@ -1,0 +1,8 @@
+{
+    "key_id": "<KEY-ID>",
+    "issuer_id": "<ISSUER-ID>",
+    "key": "<CONTENT-OF-THE-DOWNLOADED-.p8-FILE>",
+    "duration": 1200,
+    "in_house": false
+  }
+  
