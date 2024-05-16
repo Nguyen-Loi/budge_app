@@ -17,11 +17,11 @@ class AppTheme {
         onPrimary: Color(0xFF000000),
         secondary: Color(0XFF03DAC5),
         onSecondary: Color(0xFF000000),
-        background: Color(0xFF121212),
-        onBackground: Color(0xFFFFFFFF),
+        primaryContainer: Color(0xFF121212),
+        onPrimaryContainer: Color(0xFFFFFFFF),
         surface: Color(0xFF121212),
         onSurface: Color(0xFFFFFFFF),
-        surfaceVariant: Color(0xFF406271),
+        tertiaryFixed: Color(0xFF406271),
         onSurfaceVariant: Color(0xFFBFCBD0),
         success: Color(0xFF27BA62),
         onSuccess: Color(0xFFFFFFFF),
@@ -51,11 +51,11 @@ class AppTheme {
         onPrimary: ColorManager.black,
         secondary: ColorManager.purple23,
         onSecondary: ColorManager.white,
-        background: const Color(0xFFF2F2F2),
-        onBackground: const Color(0xFF002E42),
+        primaryContainer: const Color(0xFFF2F2F2),
+        onPrimaryContainer: const Color(0xFF002E42),
         surface: const Color(0xFFF2F5F6),
         onSurface: const Color(0xFF002E42),
-        surfaceVariant: const Color(0xFFF2F5F6),
+        tertiaryFixed: const Color(0xFFF2F5F6),
         onSurfaceVariant: const Color(0xFF667C86),
         success: const Color(0XFF017A47),
         onSuccess: ColorManager.white,
@@ -108,7 +108,7 @@ class AppTheme {
         chartColor1: darkColors.linearGradient.colors[0],
         chartColor2: darkColors.linearGradient.colors[1],
         chartColor3: darkColors.linearGradient.colors[2],
-        chartBorderColor: darkColors.surfaceVariant,
+        chartBorderColor: darkColors.tertiaryFixed,
         toolTipBgColor: darkColors.onSurfaceVariant,
         isShowingMainData: true,
         animationDuration: const Duration(milliseconds: 100),
@@ -124,7 +124,7 @@ class AppTheme {
         chartColor1: darkColors.linearGradient.colors[0],
         chartColor2: darkColors.linearGradient.colors[1],
         chartColor3: darkColors.linearGradient.colors[2],
-        chartBorderColor: darkColors.surfaceVariant,
+        chartBorderColor: darkColors.tertiaryFixed,
         toolTipBgColor: darkColors.onSurfaceVariant,
         isShowingMainData: false,
         animationDuration: const Duration(milliseconds: 100),
@@ -148,17 +148,17 @@ class AppTheme {
           onSecondary: darkColors.onSecondary,
           error: darkColors.error,
           onError: darkColors.onError,
-          background: darkColors.background,
-          onBackground: darkColors.onBackground,
+          primaryContainer: darkColors.primaryContainer,
+          onPrimaryContainer: darkColors.onPrimaryContainer,
           surface: darkColors.surface,
           onSurface: darkColors.onSurface,
-          surfaceVariant: darkColors.surfaceVariant,
+          tertiaryFixed: darkColors.tertiaryFixed,
           onSurfaceVariant: darkColors.onSurfaceVariant,
 
           // Green
           tertiary: const Color(0XFF6ABC2C)),
 
-      scaffoldBackgroundColor: darkColors.background,
+      scaffoldBackgroundColor: darkColors.primaryContainer,
 
       /// TYPOGRAPHY
       textTheme: AppTextTheme.darkTextTheme,
@@ -179,12 +179,12 @@ class AppTheme {
           textStyle: AppTextTheme.labelLarge.copyWith(color: darkColors.error),
         ),
       ),
-      dialogBackgroundColor: darkColors.background,
+      dialogBackgroundColor: darkColors.primaryContainer,
       filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
-              padding: MaterialStateProperty.all<EdgeInsets>(
-                  const EdgeInsets.all(10)),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              padding:
+                  WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.all(10)),
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               )))),
@@ -198,7 +198,7 @@ class AppTheme {
         ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: darkColors.background,
+        backgroundColor: darkColors.primaryContainer,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(32),
@@ -263,18 +263,19 @@ class AppTheme {
         onSecondary: lightColors.onSecondary,
         error: lightColors.error,
         onError: lightColors.onError,
-        background: lightColors.background,
-        onBackground: lightColors.onBackground,
+
+        primaryContainer: lightColors.primaryContainer,
+        onPrimaryContainer: lightColors.onPrimaryContainer,
         surface: lightColors.surface,
         onSurface: lightColors.onSurface,
-        surfaceVariant: lightColors.surfaceVariant,
+        tertiaryFixed: lightColors.tertiaryFixed,
         onSurfaceVariant: lightColors.onSurfaceVariant,
 
         // Green
         tertiary: const Color(0XFF017A47),
       ),
 
-      scaffoldBackgroundColor: lightColors.background,
+      scaffoldBackgroundColor: lightColors.primaryContainer,
 
       /// TYPOGRAPHY
       textTheme: AppTextTheme.textTheme,
@@ -286,7 +287,7 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         elevation: 1,
         centerTitle: true,
-        backgroundColor: lightColors.background,
+        backgroundColor: lightColors.primaryContainer,
         foregroundColor: lightColors.secondary,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -295,12 +296,12 @@ class AppTheme {
           textStyle: AppTextTheme.labelLarge.copyWith(color: lightColors.error),
         ),
       ),
-      dialogBackgroundColor: lightColors.background,
+      dialogBackgroundColor: lightColors.primaryContainer,
       filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
-              padding: MaterialStateProperty.all<EdgeInsets>(
-                  const EdgeInsets.all(10)),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              padding:
+                  WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.all(10)),
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               )))),
@@ -313,7 +314,7 @@ class AppTheme {
         ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: lightColors.background,
+        backgroundColor: lightColors.primaryContainer,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(32),

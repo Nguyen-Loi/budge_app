@@ -64,7 +64,7 @@ class BaseView extends StatelessWidget {
         ),
         floatingActionButton: floatingActionButton,
         body: ColoredBox(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.primaryContainer,
           child: Column(
             children: [
               if (buildTop != null) buildTop!,
@@ -73,7 +73,7 @@ class BaseView extends StatelessWidget {
                     padding:
                         const EdgeInsets.only(left: 16, right: 16, top: 16),
                     decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
+                        color: Theme.of(context).colorScheme.primaryContainer,
                         borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(32),
                             topRight: Radius.circular(32))),

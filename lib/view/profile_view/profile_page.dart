@@ -139,7 +139,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
           ),
           child: Icon(
             icon,
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.primaryContainer,
           )),
     );
   }

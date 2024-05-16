@@ -8,11 +8,11 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.onPrimary,
     required this.secondary,
     required this.onSecondary,
-    required this.background,
-    required this.onBackground,
+    required this.primaryContainer,
+    required this.onPrimaryContainer,
     required this.surface,
     required this.onSurface,
-    required this.surfaceVariant,
+    required this.tertiaryFixed,
     required this.onSurfaceVariant,
     required this.error,
     required this.onError,
@@ -35,11 +35,11 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color onPrimary;
   final Color secondary;
   final Color onSecondary;
-  final Color background;
-  final Color onBackground;
+  final Color primaryContainer;
+  final Color onPrimaryContainer;
   final Color surface;
   final Color onSurface;
-  final Color surfaceVariant;
+  final Color tertiaryFixed;
   final Color onSurfaceVariant;
   final Color error;
   final Color onError;
@@ -63,11 +63,11 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? onPrimary,
     Color? secondary,
     Color? onSecondary,
-    Color? background,
-    Color? onBackground,
+    Color? primaryContainer,
+    Color? onPrimaryContainer,
     Color? surface,
     Color? onSurface,
-    Color? surfaceVariant,
+    Color? tertiaryFixed,
     Color? onSurfaceVariant,
     Color? error,
     Color? onError,
@@ -90,11 +90,11 @@ class AppColors extends ThemeExtension<AppColors> {
       onPrimary: onPrimary ?? this.onPrimary,
       secondary: secondary ?? this.secondary,
       onSecondary: onSecondary ?? this.onSecondary,
-      background: background ?? this.background,
-      onBackground: onBackground ?? this.onBackground,
+      primaryContainer: primaryContainer ?? this.primaryContainer,
+      onPrimaryContainer: onPrimaryContainer ?? this.onPrimaryContainer,
       surface: surface ?? this.surface,
       onSurface: onSurface ?? this.onSurface,
-      surfaceVariant: surfaceVariant ?? this.surfaceVariant,
+      tertiaryFixed: tertiaryFixed ?? this.tertiaryFixed,
       onSurfaceVariant: onSurfaceVariant ?? this.onSurfaceVariant,
       error: error ?? this.error,
       onError: onError ?? this.onError,
@@ -125,13 +125,16 @@ class AppColors extends ThemeExtension<AppColors> {
       onPrimary: Color.lerp(onPrimary, other.onPrimary, t) ?? onPrimary,
       secondary: Color.lerp(secondary, other.secondary, t) ?? secondary,
       onSecondary: Color.lerp(onSecondary, other.onSecondary, t) ?? onSecondary,
-      background: Color.lerp(background, other.background, t) ?? background,
-      onBackground:
-          Color.lerp(onBackground, other.onBackground, t) ?? onBackground,
+      primaryContainer:
+          Color.lerp(primaryContainer, other.primaryContainer, t) ??
+              primaryContainer,
+      onPrimaryContainer:
+          Color.lerp(onPrimaryContainer, other.onPrimaryContainer, t) ??
+              onPrimaryContainer,
       surface: Color.lerp(surface, other.surface, t) ?? surface,
       onSurface: Color.lerp(onSurface, other.onSurface, t) ?? onSurface,
-      surfaceVariant:
-          Color.lerp(surfaceVariant, other.surfaceVariant, t) ?? surfaceVariant,
+      tertiaryFixed:
+          Color.lerp(tertiaryFixed, other.tertiaryFixed, t) ?? tertiaryFixed,
       onSurfaceVariant:
           Color.lerp(onSurfaceVariant, other.onSurfaceVariant, t) ??
               onSurfaceVariant,
