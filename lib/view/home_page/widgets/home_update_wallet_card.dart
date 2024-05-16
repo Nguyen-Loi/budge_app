@@ -25,7 +25,7 @@ class HomeUpdateWalletCard extends ConsumerWidget {
 
   Widget _item(BuildContext context,
       {required int value, required void Function()? onPressed}) {
-    final textColor = Theme.of(context).colorScheme.onBackground;
+    final textColor = Theme.of(context).colorScheme.primaryContainer;
     return GestureDetector(
       onTap: onPressed,
       child: Card(

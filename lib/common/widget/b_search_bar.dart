@@ -21,8 +21,8 @@ class _BSearchBarState extends State<BSearchBar> {
         setState(() {});
       },
       leading: Icon(IconManager.search),
-      padding: const MaterialStatePropertyAll<EdgeInsets>(
-          EdgeInsets.symmetric(horizontal: 16.0)),
+      padding:
+          const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 16)),
       trailing: <Widget>[
         widget.controller.text.isNotEmpty
             ? IconButton(
