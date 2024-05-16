@@ -1,0 +1,44 @@
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Build & upload to TestFlight"
+  lane :beta do
+    # Get info AppStore latest build & increment buildNumber
+    app_store_connect_api_key(
+      key_id: "3I935WSDHE",
+      issuer_id: "ed1f387a-d513-4de6-947a-46bpo9he3108",
+      key_filepath: "fastlane/AuthKey_334DJE5TPX.p8"
+    )
+    increment_build_number(
+      build_number: latest_testflight_build_number(
+        initial_build_number: 1,
+        version: get_version_number(xcodeproj: "Runner.xcodeproj")
+      ) + 1
+    )
+
+    # Handle cert & provisioning
+    match(
+      type: "appstore",
+      app_identifier: "com.NguyenLoi.BudgetSS",
+      readonly: true
+    )
+
+    # Build ipa
+    gym(
+      # scheme: "prod",
+      export_method: "app-store"
+    )
+
+    # Upload to TestFlight
+    if is_ci
+      pilot(
+        app_identifier: "com.NguyenLoi.BudgetSS",
+        skip_submission: true,
+        skip_waiting_for_build_processing: true
+      )
+    end
+
+  end
+  
+end
