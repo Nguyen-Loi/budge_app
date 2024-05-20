@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 
 class BButton extends StatelessWidget {
   const BButton(
-      {Key? key, required this.onPressed, required this.title, this.padding})
-      : super(key: key);
+      {super.key, required this.onPressed, required this.title, this.padding});
   final VoidCallback onPressed;
   final String title;
   final EdgeInsets? padding;

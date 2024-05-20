@@ -18,7 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BudgetDetailView extends StatelessWidget {
-  const BudgetDetailView({Key? key, required this.budget}) : super(key: key);
+  const BudgetDetailView({super.key, required this.budget});
   final BudgetModel budget;
   @override
   Widget build(BuildContext context) {
