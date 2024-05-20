@@ -4,7 +4,7 @@ import 'package:budget_app/models/budget_model.dart';
 import 'package:flutter/material.dart';
 
 class BudgetStatus extends StatelessWidget {
-  const BudgetStatus({Key? key, required this.budget}) : super(key: key);
+  const BudgetStatus({super.key, required this.budget});
   final BudgetModel budget;
   int get progress => budget.currentAmount <= budget.limit
       ? (budget.currentAmount / budget.limit * 100).round()

@@ -5,8 +5,8 @@ class BProgressBar extends StatelessWidget {
   final int percent;
   final LinearGradient gradient;
 
-  const BProgressBar({required this.percent, required this.gradient, Key? key})
-      : super(key: key);
+  const BProgressBar(
+      {required this.percent, required this.gradient, super.key});
 
   @override
   Widget build(BuildContext context) {

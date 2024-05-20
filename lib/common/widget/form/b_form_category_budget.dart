@@ -13,38 +13,35 @@ class BFormCategoryBudget extends FormField<BudgetModel> {
     super.key,
     required String label,
     required List<BudgetModel> list,
-    BudgetModel? initialValue,
+    super.initialValue,
     required this.onChanged,
-    String? Function(BudgetModel?)? validator,
-  }) : super(
-            builder: (field) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  BText.h2(label),
-                  if (field.hasError) gapH8,
-                  if (field.hasError)
-                    Text(
-                      field.errorText ?? "Invalid",
-                      style: AppTextTheme.bodySmall
-                          .copyWith(color: ColorManager.red1),
-                    ),
-                  gapH16,
-                  list.isEmpty
-                      ? BText(
-                          field.context.loc.noBudget,
-                          textAlign: TextAlign.center,
-                        )
-                      : _CategoryBudget(field.context,
-                          list: list,
-                          initialValue: field.value, onChanged: (model) {
-                          field.didChange(model);
-                        }),
-                ],
-              );
-            },
-            initialValue: initialValue,
-            validator: validator);
+    super.validator,
+  }) : super(builder: (field) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              BText.h2(label),
+              if (field.hasError) gapH8,
+              if (field.hasError)
+                Text(
+                  field.errorText ?? "Invalid",
+                  style:
+                      AppTextTheme.bodySmall.copyWith(color: ColorManager.red1),
+                ),
+              gapH16,
+              list.isEmpty
+                  ? BText(
+                      field.context.loc.noBudget,
+                      textAlign: TextAlign.center,
+                    )
+                  : _CategoryBudget(field.context,
+                      list: list,
+                      initialValue: field.value, onChanged: (model) {
+                      field.didChange(model);
+                    }),
+            ],
+          );
+        });
   @override
   FormFieldState<BudgetModel> createState() {
     return _BFormCategoryBudgetState();

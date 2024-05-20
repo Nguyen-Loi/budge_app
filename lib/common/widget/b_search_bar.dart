@@ -2,8 +2,7 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:flutter/material.dart';
 
 class BSearchBar extends StatefulWidget {
-  const BSearchBar({Key? key, required this.controller, this.hintText})
-      : super(key: key);
+  const BSearchBar({super.key, required this.controller, this.hintText});
   final TextEditingController controller;
   final String? hintText;
 

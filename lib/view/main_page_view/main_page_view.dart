@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MainPageView extends ConsumerStatefulWidget {
-  const MainPageView({Key? key}) : super(key: key);
+  const MainPageView({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

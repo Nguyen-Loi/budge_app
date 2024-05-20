@@ -11,17 +11,14 @@ const double _sizeIconItem = 32;
 class BFormPickerIcon extends FormField<IconModel> {
   final void Function(int? iconId) onChanged;
   BFormPickerIcon({
-    Key? key,
+    super.key,
     required List<IconModel> items,
-    IconModel? initialValue,
+    super.initialValue,
     String label = 'Icon',
-    FormFieldValidator<IconModel>? validator,
+    super.validator,
     required this.onChanged,
     String? hint,
   }) : super(
-          key: key,
-          validator: validator,
-          initialValue: initialValue,
           builder: (field) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +59,8 @@ class BFormPickerIcon extends FormField<IconModel> {
                           color: ColorManager.white,
                           border: Border.all(
                               width: 0.5,
-                              color: Theme.of(field.context).colorScheme.tertiary),
+                              color:
+                                  Theme.of(field.context).colorScheme.tertiary),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8))),
                       child: field.value == null
