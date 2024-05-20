@@ -100,25 +100,26 @@ class BudgetDetailTransactions extends ConsumerWidget {
   }
 
   Widget _itemStatusTransaction(BuildContext context,
-      {required TransactionType type}) {
+      {required TransactionTypeEnum type}) {
     switch (type) {
-      case TransactionType.decrease:
+      case TransactionTypeEnum.decrease:
         return BText.caption(context.loc.expense);
-      case TransactionType.increase:
+      case TransactionTypeEnum.increase:
         return BText.caption(context.loc.income);
     }
   }
 
   Widget _itemMoneyTransaction(BuildContext context,
-      {required TransactionType type, required int amount}) {
+      {required TransactionTypeEnum type, required int amount}) {
     String amountMoney = amount.toMoneyStr();
     switch (type) {
-      case TransactionType.decrease:
+      case TransactionTypeEnum.decrease:
         return BText('-$amountMoney',
             color: ColorManager.red1, fontWeight: FontWeight.w700);
-      case TransactionType.increase:
+      case TransactionTypeEnum.increase:
         return BText('+$amountMoney',
-            color: Theme.of(context).colorScheme.tertiary, fontWeight: FontWeight.w700);
+            color: Theme.of(context).colorScheme.tertiary,
+            fontWeight: FontWeight.w700);
     }
   }
 }

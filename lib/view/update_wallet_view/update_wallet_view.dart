@@ -80,7 +80,7 @@ class _UpdateWalletViewState extends ConsumerState<UpdateWalletView> {
         gapH16,
         BFormFieldAmount(
           initialValue: balance,
-          label: 'Điều chỉnh số dư',
+          label: context.loc.balanceAdjustment,
           validator: (s) => s.validateWallet(context, newValue: balance),
           onChanged: (v) {
             if (v != null) {

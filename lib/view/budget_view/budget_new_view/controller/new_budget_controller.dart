@@ -2,6 +2,7 @@ import 'package:budget_app/apis/budget_api.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
@@ -56,6 +57,8 @@ class NewBudgetController extends StateNotifier<bool> {
       showBDialogInfoError(context, message: error);
     }
 
+    const budgetType = BudgetTypeEnum.decrease;
+
     final now = DateTime.now();
     BudgetModel model = BudgetModel(
       id: GenId.budget(),
@@ -66,7 +69,8 @@ class NewBudgetController extends StateNotifier<bool> {
       limit: limit,
       createdDate: now,
       updatedDate: now,
-      budgetTypeValue: rangeDatetimeModel.rangeDateTimeType.value,
+      transactionTypeValue: budgetType.value,
+      rangeDateTimeTypeValue: rangeDatetimeModel.rangeDateTimeType.value,
       startDate: rangeDatetimeModel.startDate,
       endDate: rangeDatetimeModel.endDate,
     );

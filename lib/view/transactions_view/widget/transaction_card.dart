@@ -26,9 +26,10 @@ class TransactionCard extends StatelessWidget {
         subtitle: BText.b3(model.transaction.transactionDate.toFormatDate()),
         trailing: BText(
           model.transaction.amount.toMoneyStr(),
-          color: model.transaction.transactionType == TransactionType.increase
-              ? Theme.of(context).colorScheme.tertiary
-              : ColorManager.red1,
+          color:
+              model.transaction.transactionType == TransactionTypeEnum.increase
+                  ? Theme.of(context).colorScheme.tertiary
+                  : ColorManager.red1,
         ),
       ),
     );
@@ -105,15 +106,15 @@ class TransactionCard extends StatelessWidget {
   Widget _itemAmount(BuildContext context,
       {required String label,
       required int amount,
-      required TransactionType transactionType}) {
+      required TransactionTypeEnum transactionType}) {
     String amountStr;
     Color color;
     switch (transactionType) {
-      case TransactionType.increase:
+      case TransactionTypeEnum.increase:
         amountStr = '+${amount.toMoneyStr()}';
         color = Theme.of(context).colorScheme.tertiary;
         break;
-      case TransactionType.decrease:
+      case TransactionTypeEnum.decrease:
         amountStr = '-${amount.toMoneyStr()}';
         color = ColorManager.red2;
         break;
