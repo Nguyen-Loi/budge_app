@@ -62,11 +62,13 @@ extension ValidateForm on String? {
       return textAmountInvalid;
     }
 
-    final intRegExp = RegExp(r'^[1-9]\d*$');
+    final intRegExp = RegExp(r'^\d+$');
     String formatCurrentValue = this!.replaceAll(',', '');
 
-    if (!intRegExp.hasMatch(formatCurrentValue)) {
-      return textAmountInvalid;
+// If the value is a negative number, return null
+    if (formatCurrentValue.startsWith('-') ||
+        !intRegExp.hasMatch(formatCurrentValue)) {
+      return null;
     }
     if (int.parse(formatCurrentValue) == newValue) {
       return textWalletMatches;

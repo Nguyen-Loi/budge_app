@@ -8,7 +8,9 @@ import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/home_page/home_transactions_recently.dart';
+import 'package:budget_app/view/home_page/widgets/home_chart/home_chart.dart';
 import 'package:budget_app/view/home_page/widgets/home_update_wallet_card.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -43,6 +45,7 @@ class _HomePageState extends ConsumerState<HomePage>
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         children: const [
           HomeUpdateWalletCard(),
+          HomeChart(),
           gapH16,
           HomeTransactionsRecently(),
         ],

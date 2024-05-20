@@ -25,7 +25,6 @@ class HomeUpdateWalletCard extends ConsumerWidget {
 
   Widget _item(BuildContext context,
       {required int value, required void Function()? onPressed}) {
-    final textColor = Theme.of(context).colorScheme.primaryContainer;
     return GestureDetector(
       onTap: onPressed,
       child: Card(
@@ -40,11 +39,9 @@ class HomeUpdateWalletCard extends ConsumerWidget {
                 children: [
                   BText.b1(
                     context.loc.myWallet,
-                    color: textColor,
                   ),
                   Icon(
                     IconManager.arrowNext,
-                    color: textColor,
                   )
                 ],
               ),
@@ -61,14 +58,13 @@ class HomeUpdateWalletCard extends ConsumerWidget {
                   gapW8,
                   BText(
                     context.loc.cash,
-                    color: textColor,
                   ),
                   gapW8,
                   Expanded(
                       child: BText(
                     value.toMoneyStr(),
-                    color: textColor,
                     textAlign: TextAlign.right,
+                    fontWeight: FontWeight.bold,
                   ))
                 ],
               ),
