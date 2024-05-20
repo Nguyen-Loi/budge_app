@@ -2,17 +2,14 @@ import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/custom/budget_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/models/transaction_model.dart';
-import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/controller/budget_detail_controller.dart';
-import 'package:budget_app/view/budget_view/budget_detail_view/widget/controller/budget_transations_detail_controller.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/widget/budget_transacitons_detail_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,9 +19,8 @@ class BudgetDetailView extends StatelessWidget {
   final BudgetModel budget;
   @override
   Widget build(BuildContext context) {
-    return BaseView.customBackground(
+    return BaseView(
       title: budget.name,
-      buildTop: _buildTop(context),
       actions: [
         IconButton(
             onPressed: () {
@@ -37,55 +33,16 @@ class BudgetDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildTop(BuildContext context) {
+  Widget _body(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+      child: ListView(
         children: [
-          BText.h1(context.loc.monthlyExpense),
-          gapH16,
-          Consumer(builder: (_, ref, __) {
-            TransactionModel? lastestTransaction =
-                ref.watch(budgetTransactionDetailControllerProvider);
-
-            return lastestTransaction == null
-                ? BText(
-                    context.loc.noTransactionThisBudget,
-                  )
-                : Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                            text: context.loc.nYouSpentForThePast(0),
-                            style: context.textTheme.bodyMedium!),
-                        TextSpan(
-                            text: lastestTransaction.amount.toMoneyStr(),
-                            style: context.textTheme.bodyMedium!.copyWith(
-                                fontWeight: FontWeight.w700,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.secondary)),
-                        TextSpan(
-                            text:
-                                '${context.loc.nYouSpentForThePast(2)} ${lastestTransaction.createdDate.toTimeAgo(ref)}',
-                            style: context.textTheme.bodyMedium!)
-                      ],
-                    ),
-                  );
-          }),
-          gapH16
+          _status(context),
+          gapH24,
+          BudgetDetailTransactions(budget.id),
         ],
       ),
-    );
-  }
-
-  Widget _body(BuildContext context) {
-    return ListView(
-      children: [
-        _status(context),
-        gapH24,
-        BudgetDetailTransactions(budget.id),
-      ],
     );
   }
 
@@ -122,7 +79,11 @@ class BudgetDetailView extends StatelessWidget {
           BudgetStatus(budget: model),
           gapH8,
           // Content
-          BText.b3(context.loc.expenseGood)
+          BText.b3(context.loc.expenseGood),
+          gapH16,
+          BText(
+            '${context.loc.operatingPeriod}: ${model.startDate.toFormatDate(strFormat: 'dd/MM/yyyy')} - ${model.endDate.toFormatDate(strFormat: 'dd/MM/yyyy')}',
+          ),
         ],
       );
     });

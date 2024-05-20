@@ -28,8 +28,8 @@ class TransactionModel {
     required this.updatedDate,
   });
 
-  TransactionType get transactionType =>
-      TransactionType.fromValue(transactionTypeValue);
+  TransactionTypeEnum get transactionType =>
+      TransactionTypeEnum.fromValue(transactionTypeValue);
 
   TransactionModel copyWith({
     String? id,
@@ -66,31 +66,31 @@ class TransactionModel {
     };
   }
 
-  TransactionCardModel toTransactionCard(Ref ref,{required List<BudgetModel> budgets}) {
+
+  TransactionCardModel toTransactionCard(Ref ref,
+      {required List<BudgetModel> budgets}) {
     if (budgetId == null) {
-        int iconId;
-        String transactionName;
-        switch (transactionType) {
-          case TransactionType.increase:
-            iconId = 100;
-            transactionName = ref.read(appLocalizationsProvider).deposit;
-            break;
-          case TransactionType.decrease:
-            iconId = 101;
-            transactionName = ref.read(appLocalizationsProvider).withdrawal;
-            break;
-        }
-        return TransactionCardModel(
-            transaction: this,
-            transactionName: transactionName,
-            iconId: iconId);
-      } else {
-        final budget = budgets.firstWhere((e) => e.id == budgetId);
-        return  TransactionCardModel(
-            transaction: this,
-            transactionName: budget.name,
-            iconId: budget.iconId);
+      int iconId;
+      String transactionName;
+      switch (transactionType) {
+        case TransactionTypeEnum.increase:
+          iconId = 100;
+          transactionName = ref.read(appLocalizationsProvider).deposit;
+          break;
+        case TransactionTypeEnum.decrease:
+          iconId = 101;
+          transactionName = ref.read(appLocalizationsProvider).withdrawal;
+          break;
       }
+      return TransactionCardModel(
+          transaction: this, transactionName: transactionName, iconId: iconId);
+    } else {
+      final budget = budgets.firstWhere((e) => e.id == budgetId);
+      return TransactionCardModel(
+          transaction: this,
+          transactionName: budget.name,
+          iconId: budget.iconId);
+    }
   }
 
   factory TransactionModel.fromMap(Map<String, dynamic> map) {

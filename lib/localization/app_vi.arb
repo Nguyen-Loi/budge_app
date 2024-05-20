@@ -5,7 +5,7 @@
     "expense": "Chi tiêu",
     "amount": "Số tiền",
     "amountInvalid": "Số tiền không hợp lệ",
-    "amountHint": "10000",
+    "amountHint": "0",
     "note": "Ghi chú",
     "noteHint": "Tiền từ lương",
     "date": "Ngày",
@@ -38,16 +38,6 @@
     "noTransactionDescription": "Bạn chưa có giao dịch nào",
     "monthlyExpense": "Chi tiêu hàng tháng",
     "noTransactionThisBudget": "Bạn chưa có giao dịch nào với ngân sách này.",
-    "nYouSpentForThePast": "{count, plural, =0{Bạn đã chi tiêu } =1{Giá trị} =2{ trong thời gian} other{{count} erorText}}",
-    "@nYouSpentForThePast": {
-        "description": "A plural message",
-        "placeholders": {
-            "count": {
-                "type": "num",
-                "format": "compact"
-            }
-        }
-    },
     "youAlreadySpent": "Bạn đã chi tiêu",
     "spendLimitPerMonth": "Giới hạn chi tiêu hàng tháng",
     "expenseGood": "Tuyệt vời! Hãy giữ chi tiêu của bạn dưới mức giới hạn.",
@@ -170,5 +160,60 @@
     "myWallet": "Ví của tôi",
     "cash": "Tiền mặt",
     "createdDate": "Ngày tạo",
-    "updatedDate": "Ngày cập nhật"
+    "updatedDate": "Ngày cập nhật",
+    "balanceAdjustment": "Điều chỉnh số dư",
+    "pThisWeek": "Tuần này ({dateStart} - {dateEnd})",
+    "@pThisWeek": {
+        "placeholders": {
+            "dateStart": {
+                "type": "String",
+                "example": "08/24"
+            },
+            "dateEnd": {
+                "type": "String",
+                "example": "08/25"
+            }
+        }
+    },
+    "pThisMonth": "Tháng này ({dateStart} - {dateEnd})",
+    "@pThisMonth": {
+        "placeholders": {
+            "dateStart": {
+                "type": "String",
+                "example": "02/01"
+            },
+            "dateEnd": {
+                "type": "String",
+                "example": "02/30"
+            }
+        }
+    },
+    "pThisYear": "Năm này ({dateStart} - {dateEnd})",
+    "@pThisYear": {
+        "placeholders": {
+            "dateStart": {
+                "type": "String",
+                "example": "01/01/2024"
+            },
+            "dateEnd": {
+                "type": "String",
+                "example": "31/12/2024"
+            }
+        }
+    },
+    "pThisDayTimeCustom": "Tuỳ chỉnh ({dateStart} - {dateEnd})",
+    "@pThisDayTimeCustom": {
+        "placeholders": {
+            "dateStart": {
+                "type": "String",
+                "example": "01/01/2024"
+            },
+            "dateEnd": {
+                "type": "String",
+                "example": "31/12/2024"
+            }
+        }
+    },
+    "custom": "Tuỳ chỉnh",
+    "operatingPeriod": "Khoảng thời gian"
 }

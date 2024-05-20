@@ -41,7 +41,7 @@ class TransactionApi extends ITransactionApi {
       {required String? budgetId,
       required int amount,
       required String note,
-      required TransactionType transactionType,
+      required TransactionTypeEnum transactionType,
       DateTime? transactionDate}) async {
     final now = DateTime.now();
 
@@ -79,7 +79,7 @@ class TransactionApi extends ITransactionApi {
 
       // Add transaction
       int amountChanged = newValue - user.balance;
-      final transactionType = TransactionType.fromAmount(amountChanged);
+      final transactionType = TransactionTypeEnum.fromAmount(amountChanged);
       final newTransaction = await _add(user.id,
           budgetId: null,
           amount: amountChanged.abs(),
@@ -100,7 +100,16 @@ class TransactionApi extends ITransactionApi {
       required String? note,
       required DateTime transactionDate}) async {
     try {
-      final newUser = user.copyWith(balance: user.balance - amount);
+      UserModel newUser;
+      switch (currentBudget.transactionType) {
+        case TransactionTypeEnum.increase:
+          newUser = user.copyWith(balance: user.balance + amount);
+          break;
+        case TransactionTypeEnum.decrease:
+          newUser = user.copyWith(balance: user.balance - amount);
+          break;
+      }
+
       final newBudget = currentBudget.copyWith(
           currentAmount: currentBudget.currentAmount + amount);
 
@@ -108,7 +117,7 @@ class TransactionApi extends ITransactionApi {
           budgetId: currentBudget.id,
           amount: amount,
           note: note ?? '',
-          transactionType: TransactionType.increase,
+          transactionType: currentBudget.transactionType,
           transactionDate: transactionDate);
 
       await _db.doc(FirestorePath.user(user.id)).update(newUser.toMap());

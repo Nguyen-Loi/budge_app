@@ -25,7 +25,7 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
   late DatetimeRangeModel _rangeDatetimeModelCurrent;
 
   late List<DatetimeRangeModel> _list;
-  late String _title;
+  String _title = '';
   final now = DateTime.now();
 
   DatetimeRangeModel getWeekRange(DateTime time) {
@@ -69,13 +69,18 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
         _list.firstWhere((e) => e.rangeDateTimeType == widget.initialValue);
     _rangeDatetimeModelCurrent = _rangeDatetimeModelSelected;
     widget.onChanged(_rangeDatetimeModelSelected);
-    _loadTitle();
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        _loadTitle();
+      });
+    });
+    context;
     super.initState();
   }
 
   void _loadTitle() {
     _title = _rangeDatetimeModelCurrent.rangeDateTimeType
-        .content(rangeDatetimeModel: _rangeDatetimeModelCurrent);
+        .content(context, rangeDatetimeModel: _rangeDatetimeModelCurrent);
   }
 
   void _save() {
@@ -207,13 +212,14 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
         ColumnWithSpacing(
           mainAxisSize: MainAxisSize.min,
           children: _list.map((e) {
-            String title = e.rangeDateTimeType.content(rangeDatetimeModel: e);
+            String title =
+                e.rangeDateTimeType.content(context, rangeDatetimeModel: e);
             bool isChooseCustom =
                 e.rangeDateTimeType == RangeDateTimeEnum.custom &&
                     _rangeDatetimeModelSelected.rangeDateTimeType ==
                         RangeDateTimeEnum.custom;
             if (e.rangeDateTimeType == RangeDateTimeEnum.custom) {
-              title = 'Tùy chỉnh';
+              title = context.loc.custom;
             }
 
             // For custom

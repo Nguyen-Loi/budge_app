@@ -5,7 +5,7 @@
     "expense": "Expense",
     "amount": "Amount",
     "amountInvalid": "Amount invalid",
-    "amountHint": "$10",
+    "amountHint": "$0",
     "note": "Note",
     "noteHint": "Money from salary",
     "date": "Date",
@@ -38,16 +38,6 @@
     "noTransactionDescription": "You don't have any transactions yet",
     "monthlyExpense": "Monthly Expense",
     "noTransactionThisBudget": "You don\\'t have any transactions with this budget.",
-    "nYouSpentForThePast": "{count, plural, =0{You've spent } =1{Value} =2{ for the past} other{{count} erorText}}",
-    "@nYouSpentForThePast": {
-        "description": "A plural message",
-        "placeholders": {
-            "count": {
-                "type": "num",
-                "format": "compact"
-            }
-        }
-    },
     "youAlreadySpent": "You've already spent",
     "spendLimitPerMonth": "Spend limit per Month",
     "expenseGood": "Cool! Let't keep your expense below the limit.",
@@ -170,5 +160,60 @@
     "myWallet": "My wallet",
     "cash": "Cash",
     "createdDate": "Created date",
-    "updatedDate": "Updated date"
+    "updatedDate": "Updated date",
+    "balanceAdjustment": "Balance adjustment",
+    "pThisWeek": "This week ({dateStart} - {dateEnd})",
+    "@pThisWeek": {
+        "placeholders": {
+            "dateStart": {
+                "type": "String",
+                "example": "08/24"
+            },
+            "dateEnd": {
+                "type": "String",
+                "example": "08/25"
+            }
+        }
+    },
+    "pThisMonth": "This month ({dateStart} - {dateEnd})",
+    "@pThisMonth": {
+        "placeholders": {
+            "dateStart": {
+                "type": "String",
+                "example": "02/01"
+            },
+            "dateEnd": {
+                "type": "String",
+                "example": "02/30"
+            }
+        }
+    },
+    "pThisYear": "This year ({dateStart} - {dateEnd})",
+    "@pThisYear": {
+        "placeholders": {
+            "dateStart": {
+                "type": "String",
+                "example": "01/01/2024"
+            },
+            "dateEnd": {
+                "type": "String",
+                "example": "31/12/2024"
+            }
+        }
+    },
+    "pThisDayTimeCustom": "Custom ({dateStart} - {dateEnd})",
+    "@pThisDayTimeCustom": {
+        "placeholders": {
+            "dateStart": {
+                "type": "String",
+                "example": "01/01/2024"
+            },
+            "dateEnd": {
+                "type": "String",
+                "example": "31/12/2024"
+            }
+        }
+    },
+    "custom": "Custom",
+    "operatingPeriod": "Operating period"
 }
