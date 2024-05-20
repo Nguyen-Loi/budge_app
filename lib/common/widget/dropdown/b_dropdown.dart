@@ -13,14 +13,14 @@ class BDropdown<T> extends StatefulWidget {
   final String? title;
 
   const BDropdown({
-    Key? key,
+    super.key,
     this.inittialValue,
     this.hint,
     required this.label,
     required this.items,
     required this.onChanged,
     this.title,
-  }) : super(key: key);
+  });
 
   @override
   State<BDropdown<T?>> createState() => _BDropdownState<T>();

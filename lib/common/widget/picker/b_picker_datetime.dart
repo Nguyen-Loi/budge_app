@@ -7,13 +7,12 @@ import 'package:flutter/material.dart';
 
 class BPickerDatetime extends StatefulWidget {
   const BPickerDatetime(
-      {Key? key,
+      {super.key,
       this.initialDate,
       this.firstDate,
       this.lastDate,
       required this.onChanged,
-      required this.title})
-      : super(key: key);
+      required this.title});
   final DateTime? initialDate;
   final DateTime? firstDate;
   final DateTime? lastDate;

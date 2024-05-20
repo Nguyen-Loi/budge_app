@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TransactionView extends StatefulWidget {
-  const TransactionView({Key? key}) : super(key: key);
+  const TransactionView({super.key});
 
   @override
   State<TransactionView> createState() => _TransactionViewState();

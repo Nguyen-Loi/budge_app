@@ -136,7 +136,7 @@ class AuthAPI implements IAuthApi {
       // This code ios not working
       final LoginResult result = await FacebookAuth.instance.login();
       final AuthCredential facebookCredential =
-          FacebookAuthProvider.credential(result.accessToken!.token);
+          FacebookAuthProvider.credential(result.accessToken!.tokenString);
       await _auth.signInWithCredential(facebookCredential);
       await _writeNewInfoToDB(accountType: AccountType.facebook);
       return right(null);

@@ -9,13 +9,12 @@ import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class BPickerMonth extends StatefulWidget {
   const BPickerMonth(
-      {Key? key,
+      {super.key,
       this.initialDate,
       this.firstDate,
       this.lastDate,
       required this.onChange,
-      this.hint = 'Picker your time'})
-      : super(key: key);
+      this.hint = 'Picker your time'});
   final DateTime? initialDate;
   final DateTime? firstDate;
   final DateTime? lastDate;

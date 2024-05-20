@@ -11,8 +11,7 @@ import 'package:flutter/material.dart';
 
 class BBottomsheetRangeDatetime extends StatefulWidget {
   const BBottomsheetRangeDatetime(
-      {Key? key, required this.initialValue, required this.onChanged})
-      : super(key: key);
+      {super.key, required this.initialValue, required this.onChanged});
   final void Function(DatetimeRangeModel rangeTime) onChanged;
   final RangeDateTimeEnum initialValue;
 

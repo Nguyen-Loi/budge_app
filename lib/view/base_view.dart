@@ -5,27 +5,21 @@ enum _TypeView { base, customBackground }
 
 class BaseView extends StatelessWidget {
   const BaseView({
-    Key? key,
+    super.key,
     required this.title,
     required this.child,
     this.actions,
     this.floatingActionButton,
   })  : _type = _TypeView.base,
-        buildTop = null,
-        super(
-          key: key,
-        );
+        buildTop = null;
   const BaseView.customBackground(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.buildTop,
       required this.child,
       this.floatingActionButton,
       this.actions})
-      : _type = _TypeView.customBackground,
-        super(
-          key: key,
-        );
+      : _type = _TypeView.customBackground;
   final String title;
   final Widget child;
   final _TypeView _type;

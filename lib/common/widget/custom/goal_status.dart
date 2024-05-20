@@ -8,11 +8,10 @@ import 'package:flutter/material.dart';
 
 class GoalStatus extends StatelessWidget {
   const GoalStatus(
-      {Key? key,
+      {super.key,
       required this.goal,
       this.showText = true,
-      this.crossAxisAlignment = CrossAxisAlignment.center})
-      : super(key: key);
+      this.crossAxisAlignment = CrossAxisAlignment.center});
   final BudgetModel goal;
   final CrossAxisAlignment crossAxisAlignment;
   final bool showText;
