@@ -4,7 +4,6 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 
 class BFormCategoryBudget extends FormField<BudgetModel> {
@@ -23,10 +22,9 @@ class BFormCategoryBudget extends FormField<BudgetModel> {
               BText.h2(label),
               if (field.hasError) gapH8,
               if (field.hasError)
-                Text(
-                  field.errorText ?? "Invalid",
-                  style:
-                      AppTextTheme.bodySmall.copyWith(color: ColorManager.red1),
+                BText.b1(
+                  field.errorText ?? field.context.loc.invalid,
+                  color: ColorManager.red1,
                 ),
               gapH16,
               list.isEmpty
@@ -96,7 +94,7 @@ class _CategoryBudget extends StatelessWidget {
             child: _itemCategoryBase(
               context,
               model: model,
-              backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+              backgroundColor: Theme.of(context).colorScheme.surface,
             ),
           );
   }

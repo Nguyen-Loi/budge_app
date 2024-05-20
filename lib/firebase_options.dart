@@ -69,6 +69,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '79455569094',
     projectId: 'budget-ss',
     storageBucket: 'budget-ss.appspot.com',
+    androidClientId: '79455569094-ufdkksi1h0el6aoi1fbfh0eok3744lvu.apps.googleusercontent.com',
     iosClientId: '79455569094-bjp0n8njj02v9esqhq0dmhtd1upntjk3.apps.googleusercontent.com',
     iosBundleId: 'com.NguyenLoi.BudgetSS',
   );

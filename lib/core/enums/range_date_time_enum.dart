@@ -1,5 +1,7 @@
 import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/models_widget/datetime_range_model.dart';
+import 'package:flutter/widgets.dart';
 
 enum RangeDateTimeEnum {
   week(1),
@@ -12,20 +14,29 @@ enum RangeDateTimeEnum {
         .firstWhere((element) => element.value == value);
   }
 
-  String content({required DatetimeRangeModel rangeDatetimeModel}) {
+  String content(BuildContext context,
+      {required DatetimeRangeModel rangeDatetimeModel}) {
     switch (rangeDatetimeModel.rangeDateTimeType) {
       case RangeDateTimeEnum.week:
         String strFormat = 'MM/dd';
-        return 'Tuần này (${rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat)} - ${rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat)})';
+        return context.loc.pThisWeek(
+            rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat),
+            rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat));
       case RangeDateTimeEnum.month:
         String strFormat = 'MM/dd';
-        return 'Tháng này (${rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat)} - ${rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat)})';
+        return context.loc.pThisMonth(
+            rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat),
+            rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat));
       case RangeDateTimeEnum.year:
         String strFormat = 'dd/MM/yyyy';
-        return 'Năm nay (${rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat)} - ${rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat)})';
+        return context.loc.pThisYear(
+            rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat),
+            rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat));
       case RangeDateTimeEnum.custom:
         String strFormat = 'dd/MM/yyyy';
-        return 'Tùy chỉnh (${rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat)} - ${rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat)})';
+        return context.loc.pThisDayTimeCustom(
+            rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat),
+            rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat));
     }
   }
 

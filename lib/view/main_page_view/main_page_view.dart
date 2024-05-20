@@ -77,65 +77,64 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
     final width = MediaQuery.of(context).size.width;
     final bool isSmallScreen = width < 600;
     final bool isLargeScreen = width > 800;
-    return SafeArea(
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, RoutePath.newTransaction);
-          },
-          heroTag: RoutePath.newTransaction,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(100))),
-          child: Icon(
-            Icons.add,
-            color: ColorManager.white,
-          ),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, RoutePath.newTransaction);
+        },
+        heroTag: RoutePath.newTransaction,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(100))),
+        child: Icon(
+          Icons.add,
+          color: ColorManager.white,
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: isSmallScreen
-            ? BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                items: _navBarItems(context),
-                unselectedItemColor: Theme.of(context).colorScheme.onSurface,
-                selectedItemColor: Theme.of(context).colorScheme.primary,
-                currentIndex: _selectedIndex,
-                onTap: (int index) {
-                  setState(() {
-                    _selectedIndex = index;
-                    _pageController.jumpToPage(_selectedIndex);
-                  });
-                })
-            : null,
-        body: Row(
-          children: <Widget>[
-            if (!isSmallScreen)
-              NavigationRail(
-                selectedIndex: _selectedIndex,
-                onDestinationSelected: (int index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-                extended: isLargeScreen,
-                destinations: _navBarItems(context)
-                    .map((item) => NavigationRailDestination(
-                        icon: item.icon,
-                        selectedIcon: item.activeIcon,
-                        label: Text(
-                          item.label!,
-                        )))
-                    .toList(),
-              ),
-            const VerticalDivider(thickness: 1, width: 1),
-            // This is the main content.
-            Expanded(
-              child: PageView(
-                  controller: _pageController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: _screens),
-            )
-          ],
-        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: isSmallScreen
+          ? BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              items: _navBarItems(context),
+              unselectedItemColor: Theme.of(context).colorScheme.onSurface,
+              selectedItemColor: Theme.of(context).colorScheme.primary,
+              currentIndex: _selectedIndex,
+              onTap: (int index) {
+                setState(() {
+                  _selectedIndex = index;
+                  _pageController.jumpToPage(_selectedIndex);
+                });
+              })
+          : null,
+      body: Row(
+        children: <Widget>[
+          if (!isSmallScreen)
+            NavigationRail(
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: (int index) {
+                setState(() {
+                  _selectedIndex = index;
+                  _pageController.jumpToPage(_selectedIndex);
+                });
+              },
+              extended: isLargeScreen,
+              destinations: _navBarItems(context)
+                  .map((item) => NavigationRailDestination(
+                      icon: item.icon,
+                      selectedIcon: item.activeIcon,
+                      label: Text(
+                        item.label!,
+                      )))
+                  .toList(),
+            ),
+          if (!isSmallScreen) const VerticalDivider(thickness: 1, width: 1),
+          // This is the main content.
+          Expanded(
+            child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: _screens),
+          )
+        ],
       ),
     );
   }

@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "79455569094-ufdkksi1h0el6aoi1fbfh0eok3744lvu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.NguyenLoi.BudgetSS",
+            "certificate_hash": "5d5fb11e3b694ece97367026e56ff0c67209efe3"
+          }
+        },
+        {
           "client_id": "79455569094-jo4ng8fulo1ng9mc4bcd79im4kh7kfsr.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "79455569094-jo4ng8fulo1ng9mc4bcd79im4kh7kfsr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "79455569094-bjp0n8njj02v9esqhq0dmhtd1upntjk3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.NguyenLoi.BudgetSS"
+              }
             }
           ]
         }

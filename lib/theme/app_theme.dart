@@ -188,6 +188,8 @@ class AppTheme {
                   RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               )))),
+      floatingActionButtonTheme:
+          FloatingActionButtonThemeData(backgroundColor: ColorManager.purple13),
 
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
@@ -305,6 +307,8 @@ class AppTheme {
                   RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               )))),
+      floatingActionButtonTheme:
+          FloatingActionButtonThemeData(backgroundColor: ColorManager.purple13),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           shape:
