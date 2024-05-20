@@ -5,34 +5,31 @@ class BFormCheckbox extends FormField<bool> {
   BFormCheckbox(
       {super.key,
       required Widget title,
-      bool initialValue = false,
-      String? Function(bool?)? validator})
-      : super(
-            builder: (field) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      bool super.initialValue = false,
+      super.validator})
+      : super(builder: (field) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: field.value,
-                        onChanged: (v) => {field.didChange(v)},
-                      ),
-                      gapW16,
-                      Expanded(child: title)
-                    ],
+                  Checkbox(
+                    value: field.value,
+                    onChanged: (v) => {field.didChange(v)},
                   ),
-                  if (field.hasError)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: Text(field.errorText ?? 'Invalid',
-                          style: Theme.of(field.context)
-                              .inputDecorationTheme
-                              .errorStyle),
-                    )
+                  gapW16,
+                  Expanded(child: title)
                 ],
-              );
-            },
-            initialValue: initialValue,
-            validator: validator);
+              ),
+              if (field.hasError)
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Text(field.errorText ?? 'Invalid',
+                      style: Theme.of(field.context)
+                          .inputDecorationTheme
+                          .errorStyle),
+                )
+            ],
+          );
+        });
 }
