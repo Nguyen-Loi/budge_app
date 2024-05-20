@@ -6,6 +6,7 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
+import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
 import 'package:flutter/material.dart';
@@ -26,35 +27,25 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: [
-        gapH40,
-        _buildTop(),
-        gapH24,
-        Expanded(
-          child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(32),
-                      topRight: Radius.circular(32))),
-              child: _body(context)),
-        )
-      ],
-    );
-  }
-
-  Widget _buildTop() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: [
-          BText.h2(context.loc.profile),
-          gapH24,
-          _info(),
-        ],
-      ),
-    );
+    return BaseView(
+        title: context.loc.profile,
+        child: Column(
+          children: [
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _info()),
+            gapH24,
+            Expanded(
+              child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(32),
+                          topRight: Radius.circular(32))),
+                  child: _body(context)),
+            )
+          ],
+        ));
   }
 
   Widget _info() {
