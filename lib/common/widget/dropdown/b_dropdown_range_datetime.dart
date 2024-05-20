@@ -4,8 +4,7 @@ import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:flutter/material.dart';
 
 class BDropdownRangeDatetime extends StatelessWidget {
-  const BDropdownRangeDatetime({Key? key, required this.onChanged})
-      : super(key: key);
+  const BDropdownRangeDatetime({super.key, required this.onChanged});
   final void Function(DatetimeRangeModel rangeTime) onChanged;
 
   Map<String, DateTime> getWeekRange(DateTime time) {

@@ -9,17 +9,14 @@ class BFormFieldCustomAmount extends FormField<int> {
   final void Function(int value) onChanged;
   final CurrencyType currencyType;
   BFormFieldCustomAmount({
-    Key? key,
-    int? initialValue,
-    FormFieldValidator<int>? validator,
+    super.key,
+    super.initialValue,
+    super.validator,
     required String label,
     required this.onChanged,
     this.currencyType = CurrencyType.vnd,
     String? hint,
   }) : super(
-          key: key,
-          validator: validator,
-          initialValue: initialValue,
           builder: (field) {
             final _FormFieldState state = field as _FormFieldState;
             return GestureDetector(
