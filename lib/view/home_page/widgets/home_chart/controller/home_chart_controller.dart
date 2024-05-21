@@ -17,7 +17,7 @@ class HomeChartController extends StateNotifier<List<ChartBudgetModel>> {
     // List available
     state = ChartBudgetModel.toList(
         allTransactionCard: _listTransactionCard,
-        dateRange: BDateTimeRange.month(DateTime.now()));
+        dateRange: BDateTimeRange.week(DateTime.now()));
   }
   final List<TransactionCardModel> _listTransactionCard;
 }
