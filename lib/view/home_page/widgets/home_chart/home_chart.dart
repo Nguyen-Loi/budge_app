@@ -1,3 +1,4 @@
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
@@ -22,84 +23,83 @@ class HomeChartState extends ConsumerState<HomeChart> {
   @override
   Widget build(BuildContext context) {
     List<ChartBudgetModel> list = ref.watch(homeChartStateControllerProvider);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            BText.b1('Tuần này'.hardcoded),
-            TextButton(
-              child: BText('Xem tất cả'.hardcoded),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        AspectRatio(
-          aspectRatio: 1.3,
-          child: Row(
-            children: <Widget>[
-              const SizedBox(
-                height: 18,
-              ),
-              Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: PieChart(
-                    PieChartData(
-                      pieTouchData: PieTouchData(
-                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                          setState(() {
-                            if (!event.isInterestedForInteractions ||
-                                pieTouchResponse == null ||
-                                pieTouchResponse.touchedSection == null) {
-                              touchedIndex = -1;
-                              return;
-                            }
-                            touchedIndex = pieTouchResponse
-                                .touchedSection!.touchedSectionIndex;
-                          });
-                        },
-                      ),
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
-                      sections: showingSections(list),
-                    ),
+    return list.isEmpty
+        ? const SizedBox.shrink()
+        : Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BText('Tuần này'.hardcoded),
+                  TextButton(
+                    child: BText('Xem tất cả'.hardcoded),
+                    onPressed: () {},
                   ),
+                ],
+              ),
+              AspectRatio(
+                aspectRatio: 1.3,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: PieChart(
+                          PieChartData(
+                            pieTouchData: PieTouchData(
+                              touchCallback:
+                                  (FlTouchEvent event, pieTouchResponse) {
+                                setState(() {
+                                  if (!event.isInterestedForInteractions ||
+                                      pieTouchResponse == null ||
+                                      pieTouchResponse.touchedSection == null) {
+                                    touchedIndex = -1;
+                                    return;
+                                  }
+                                  touchedIndex = pieTouchResponse
+                                      .touchedSection!.touchedSectionIndex;
+                                });
+                              },
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            sectionsSpace: 0,
+                            centerSpaceRadius: 40,
+                            sections: showingSections(list),
+                          ),
+                        ),
+                      ),
+                    ),
+                    ColumnWithSpacing(
+                      spacing: 4,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: _informations(list),
+                    ),
+                  ],
                 ),
               ),
-              ColumnWithSpacing(
-                spacing: 4,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: _informations(list),
-              ),
-              const SizedBox(
-                width: 28,
-              ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
   }
 
-  PieChartSectionData _itemChart(ChartBudgetModel model) {
-    final isTouched = model.iconId == touchedIndex;
+  PieChartSectionData _itemChart(
+      {required ChartBudgetModel model, required int index}) {
+    final isTouched = index == touchedIndex;
     final fontSize = isTouched ? 25.0 : 16.0;
     final radius = isTouched ? 60.0 : 50.0;
-    const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
     final colour = IconManagerData.getIconModel(model.iconId).color;
+
+    double value = model.value;
     return PieChartSectionData(
       color: colour,
-      value: 40,
-      title: model.budgetName,
+      value: value,
+      title: "",
       radius: radius,
-      titleStyle: context.textTheme.bodyLarge!.copyWith(
-          fontSize: fontSize, fontWeight: FontWeight.bold, shadows: shadows),
+      titleStyle: context.textTheme.bodyLarge!
+          .copyWith(fontSize: fontSize, fontWeight: FontWeight.bold),
     );
   }
 
@@ -108,14 +108,18 @@ class HomeChartState extends ConsumerState<HomeChart> {
       Color colour = IconManagerData.getIconModel(e.iconId).color;
       return Indicator(
         color: colour,
-        text: e.budgetName,
+        text: '${e.budgetName} (${e.value.toStringAsFixed(2)}%)',
         isSquare: true,
       );
     }).toList();
   }
 
   List<PieChartSectionData> showingSections(List<ChartBudgetModel> list) {
-    return list.map((e) => _itemChart(e)).toList();
+    int index = -1;
+    return list.map((e) {
+      index++;
+      return _itemChart(model: e, index: index);
+    }).toList();
   }
 }
 

@@ -58,12 +58,14 @@ class ChartBudgetModel {
     int totalSum = list.fold(0, (sum, item) => sum + item.total);
 
     // Update each item's `value` based on its percentage of the total sum
+    int index = 0;
     for (ChartBudgetModel item in list) {
       if (totalSum > 0) {
-        item.copyWith(value: (item.total / totalSum) * 100);
+        list[index] = item.copyWith(value: (item.total / totalSum) * 100);
       } else {
-        item.copyWith(value: 0);
+        list[index] = item.copyWith(value: 0);
       }
+      index++;
     }
 
     return list;
