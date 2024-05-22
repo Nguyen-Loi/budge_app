@@ -11,6 +11,7 @@ class LottieAssets {
   static const String loadingImage = '$_lottiePath/loadingImage.json';
   static const String error = '$_lottiePath/error.json';
   static const String empty = '$_lottiePath/empty.json';
+  static const String emptyChart = '$_lottiePath/empty_chart.json';
 }
 
 class SvgAssets {

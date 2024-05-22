@@ -1,45 +1,80 @@
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/chart_budget.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
+import 'package:budget_app/constants/assets_constants.dart';
+import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/models_widget/chart_budget_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
-import 'package:budget_app/view/home_page/widgets/home_chart/controller/home_chart_controller.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 
-class HomeChart extends ConsumerStatefulWidget {
-  const HomeChart({super.key});
+class ChartBudget extends StatefulWidget {
+  const ChartBudget({super.key, required this.list});
+  final List<ChartBudgetModel> list;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => HomeChartState();
+  State<ChartBudget> createState() => _ChartBudgetState();
 }
 
-class HomeChartState extends ConsumerState<HomeChart> {
+class _ChartBudgetState extends State<ChartBudget> {
   int touchedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
-    List<ChartBudgetModel> list = ref.watch(homeChartStateControllerProvider);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            BText('Tuần này'.hardcoded),
-            TextButton(
-              child: BText('Xem tất cả'.hardcoded),
-              onPressed: () {},
+    final list = widget.list;
+    return list.isEmpty
+        ? Column(
+            children: [
+              Lottie.asset(LottieAssets.emptyChart),
+              gapH16,
+              BText(context.loc.noData)
+            ],
+          )
+        : AspectRatio(
+            aspectRatio: 1.3,
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: PieChart(
+                      PieChartData(
+                        pieTouchData: PieTouchData(
+                          touchCallback:
+                              (FlTouchEvent event, pieTouchResponse) {
+                            setState(() {
+                              if (!event.isInterestedForInteractions ||
+                                  pieTouchResponse == null ||
+                                  pieTouchResponse.touchedSection == null) {
+                                touchedIndex = -1;
+                                return;
+                              }
+                              touchedIndex = pieTouchResponse
+                                  .touchedSection!.touchedSectionIndex;
+                            });
+                          },
+                        ),
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        sectionsSpace: 0,
+                        centerSpaceRadius: 40,
+                        sections: showingSections(list),
+                      ),
+                    ),
+                  ),
+                ),
+                ColumnWithSpacing(
+                  spacing: 4,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _informations(list),
+                ),
+              ],
             ),
-          ],
-        ),
-        ChartBudget(list: list),
-      ],
-    );
+          );
   }
 
   PieChartSectionData _itemChart(
