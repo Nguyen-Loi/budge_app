@@ -35,7 +35,7 @@ class ChartBudgetModel {
     final listInChart = allTransactionCard
         .where(
           (e) =>
-              e.transaction.transactionType == TransactionTypeEnum.decrease &&
+              e.transaction.transactionType == TransactionTypeEnum.expense &&
               e.transaction.transactionDate.isBefore(dateRange.end) &&
               e.transaction.transactionDate.isAfter(dateRange.start),
         )
@@ -70,6 +70,27 @@ class ChartBudgetModel {
 
     return list;
   }
+
+  //  static List<ChartBudgetModel> toList2(
+  //     {required List<TransactionModel> transactions,
+  //     required List<BudgetModel> budgets}) {
+  //    List<ChartBudgetModel> list = [];
+  //   Map<String, List<TransactionModel>> transactionsMap = {};
+
+  //   for (var transaction in transactions) {
+  //     if (!transactionsMap.containsKey(transaction.budgetId)) {
+  //       transactionsMap[transaction.budgetId!] = [];
+  //     }
+  //     transactionsMap[transaction.budgetId]!.add(transaction);
+  //   }
+
+  //   for (var budget in budgets) {
+  //     final transactionsOfBudget = transactionsMap[budget.id] ?? [];
+  //     final model = ChartBudgetModel(budget: budget, transactions: transactionsOfBudget);
+  //     list.add(model);
+  //   }
+  //   return list;
+  // }
 
   @override
   String toString() {

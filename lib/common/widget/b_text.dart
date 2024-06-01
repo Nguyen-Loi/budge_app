@@ -21,6 +21,7 @@ class BText extends StatelessWidget {
   final int? maxLines;
   final double? wordSpacing;
   final double? letterSpacing;
+  final FontStyle? fontStyle;
 
   const BText.h1(
     this.text, {
@@ -30,6 +31,7 @@ class BText extends StatelessWidget {
     this.maxLines,
     this.wordSpacing,
     this.letterSpacing,
+    this.fontStyle,
     super.key,
   }) : _textType = _BTextType.headline1;
 
@@ -41,6 +43,7 @@ class BText extends StatelessWidget {
     this.maxLines,
     this.wordSpacing,
     this.letterSpacing,
+    this.fontStyle,
     super.key,
   }) : _textType = _BTextType.headline2;
 
@@ -52,6 +55,7 @@ class BText extends StatelessWidget {
     this.maxLines,
     this.wordSpacing,
     this.letterSpacing,
+    this.fontStyle,
     super.key,
   }) : _textType = _BTextType.headline3;
 
@@ -63,6 +67,7 @@ class BText extends StatelessWidget {
     this.maxLines,
     this.wordSpacing,
     this.letterSpacing,
+    this.fontStyle,
     super.key,
   }) : _textType = _BTextType.bodyLarge;
 
@@ -74,6 +79,7 @@ class BText extends StatelessWidget {
     this.maxLines,
     this.wordSpacing,
     this.letterSpacing,
+    this.fontStyle,
     super.key,
   }) : _textType = _BTextType.bodyMedium;
 
@@ -85,6 +91,7 @@ class BText extends StatelessWidget {
     this.maxLines,
     this.wordSpacing,
     this.letterSpacing,
+    this.fontStyle,
     super.key,
   }) : _textType = _BTextType.bodySmall;
 
@@ -96,6 +103,7 @@ class BText extends StatelessWidget {
     this.maxLines,
     this.wordSpacing,
     this.letterSpacing,
+    this.fontStyle,
     super.key,
   }) : _textType = _BTextType.caption;
 
@@ -123,6 +131,7 @@ class BText extends StatelessWidget {
         color: color,
         wordSpacing: wordSpacing,
         letterSpacing: letterSpacing,
-        fontWeight: fontWeight);
+        fontWeight: fontWeight,
+        fontStyle: fontStyle);
   }
 }

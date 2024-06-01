@@ -38,7 +38,7 @@ class TransactionApi extends ITransactionApi {
   TransactionApi({required FirebaseFirestore db}) : _db = db;
 
   Future<TransactionModel> _add(String uid,
-      {required String? budgetId,
+      {required String budgetId,
       required int amount,
       required String note,
       required TransactionTypeEnum transactionType,
@@ -81,7 +81,7 @@ class TransactionApi extends ITransactionApi {
       int amountChanged = newValue - user.balance;
       final transactionType = TransactionTypeEnum.fromAmount(amountChanged);
       final newTransaction = await _add(user.id,
-          budgetId: null,
+          budgetId: GenId.budgetWallet(),
           amount: amountChanged.abs(),
           note: note,
           transactionType: transactionType);
@@ -102,10 +102,10 @@ class TransactionApi extends ITransactionApi {
     try {
       UserModel newUser;
       switch (currentBudget.transactionType) {
-        case TransactionTypeEnum.increase:
+        case TransactionTypeEnum.income:
           newUser = user.copyWith(balance: user.balance + amount);
           break;
-        case TransactionTypeEnum.decrease:
+        case TransactionTypeEnum.expense:
           newUser = user.copyWith(balance: user.balance - amount);
           break;
       }

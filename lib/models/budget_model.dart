@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 
@@ -12,8 +14,9 @@ class BudgetModel {
   final int iconId;
   final int currentAmount;
   final int limit;
-  final int transactionTypeValue;
-  final int rangeDateTimeTypeValue;
+  final String transactionTypeValue;
+  final String budgetTypeValue;
+  final String rangeDateTimeTypeValue;
   final DateTime startDate;
   final DateTime endDate;
   final DateTime createdDate;
@@ -26,6 +29,7 @@ class BudgetModel {
     required this.currentAmount,
     required this.limit,
     required this.transactionTypeValue,
+    required this.budgetTypeValue,
     required this.rangeDateTimeTypeValue,
     required this.startDate,
     required this.endDate,
@@ -39,6 +43,9 @@ class BudgetModel {
   TransactionTypeEnum get transactionType =>
       TransactionTypeEnum.fromValue(transactionTypeValue);
 
+  BudgetTypeEnum get budgetType =>
+      BudgetTypeEnum.fromValue(transactionTypeValue);
+
   StatusBudgetProgress get status {
     if (currentAmount <= limit / 4) {
       return StatusBudgetProgress.start;
@@ -51,7 +58,6 @@ class BudgetModel {
     }
   }
 
-
   BudgetModel copyWith({
     String? id,
     String? userId,
@@ -59,8 +65,9 @@ class BudgetModel {
     int? iconId,
     int? currentAmount,
     int? limit,
-    int? transactionTypeValue,
-    int? rangeDateTimeTypeValue,
+    String? transactionTypeValue,
+    String? budgetTypeValue,
+    String? rangeDateTimeTypeValue,
     DateTime? startDate,
     DateTime? endDate,
     DateTime? createdDate,
@@ -74,7 +81,9 @@ class BudgetModel {
       currentAmount: currentAmount ?? this.currentAmount,
       limit: limit ?? this.limit,
       transactionTypeValue: transactionTypeValue ?? this.transactionTypeValue,
-      rangeDateTimeTypeValue: rangeDateTimeTypeValue ?? this.rangeDateTimeTypeValue,
+      budgetTypeValue: budgetTypeValue ?? this.budgetTypeValue,
+      rangeDateTimeTypeValue:
+          rangeDateTimeTypeValue ?? this.rangeDateTimeTypeValue,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       createdDate: createdDate ?? this.createdDate,
@@ -91,6 +100,7 @@ class BudgetModel {
       'currentAmount': currentAmount,
       'limit': limit,
       'transactionTypeValue': transactionTypeValue,
+      'budgetTypeValue': budgetTypeValue,
       'rangeDateTimeTypeValue': rangeDateTimeTypeValue,
       'startDate': startDate.millisecondsSinceEpoch,
       'endDate': endDate.millisecondsSinceEpoch,
@@ -107,56 +117,61 @@ class BudgetModel {
       iconId: map['iconId'] as int,
       currentAmount: map['currentAmount'] as int,
       limit: map['limit'] as int,
-      transactionTypeValue: map['transactionTypeValue'] as int,
-      rangeDateTimeTypeValue: map['rangeDateTimeTypeValue'] as int,
+      transactionTypeValue: map['transactionTypeValue'] as String,
+      budgetTypeValue: map['budgetTypeValue'] as String,
+      rangeDateTimeTypeValue: map['rangeDateTimeTypeValue'] as String,
       startDate: DateTime.fromMillisecondsSinceEpoch(map['startDate'] as int),
       endDate: DateTime.fromMillisecondsSinceEpoch(map['endDate'] as int),
-      createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
-      updatedDate: DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
+      createdDate:
+          DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
+      updatedDate:
+          DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory BudgetModel.fromJson(String source) => BudgetModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory BudgetModel.fromJson(String source) =>
+      BudgetModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, transactionTypeValue: $transactionTypeValue, rangeDateTimeTypeValue: $rangeDateTimeTypeValue, startDate: $startDate, endDate: $endDate, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, transactionTypeValue: $transactionTypeValue, budgetTypeValue: $budgetTypeValue, rangeDateTimeTypeValue: $rangeDateTimeTypeValue, startDate: $startDate, endDate: $endDate, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
   bool operator ==(covariant BudgetModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.userId == userId &&
-      other.name == name &&
-      other.iconId == iconId &&
-      other.currentAmount == currentAmount &&
-      other.limit == limit &&
-      other.transactionTypeValue == transactionTypeValue &&
-      other.rangeDateTimeTypeValue == rangeDateTimeTypeValue &&
-      other.startDate == startDate &&
-      other.endDate == endDate &&
-      other.createdDate == createdDate &&
-      other.updatedDate == updatedDate;
+
+    return other.id == id &&
+        other.userId == userId &&
+        other.name == name &&
+        other.iconId == iconId &&
+        other.currentAmount == currentAmount &&
+        other.limit == limit &&
+        other.transactionTypeValue == transactionTypeValue &&
+        other.budgetTypeValue == budgetTypeValue &&
+        other.rangeDateTimeTypeValue == rangeDateTimeTypeValue &&
+        other.startDate == startDate &&
+        other.endDate == endDate &&
+        other.createdDate == createdDate &&
+        other.updatedDate == updatedDate;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      userId.hashCode ^
-      name.hashCode ^
-      iconId.hashCode ^
-      currentAmount.hashCode ^
-      limit.hashCode ^
-      transactionTypeValue.hashCode ^
-      rangeDateTimeTypeValue.hashCode ^
-      startDate.hashCode ^
-      endDate.hashCode ^
-      createdDate.hashCode ^
-      updatedDate.hashCode;
+        userId.hashCode ^
+        name.hashCode ^
+        iconId.hashCode ^
+        currentAmount.hashCode ^
+        limit.hashCode ^
+        transactionTypeValue.hashCode ^
+        budgetTypeValue.hashCode ^
+        rangeDateTimeTypeValue.hashCode ^
+        startDate.hashCode ^
+        endDate.hashCode ^
+        createdDate.hashCode ^
+        updatedDate.hashCode;
   }
 }
