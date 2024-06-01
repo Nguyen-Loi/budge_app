@@ -10,7 +10,7 @@ class BudgetTransactionsModel {
     required this.transactions,
   });
 
-  List<BudgetTransactionsModel> toList(
+  static List<BudgetTransactionsModel> mapList(
       List<BudgetModel> budgets, List<TransactionModel> transactions) {
     List<BudgetTransactionsModel> list = [];
     Map<String, List<TransactionModel>> transactionsMap = {};

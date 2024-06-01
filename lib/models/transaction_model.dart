@@ -1,25 +1,26 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
+import 'package:budget_app/core/gen_id.dart';
+import 'package:budget_app/core/icon_manager_data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TransactionModel {
   final String id;
-  //Empty is wallet
-  final String? budgetId;
+  final String budgetId;
   final int amount;
   final String note;
-  final int transactionTypeValue;
+  final String transactionTypeValue;
   final DateTime createdDate;
   final DateTime transactionDate;
   final DateTime updatedDate;
   TransactionModel({
     required this.id,
-    this.budgetId,
+    required this.budgetId,
     required this.amount,
     required this.note,
     required this.transactionTypeValue,
@@ -31,12 +32,42 @@ class TransactionModel {
   TransactionTypeEnum get transactionType =>
       TransactionTypeEnum.fromValue(transactionTypeValue);
 
+  TransactionCardModel toTransactionCard(Ref ref,
+      {required List<BudgetModel> budgets}) {
+    if (budgetId == GenId.budgetWallet()) {
+      String transactionName;
+      int iconId;
+      switch (transactionType) {
+        case TransactionTypeEnum.income:
+          transactionName = ref.read(appLocalizationsProvider).deposit;
+          iconId = IconManagerData.idMoneyIn;
+          break;
+        case TransactionTypeEnum.expense:
+          transactionName = ref.read(appLocalizationsProvider).withdrawal;
+          iconId = IconManagerData.idMoneyOut;
+          break;
+      }
+      return TransactionCardModel(
+          transaction: this,
+          transactionName: transactionName,
+          iconId: iconId,
+          transactionType: transactionType);
+    }
+    final e = budgets.firstWhere((e) => e.id == budgetId);
+
+    return TransactionCardModel(
+        transaction: this,
+        transactionName: e.name,
+        iconId: e.iconId,
+        transactionType: e.transactionType);
+  }
+
   TransactionModel copyWith({
     String? id,
     String? budgetId,
     int? amount,
     String? note,
-    int? transactionTypeValue,
+    String? transactionTypeValue,
     DateTime? createdDate,
     DateTime? transactionDate,
     DateTime? updatedDate,
@@ -66,40 +97,13 @@ class TransactionModel {
     };
   }
 
-
-  TransactionCardModel toTransactionCard(Ref ref,
-      {required List<BudgetModel> budgets}) {
-    if (budgetId == null) {
-      int iconId;
-      String transactionName;
-      switch (transactionType) {
-        case TransactionTypeEnum.increase:
-          iconId = 100;
-          transactionName = ref.read(appLocalizationsProvider).deposit;
-          break;
-        case TransactionTypeEnum.decrease:
-          iconId = 101;
-          transactionName = ref.read(appLocalizationsProvider).withdrawal;
-          break;
-      }
-      return TransactionCardModel(
-          transaction: this, transactionName: transactionName, iconId: iconId);
-    } else {
-      final budget = budgets.firstWhere((e) => e.id == budgetId);
-      return TransactionCardModel(
-          transaction: this,
-          transactionName: budget.name,
-          iconId: budget.iconId);
-    }
-  }
-
   factory TransactionModel.fromMap(Map<String, dynamic> map) {
     return TransactionModel(
       id: map['id'] as String,
-      budgetId: map['budgetId'] != null ? map['budgetId'] as String : null,
+      budgetId: map['budgetId'] as String,
       amount: map['amount'] as int,
       note: map['note'] as String,
-      transactionTypeValue: map['transactionTypeValue'] as int,
+      transactionTypeValue: map['transactionTypeValue'] as String,
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       transactionDate:

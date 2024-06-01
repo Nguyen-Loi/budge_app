@@ -1,23 +1,13 @@
 enum BudgetTypeEnum {
-  increase(1),
-  decrease(2);
+  budget('BUDGET'),
+  debit('DEBIT'),;  
 
-  factory BudgetTypeEnum.fromValue(int value) {
+  factory BudgetTypeEnum.fromValue(String value) {
     return BudgetTypeEnum.values.firstWhere((e)=> e.value==value);
   }
 
-
-  final int value;
+  final String value;
   const BudgetTypeEnum(this.value);
 }
 
-extension ConvertTypeAccount on BudgetTypeEnum {
-  String toText() {
-    switch (this) {
-      case BudgetTypeEnum.increase:
-        return 'Income';
-      case BudgetTypeEnum.decrease:
-        return 'Expense';
-    }
-  }
-}
+

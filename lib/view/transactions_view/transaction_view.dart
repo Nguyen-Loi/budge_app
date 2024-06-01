@@ -52,7 +52,7 @@ class _TransactionViewState extends State<TransactionView>
                 children: [
                   _summaryText(
                     ref: ref,
-                    label: 'Income',
+                    label: context.loc.income,
                     value: ref
                         .watch(transactionControllerProvider.notifier)
                         .sumIncome,
@@ -61,7 +61,7 @@ class _TransactionViewState extends State<TransactionView>
                   const SizedBox(height: 16),
                   _summaryText(
                     ref: ref,
-                    label: 'Expense',
+                    label: context.loc.expense,
                     value: ref
                         .watch(transactionControllerProvider.notifier)
                         .sumExpense,
