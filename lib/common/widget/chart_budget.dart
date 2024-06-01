@@ -27,7 +27,7 @@ class _ChartBudgetState extends State<ChartBudget> {
     return list.isEmpty
         ? Column(
             children: [
-              Lottie.asset(LottieAssets.emptyChart),
+              Lottie.asset(LottieAssets.emptyChart, width: 160, height: 160),
               gapH16,
               BText(context.loc.noData)
             ],

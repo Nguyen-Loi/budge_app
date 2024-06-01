@@ -1,13 +1,11 @@
-import 'package:collection/collection.dart';
 
 enum TransactionTypeEnum {
-  increase(1),
-  decrease(2);
+  income('INCOME'),
+  expense('EXPENSE');
 
-  factory TransactionTypeEnum.fromValue(int value) {
+  factory TransactionTypeEnum.fromValue(String value) {
     return TransactionTypeEnum.values
-            .firstWhereOrNull((e) => e.value == value) ??
-        TransactionTypeEnum.increase;
+            .firstWhere((e) => e.value == value) ;
   }
 
   factory TransactionTypeEnum.fromAmount(int amount) {
@@ -15,22 +13,12 @@ enum TransactionTypeEnum {
       throw Exception('Not supported for this amount: $amount');
     }
     if (amount.sign == 1) {
-      return TransactionTypeEnum.increase;
+      return TransactionTypeEnum.income;
     }
-    return TransactionTypeEnum.decrease;
+    return TransactionTypeEnum.expense;
   }
 
-  final int value;
+  final String value;
   const TransactionTypeEnum(this.value);
 }
 
-extension ConvertTypeAccount on TransactionTypeEnum {
-  String toText() {
-    switch (this) {
-      case TransactionTypeEnum.increase:
-        return 'Income';
-      case TransactionTypeEnum.decrease:
-        return 'Expense';
-    }
-  }
-}

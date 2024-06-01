@@ -1,7 +1,5 @@
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/chart_budget.dart';
-import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/models_widget/chart_budget_model.dart';
@@ -31,10 +29,11 @@ class HomeChartState extends ConsumerState<HomeChart> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             BText('Tuần này'.hardcoded),
-            TextButton(
-              child: BText('Xem tất cả'.hardcoded),
-              onPressed: () {},
-            ),
+            if (list.isNotEmpty)
+              TextButton(
+                child: BText('Xem tất cả'.hardcoded),
+                onPressed: () {},
+              ),
           ],
         ),
         ChartBudget(list: list),
