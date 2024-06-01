@@ -25,14 +25,20 @@ class TransactionCard extends StatelessWidget {
         title: BText(model.transactionName, fontWeight: FontWeight.bold),
         subtitle: BText.b3(model.transaction.transactionDate.toFormatDate()),
         trailing: BText(
-          model.transaction.amount.toMoneyStr(),
-          color:
-              model.transaction.transactionType == TransactionTypeEnum.increase
-                  ? Theme.of(context).colorScheme.tertiary
-                  : ColorManager.red1,
+          _amount(),
+          color: model.transaction.transactionType == TransactionTypeEnum.income
+              ? Theme.of(context).colorScheme.tertiary
+              : ColorManager.red1,
         ),
       ),
     );
+  }
+
+  String _amount() {
+    if (model.transaction.transactionType == TransactionTypeEnum.income) {
+      return model.transaction.amount.toMoneyStr();
+    }
+    return '- ${model.transaction.amount.toMoneyStr()}';
   }
 
   Future<void> _showInfo(BuildContext context) {
@@ -110,11 +116,11 @@ class TransactionCard extends StatelessWidget {
     String amountStr;
     Color color;
     switch (transactionType) {
-      case TransactionTypeEnum.increase:
+      case TransactionTypeEnum.income:
         amountStr = '+${amount.toMoneyStr()}';
         color = Theme.of(context).colorScheme.tertiary;
         break;
-      case TransactionTypeEnum.decrease:
+      case TransactionTypeEnum.expense:
         amountStr = '-${amount.toMoneyStr()}';
         color = ColorManager.red2;
         break;

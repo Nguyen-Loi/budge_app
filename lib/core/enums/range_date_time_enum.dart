@@ -4,12 +4,12 @@ import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:flutter/widgets.dart';
 
 enum RangeDateTimeEnum {
-  week(1),
-  month(2),
-  year(3),
-  custom(4);
+  week('WEEK'),
+  month('MONTH'),
+  year('YEAR'),
+  custom('CUSTOM');
 
-  factory RangeDateTimeEnum.fromValue(int value) {
+  factory RangeDateTimeEnum.fromValue(String value) {
     return RangeDateTimeEnum.values
         .firstWhere((element) => element.value == value);
   }
@@ -40,6 +40,6 @@ enum RangeDateTimeEnum {
     }
   }
 
-  final int value;
+  final String value;
   const RangeDateTimeEnum(this.value);
 }

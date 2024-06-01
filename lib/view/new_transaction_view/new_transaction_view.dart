@@ -36,8 +36,7 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
 
   void _addTransaction() {
     if (_formKey.currentState!.validate()) {
-      ref.read(userBaseControllerProvider.notifier).addTransaction(
-          context,
+      ref.read(userBaseControllerProvider.notifier).addTransaction(context,
           budgetId: _budgetId,
           amount: _amount,
           note: _noteController.text,
@@ -53,7 +52,7 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
       },
       child: BaseView.customBackground(
           buildTop: gapH32,
-          title: 'New transaction',
+          title: 'New Transaction',
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Form(

@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class IconManagerData {
+  const IconManagerData._();
   // Icon special
   static const IconData _moneyIn = FontAwesomeIcons.moneyBillTrendUp;
   static const IconData _moneyOut = FontAwesomeIcons.moneyBill;
+  static const IconData _wallet = FontAwesomeIcons.wallet;
+  static const int idWallet = 100;
+  static const int idMoneyIn = 101;
+  static const int idMoneyOut = 102;
 
   static const IconData _accomodation = Icons.home;
   static const IconData _categoryEating = FontAwesomeIcons.utensils;
@@ -46,8 +51,9 @@ class IconManagerData {
   static const IconData _laptop = FontAwesomeIcons.laptop;
 
   static final List<IconModel> _listIcon = [
-    IconModel(100, _moneyIn, Colors.lightBlue),
-    IconModel(101, _moneyOut, Colors.teal),
+    IconModel(idMoneyIn, _moneyIn, Colors.lightBlue),
+    IconModel(idMoneyOut, _moneyOut, Colors.teal),
+    IconModel(idWallet, _wallet, Colors.teal),
     IconModel(0, _accomodation, Colors.cyan),
     IconModel(1, _categoryEating, ColorManager.yellow),
     IconModel(2, _shopping, Colors.green),
