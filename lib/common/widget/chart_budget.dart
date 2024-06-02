@@ -1,4 +1,4 @@
-import 'package:budget_app/common/log.dart';
+
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/assets_constants.dart';
