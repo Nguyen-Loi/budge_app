@@ -7,7 +7,7 @@ platform :android do
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
-    mode_distribute = "internal"
+    mode_distribute = "alpha"
 
     # find latest version code
     def latest_google_play_version_code
@@ -32,7 +32,8 @@ platform :android do
 
     gradle(
       task: 'bundle',
-      build_type: 'Release' 
+      build_type: 'Release',
+      flags: '--stacktrace' # Add --stacktrace option to provide more detailed error information
     )
     upload_to_play_store(
       track: mode_distribute, 
