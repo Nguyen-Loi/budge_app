@@ -85,7 +85,7 @@ class _CategoryBudget extends StatelessWidget {
         ? _itemCategoryBase(
             context,
             model: model,
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
           )
         : InkWell(
             onTap: () {
