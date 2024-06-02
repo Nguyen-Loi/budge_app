@@ -52,7 +52,7 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
       },
       child: BaseView.customBackground(
           buildTop: gapH32,
-          title: 'New Transaction',
+          title: context.loc.newTransaction,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Form(

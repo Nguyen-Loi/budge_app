@@ -215,5 +215,6 @@
         }
     },
     "custom": "Custom",
-    "operatingPeriod": "Operating period"
+    "operatingPeriod": "Operating period",
+    "newTransaction": "New transaction"
 }
