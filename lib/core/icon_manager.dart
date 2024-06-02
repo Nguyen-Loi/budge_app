@@ -20,6 +20,7 @@ class IconManager {
   static IconData galley = Icons.image;
   static IconData signOut = Icons.logout;
   static IconData modify = FontAwesomeIcons.pen;
+  static IconData excel = FontAwesomeIcons.fileExcel;
 
   static IconData account = FontAwesomeIcons.user;
   static IconData setting = Icons.settings_outlined;

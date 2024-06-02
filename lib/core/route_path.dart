@@ -7,6 +7,7 @@ import 'package:budget_app/view/budget_view/budget_new_view/new_budget_view.dart
 import 'package:budget_app/view/main_page_view/main_page_view.dart';
 import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
+import 'package:budget_app/view/report_view/report_view.dart';
 import 'package:budget_app/view/settings_view/settings_view.dart';
 import 'package:budget_app/view/update_wallet_view/update_wallet_view.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class RoutePath {
 
   //Base
   static const String settings = "/settings";
+  static const String report = "/report";
 }
 
 class MainRouter {
@@ -61,6 +63,8 @@ class MainRouter {
 
       case RoutePath.settings:
         return MaterialPageRoute(builder: (_) => const SettingsView());
+      case RoutePath.report:
+        return MaterialPageRoute(builder: (_) => const ReportView());
 
       default:
         return MaterialPageRoute(
