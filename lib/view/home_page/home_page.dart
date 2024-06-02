@@ -1,9 +1,11 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
@@ -36,7 +38,14 @@ class _HomePageState extends ConsumerState<HomePage>
             child: _appbarInfo(),
           ),
           gapW16,
-          GestureDetector(onTap: () {}, child: Icon(IconManager.notification)),
+          GestureDetector(
+              onTap: () {
+                BDialogInfo(
+                        message: 'Tính năng đang phát triển',
+                        dialogInfoType: DialogInfoType.warning)
+                    .present(context);
+              },
+              child: Icon(IconManager.notification)),
           gapW16,
         ],
       ),
