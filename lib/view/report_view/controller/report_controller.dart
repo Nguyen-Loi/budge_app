@@ -1,3 +1,4 @@
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/merge_model/budget_transactions_model.dart';
@@ -56,6 +57,8 @@ class ReportController extends StateNotifier<DateTime> {
   void _reload() {
     _chartBudgetCurrent = ChartBudgetModel.toList(
         allTransactionCard: _transactionsCard
+            .where((e) =>
+                e.transaction.transactionType == TransactionTypeEnum.expense)
             .filterByMonth(
                 time: state, getDate: (e) => e.transaction.transactionDate)
             .toList());

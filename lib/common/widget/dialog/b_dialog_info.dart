@@ -5,7 +5,7 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
 
-enum DialogInfoType { error, success }
+enum DialogInfoType { error, success, warning }
 
 class BDialogInfo {
   final String? title;
@@ -57,6 +57,11 @@ extension Present<T> on BDialogInfo {
         bTextConfirm = textSubmit ?? context.loc.continueText;
         bTitle = title ?? context.loc.successUp;
         bColor = Theme.of(context).colorScheme.tertiary;
+      case DialogInfoType.warning:
+        bIcon = icon ?? IconManager.warning;
+        bTextConfirm = textSubmit ?? context.loc.close;
+        bTitle = title ?? 'Warning';
+        bColor = ColorManager.yellow;
     }
     return showDialog<T?>(
       context: context,
