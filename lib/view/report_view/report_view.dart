@@ -3,6 +3,7 @@ import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/chart_budget.dart';
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -87,21 +88,29 @@ class ReportView extends ConsumerWidget {
           ),
           gapW24,
           Expanded(
-              child: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              border: Border.all(
-                  color: Theme.of(context).dividerColor.withOpacity(0.3),
-                  width: 0.5),
-            ),
-            child: Column(
-              children: [
-                Icon(IconManager.excel,
-                    color: Theme.of(context).colorScheme.primary),
-                gapH8,
-                const BText('Export excel')
-              ],
+              child: GestureDetector(
+            onTap: () {
+              BDialogInfo(
+                      message: 'Tính năng đang phát triển',
+                      dialogInfoType: DialogInfoType.warning)
+                  .present(context);
+            },
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                border: Border.all(
+                    color: Theme.of(context).dividerColor.withOpacity(0.3),
+                    width: 0.5),
+              ),
+              child: Column(
+                children: [
+                  Icon(IconManager.excel,
+                      color: Theme.of(context).colorScheme.primary),
+                  gapH8,
+                  const BText('Export excel')
+                ],
+              ),
             ),
           ))
         ],
