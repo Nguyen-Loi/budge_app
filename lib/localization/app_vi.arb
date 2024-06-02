@@ -215,5 +215,6 @@
         }
     },
     "custom": "Tuỳ chỉnh",
-    "operatingPeriod": "Khoảng thời gian"
+    "operatingPeriod": "Khoảng thời gian",
+    "newTransaction": "Giao dịch mới"
 }
