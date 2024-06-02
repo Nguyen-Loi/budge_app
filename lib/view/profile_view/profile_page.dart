@@ -1,5 +1,6 @@
 import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
@@ -86,7 +87,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
           _item(
               icon: IconManager.contact,
               text: context.loc.contact,
-              onPressed: () {}),
+              onPressed: () {
+                BDialogInfo(
+                        message: 'Tính năng đang phát triển',
+                        dialogInfoType: DialogInfoType.warning)
+                    .present(context);
+              }),
           _item(
               icon: IconManager.signOut,
               text: context.loc.signOut,
