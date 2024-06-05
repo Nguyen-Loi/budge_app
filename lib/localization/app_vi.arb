@@ -15,7 +15,7 @@
     "email": "Email",
     "orLoginWith": "Hoặc đăng nhập bằng",
     "signUp": "Đăng ký",
-    "welecomeAppName": "Chào mừng đến với BudgetSS!",
+    "welecomeAppName": "Chào mừng đến với ứng dụng quản lý chi tiêu!",
     "signUpToStart": "Hoàn thành sau đó đăng ký để bắt đầu",
     "pleaseEnableService": "Vui lòng bật điều khoản dịch vụ của chúng tôi",
     "nEableServiceDescription": "{count, plural, =0{Bằng việc đăng ký, bạn đồng ý với  } =1{điều khoản dịch vụ và chính sách quyền riêng tư} other{{count} errorText}}",
@@ -80,7 +80,7 @@
         }
     },
     "home": "Trang chủ",
-    "appName": "Budget SS",
+    "appName": "Quản lý chi tiêu",
     "left": "Còn lại",
     "approaced": "Tiếp cận",
     "exceeded": "Vượt quá",
@@ -216,5 +216,7 @@
     },
     "custom": "Tuỳ chỉnh",
     "operatingPeriod": "Khoảng thời gian",
-    "newTransaction": "Giao dịch mới"
+    "newTransaction": "Giao dịch mới",
+    "developingFreatures": "Tính năng đang phát triển",
+    "exportExcel": "Xuất Excel"
 }
