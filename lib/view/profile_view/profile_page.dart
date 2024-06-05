@@ -89,7 +89,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
               text: context.loc.contact,
               onPressed: () {
                 BDialogInfo(
-                        message: 'Tính năng đang phát triển',
+                        message: context.loc.developingFreatures,
                         dialogInfoType: DialogInfoType.warning)
                     .present(context);
               }),
