@@ -40,7 +40,7 @@ class _HomePageState extends ConsumerState<HomePage>
           GestureDetector(
               onTap: () {
                 BDialogInfo(
-                        message: 'Tính năng đang phát triển',
+                        message:  context.loc.developingFreatures,
                         dialogInfoType: DialogInfoType.warning)
                     .present(context);
               },
