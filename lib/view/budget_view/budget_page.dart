@@ -26,6 +26,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final list = ref.watch(budgetBaseControllerProvider);
     return BaseView(
       title: context.loc.budgetInUse,
       floatingActionButton: FloatingActionButton(
@@ -35,23 +36,20 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
         },
         child: Icon(IconManager.add, color: ColorManager.white),
       ),
-      child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        children: [
-          _budgetList(),
-        ],
-      ),
+      child: list.isEmpty
+          ? Center(
+              child: BStatus.empty(
+                text: context.loc.budgetEmpty,
+              ),
+            )
+          : ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              children: [
+                ColumnWithSpacing(
+                  children: list.map((e) => BudgetCard(model: e)).toList(),
+                )
+              ],
+            ),
     );
-  }
-
-  Widget _budgetList() {
-    List<BudgetModel> list = ref.watch(budgetBaseControllerProvider);
-    return list.isEmpty
-        ? BStatus.empty(
-            text: context.loc.budgetEmpty,
-          )
-        : ColumnWithSpacing(
-            children: list.map((e) => BudgetCard(model: e)).toList(),
-          );
   }
 }

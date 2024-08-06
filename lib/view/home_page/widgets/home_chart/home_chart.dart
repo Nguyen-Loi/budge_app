@@ -1,3 +1,4 @@
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/chart_budget.dart';
 import 'package:budget_app/core/route_path.dart';
@@ -26,14 +27,17 @@ class HomeChartState extends ConsumerState<HomeChart> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            BText('Tuần này'.hardcoded),
-            if (list.isNotEmpty)
-              TextButton(
-                child: BText('Xem tất cả'.hardcoded),
-                onPressed: () {
-                  Navigator.pushNamed(context, RoutePath.report);
-                },
+            BText('Tháng này'.hardcoded),
+            TextButton(
+              child: BText(
+                'Xem tất cả'.hardcoded,
+                color: ColorManager.blue,
+                fontWeight: FontWeight.bold,
               ),
+              onPressed: () {
+                Navigator.pushNamed(context, RoutePath.report);
+              },
+            ),
           ],
         ),
         ChartBudget(list: list),
