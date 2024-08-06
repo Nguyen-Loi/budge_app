@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:budget_app/common/widget/b_status.dart';
@@ -24,16 +23,16 @@ class HomeTransactionsRecently extends ConsumerWidget {
 
   Widget _base(BuildContext context,
       {required List<TransactionCardModel> list}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        BText(context.loc.recentTransactions),
-        gapH16,
-        list.isEmpty
-            ? BStatus.empty(text: context.loc.thereAreNoTransactions)
-            : ColumnWithSpacing(
-                children: list.map((e) => TransactionCard(model: e)).toList())
-      ],
-    );
+    return list.isEmpty
+        ? const SizedBox.shrink()
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              BText(context.loc.recentTransactions),
+              gapH16,
+              ColumnWithSpacing(
+                  children: list.map((e) => TransactionCard(model: e)).toList())
+            ],
+          );
   }
 }

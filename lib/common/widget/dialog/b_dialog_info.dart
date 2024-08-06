@@ -14,12 +14,14 @@ class BDialogInfo {
   final String? textSubmit;
   final DialogInfoType dialogInfoType;
   final IconData? icon;
+  final List<Widget>? actions;
   BDialogInfo({
     this.title,
     required this.message,
     this.onSubmit,
     this.textSubmit,
     this.icon,
+    this.actions,
     required this.dialogInfoType,
   });
 }
@@ -86,19 +88,20 @@ extension Present<T> on BDialogInfo {
               BText.b3(message)
             ],
           ),
-          actions: [
-            FilledButton(
-              style: FilledButton.styleFrom(
-                  backgroundColor: bColor,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 64)),
-              onPressed: onSubmit ?? () => Navigator.of(context).pop(),
-              child: BText.b1(
-                bTextConfirm,
-                color: ColorManager.white,
-              ),
-            )
-          ],
+          actions: actions ??
+              [
+                FilledButton(
+                  style: FilledButton.styleFrom(
+                      backgroundColor: bColor,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 64)),
+                  onPressed: onSubmit ?? () => Navigator.of(context).pop(),
+                  child: BText.b1(
+                    bTextConfirm,
+                    color: ColorManager.white,
+                  ),
+                )
+              ],
         );
       },
     );

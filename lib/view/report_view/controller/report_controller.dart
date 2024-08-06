@@ -41,6 +41,11 @@ class ReportController extends StateNotifier<DateTime> {
   DateTimeRange get datetimeRange => _dateTimeRange;
 
   void _setRangeDateTime() {
+    if (_budgets.isEmpty) {
+      final now = DateTime.now();
+      _dateTimeRange = DateTimeRange(start: now, end: now);
+      return;
+    }
     final minDate = _budgets
         .map((e) => e.startDate)
         .reduce((a, b) => a.isBefore(b) ? a : b);
