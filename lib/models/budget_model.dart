@@ -43,8 +43,7 @@ class BudgetModel {
   TransactionTypeEnum get transactionType =>
       TransactionTypeEnum.fromValue(transactionTypeValue);
 
-  BudgetTypeEnum get budgetType =>
-      BudgetTypeEnum.fromValue(transactionTypeValue);
+  BudgetTypeEnum get budgetType => BudgetTypeEnum.fromValue(budgetTypeValue);
 
   StatusBudgetProgress get status {
     if (currentAmount <= limit / 4) {

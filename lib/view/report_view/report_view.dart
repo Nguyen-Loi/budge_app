@@ -3,7 +3,6 @@ import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/chart_budget.dart';
-import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -14,6 +13,8 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/merge_model/budget_transactions_model.dart';
+import 'package:budget_app/models/models_widget/chart_budget_model.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/report_view/controller/report_controller.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class ReportView extends ConsumerWidget {
       title: 'Báo cáo'.hardcoded,
       child: ListView(
         children: [
-          _filterDateAndExportExcel(ref: ref, context: context),
+          _filterDateAndExportExcel(ref: ref, context: context, list: list),
           gapH16,
           list.isNotEmpty
               ? _body(context: context, ref: ref)
@@ -60,8 +61,12 @@ class ReportView extends ConsumerWidget {
   }
 
   Widget _filterDateAndExportExcel(
-      {required WidgetRef ref, required BuildContext context}) {
+      {required WidgetRef ref,
+      required BuildContext context,
+      required List<ChartBudgetModel> list}) {
     final currentTimePicker = ref.watch(reportControllerProvider);
+    final user = ref.watch(userBaseControllerProvider);
+    bool disableButton = list.isEmpty;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -91,10 +96,11 @@ class ReportView extends ConsumerWidget {
           Expanded(
               child: GestureDetector(
             onTap: () {
-              BDialogInfo(
-                      message: context.loc.developingFreatures,
-                      dialogInfoType: DialogInfoType.warning)
-                  .present(context);
+              if (!disableButton) {
+                ref
+                    .read(reportControllerProvider.notifier)
+                    .exportExcel(context, user: user!);
+              }
             },
             child: Container(
               padding: const EdgeInsets.all(8),
@@ -107,9 +113,14 @@ class ReportView extends ConsumerWidget {
               child: Column(
                 children: [
                   Icon(IconManager.excel,
-                      color: Theme.of(context).colorScheme.primary),
+                      color: disableButton
+                          ? Theme.of(context).disabledColor
+                          : Theme.of(context).colorScheme.primary),
                   gapH8,
-                  BText(context.loc.exportExcel)
+                  BText(context.loc.exportExcel,
+                      color: disableButton
+                          ? Theme.of(context).disabledColor
+                          : null)
                 ],
               ),
             ),

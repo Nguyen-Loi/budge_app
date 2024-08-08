@@ -1,9 +1,17 @@
+import 'dart:ffi';
+
+import 'package:budget_app/common/log.dart';
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
+import 'package:budget_app/common/widget/dialog/b_loading.dart';
+import 'package:budget_app/core/b_excel.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
+import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/models/models_widget/chart_budget_model.dart';
+import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +65,49 @@ class ReportController extends StateNotifier<DateTime> {
   void updateDate(DateTime date) {
     state = date;
     _reload();
+  }
+
+  void exportExcel(BuildContext context, {required UserModel user}) async {
+    final closeDialog = showLoading(context: context);
+    final res = await BExcel.generatedReport(
+        dateTimeRange: _dateTimeRange,
+        list: _budgetTransantionsList,
+        user: user);
+    closeDialog();
+    res.fold((l) {
+      logInfo(l.error);
+      showSnackBar(context, l.message);
+    }, (r) {
+      BDialogInfo(
+          dialogInfoType: DialogInfoType.success,
+          message: 'Xuất báo cáo hoàn thành',
+          actions: [
+            FilledButton(
+              style: FilledButton.styleFrom(
+                  backgroundColor: bColor,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 64)),
+              onPressed: onSubmit ?? () => Navigator.of(context).pop(),
+              child: BText.b1(
+                bTextConfirm,
+                color: ColorManager.white,
+              ),
+            ),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                  backgroundColor: bColor,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 64)),
+              onPressed: onSubmit ?? () => Navigator.of(context).pop(),
+              child: BText.b1(
+                bTextConfirm,
+                color: ColorManager.white,
+              ),
+            )
+          ]).present(
+        context,
+      );
+    });
   }
 
   void _reload() {
