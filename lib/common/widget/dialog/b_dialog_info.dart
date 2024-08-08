@@ -6,6 +6,16 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
 
 enum DialogInfoType { error, success, warning }
+class BActionDialog {
+  final String? title1;
+  final String? title2;
+  final String? message1;
+  final String? message2;
+  final Color? colour1;
+  final Color? colour2;
+
+  BActionDialog({this.title1, this.title2, this.message1, this.message2, this.colour1, this.colour2});
+}
 
 class BDialogInfo {
   final String? title;
@@ -14,7 +24,7 @@ class BDialogInfo {
   final String? textSubmit;
   final DialogInfoType dialogInfoType;
   final IconData? icon;
-  final List<Widget>? actions;
+  final BActionDialog? actions;
   BDialogInfo({
     this.title,
     required this.message,
