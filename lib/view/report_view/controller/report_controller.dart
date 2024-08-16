@@ -79,7 +79,7 @@ class ReportController extends StateNotifier<DateTime> {
       showSnackBar(context, l.message);
     }, (r) {
       BDialogInfo(
-          dialogInfoType: DialogInfoType.success,
+          dialogInfoType: BDialogInfoType.success,
           message: 'Xuất báo cáo hoàn thành',
           actions: [
             FilledButton(

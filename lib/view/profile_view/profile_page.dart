@@ -90,7 +90,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
               onPressed: () {
                 BDialogInfo(
                         message: context.loc.developingFreatures,
-                        dialogInfoType: DialogInfoType.warning)
+                        dialogInfoType: BDialogInfoType.warning)
                     .present(context);
               }),
           _item(
