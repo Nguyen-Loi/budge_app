@@ -5,36 +5,33 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
 
-enum DialogInfoType { error, success, warning }
-class BActionDialog {
-  final String? title1;
-  final String? title2;
-  final String? message1;
-  final String? message2;
-  final Color? colour1;
-  final Color? colour2;
-
-  BActionDialog({this.title1, this.title2, this.message1, this.message2, this.colour1, this.colour2});
-}
+enum BDialogInfoType { error, success, warning }
 
 class BDialogInfo {
   final String? title;
   final String message;
   final VoidCallback? onSubmit;
   final String? textSubmit;
-  final DialogInfoType dialogInfoType;
+  final BDialogInfoType dialogInfoType;
   final IconData? icon;
-  final BActionDialog? actions;
   BDialogInfo({
     this.title,
     required this.message,
     this.onSubmit,
     this.textSubmit,
     this.icon,
-    this.actions,
     required this.dialogInfoType,
   });
 }
+
+// class BDialogAction {
+//   final String? title;
+//   final String? message;
+//   final VoidCallback? onSubmit;
+//   final String? textSubmit;
+//   final DialogInfoType dialogInfoType;
+//   final IconData? icon;
+// }
 
 Future<void> showBDialogInfoError(BuildContext context,
     {String? title,
@@ -46,7 +43,7 @@ Future<void> showBDialogInfoError(BuildContext context,
     title: title,
     textSubmit: textSubmit,
     onSubmit: onConfirm,
-    dialogInfoType: DialogInfoType.error,
+    dialogInfoType: BDialogInfoType.error,
   ).present(context);
 }
 
@@ -59,17 +56,17 @@ extension Present<T> on BDialogInfo {
     String bTitle;
     Color bColor;
     switch (dialogInfoType) {
-      case DialogInfoType.error:
+      case BDialogInfoType.error:
         bIcon = icon ?? IconManager.emojiFrown;
         bTextConfirm = textSubmit ?? context.loc.close;
         bTitle = title ?? context.loc.errorUp;
         bColor = ColorManager.red2;
-      case DialogInfoType.success:
+      case BDialogInfoType.success:
         bIcon = icon ?? IconManager.success;
         bTextConfirm = textSubmit ?? context.loc.continueText;
         bTitle = title ?? context.loc.successUp;
         bColor = Theme.of(context).colorScheme.tertiary;
-      case DialogInfoType.warning:
+      case BDialogInfoType.warning:
         bIcon = icon ?? IconManager.warning;
         bTextConfirm = textSubmit ?? context.loc.close;
         bTitle = title ?? 'Warning';
@@ -78,42 +75,52 @@ extension Present<T> on BDialogInfo {
     return showDialog<T?>(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          actionsAlignment: MainAxisAlignment.center,
-          title: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  // borderRadius: BorderRadius.circular(100),
-                  border: Border.all(width: 2, color: bColor)),
-              child: Icon(
-                icon ?? bIcon,
-                color: bColor,
-              )),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BText.h2(bTitle, letterSpacing: 3),
-              gapH8,
-              BText.b3(message)
-            ],
-          ),
-          actions: actions ??
-              [
-                FilledButton(
-                  style: FilledButton.styleFrom(
-                      backgroundColor: bColor,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 64)),
-                  onPressed: onSubmit ?? () => Navigator.of(context).pop(),
-                  child: BText.b1(
-                    bTextConfirm,
-                    color: ColorManager.white,
-                  ),
-                )
-              ],
-        );
+        return _baseDialog(context,
+            bColor: bColor,
+            bIcon: bIcon,
+            bTitle: bTitle,
+            actions: [
+              FilledButton(
+                style: FilledButton.styleFrom(
+                    backgroundColor: bColor,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8, horizontal: 64)),
+                onPressed: onSubmit ?? () => Navigator.of(context).pop(),
+                child: BText.b1(
+                  bTextConfirm,
+                  color: ColorManager.white,
+                ),
+              )
+            ]);
       },
+    );
+  }
+
+  Widget _baseDialog(BuildContext context,
+      {required Color bColor,
+      required IconData bIcon,
+      required String bTitle,
+      required List<Widget> actions}) {
+    return AlertDialog(
+      actionsAlignment: MainAxisAlignment.center,
+      title: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(width: 2, color: bColor)),
+          child: Icon(
+            icon ?? bIcon,
+            color: bColor,
+          )),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BText.h2(bTitle, letterSpacing: 3),
+          gapH8,
+          BText.b3(message)
+        ],
+      ),
+      actions: actions,
     );
   }
 }
