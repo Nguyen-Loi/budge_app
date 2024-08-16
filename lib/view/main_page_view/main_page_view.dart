@@ -108,7 +108,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
                   ),
                 )
               ],
-              dialogInfoType: DialogInfoType.warning,
+              dialogInfoType: BDialogInfoType.warning,
             ).present(context);
           } else {
             Navigator.pushNamed(context, RoutePath.newTransaction);
