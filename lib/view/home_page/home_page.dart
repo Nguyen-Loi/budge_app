@@ -40,8 +40,8 @@ class _HomePageState extends ConsumerState<HomePage>
           GestureDetector(
               onTap: () {
                 BDialogInfo(
-                        message:  context.loc.developingFreatures,
-                        dialogInfoType: DialogInfoType.warning)
+                        message: context.loc.developingFreatures,
+                        dialogInfoType: BDialogInfoType.warning)
                     .present(context);
               },
               child: Icon(IconManager.notification)),
