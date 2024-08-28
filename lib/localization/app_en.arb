@@ -218,5 +218,21 @@
     "operatingPeriod": "Operating period",
     "newTransaction": "New transaction",
     "developingFreatures": "Developing Features",
-    "exportExcel": "Export Excel"
+    "exportExcel": "Export Excel",
+    "warning":"Warning",
+    "confirm": "Confirm",
+    "budgetSummary": "Budget summary",
+    "currentValue": "Current value",
+    "budgets": "Budgets",
+    "pBudgetInformationFromDateToEndDate": "Budget information from date {fromDate} to {endDate}",
+    "duration": "Duration",
+    "type": "Type",
+    "thisMonth": "This month",
+    "viewAll": "View all",
+    "youMustCreateAtLeastOneBudget": "You must create at least one budget to use this feature",
+    "navigateToIt": "Navigate to it",
+    "reportExportedSuccessfully": "Report exported successfully",
+    "report": "Report",
+    "value": "Value",
+    "debit": "Debit"
 }
