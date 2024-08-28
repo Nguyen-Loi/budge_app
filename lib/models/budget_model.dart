@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
 
 enum StatusBudgetProgress { start, progress, almostDone, complete }
 
@@ -14,7 +13,6 @@ class BudgetModel {
   final int iconId;
   final int currentAmount;
   final int limit;
-  final String transactionTypeValue;
   final String budgetTypeValue;
   final String rangeDateTimeTypeValue;
   final DateTime startDate;
@@ -28,7 +26,6 @@ class BudgetModel {
     required this.iconId,
     required this.currentAmount,
     required this.limit,
-    required this.transactionTypeValue,
     required this.budgetTypeValue,
     required this.rangeDateTimeTypeValue,
     required this.startDate,
@@ -39,9 +36,6 @@ class BudgetModel {
 
   RangeDateTimeEnum get rangeDateTimeType =>
       RangeDateTimeEnum.fromValue(rangeDateTimeTypeValue);
-
-  TransactionTypeEnum get transactionType =>
-      TransactionTypeEnum.fromValue(transactionTypeValue);
 
   BudgetTypeEnum get budgetType => BudgetTypeEnum.fromValue(budgetTypeValue);
 
@@ -64,7 +58,6 @@ class BudgetModel {
     int? iconId,
     int? currentAmount,
     int? limit,
-    String? transactionTypeValue,
     String? budgetTypeValue,
     String? rangeDateTimeTypeValue,
     DateTime? startDate,
@@ -79,7 +72,6 @@ class BudgetModel {
       iconId: iconId ?? this.iconId,
       currentAmount: currentAmount ?? this.currentAmount,
       limit: limit ?? this.limit,
-      transactionTypeValue: transactionTypeValue ?? this.transactionTypeValue,
       budgetTypeValue: budgetTypeValue ?? this.budgetTypeValue,
       rangeDateTimeTypeValue:
           rangeDateTimeTypeValue ?? this.rangeDateTimeTypeValue,
@@ -98,7 +90,6 @@ class BudgetModel {
       'iconId': iconId,
       'currentAmount': currentAmount,
       'limit': limit,
-      'transactionTypeValue': transactionTypeValue,
       'budgetTypeValue': budgetTypeValue,
       'rangeDateTimeTypeValue': rangeDateTimeTypeValue,
       'startDate': startDate.millisecondsSinceEpoch,
@@ -116,7 +107,6 @@ class BudgetModel {
       iconId: map['iconId'] as int,
       currentAmount: map['currentAmount'] as int,
       limit: map['limit'] as int,
-      transactionTypeValue: map['transactionTypeValue'] as String,
       budgetTypeValue: map['budgetTypeValue'] as String,
       rangeDateTimeTypeValue: map['rangeDateTimeTypeValue'] as String,
       startDate: DateTime.fromMillisecondsSinceEpoch(map['startDate'] as int),
@@ -135,7 +125,7 @@ class BudgetModel {
 
   @override
   String toString() {
-    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, transactionTypeValue: $transactionTypeValue, budgetTypeValue: $budgetTypeValue, rangeDateTimeTypeValue: $rangeDateTimeTypeValue, startDate: $startDate, endDate: $endDate, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, budgetTypeValue: $budgetTypeValue, rangeDateTimeTypeValue: $rangeDateTimeTypeValue, startDate: $startDate, endDate: $endDate, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -148,7 +138,6 @@ class BudgetModel {
         other.iconId == iconId &&
         other.currentAmount == currentAmount &&
         other.limit == limit &&
-        other.transactionTypeValue == transactionTypeValue &&
         other.budgetTypeValue == budgetTypeValue &&
         other.rangeDateTimeTypeValue == rangeDateTimeTypeValue &&
         other.startDate == startDate &&
@@ -165,7 +154,6 @@ class BudgetModel {
         iconId.hashCode ^
         currentAmount.hashCode ^
         limit.hashCode ^
-        transactionTypeValue.hashCode ^
         budgetTypeValue.hashCode ^
         rangeDateTimeTypeValue.hashCode ^
         startDate.hashCode ^

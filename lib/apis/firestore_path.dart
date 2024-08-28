@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestorePath {
-  static const String _budget = 'Budget';
-  static const String _transaction = 'Transaction';
-  static const String _user = 'User';
-  static const String _statistical = 'Statistical';
+  static const String _budget = 'Budgets';
+  static const String _transaction = 'Transactions';
+  static const String _user = 'Users';
 
   static String users() => _user;
   static String user(String uid) => '$_user/$uid';
@@ -15,8 +14,6 @@ class FirestorePath {
   static String transactions({required String uid}) =>
       '$_user/$uid/$_transaction';
 
-  static String statistical({required String uid}) =>
-      '$_user/$uid/$_statistical';
 }
 
 extension Converter<T> on CollectionReference<Map<String, dynamic>> {

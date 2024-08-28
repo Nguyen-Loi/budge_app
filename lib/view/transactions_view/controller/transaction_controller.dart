@@ -1,4 +1,4 @@
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
@@ -46,11 +46,13 @@ class TransactionsController extends StateNotifier<List<TransactionCardModel>> {
     int newIncome = 0;
     int newExpense = 0;
     for (var e in state) {
-      switch (e.transaction.transactionType) {
-        case TransactionTypeEnum.income:
+      switch (e.transaction.budgetType) {
+        case BudgetTypeEnum.income:
+        case BudgetTypeEnum.incomeWallet:
           newIncome += e.transaction.amount;
           break;
-        case TransactionTypeEnum.expense:
+        case BudgetTypeEnum.expense:
+        case BudgetTypeEnum.expenseWallet:
           newExpense += e.transaction.amount;
           break;
       }

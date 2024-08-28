@@ -4,7 +4,7 @@ import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -28,7 +28,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              BText.h2(context.loc.transactions, textAlign: TextAlign.left),
+              BText.h3(context.loc.transactions, textAlign: TextAlign.left),
               gapH16,
               listGroupTransactionByDay.isEmpty
                   ? _transactionEmpty(context)
@@ -67,8 +67,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
                                     ? context.loc.noData
                                     : e.note)),
                             gapW16,
-                            _itemStatusTransaction(context,
-                                type: e.transactionType)
+                            _itemStatusTransaction(context, type: e.budgetType)
                           ],
                         ),
                         gapH16,
@@ -81,7 +80,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
                             ),
                             gapW16,
                             _itemMoneyTransaction(context,
-                                type: e.transactionType, amount: e.amount)
+                                type: e.budgetType, amount: e.amount)
                           ],
                         ),
                       ],
@@ -100,23 +99,27 @@ class BudgetDetailTransactions extends ConsumerWidget {
   }
 
   Widget _itemStatusTransaction(BuildContext context,
-      {required TransactionTypeEnum type}) {
+      {required BudgetTypeEnum type}) {
     switch (type) {
-      case TransactionTypeEnum.expense:
+      case BudgetTypeEnum.expense:
+      case BudgetTypeEnum.expenseWallet:
         return BText.caption(context.loc.expense);
-      case TransactionTypeEnum.income:
+      case BudgetTypeEnum.income:
+      case BudgetTypeEnum.incomeWallet:
         return BText.caption(context.loc.income);
     }
   }
 
   Widget _itemMoneyTransaction(BuildContext context,
-      {required TransactionTypeEnum type, required int amount}) {
+      {required BudgetTypeEnum type, required int amount}) {
     String amountMoney = amount.toMoneyStr();
     switch (type) {
-      case TransactionTypeEnum.expense:
+      case BudgetTypeEnum.expense:
+      case BudgetTypeEnum.expenseWallet:
         return BText('-$amountMoney',
             color: ColorManager.red1, fontWeight: FontWeight.w700);
-      case TransactionTypeEnum.income:
+      case BudgetTypeEnum.income:
+      case BudgetTypeEnum.incomeWallet:
         return BText('+$amountMoney',
             color: Theme.of(context).colorScheme.tertiary,
             fontWeight: FontWeight.w700);
