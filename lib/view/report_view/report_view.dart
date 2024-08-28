@@ -6,12 +6,11 @@ import 'package:budget_app/common/widget/chart_budget.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/models/models_widget/chart_budget_model.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
@@ -27,7 +26,7 @@ class ReportView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final list = ref.watch(reportControllerProvider.notifier).chartBudgetList;
     return BaseView(
-      title: 'Báo cáo'.hardcoded,
+      title: context.loc.report,
       child: ListView(
         children: [
           _filterDateAndExportExcel(ref: ref, context: context, list: list),
@@ -134,10 +133,10 @@ class ReportView extends ConsumerWidget {
       {required BudgetTransactionsModel budgetTransactions}) {
     final budget = budgetTransactions.budget;
     final transactions = budgetTransactions.transactions;
-    final budgetColor = budget.transactionType == TransactionTypeEnum.income
+    final budgetColor = budget.budgetType == BudgetTypeEnum.income
         ? Theme.of(context).colorScheme.tertiary
         : ColorManager.red1;
-    final budgetAmount = budget.transactionType == TransactionTypeEnum.income
+    final budgetAmount = budget.budgetType == BudgetTypeEnum.income
         ? budget.currentAmount.toMoneyStr()
         : '- ${budget.currentAmount.toMoneyStr()}';
     return ExpansionTile(
@@ -157,14 +156,12 @@ class ReportView extends ConsumerWidget {
           color: budgetColor,
         ),
         children: transactions.map((e) {
-          final transactionColor =
-              e.transactionType == TransactionTypeEnum.income
-                  ? Theme.of(context).colorScheme.tertiary
-                  : ColorManager.red1;
-          final transactionAmount =
-              e.transactionType == TransactionTypeEnum.income
-                  ? e.amount.toMoneyStr()
-                  : '- ${e.amount.toMoneyStr()}';
+          final transactionColor = e.budgetType == BudgetTypeEnum.income
+              ? Theme.of(context).colorScheme.tertiary
+              : ColorManager.red1;
+          final transactionAmount = e.budgetType == BudgetTypeEnum.income
+              ? e.amount.toMoneyStr()
+              : '- ${e.amount.toMoneyStr()}';
           return ListTile(
             title: BText(
               e.transactionDate.toFormatDate(),

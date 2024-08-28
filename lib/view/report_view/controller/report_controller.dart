@@ -1,12 +1,11 @@
-import 'dart:ffi';
-
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/b_excel.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
 import 'package:budget_app/core/utils.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
@@ -70,41 +69,19 @@ class ReportController extends StateNotifier<DateTime> {
   void exportExcel(BuildContext context, {required UserModel user}) async {
     final closeDialog = showLoading(context: context);
     final res = await BExcel.generatedReport(
-        dateTimeRange: _dateTimeRange,
-        list: _budgetTransantionsList,
-        user: user);
+      context,
+      dateTimeRange: _dateTimeRange,
+      list: _budgetTransantionsList,
+    );
     closeDialog();
     res.fold((l) {
       logInfo(l.error);
       showSnackBar(context, l.message);
     }, (r) {
       BDialogInfo(
-          dialogInfoType: BDialogInfoType.success,
-          message: 'Xuất báo cáo hoàn thành',
-          actions: [
-            FilledButton(
-              style: FilledButton.styleFrom(
-                  backgroundColor: bColor,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 64)),
-              onPressed: onSubmit ?? () => Navigator.of(context).pop(),
-              child: BText.b1(
-                bTextConfirm,
-                color: ColorManager.white,
-              ),
-            ),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                  backgroundColor: bColor,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 64)),
-              onPressed: onSubmit ?? () => Navigator.of(context).pop(),
-              child: BText.b1(
-                bTextConfirm,
-                color: ColorManager.white,
-              ),
-            )
-          ]).present(
+        dialogInfoType: BDialogInfoType.success,
+        message: context.loc.reportExportedSuccessfully,
+      ).presentAction(
         context,
       );
     });
@@ -113,8 +90,7 @@ class ReportController extends StateNotifier<DateTime> {
   void _reload() {
     _chartBudgetCurrent = ChartBudgetModel.toList(
         allTransactionCard: _transactionsCard
-            .where((e) =>
-                e.transaction.transactionType == TransactionTypeEnum.expense)
+            .where((e) => e.transaction.budgetType == BudgetTypeEnum.expense)
             .filterByMonth(
                 time: state, getDate: (e) => e.transaction.transactionDate)
             .toList());

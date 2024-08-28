@@ -1,4 +1,3 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/custom/budget_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -55,7 +54,7 @@ class BudgetDetailView extends StatelessWidget {
           // info
           Row(
             children: [
-              BText.b3(context.loc.youAlreadySpent, color: ColorManager.grey1),
+              BText.b3(context.loc.youAlreadySpent),
               gapW16,
               Expanded(
                   child: BText.b3(context.loc.spendLimitPerMonth,
@@ -70,7 +69,7 @@ class BudgetDetailView extends StatelessWidget {
                   color: Theme.of(context).colorScheme.secondary),
               gapW16,
               Expanded(
-                  child: BText.h2('\$${model.limit.toMoneyStr()}',
+                  child: BText.h2(model.limit.toMoneyStr(),
                       textAlign: TextAlign.end)),
             ],
           ),

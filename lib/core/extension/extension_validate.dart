@@ -30,9 +30,8 @@ extension ValidateForm on String? {
   }
 
   String? validateName(BuildContext context) {
-    final nameRegExp = RegExp(r"^[A-Za-z\s'-]+$");
     String textError = context.loc.nameInvalid;
-    if (this == null || !nameRegExp.hasMatch(this!)) {
+    if (this == null) {
       return textError;
     }
     return null;
@@ -62,13 +61,11 @@ extension ValidateForm on String? {
       return textAmountInvalid;
     }
 
-    final intRegExp = RegExp(r'^\d+$');
+    final intRegExp = RegExp(r'^-?\d+$');
     String formatCurrentValue = this!.replaceAll(',', '');
 
-// If the value is a negative number, return null
-    if (formatCurrentValue.startsWith('-') ||
-        !intRegExp.hasMatch(formatCurrentValue)) {
-      return null;
+    if (!intRegExp.hasMatch(formatCurrentValue)) {
+      return textAmountInvalid;
     }
     if (int.parse(formatCurrentValue) == newValue) {
       return textWalletMatches;

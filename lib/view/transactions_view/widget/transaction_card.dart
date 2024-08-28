@@ -3,7 +3,7 @@ import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -26,7 +26,7 @@ class TransactionCard extends StatelessWidget {
         subtitle: BText.b3(model.transaction.transactionDate.toFormatDate()),
         trailing: BText(
           _amount(),
-          color: model.transaction.transactionType == TransactionTypeEnum.income
+          color: model.transaction.budgetType == BudgetTypeEnum.income
               ? Theme.of(context).colorScheme.tertiary
               : ColorManager.red1,
         ),
@@ -35,7 +35,7 @@ class TransactionCard extends StatelessWidget {
   }
 
   String _amount() {
-    if (model.transaction.transactionType == TransactionTypeEnum.income) {
+    if (model.transaction.budgetType == BudgetTypeEnum.income) {
       return model.transaction.amount.toMoneyStr();
     }
     return '- ${model.transaction.amount.toMoneyStr()}';
@@ -66,7 +66,7 @@ class TransactionCard extends StatelessWidget {
                 _itemAmount(context,
                     label: context.loc.amount,
                     amount: model.transaction.amount,
-                    transactionType: model.transaction.transactionType),
+                    budgetType: model.transaction.budgetType),
                 _itemText(
                     label: context.loc.transactionDate,
                     content: model.transaction.transactionDate.toFormatDate()),
@@ -112,15 +112,17 @@ class TransactionCard extends StatelessWidget {
   Widget _itemAmount(BuildContext context,
       {required String label,
       required int amount,
-      required TransactionTypeEnum transactionType}) {
+      required BudgetTypeEnum budgetType}) {
     String amountStr;
     Color color;
-    switch (transactionType) {
-      case TransactionTypeEnum.income:
+    switch (budgetType) {
+      case BudgetTypeEnum.income:
+      case BudgetTypeEnum.incomeWallet:
         amountStr = '+${amount.toMoneyStr()}';
         color = Theme.of(context).colorScheme.tertiary;
         break;
-      case TransactionTypeEnum.expense:
+      case BudgetTypeEnum.expense:
+      case BudgetTypeEnum.expenseWallet:
         amountStr = '-${amount.toMoneyStr()}';
         color = ColorManager.red2;
         break;

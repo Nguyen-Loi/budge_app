@@ -10,28 +10,15 @@ enum BDialogInfoType { error, success, warning }
 class BDialogInfo {
   final String? title;
   final String message;
-  final VoidCallback? onSubmit;
-  final String? textSubmit;
   final BDialogInfoType dialogInfoType;
   final IconData? icon;
   BDialogInfo({
     this.title,
     required this.message,
-    this.onSubmit,
-    this.textSubmit,
     this.icon,
     required this.dialogInfoType,
   });
 }
-
-// class BDialogAction {
-//   final String? title;
-//   final String? message;
-//   final VoidCallback? onSubmit;
-//   final String? textSubmit;
-//   final DialogInfoType dialogInfoType;
-//   final IconData? icon;
-// }
 
 Future<void> showBDialogInfoError(BuildContext context,
     {String? title,
@@ -41,16 +28,13 @@ Future<void> showBDialogInfoError(BuildContext context,
   return BDialogInfo(
     message: message,
     title: title,
-    textSubmit: textSubmit,
-    onSubmit: onConfirm,
     dialogInfoType: BDialogInfoType.error,
   ).present(context);
 }
 
 extension Present<T> on BDialogInfo {
-  Future<T?> present(
-    BuildContext context,
-  ) {
+  Future<T?> present(BuildContext context,
+      {String? textSubmit, VoidCallback? onSubmit}) {
     IconData bIcon;
     String bTextConfirm;
     String bTitle;
@@ -69,7 +53,7 @@ extension Present<T> on BDialogInfo {
       case BDialogInfoType.warning:
         bIcon = icon ?? IconManager.warning;
         bTextConfirm = textSubmit ?? context.loc.close;
-        bTitle = title ?? 'Warning';
+        bTitle = title ?? context.loc.warning;
         bColor = ColorManager.yellow;
     }
     return showDialog<T?>(
@@ -88,6 +72,85 @@ extension Present<T> on BDialogInfo {
                 onPressed: onSubmit ?? () => Navigator.of(context).pop(),
                 child: BText.b1(
                   bTextConfirm,
+                  color: ColorManager.white,
+                ),
+              )
+            ]);
+      },
+    );
+  }
+
+  Future<T?> presentAction(
+    BuildContext context, {
+    String? textSubmit,
+    VoidCallback? onSubmit,
+    String? textClose,
+    VoidCallback? onClose,
+  }) {
+    IconData bIcon;
+    String bTextSubmit;
+    Color bColorButtonSubmit;
+    String bTextClose;
+    Color bColorButtonClose;
+    String bTitle;
+
+    switch (dialogInfoType) {
+      case BDialogInfoType.error:
+        bIcon = icon ?? IconManager.emojiFrown;
+        bTitle = title ?? context.loc.errorUp;
+
+        bTextSubmit = textSubmit ?? context.loc.confirm;
+        bColorButtonSubmit = ColorManager.red2;
+        bTextClose = textClose ?? context.loc.close;
+        bColorButtonClose = ColorManager.grey1;
+      case BDialogInfoType.success:
+        bIcon = icon ?? IconManager.success;
+        bTitle = title ?? context.loc.successUp;
+
+        bTextSubmit = textSubmit ?? context.loc.continueText;
+        bColorButtonSubmit = Theme.of(context).colorScheme.tertiary;
+        bTextClose = textClose ?? context.loc.close;
+        bColorButtonClose = ColorManager.grey1;
+      case BDialogInfoType.warning:
+        bIcon = icon ?? IconManager.warning;
+        bTitle = title ?? context.loc.warning;
+
+        bTextSubmit = textSubmit ?? context.loc.confirm;
+        bColorButtonSubmit = ColorManager.yellow;
+        bTextClose = textClose ?? context.loc.close;
+        bColorButtonClose = ColorManager.grey1;
+    }
+    return showDialog<T?>(
+      context: context,
+      builder: (context) {
+        return _baseDialog(context,
+            bColor: bColorButtonSubmit,
+            bIcon: bIcon,
+            bTitle: bTitle,
+            actions: [
+              FilledButton(
+                style: FilledButton.styleFrom(
+                    backgroundColor: bColorButtonClose,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8, horizontal: 16)),
+                onPressed: onClose ?? () => Navigator.of(context).pop(),
+                child: BText.b1(
+                  bTextClose,
+                  color: ColorManager.white,
+                ),
+              ),
+              const SizedBox(width: 16),
+              FilledButton(
+                style: FilledButton.styleFrom(
+                    backgroundColor: bColorButtonSubmit,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8, horizontal: 16)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  onSubmit?.call();
+                },
+                child: BText.b1(
+                  bTextSubmit,
                   color: ColorManager.white,
                 ),
               )

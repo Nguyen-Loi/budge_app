@@ -1,11 +1,9 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_status.dart';
-import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/budget_view/budget_page.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
@@ -58,6 +56,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
       const BudgetPage(),
       const ProfilePage(),
     ];
+
     super.initState();
   }
 
@@ -86,30 +85,15 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
         onPressed: () async {
           if (ref.watch(budgetBaseControllerProvider).isEmpty) {
             BDialogInfo(
-              message:
-                  'Bạn phải tạo ít nhất một ngân sách để sử dụng tính năng này',
-              actions: [
-                FilledButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.pushNamed(context, RoutePath.newBudget);
-                  },
-                  child: BText.b1(
-                    'Chuyển đến'.hardcoded,
-                    color: ColorManager.white,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                FilledButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: BText.b1(
-                    context.loc.close,
-                    color: ColorManager.white,
-                  ),
-                )
-              ],
+              message: context.loc.youMustCreateAtLeastOneBudget,
               dialogInfoType: BDialogInfoType.warning,
-            ).present(context);
+            ).presentAction(
+              context,
+              onSubmit: () {
+                Navigator.pushNamed(context, RoutePath.newBudget);
+              },
+              textSubmit: context.loc.navigateToIt,
+            );
           } else {
             Navigator.pushNamed(context, RoutePath.newTransaction);
           }

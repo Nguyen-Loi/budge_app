@@ -1,6 +1,6 @@
 import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/common/log.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_query.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/providers.dart';
@@ -41,7 +41,7 @@ class TransactionApi extends ITransactionApi {
       {required String budgetId,
       required int amount,
       required String note,
-      required TransactionTypeEnum transactionType,
+      required BudgetTypeEnum budgetType,
       DateTime? transactionDate}) async {
     final now = DateTime.now();
 
@@ -53,7 +53,7 @@ class TransactionApi extends ITransactionApi {
         budgetId: budgetId,
         amount: amount,
         note: note,
-        transactionTypeValue: transactionType.value,
+        budgetTypeValue: budgetType.value,
         createdDate: now,
         transactionDate: transactionDate ?? now,
         updatedDate: now);
@@ -79,12 +79,12 @@ class TransactionApi extends ITransactionApi {
 
       // Add transaction
       int amountChanged = newValue - user.balance;
-      final transactionType = TransactionTypeEnum.fromAmount(amountChanged);
+      final transactionType = BudgetTypeEnum.fromAmount(amountChanged);
       final newTransaction = await _add(user.id,
           budgetId: GenId.budgetWallet(),
           amount: amountChanged.abs(),
           note: note,
-          transactionType: transactionType);
+          budgetType: transactionType);
       return right((newUser, newTransaction));
     } catch (e) {
       logError(e.toString());
@@ -101,11 +101,13 @@ class TransactionApi extends ITransactionApi {
       required DateTime transactionDate}) async {
     try {
       UserModel newUser;
-      switch (currentBudget.transactionType) {
-        case TransactionTypeEnum.income:
+      switch (currentBudget.budgetType) {
+        case BudgetTypeEnum.income:
+        case BudgetTypeEnum.incomeWallet:
           newUser = user.copyWith(balance: user.balance + amount);
           break;
-        case TransactionTypeEnum.expense:
+        case BudgetTypeEnum.expense:
+        case BudgetTypeEnum.expenseWallet:
           newUser = user.copyWith(balance: user.balance - amount);
           break;
       }
@@ -117,7 +119,7 @@ class TransactionApi extends ITransactionApi {
           budgetId: currentBudget.id,
           amount: amount,
           note: note ?? '',
-          transactionType: currentBudget.transactionType,
+          budgetType: currentBudget.budgetType,
           transactionDate: transactionDate);
 
       await _db.doc(FirestorePath.user(user.id)).update(newUser.toMap());
