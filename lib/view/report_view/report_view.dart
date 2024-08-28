@@ -113,12 +113,18 @@ class ReportView extends ConsumerWidget {
                 children: [
                   Icon(IconManager.excel,
                       color: disableButton
-                          ? Theme.of(context).disabledColor
-                          : Theme.of(context).colorScheme.primary),
+                          ? Theme.of(context)
+                              .colorScheme
+                              .shadow
+                              .withOpacity(0.3)
+                          : null),
                   gapH8,
                   BText(context.loc.exportExcel,
                       color: disableButton
-                          ? Theme.of(context).disabledColor
+                          ? Theme.of(context)
+                              .colorScheme
+                              .shadow
+                              .withOpacity(0.3)
                           : null)
                 ],
               ),
