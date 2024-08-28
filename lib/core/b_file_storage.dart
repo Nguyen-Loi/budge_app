@@ -29,10 +29,9 @@ class BFileStorage {
     return directory;
   }
 
-  static Future<File> writeCounter(String bytes, String name) async {
+  static Future<File> writeCounter(List<int> bytes, String fileName) async {
     final path = await _localPath;
-    File file = File('$path/$name');
-    logInfo("Save file");
-    return file.writeAsString(bytes);
+    File file = File('$path/$fileName');
+    return file.writeAsBytes(bytes);
   }
 }

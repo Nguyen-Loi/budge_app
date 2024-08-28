@@ -1,4 +1,4 @@
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_data.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
 
@@ -26,16 +26,12 @@ class ChartBudgetModel {
     };
   }
 
-  static List<ChartBudgetModel> toList(
-      {required List<TransactionCardModel> allTransactionCard,
-   }) {
+  static List<ChartBudgetModel> toList({
+    required List<TransactionCardModel> allTransactionCard,
+  }) {
     List<ChartBudgetModel> list = [];
     final listInChart = allTransactionCard
-        .where(
-          (e) =>
-              e.transaction.transactionType == TransactionTypeEnum.expense 
-            
-        )
+        .where((e) => e.transaction.budgetType == BudgetTypeEnum.expense)
         .toList();
 
     final groupBudgetId = listInChart.groupBy((e) => e.transaction.budgetId);
