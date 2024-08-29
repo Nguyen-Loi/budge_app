@@ -19,6 +19,6 @@ extension NumExtensions on num {
     if (!isPrefix || this == 0) {
       return formattedNumber;
     }
-    return this > 0 ? '+$formattedNumber' : '-$formattedNumber';
+    return this > 0 ? '+$formattedNumber' : formattedNumber;
   }
 }

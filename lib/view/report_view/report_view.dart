@@ -1,4 +1,3 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
@@ -7,9 +6,7 @@ import 'package:budget_app/common/widget/chart_budget.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
-import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/merge_model/budget_transactions_model.dart';
@@ -134,12 +131,6 @@ class ReportView extends ConsumerWidget {
       {required BudgetTransactionsModel budgetTransactions}) {
     final budget = budgetTransactions.budget;
     final transactions = budgetTransactions.transactions;
-    final budgetColor = budget.budgetType == BudgetTypeEnum.income
-        ? Theme.of(context).colorScheme.tertiary
-        : ColorManager.red1;
-    final budgetAmount = budget.budgetType == BudgetTypeEnum.income
-        ? budget.currentAmount.toMoneyStr()
-        : '- ${budget.currentAmount.toMoneyStr()}';
     return ExpansionTile(
         leading: BIcon(id: budget.iconId),
         shape: RoundedRectangleBorder(
@@ -152,9 +143,9 @@ class ReportView extends ConsumerWidget {
               color: Theme.of(context).dividerColor.withOpacity(0.2), width: 1),
         ),
         title: BText(budget.name, fontWeight: FontWeight.w700),
-        trailing: BText(
-          budgetAmount,
-          color: budgetColor,
+        trailing: BTextMoney(
+          budget.currentAmount,
+          fontWeight: FontWeight.bold,
         ),
         children: transactions.map((e) {
           return ListTile(
@@ -163,7 +154,6 @@ class ReportView extends ConsumerWidget {
             ),
             trailing: BTextMoney(
               e.amount,
-              fontStyle: FontStyle.italic,
             ),
           );
         }).toList());
