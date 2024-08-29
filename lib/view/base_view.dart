@@ -9,6 +9,7 @@ class BaseView extends StatelessWidget {
     required this.title,
     required this.child,
     this.actions,
+    this.bottom,
     this.floatingActionButton,
   })  : _type = _TypeView.base,
         buildTop = null;
@@ -17,6 +18,7 @@ class BaseView extends StatelessWidget {
       required this.title,
       required this.buildTop,
       required this.child,
+      this.bottom,
       this.floatingActionButton,
       this.actions})
       : _type = _TypeView.customBackground;
@@ -26,6 +28,7 @@ class BaseView extends StatelessWidget {
   final Widget? buildTop;
   final List<Widget>? actions;
   final FloatingActionButton? floatingActionButton;
+  final PreferredSizeWidget? bottom;
   @override
   Widget build(BuildContext context) {
     switch (_type) {
@@ -41,6 +44,7 @@ class BaseView extends StatelessWidget {
       appBar: AppBar(
         title: BText.h3(title),
         actions: actions,
+        bottom: bottom,
       ),
       body: child,
       floatingActionButton: floatingActionButton,
@@ -52,6 +56,7 @@ class BaseView extends StatelessWidget {
       appBar: AppBar(
         title: BText.h3(title),
         actions: actions,
+        bottom: bottom,
       ),
       floatingActionButton: floatingActionButton,
       body: ColoredBox(

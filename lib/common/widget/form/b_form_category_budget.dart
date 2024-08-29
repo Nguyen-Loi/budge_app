@@ -1,4 +1,3 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -19,13 +18,11 @@ class BFormCategoryBudget extends FormField<BudgetModel> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              BText.h2(label),
+              BText.h3(label),
               if (field.hasError) gapH8,
               if (field.hasError)
-                BText.b1(
-                  field.errorText ?? field.context.loc.invalid,
-                  color: ColorManager.red1,
-                ),
+                BText.b1(field.errorText ?? field.context.loc.invalid,
+                    color: Theme.of(field.context).colorScheme.error),
               gapH16,
               list.isEmpty
                   ? BText(
@@ -85,7 +82,7 @@ class _CategoryBudget extends StatelessWidget {
         ? _itemCategoryBase(
             context,
             model: model,
-            backgroundColor: Theme.of(context).colorScheme.secondary,
+            backgroundColor: Theme.of(context).colorScheme.primary,
           )
         : InkWell(
             onTap: () {

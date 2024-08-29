@@ -2,6 +2,7 @@ import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/b_text_money.dart';
 import 'package:budget_app/common/widget/chart_budget.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
@@ -113,18 +114,12 @@ class ReportView extends ConsumerWidget {
                 children: [
                   Icon(IconManager.excel,
                       color: disableButton
-                          ? Theme.of(context)
-                              .colorScheme
-                              .shadow
-                              .withOpacity(0.3)
+                          ? Theme.of(context).disabledColor
                           : null),
                   gapH8,
                   BText(context.loc.exportExcel,
                       color: disableButton
-                          ? Theme.of(context)
-                              .colorScheme
-                              .shadow
-                              .withOpacity(0.3)
+                          ? Theme.of(context).disabledColor
                           : null)
                 ],
               ),
@@ -162,20 +157,13 @@ class ReportView extends ConsumerWidget {
           color: budgetColor,
         ),
         children: transactions.map((e) {
-          final transactionColor = e.budgetType == BudgetTypeEnum.income
-              ? Theme.of(context).colorScheme.tertiary
-              : ColorManager.red1;
-          final transactionAmount = e.budgetType == BudgetTypeEnum.income
-              ? e.amount.toMoneyStr()
-              : '- ${e.amount.toMoneyStr()}';
           return ListTile(
             title: BText(
               e.transactionDate.toFormatDate(),
             ),
-            trailing: BText(
-              transactionAmount,
+            trailing: BTextMoney(
+              e.amount,
               fontStyle: FontStyle.italic,
-              color: transactionColor,
             ),
           );
         }).toList());

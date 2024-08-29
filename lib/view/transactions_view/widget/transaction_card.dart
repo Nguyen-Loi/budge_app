@@ -1,9 +1,10 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/b_text_money.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/enums/budget_type_enum.dart';
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -24,21 +25,9 @@ class TransactionCard extends StatelessWidget {
         leading: BIcon(id: model.iconId),
         title: BText(model.transactionName, fontWeight: FontWeight.bold),
         subtitle: BText.b3(model.transaction.transactionDate.toFormatDate()),
-        trailing: BText(
-          _amount(),
-          color: model.transaction.budgetType == BudgetTypeEnum.income
-              ? Theme.of(context).colorScheme.tertiary
-              : ColorManager.red1,
-        ),
+        trailing: BTextMoney(model.transaction.amount),
       ),
     );
-  }
-
-  String _amount() {
-    if (model.transaction.budgetType == BudgetTypeEnum.income) {
-      return model.transaction.amount.toMoneyStr();
-    }
-    return '- ${model.transaction.amount.toMoneyStr()}';
   }
 
   Future<void> _showInfo(BuildContext context) {
@@ -66,7 +55,7 @@ class TransactionCard extends StatelessWidget {
                 _itemAmount(context,
                     label: context.loc.amount,
                     amount: model.transaction.amount,
-                    budgetType: model.transaction.budgetType),
+                    transactionType: model.transaction.transactionType),
                 _itemText(
                     label: context.loc.transactionDate,
                     content: model.transaction.transactionDate.toFormatDate()),
@@ -112,19 +101,16 @@ class TransactionCard extends StatelessWidget {
   Widget _itemAmount(BuildContext context,
       {required String label,
       required int amount,
-      required BudgetTypeEnum budgetType}) {
-    String amountStr;
+      required TransactionTypeEnum transactionType}) {
     Color color;
-    switch (budgetType) {
-      case BudgetTypeEnum.income:
-      case BudgetTypeEnum.incomeWallet:
-        amountStr = '+${amount.toMoneyStr()}';
+    switch (transactionType) {
+      case TransactionTypeEnum.incomeBudget:
+      case TransactionTypeEnum.incomeWallet:
         color = Theme.of(context).colorScheme.tertiary;
         break;
-      case BudgetTypeEnum.expense:
-      case BudgetTypeEnum.expenseWallet:
-        amountStr = '-${amount.toMoneyStr()}';
-        color = ColorManager.red2;
+      case TransactionTypeEnum.expenseBudget:
+      case TransactionTypeEnum.expenseWallet:
+        color = Theme.of(context).colorScheme.error;
         break;
     }
     return Row(
@@ -134,7 +120,7 @@ class TransactionCard extends StatelessWidget {
         gapH8,
         Expanded(
           child: BText(
-            amountStr,
+            amount.toMoneyStr(isPrefix: true),
             color: color,
             textAlign: TextAlign.right,
           ),

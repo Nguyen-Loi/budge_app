@@ -1,9 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
@@ -15,7 +13,7 @@ class TransactionModel {
   final String budgetId;
   final int amount;
   final String note;
-  final String budgetTypeValue;
+  final String transactionTypeValue;
   final DateTime createdDate;
   final DateTime transactionDate;
   final DateTime updatedDate;
@@ -24,27 +22,28 @@ class TransactionModel {
     required this.budgetId,
     required this.amount,
     required this.note,
-    required this.budgetTypeValue,
+    required this.transactionTypeValue,
     required this.createdDate,
     required this.transactionDate,
     required this.updatedDate,
   });
 
-  BudgetTypeEnum get budgetType => BudgetTypeEnum.fromValue(budgetTypeValue);
+  TransactionTypeEnum get transactionType =>
+      TransactionTypeEnum.fromValue(transactionTypeValue);
 
   TransactionCardModel toTransactionCard(Ref ref,
       {required List<BudgetModel> budgets}) {
     if (budgetId == GenId.budgetWallet()) {
       String transactionName;
       int iconId;
-      switch (budgetType) {
-        case BudgetTypeEnum.income:
-        case BudgetTypeEnum.incomeWallet:
+      switch (transactionType) {
+        case TransactionTypeEnum.incomeBudget:
+        case TransactionTypeEnum.incomeWallet:
           transactionName = ref.read(appLocalizationsProvider).deposit;
           iconId = IconManagerData.idMoneyIn;
           break;
-        case BudgetTypeEnum.expense:
-        case BudgetTypeEnum.expenseWallet:
+        case TransactionTypeEnum.expenseBudget:
+        case TransactionTypeEnum.expenseWallet:
           transactionName = ref.read(appLocalizationsProvider).withdrawal;
           iconId = IconManagerData.idMoneyOut;
           break;
@@ -53,7 +52,7 @@ class TransactionModel {
           transaction: this,
           transactionName: transactionName,
           iconId: iconId,
-          budgetType: budgetType);
+          transactionType: transactionType);
     }
     final e = budgets.firstWhere((e) => e.id == budgetId);
 
@@ -61,7 +60,7 @@ class TransactionModel {
         transaction: this,
         transactionName: e.name,
         iconId: e.iconId,
-        budgetType: e.budgetType);
+        transactionType: transactionType);
   }
 
   TransactionModel copyWith({
@@ -69,7 +68,7 @@ class TransactionModel {
     String? budgetId,
     int? amount,
     String? note,
-    String? budgetTypeValue,
+    String? transactionTypeValue,
     DateTime? createdDate,
     DateTime? transactionDate,
     DateTime? updatedDate,
@@ -79,7 +78,7 @@ class TransactionModel {
       budgetId: budgetId ?? this.budgetId,
       amount: amount ?? this.amount,
       note: note ?? this.note,
-      budgetTypeValue: budgetTypeValue ?? this.budgetTypeValue,
+      transactionTypeValue: transactionTypeValue ?? this.transactionTypeValue,
       createdDate: createdDate ?? this.createdDate,
       transactionDate: transactionDate ?? this.transactionDate,
       updatedDate: updatedDate ?? this.updatedDate,
@@ -92,7 +91,7 @@ class TransactionModel {
       'budgetId': budgetId,
       'amount': amount,
       'note': note,
-      'budgetTypeValue': budgetTypeValue,
+      'transactionTypeValue': transactionTypeValue,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'transactionDate': transactionDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
@@ -105,7 +104,7 @@ class TransactionModel {
       budgetId: map['budgetId'] as String,
       amount: map['amount'] as int,
       note: map['note'] as String,
-      budgetTypeValue: map['budgetTypeValue'] as String,
+      transactionTypeValue: map['transactionTypeValue'] as String,
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       transactionDate:
@@ -122,7 +121,7 @@ class TransactionModel {
 
   @override
   String toString() {
-    return 'TransactionModel(id: $id, budgetId: $budgetId, amount: $amount, note: $note, budgetTypeValue: $budgetTypeValue, createdDate: $createdDate, transactionDate: $transactionDate, updatedDate: $updatedDate)';
+    return 'TransactionModel(id: $id, budgetId: $budgetId, amount: $amount, note: $note, transactionTypeValue: $transactionTypeValue, createdDate: $createdDate, transactionDate: $transactionDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -133,7 +132,7 @@ class TransactionModel {
         other.budgetId == budgetId &&
         other.amount == amount &&
         other.note == note &&
-        other.budgetTypeValue == budgetTypeValue &&
+        other.transactionTypeValue == transactionTypeValue &&
         other.createdDate == createdDate &&
         other.transactionDate == transactionDate &&
         other.updatedDate == updatedDate;
@@ -145,7 +144,7 @@ class TransactionModel {
         budgetId.hashCode ^
         amount.hashCode ^
         note.hashCode ^
-        budgetTypeValue.hashCode ^
+        transactionTypeValue.hashCode ^
         createdDate.hashCode ^
         transactionDate.hashCode ^
         updatedDate.hashCode;
