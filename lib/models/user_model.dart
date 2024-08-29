@@ -11,8 +11,8 @@ class UserModel {
   final String email;
   final String profileUrl;
   final String name;
-  final int accountTypeValue;
-  final int currencyTypeValue;
+  final String accountTypeValue;
+  final String currencyTypeValue;
   final int balance;
   final PhoneNumber? phoneNumber;
   final DateTime createdDate;
@@ -39,8 +39,8 @@ class UserModel {
     String? email,
     String? profileUrl,
     String? name,
-    int? accountTypeValue,
-    int? currencyTypeValue,
+    String? accountTypeValue,
+    String? currencyTypeValue,
     int? balance,
     PhoneNumber? phoneNumber,
     DateTime? createdDate,
@@ -53,7 +53,7 @@ class UserModel {
       name: name ?? this.name,
       accountTypeValue: accountTypeValue ?? this.accountTypeValue,
       currencyTypeValue: currencyTypeValue ?? this.currencyTypeValue,
-      balance: balance ?? this.currencyTypeValue,
+      balance: balance ?? this.balance,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
@@ -88,8 +88,8 @@ class UserModel {
       email: map['email'] as String,
       profileUrl: map['profileUrl'] as String,
       name: map['name'] as String,
-      accountTypeValue: map['accountTypeValue'] as int,
-      currencyTypeValue: map['currencyTypeValue'] as int,
+      accountTypeValue: map['accountTypeValue'] as String,
+      currencyTypeValue: map['currencyTypeValue'] as String,
       balance: map['balance'] as int,
       phoneNumber: phoneNumber,
       createdDate:

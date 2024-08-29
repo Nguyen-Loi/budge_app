@@ -110,7 +110,8 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
                     children: [
                       _options(context, stateSetter: stateSetter),
                       gapH16,
-                      _buttons()
+                      _buttons(),
+                      gapH16
                     ],
                   ),
                 );
@@ -121,7 +122,7 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            border: Border.all(color: ColorManager.grey1, width: 0.6)),
+            border: Border.all(color: ColorManager.primary, width: 0.6)),
         child: Row(
           children: [
             Icon(IconManager.calendar),

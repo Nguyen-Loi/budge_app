@@ -234,5 +234,9 @@
     "reportExportedSuccessfully": "Xuất báo cáo thành công",
     "report": "Báo cáo",
     "value": "Giá trị",
-    "debit": "Ghi nợ"
+    "debit": "Ghi nợ",
+    "budgetTypeIsNotEmpty": "Loại ngân sách không được để trống",
+    "select": "Chọn",
+    "startDate": "Ngày bắt đầu",
+    "endDate": "Ngày kết thúc"
 }
