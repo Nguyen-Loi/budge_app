@@ -71,9 +71,9 @@ class UserBaseController extends StateNotifier<UserModel?> {
         .read(budgetBaseControllerProvider)
         .firstWhere((e) => e.id == budgetId);
 
-    final res = await _ref.read(transactionApiProvider).addTransaction(
+    final res = await _ref.read(transactionApiProvider).addBudgetTransaction(
         user: state!,
-        currentBudget: currentBudget,
+        budgetModel: currentBudget,
         amount: amount,
         note: note,
         transactionDate: transactionDate);

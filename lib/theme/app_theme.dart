@@ -23,7 +23,7 @@ class AppTheme {
         onSurface: Color(0xFFFFFFFF),
         tertiaryFixed: Color(0xFF406271),
         onSurfaceVariant: Color(0xFFBFCBD0),
-        success: Color(0xFF27BA62),
+        success: Color(0XFF6ABC2C),
         onSuccess: Color(0xFFFFFFFF),
         error: Colors.red,
         onError: Color(0xFFFFFFFF),
@@ -155,8 +155,8 @@ class AppTheme {
           tertiaryFixed: darkColors.tertiaryFixed,
           onSurfaceVariant: darkColors.onSurfaceVariant,
 
-          // Green
-          tertiary: const Color(0XFF6ABC2C)),
+          // Success
+          tertiary: darkColors.success),
 
       scaffoldBackgroundColor: darkColors.primaryContainer,
 
@@ -175,6 +175,7 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
+          backgroundColor: darkColors.primary,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           textStyle: AppTextTheme.labelLarge.copyWith(color: darkColors.error),
         ),
@@ -225,6 +226,8 @@ class AppTheme {
         errorMaxLines: 3,
       ),
       tabBarTheme: TabBarTheme(
+        dividerColor: Colors.transparent,
+        labelStyle: AppTextTheme.bodyLarge,
         labelColor: darkColors.primary,
         unselectedLabelColor: darkColors.onSurfaceVariant,
         indicatorSize: TabBarIndicatorSize.label,
@@ -273,8 +276,8 @@ class AppTheme {
         tertiaryFixed: lightColors.tertiaryFixed,
         onSurfaceVariant: lightColors.onSurfaceVariant,
 
-        // Green
-        tertiary: const Color(0XFF017A47),
+        // Success
+        tertiary: lightColors.success,
       ),
 
       scaffoldBackgroundColor: lightColors.primaryContainer,
@@ -294,6 +297,7 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
+          backgroundColor: lightColors.primary,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           textStyle: AppTextTheme.labelLarge.copyWith(color: lightColors.error),
         ),
@@ -343,6 +347,8 @@ class AppTheme {
         errorMaxLines: 3,
       ),
       tabBarTheme: TabBarTheme(
+        dividerColor: Colors.transparent,
+        labelStyle: AppTextTheme.bodyLarge,
         labelColor: lightColors.primary,
         unselectedLabelColor: lightColors.onSurfaceVariant,
         indicatorSize: TabBarIndicatorSize.label,

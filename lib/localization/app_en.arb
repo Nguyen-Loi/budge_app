@@ -234,5 +234,9 @@
     "reportExportedSuccessfully": "Report exported successfully",
     "report": "Report",
     "value": "Value",
-    "debit": "Debit"
+    "debit": "Debit",
+    "budgetTypeIsNotEmpty": "Budget type is not empty",
+    "select": "Select",
+    "startDate": "Start date",
+    "endDate": "endDate date"
 }

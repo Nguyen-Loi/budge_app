@@ -2,7 +2,7 @@ import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/b_excel.dart';
-import 'package:budget_app/core/enums/budget_type_enum.dart';
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
 import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -90,7 +90,9 @@ class ReportController extends StateNotifier<DateTime> {
   void _reload() {
     _chartBudgetCurrent = ChartBudgetModel.toList(
         allTransactionCard: _transactionsCard
-            .where((e) => e.transaction.budgetType == BudgetTypeEnum.expense)
+            .where((e) =>
+                e.transaction.transactionType ==
+                TransactionTypeEnum.expenseBudget)
             .filterByMonth(
                 time: state, getDate: (e) => e.transaction.transactionDate)
             .toList());
