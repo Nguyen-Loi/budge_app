@@ -49,42 +49,22 @@ class ChartBudgetModel {
     }
 
     // Calculate the sum
-    int totalSum = list.fold(0, (sum, item) => sum + item.total);
+    int totalSum = list.fold(0, (sum, item) => sum + (item.total).abs());
 
     // Update each item's `value` based on its percentage of the total sum
     int index = 0;
     for (ChartBudgetModel item in list) {
       if (totalSum > 0) {
-        list[index] = item.copyWith(value: (item.total / totalSum) * 100);
+        final avgItem = ((item.total / totalSum) * 100).abs();
+        list[index] = item.copyWith(value: avgItem);
       } else {
-        list[index] = item.copyWith(value: 0);
+        list.removeAt(index);
       }
       index++;
     }
 
     return list;
   }
-
-  //  static List<ChartBudgetModel> toList2(
-  //     {required List<TransactionModel> transactions,
-  //     required List<BudgetModel> budgets}) {
-  //    List<ChartBudgetModel> list = [];
-  //   Map<String, List<TransactionModel>> transactionsMap = {};
-
-  //   for (var transaction in transactions) {
-  //     if (!transactionsMap.containsKey(transaction.budgetId)) {
-  //       transactionsMap[transaction.budgetId!] = [];
-  //     }
-  //     transactionsMap[transaction.budgetId]!.add(transaction);
-  //   }
-
-  //   for (var budget in budgets) {
-  //     final transactionsOfBudget = transactionsMap[budget.id] ?? [];
-  //     final model = ChartBudgetModel(budget: budget, transactions: transactionsOfBudget);
-  //     list.add(model);
-  //   }
-  //   return list;
-  // }
 
   @override
   String toString() {
