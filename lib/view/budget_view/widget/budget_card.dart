@@ -1,8 +1,10 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/custom/budget_status.dart';
+import 'package:budget_app/common/widget/custom/budget_expense_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
+import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
@@ -41,7 +43,7 @@ class BudgetCard extends StatelessWidget {
                 ],
               ),
               gapH8,
-              ..._showStatusType(context)
+              ..._itemType(context)
             ],
           ),
         ),
@@ -49,7 +51,32 @@ class BudgetCard extends StatelessWidget {
     );
   }
 
-  List<Widget> _showStatusType(BuildContext context) {
+  List<Widget> _itemType(BuildContext context) {
+    switch (model.budgetType) {
+      case BudgetTypeEnum.income:
+        return _itemIncome(context);
+      case BudgetTypeEnum.expense:
+        return _itemExpense(context);
+    }
+  }
+
+  List<Widget> _itemIncome(BuildContext context) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          BText('${context.loc.startDate}: ${model.startDate.toFormatDate()}'),
+          gapH8,
+          BText.b1(
+            model.currentAmount.toMoneyStr(isPrefix: true),
+            color: Theme.of(context).colorScheme.tertiary,
+          )
+        ],
+      )
+    ];
+  }
+
+  List<Widget> _itemExpense(BuildContext context) {
     switch (model.status) {
       case StatusBudgetProgress.start:
       case StatusBudgetProgress.progress:
@@ -118,7 +145,7 @@ class BudgetCard extends StatelessWidget {
         ],
       ),
       gapH8,
-      BudgetStatus(budget: model),
+      BudgetExpenseStatus(budget: model),
     ];
   }
 }

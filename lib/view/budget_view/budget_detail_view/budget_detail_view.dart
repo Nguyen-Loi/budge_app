@@ -1,5 +1,5 @@
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/custom/budget_status.dart';
+import 'package:budget_app/common/widget/custom/budget_expense_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager.dart';
@@ -75,7 +75,7 @@ class BudgetDetailView extends StatelessWidget {
           ),
           gapH16,
           // Status
-          BudgetStatus(budget: model),
+          BudgetExpenseStatus(budget: model),
           gapH8,
           // Content
           BText.b3(context.loc.expenseGood),

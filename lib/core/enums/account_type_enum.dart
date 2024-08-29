@@ -1,14 +1,13 @@
-
 enum AccountType {
-  emailAndPassword(1),
-  facebook(2),
-  google(3);
-  
-  factory AccountType.fromValue (int value){
-    return  AccountType.values.firstWhere((e) => e.value==value);
+  emailAndPassword('DEFAULT'),
+  facebook('FACEBOOK'),
+  google('GOOGLE');
+
+  factory AccountType.fromValue(String value) {
+    return AccountType.values.firstWhere((e) => e.value == value);
   }
 
-  final int value;
+  final String value;
   const AccountType(this.value);
 }
 

@@ -4,7 +4,7 @@ import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/enums/budget_type_enum.dart';
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -67,7 +67,8 @@ class BudgetDetailTransactions extends ConsumerWidget {
                                     ? context.loc.noData
                                     : e.note)),
                             gapW16,
-                            _itemStatusTransaction(context, type: e.budgetType)
+                            _itemStatusTransaction(context,
+                                type: e.transactionType)
                           ],
                         ),
                         gapH16,
@@ -80,7 +81,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
                             ),
                             gapW16,
                             _itemMoneyTransaction(context,
-                                type: e.budgetType, amount: e.amount)
+                                type: e.transactionType, amount: e.amount)
                           ],
                         ),
                       ],
@@ -99,30 +100,30 @@ class BudgetDetailTransactions extends ConsumerWidget {
   }
 
   Widget _itemStatusTransaction(BuildContext context,
-      {required BudgetTypeEnum type}) {
+      {required TransactionTypeEnum type}) {
     switch (type) {
-      case BudgetTypeEnum.expense:
-      case BudgetTypeEnum.expenseWallet:
-        return BText.caption(context.loc.expense);
-      case BudgetTypeEnum.income:
-      case BudgetTypeEnum.incomeWallet:
+      case TransactionTypeEnum.incomeBudget:
+      case TransactionTypeEnum.incomeWallet:
         return BText.caption(context.loc.income);
+      case TransactionTypeEnum.expenseBudget:
+      case TransactionTypeEnum.expenseWallet:
+        return BText.caption(context.loc.expense);
     }
   }
 
   Widget _itemMoneyTransaction(BuildContext context,
-      {required BudgetTypeEnum type, required int amount}) {
+      {required TransactionTypeEnum type, required int amount}) {
     String amountMoney = amount.toMoneyStr();
     switch (type) {
-      case BudgetTypeEnum.expense:
-      case BudgetTypeEnum.expenseWallet:
-        return BText('-$amountMoney',
-            color: ColorManager.red1, fontWeight: FontWeight.w700);
-      case BudgetTypeEnum.income:
-      case BudgetTypeEnum.incomeWallet:
+      case TransactionTypeEnum.incomeBudget:
+      case TransactionTypeEnum.incomeWallet:
         return BText('+$amountMoney',
             color: Theme.of(context).colorScheme.tertiary,
             fontWeight: FontWeight.w700);
+      case TransactionTypeEnum.expenseBudget:
+      case TransactionTypeEnum.expenseWallet:
+        return BText('-$amountMoney',
+            color: ColorManager.red1, fontWeight: FontWeight.w700);
     }
   }
 }
