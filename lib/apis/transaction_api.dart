@@ -46,9 +46,6 @@ class TransactionApi extends ITransactionApi {
       DateTime? transactionDate}) async {
     final now = DateTime.now();
 
-    if (amount <= 0) {
-      throw Exception("Amount must be greater than 0");
-    }
     TransactionModel transaction = TransactionModel(
         id: GenId.transaction(),
         budgetId: budgetId,
@@ -101,15 +98,13 @@ class TransactionApi extends ITransactionApi {
       required String? note,
       required DateTime transactionDate}) async {
     try {
-      UserModel newUser;
       TransactionTypeEnum transactionType;
       switch (budgetModel.budgetType) {
         case BudgetTypeEnum.income:
-          newUser = user.copyWith(balance: user.balance + amount);
           transactionType = TransactionTypeEnum.incomeBudget;
           break;
         case BudgetTypeEnum.expense:
-          newUser = user.copyWith(balance: user.balance - amount);
+          amount *= -1;
           transactionType = TransactionTypeEnum.expenseBudget;
           break;
       }
@@ -123,6 +118,8 @@ class TransactionApi extends ITransactionApi {
           note: note ?? '',
           transactionType: transactionType,
           transactionDate: transactionDate);
+
+      UserModel newUser = user.copyWith(balance: user.balance + amount);
 
       await _db.doc(FirestorePath.user(user.id)).update(newUser.toMap());
       await _db
