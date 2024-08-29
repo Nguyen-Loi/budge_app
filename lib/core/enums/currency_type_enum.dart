@@ -1,11 +1,11 @@
 enum CurrencyType {
-  vnd(1, 'vi'),
-  usd(2, 'en');
+  vnd('VI', 'vi'),
+  usd('EN', 'en');
 
-  factory CurrencyType.fromValue(int value) {
+  factory CurrencyType.fromValue(String value) {
     return CurrencyType.values.firstWhere((e) => e.value == value);
   }
-  final int value;
+  final String value;
   final String code;
   const CurrencyType(this.value, this.code);
 }

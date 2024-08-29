@@ -92,7 +92,7 @@ class _ShowItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
-        border: Border.all(color: ColorManager.grey1, width: 0.5),
+        border: Border.all(color: ColorManager.primary, width: 0.5),
       ),
       child: child,
     );
@@ -138,7 +138,7 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const BText('Cancel'),
+          child: BText(context.loc.cancel),
         ),
         ElevatedButton(
           onPressed: _selectedIcon == null
@@ -146,8 +146,8 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
               : () {
                   Navigator.pop(context, _selectedIcon);
                 },
-          child: const BText(
-            'Get',
+          child: BText(
+            context.loc.select,
             fontWeight: FontWeight.bold,
           ),
         )

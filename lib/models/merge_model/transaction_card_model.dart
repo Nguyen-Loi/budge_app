@@ -1,4 +1,4 @@
-import 'package:budget_app/core/enums/budget_type_enum.dart';
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,12 +7,12 @@ class TransactionCardModel {
   final TransactionModel transaction;
   final String transactionName;
   final int iconId;
-  final BudgetTypeEnum budgetType;
+  final TransactionTypeEnum transactionType;
   TransactionCardModel({
     required this.transaction,
     required this.transactionName,
     required this.iconId,
-    required this.budgetType,
+    required this.transactionType,
   });
 
   static Future<List<TransactionCardModel>> transactionCard(
@@ -44,13 +44,13 @@ class TransactionCardModel {
     TransactionModel? transaction,
     String? transactionName,
     int? iconId,
-    BudgetTypeEnum? budgetType,
+    TransactionTypeEnum? transactionType,
   }) {
     return TransactionCardModel(
       transaction: transaction ?? this.transaction,
       transactionName: transactionName ?? this.transactionName,
       iconId: iconId ?? this.iconId,
-      budgetType: budgetType ?? this.budgetType,
+      transactionType: transactionType ?? this.transactionType,
     );
   }
 

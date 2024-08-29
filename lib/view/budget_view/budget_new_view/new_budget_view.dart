@@ -1,10 +1,12 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/bottom_sheet/b_bottom_sheet_range_datetime.dart';
+import 'package:budget_app/common/widget/form/b_form_budget_type.dart';
 import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
@@ -28,6 +30,8 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
   late int _iconId;
   late int _limit;
   late DatetimeRangeModel _rangeDatetimeModel;
+  late BudgetTypeEnum _budgetType;
+  late List<BudgetTypeEnum> _valuesBudgetPicker;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -35,6 +39,8 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
   void initState() {
     _budgetNameController = TextEditingController();
     _limit = 0;
+    _valuesBudgetPicker = [BudgetTypeEnum.income, BudgetTypeEnum.expense];
+    _budgetType = BudgetTypeEnum.income;
     super.initState();
   }
 
@@ -44,7 +50,8 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
           budgetName: _budgetNameController.text,
           rangeDatetimeModel: _rangeDatetimeModel,
           iconId: _iconId,
-          limit: _limit);
+          limit: _limit,
+          budgetType: _budgetType);
     }
   }
 
@@ -88,15 +95,32 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
               return null;
             },
           ),
-          gapH16,
-          BFormFieldAmount(
-            label: context.loc.limit,
-            onChanged: (e) {
-              if (e != null) {
-                _limit = e;
+          gapH24,
+          BFormBudgetType(
+            values: _valuesBudgetPicker,
+            onChanged: (v) {
+              setState(() {
+                _budgetType = v!;
+              });
+            },
+            initialValue: _budgetType,
+            validator: (value) {
+              if (value == null) {
+                return context.loc.budgetTypeIsNotEmpty;
               }
+              return null;
             },
           ),
+          gapH24,
+          if (_budgetType == BudgetTypeEnum.expense)
+            BFormFieldAmount(
+              label: context.loc.limit,
+              onChanged: (e) {
+                if (e != null) {
+                  _limit = e;
+                }
+              },
+            ),
           gapH16,
           BBottomsheetRangeDatetime(
               initialValue: RangeDateTimeEnum.month,

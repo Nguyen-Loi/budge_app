@@ -50,14 +50,13 @@ class NewBudgetController extends StateNotifier<bool> {
     required int iconId,
     required int limit,
     required DatetimeRangeModel rangeDatetimeModel,
+    required BudgetTypeEnum budgetType
   }) async {
     //Check valid
     String? error = _errorValidate(context, budgetName: budgetName);
     if (error != null) {
       showBDialogInfoError(context, message: error);
     }
-
-    const budgetType = BudgetTypeEnum.income;
 
     final now = DateTime.now();
     BudgetModel model = BudgetModel(
