@@ -1,3 +1,4 @@
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
@@ -6,6 +7,7 @@ import 'package:budget_app/common/widget/chart_budget.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -13,6 +15,7 @@ import 'package:budget_app/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/models/models_widget/chart_budget_model.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
+import 'package:budget_app/view/report_view/components/report_filter_view.dart';
 import 'package:budget_app/view/report_view/controller/report_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -71,23 +74,45 @@ class ReportView extends ConsumerWidget {
           //Filter date
           Expanded(
             flex: 2,
-            child: BPickerMonth(
-                initialDate: currentTimePicker,
-                firstDate: ref
-                    .watch(reportControllerProvider.notifier)
-                    .datetimeRange
-                    .start,
-                lastDate: ref
-                    .watch(reportControllerProvider.notifier)
-                    .datetimeRange
-                    .end,
-                onChange: (date) async {
-                  if (!date.isSameDate(currentTimePicker)) {
-                    ref
-                        .read(reportControllerProvider.notifier)
-                        .updateDate(date);
-                  }
-                }),
+            child: OutlinedButton(
+              onPressed: () async {
+                
+                PageRouteBuilder(
+                  pageBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation) {
+                    return ReportFilterView(
+                        init: ReportFilterModel(
+                            dateTimeRange: DateTimeRange(
+                                start: DateTime(2024, 8, 1),
+                                end: DateTime(2024, 30, 30)),
+                            transactionTypes: [
+                              TransactionTypeEnum.expenseBudget,
+                              TransactionTypeEnum.incomeBudget,
+                            ]),
+                        onChanged: (model) {
+                          logSuccess(model.toString());
+                        },
+                        dateTimeRangeMinMax: DateTimeRange(
+                            start: DateTime(2024, 1, 1),
+                            end: DateTime(2024, 9, 1)));
+                  },
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(-1.0, 0.0),
+                        end: const Offset(0.0, 0.0),
+                      ).animate(animation),
+                      child: child,
+                    );
+                  },
+                );
+              },
+              child: const BText.b1('Filter'),
+            ),
           ),
           gapW24,
           Expanded(
