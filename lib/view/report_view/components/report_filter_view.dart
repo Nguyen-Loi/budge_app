@@ -1,3 +1,4 @@
+import 'package:budget_app/common/widget/b_app_bar.dart';
 import 'package:budget_app/common/widget/filter/b_filter_multiple_select_item.dart';
 import 'package:budget_app/common/widget/filter/b_filter_single_select_item.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -39,10 +40,10 @@ class ReportFilterView extends StatefulWidget {
   const ReportFilterView(
       {super.key,
       required this.init,
-      required this.onChanged,
-      required this.dateTimeRangeMinMax});
+      required this.values,
+      required this.onChanged});
   final ReportFilterModel init;
-  final DateTimeRange dateTimeRangeMinMax;
+  final ReportFilterModel values;
   final ValueChanged<ReportFilterModel> onChanged;
 
   @override
@@ -50,13 +51,13 @@ class ReportFilterView extends StatefulWidget {
 }
 
 class _ReportFilterViewState extends State<ReportFilterView> {
-  late ReportFilterModel _reportFilterModel;
-  late DateTimeRange _dateTimeRangeMinMax;
+  late ReportFilterModel _initFilterModel;
+  late ReportFilterModel _valueFilterModel;
 
   List<DateTimeRange> get rangeDateTimeEveryMonth {
     List<DateTimeRange> ranges = [];
-    DateTime start = _dateTimeRangeMinMax.start;
-    DateTime end = _dateTimeRangeMinMax.end;
+    DateTime start = _valueFilterModel.dateTimeRange.start;
+    DateTime end = _valueFilterModel.dateTimeRange.end;
 
     DateTime current = DateTime(start.year, start.month);
     while (current.isBefore(end) || current.isAtSameMomentAs(end)) {
@@ -72,81 +73,92 @@ class _ReportFilterViewState extends State<ReportFilterView> {
 
   @override
   void initState() {
-    _dateTimeRangeMinMax = widget.dateTimeRangeMinMax;
-    _reportFilterModel = widget.init;
+    _valueFilterModel = widget.values;
+    _initFilterModel = widget.init;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+      appBar: BAppBar(text: 'Filter'.hardcoded),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            gapH24,
+            Expanded(
+              child: _listField(),
+            ),
+            gapH16,
+            _action(),
+            gapH24,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _action() {
+    return Row(
       children: [
-        const BText.b1(
-          'Filter',
-          fontWeight: FontWeight.bold,
-          textAlign: TextAlign.center,
-        ),
-        gapH24,
         Expanded(
-          child: _listField(),
+          child: FilledButton(
+            style: FilledButton.styleFrom(
+                backgroundColor: ColorManager.grey1,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16)),
+            onPressed: () => Navigator.of(context).pop(),
+            child: BText.b1(
+              context.loc.cancel,
+              color: ColorManager.white,
+            ),
+          ),
         ),
-        gapH16,
-        ..._action()
+        const SizedBox(width: 16),
+        Expanded(
+          child: FilledButton(
+            style: FilledButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.tertiary,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16)),
+            onPressed: () {
+              widget.onChanged(_initFilterModel);
+              Navigator.of(context).pop();
+            },
+            child: BText.b1(
+              'Accept'.hardcoded,
+              color: ColorManager.white,
+            ),
+          ),
+        )
       ],
     );
   }
 
-  List<Widget> _action() {
-    return [
-      FilledButton(
-        style: FilledButton.styleFrom(
-            backgroundColor: ColorManager.grey1,
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16)),
-        onPressed: () => Navigator.of(context).pop(),
-        child: BText.b1(
-          context.loc.cancel,
-          color: ColorManager.white,
-        ),
-      ),
-      const SizedBox(width: 16),
-      FilledButton(
-        style: FilledButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.tertiary,
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16)),
-        onPressed: () {
-          widget.onChanged(_reportFilterModel);
-          Navigator.of(context).pop();
-        },
-        child: BText.b1(
-          'Accept'.hardcoded,
-          color: ColorManager.white,
-        ),
-      )
-    ];
-  }
-
   Widget _listField() {
     return ColumnWithSpacing(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _baseItem(
             label: 'Choose month'.hardcoded,
             item: BFilterSingleSelectItem<DateTimeRange>(
                 values: rangeDateTimeEveryMonth,
-                init: _reportFilterModel.dateTimeRange,
+                init: _initFilterModel.dateTimeRange,
                 onChanged: (model) {
-                  _reportFilterModel =
-                      _reportFilterModel.copyWith(dateTimeRange: model);
+                  _initFilterModel =
+                      _initFilterModel.copyWith(dateTimeRange: model);
                 },
                 label: (model) =>
                     model!.start.toFormatDate(strFormat: 'MM-yyyy'))),
         _baseItem(
             label: 'Choose budgets'.hardcoded,
             item: BFilterMultipleSelectItem<TransactionTypeEnum>(
-                values: TransactionTypeEnum.values,
-                init: _reportFilterModel.transactionTypes,
+                values: _valueFilterModel.transactionTypes,
+                init: _initFilterModel.transactionTypes,
                 onChanged: (values) {
-                  _reportFilterModel =
-                      _reportFilterModel.copyWith(transactionTypes: values);
+                  _initFilterModel =
+                      _initFilterModel.copyWith(transactionTypes: values);
                 },
                 label: (transactionType) => transactionType!.content(context)))
       ],
@@ -155,14 +167,15 @@ class _ReportFilterViewState extends State<ReportFilterView> {
 
   Widget _baseItem({required String label, required Widget item}) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         BText(
           label,
           fontWeight: FontWeight.bold,
+          textAlign: TextAlign.left,
         ),
         const SizedBox(height: 16),
-        item
+        Align(alignment: Alignment.center, child: item)
       ],
     );
   }

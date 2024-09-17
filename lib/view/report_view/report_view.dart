@@ -1,13 +1,10 @@
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_money.dart';
 import 'package:budget_app/common/widget/chart_budget.dart';
-import 'package:budget_app/common/widget/picker/b_picker_month.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -60,11 +57,36 @@ class ReportView extends ConsumerWidget {
     );
   }
 
+  PageRouteBuilder<dynamic> _animationPageFilter({required WidgetRef ref}) {
+    final controller = ref.read(reportControllerProvider.notifier);
+    return PageRouteBuilder(
+      pageBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation) {
+        return ReportFilterView(
+          init: ref.watch(reportControllerProvider),
+          values: controller.reportFilterValues,
+          onChanged: (model) {
+            controller.setDataFilter(model);
+          },
+        );
+      },
+      transitionsBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation, Widget child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(-1.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ).animate(animation),
+          child: child,
+        );
+      },
+    );
+  }
+
   Widget _filterDateAndExportExcel(
       {required WidgetRef ref,
       required BuildContext context,
       required List<ChartBudgetModel> list}) {
-    final currentTimePicker = ref.watch(reportControllerProvider);
     final user = ref.watch(userBaseControllerProvider);
     bool disableButton = list.isEmpty;
     return Padding(
@@ -76,39 +98,9 @@ class ReportView extends ConsumerWidget {
             flex: 2,
             child: OutlinedButton(
               onPressed: () async {
-                
-                PageRouteBuilder(
-                  pageBuilder: (BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation) {
-                    return ReportFilterView(
-                        init: ReportFilterModel(
-                            dateTimeRange: DateTimeRange(
-                                start: DateTime(2024, 8, 1),
-                                end: DateTime(2024, 30, 30)),
-                            transactionTypes: [
-                              TransactionTypeEnum.expenseBudget,
-                              TransactionTypeEnum.incomeBudget,
-                            ]),
-                        onChanged: (model) {
-                          logSuccess(model.toString());
-                        },
-                        dateTimeRangeMinMax: DateTimeRange(
-                            start: DateTime(2024, 1, 1),
-                            end: DateTime(2024, 9, 1)));
-                  },
-                  transitionsBuilder: (BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child) {
-                    return SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(-1.0, 0.0),
-                        end: const Offset(0.0, 0.0),
-                      ).animate(animation),
-                      child: child,
-                    );
-                  },
+                Navigator.push(
+                  context,
+                  _animationPageFilter(ref: ref),
                 );
               },
               child: const BText.b1('Filter'),
