@@ -1,4 +1,5 @@
 import 'package:budget_app/common/shared_pref/language_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,15 @@ extension HandleDateTime on DateTime {
     final date = this;
     final isAfter = date.isAfterOrEqualTo(fromDateTime);
     final isBefore = date.isBeforeOrEqualTo(toDateTime);
+    return isAfter && isBefore;
+  }
+
+  bool isBetweenDateTimeRange(
+    DateTimeRange rangeDateTime
+  ) {
+    final date = this;
+    final isAfter = date.isAfterOrEqualTo(rangeDateTime.start);
+    final isBefore = date.isBeforeOrEqualTo(rangeDateTime.end);
     return isAfter && isBefore;
   }
 
