@@ -140,6 +140,7 @@ class AppTheme {
     return ThemeData(
       /// COLOR
       brightness: Brightness.dark,
+      disabledColor: darkColors.disabledSurface,
       colorScheme: ColorScheme(
           brightness: darkColors.brightness,
           primary: darkColors.primary,
@@ -260,6 +261,7 @@ class AppTheme {
     return ThemeData(
       /// COLOR
       brightness: Brightness.dark,
+      disabledColor: lightColors.disabledSurface,
       colorScheme: ColorScheme(
         brightness: lightColors.brightness,
         primary: lightColors.primary,

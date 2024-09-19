@@ -39,8 +39,7 @@ class _TransactionViewState extends State<TransactionView>
 
   Widget _builder() {
     return Consumer(builder: (_, ref, __) {
-      final currentTime =
-          ref.watch(transactionControllerProvider.notifier).dateTimePicker;
+      final controllerWatch = ref.watch(transactionControllerProvider.notifier);
       final list = ref.watch(transactionControllerProvider);
       return Column(
         children: [
@@ -70,17 +69,11 @@ class _TransactionViewState extends State<TransactionView>
                 ],
               ),
               BPickerMonth(
-                  initialDate: ref
-                      .watch(transactionControllerProvider.notifier)
-                      .dateTimePicker,
-                  firstDate: ref
-                      .watch(transactionControllerProvider.notifier)
-                      .firstDateTransactions,
-                  lastDate: ref
-                      .watch(transactionControllerProvider.notifier)
-                      .lastDateTransactions,
+                  initialDate: controllerWatch.dateTimePicker,
+                  firstDate: controllerWatch.dateRangeToFilter.start,
+                  lastDate: controllerWatch.dateRangeToFilter.end,
                   onChange: (date) async {
-                    if (!date.isSameDate(currentTime)) {
+                    if (!date.isSameDate(controllerWatch.dateTimePicker)) {
                       ref
                           .read(transactionControllerProvider.notifier)
                           .updateDate(date);
