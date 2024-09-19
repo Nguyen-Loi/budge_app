@@ -1,6 +1,8 @@
+import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,20 @@ class BFormCategoryBudget extends FormField<BudgetModel> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              BText.h3(label),
+              Row(
+                children: [
+                  BText.b1(
+                    label,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  gapW8,
+                  if (field.value != null)
+                    BText(
+                      '(${field.value!.budgetType.content(field.context)})',
+                      fontWeight: FontWeight.bold,
+                    )
+                ],
+              ),
               if (field.hasError) gapH8,
               if (field.hasError)
                 BText.b1(field.errorText ?? field.context.loc.invalid,
@@ -78,29 +93,25 @@ class _CategoryBudget extends StatelessWidget {
 
   Widget _itemCategory({required BudgetModel model}) {
     bool isSelected = initialValue != null && model.id == initialValue!.id;
-    return isSelected
-        ? _itemCategoryBase(
-            context,
-            model: model,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          )
-        : InkWell(
-            onTap: () {
-              onChanged(model);
-            },
-            child: _itemCategoryBase(
-              context,
-              model: model,
-              backgroundColor: Theme.of(context).colorScheme.surface,
-            ),
-          );
+    return InkWell(
+      onTap: () {
+        if (!isSelected) {
+          onChanged(model);
+        }
+      },
+      child: _itemCategoryBase(context, model: model, isSelected: isSelected),
+    );
   }
 
   Widget _itemCategoryBase(
     BuildContext context, {
     required BudgetModel model,
-    required Color backgroundColor,
+    required bool isSelected,
   }) {
+    final backgroundColor = isSelected
+        ? Theme.of(context).colorScheme.primary
+        : Theme.of(context).colorScheme.surface;
+    final textColor = isSelected ? ColorManager.white : null;
     return Card(
       child: Ink(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -115,6 +126,7 @@ class _CategoryBudget extends StatelessWidget {
             BText(
               model.name,
               fontWeight: FontWeight.bold,
+              color: textColor,
               maxLines: 2,
             )
           ],
