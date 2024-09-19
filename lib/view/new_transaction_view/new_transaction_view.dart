@@ -51,7 +51,7 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
         FocusScope.of(context).unfocus();
       },
       child: BaseView.customBackground(
-          buildTop: gapH32,
+          buildTop: null,
           title: context.loc.newTransaction,
           child: Padding(
             padding: const EdgeInsets.all(16),

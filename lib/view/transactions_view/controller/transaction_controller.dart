@@ -1,8 +1,11 @@
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 
 final transactionControllerProvider =
     StateNotifierProvider<TransactionsController, List<TransactionCardModel>>(
@@ -17,11 +20,28 @@ class TransactionsController extends StateNotifier<List<TransactionCardModel>> {
   })  : _transactionBase = transactionsState,
         super([]) {
     updateDate(_dateTimePicker);
+    _init();
   }
   final List<TransactionCardModel> _transactionBase;
 
-  DateTime firstDateTransactions = DateTime.now();
-  DateTime lastDateTransactions = DateTime.now();
+  void _init() {
+    final now = DateTime.now();
+    if (_transactionBase.isEmpty) {
+      _dateTimeRangeToFilter = now.getRangeMonth;
+      return;
+    }
+    final allTransactions = _transactionBase.map((e) => e.transaction).toList();
+    allTransactions
+        .sort((a, b) => a.transactionDate.compareTo(b.transactionDate));
+    final start = allTransactions[0].transactionDate;
+    final end = allTransactions.last.transactionDate.isBefore(now)
+        ? now
+        : allTransactions.last.transactionDate;
+    _dateTimeRangeToFilter = DateTimeRange(start: start, end: end);
+  }
+
+  late DateTimeRange _dateTimeRangeToFilter;
+  DateTimeRange get dateRangeToFilter => _dateTimeRangeToFilter;
 
   DateTime _dateTimePicker = DateTime.now();
   DateTime get dateTimePicker => _dateTimePicker;

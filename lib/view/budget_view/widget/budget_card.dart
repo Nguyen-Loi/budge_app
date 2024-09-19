@@ -105,7 +105,7 @@ class BudgetCard extends StatelessWidget {
       required Color iconColor,
       required textColor,
       required IconData iconData}) {
-    int left = model.limit - model.currentAmount;
+    int left = model.limit + model.currentAmount;
     return [
       Row(
         children: [
@@ -114,7 +114,7 @@ class BudgetCard extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                    text: model.currentAmount.toMoneyStr(),
+                    text: model.currentAmount.abs().toMoneyStr(),
                     style: context.textTheme.bodySmall!),
                 TextSpan(
                     text: '/${model.limit.toMoneyStr()}',

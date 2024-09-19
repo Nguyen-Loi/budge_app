@@ -32,8 +32,7 @@ class ReportController extends StateNotifier<ReportFilterModel> {
       : _budgets = budgets,
         _transactionsCard = transactionsCard,
         super(ReportFilterModel(
-            dateTimeRange:
-                DateTimeRange(start: DateTime.now(), end: DateTime.now()),
+            dateTimeRange: DateTime.now().getRangeMonth,
             transactionTypes: [
               TransactionTypeEnum.incomeBudget,
               TransactionTypeEnum.expenseBudget
@@ -42,38 +41,53 @@ class ReportController extends StateNotifier<ReportFilterModel> {
   }
 
   void _init() {
+    final now = DateTime.now();
+    _reportFilterValues = ReportFilterModel(
+        dateTimeRange: DateTimeRange(start: now, end: now),
+        transactionTypes: TransactionTypeEnum.values);
+
+    // Update model options
     final minDate = _budgets
         .map((e) => e.startDate)
         .reduce((a, b) => a.isBefore(b) ? a : b);
-    final maxDate =
+    DateTime maxDate =
         _budgets.map((e) => e.endDate).reduce((a, b) => a.isAfter(b) ? a : b);
+    final maxEndTimeThismonth = state.dateTimeRange.end;
+    maxDate = maxDate.isBefore(maxEndTimeThismonth) ? maxEndTimeThismonth : maxDate;
 
     DateTimeRange dateTimeRangeInBudget =
         DateTimeRange(start: minDate, end: maxDate);
     _reportFilterValues =
         _reportFilterValues.copyWith(dateTimeRange: dateTimeRangeInBudget);
+
+    _setData();
   }
 
+  // Option to pick filter
   late ReportFilterModel _reportFilterValues;
   ReportFilterModel get reportFilterValues => _reportFilterValues;
 
   final List<BudgetModel> _budgets;
   final List<TransactionCardModel> _transactionsCard;
 
+  // Data for chart
   late List<ChartBudgetModel> _chartBudgetCurrent;
   late List<BudgetTransactionsModel> _budgetTransantionsList;
 
+  // Data for items
   List<BudgetTransactionsModel> get budgetTransantionsList =>
       _budgetTransantionsList;
   List<ChartBudgetModel> get chartBudgetList => _chartBudgetCurrent;
 
   void setDataFilter(ReportFilterModel filterModel) {
+    state = filterModel;
+    _setData();
+  }
+
+  void _setData() {
     if (_budgets.isEmpty) {
       return;
     }
-
-    state = filterModel;
-
     _chartBudgetCurrent = ChartBudgetModel.toList(
         allTransactionCard: _transactionsCard
             .where((e) =>
