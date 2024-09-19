@@ -32,9 +32,7 @@ extension HandleDateTime on DateTime {
     return isAfter && isBefore;
   }
 
-  bool isBetweenDateTimeRange(
-    DateTimeRange rangeDateTime
-  ) {
+  bool isBetweenDateTimeRange(DateTimeRange rangeDateTime) {
     final date = this;
     final isAfter = date.isAfterOrEqualTo(rangeDateTime.start);
     final isBefore = date.isBeforeOrEqualTo(rangeDateTime.end);
@@ -52,6 +50,26 @@ extension HandleDateTime on DateTime {
 
     final isAtSameMomentAs = dateTime.isAtSameMomentAs(date);
     return isAtSameMomentAs | date.isBefore(dateTime);
+  }
+
+  DateTimeRange get getRangeMonth {
+    final date = this;
+    DateTime firstDayOfMonth = DateTime(date.year, date.month, 1);
+    DateTime lastDayOfMonth = DateTime(date.year, date.month + 1, 0);
+    return DateTimeRange(start: firstDayOfMonth, end: lastDayOfMonth);
+  }
+
+  DateTimeRange get getRangeWeek {
+    int currentWeekday = weekday;
+    DateTime firstDayOfWeek = subtract(Duration(days: currentWeekday - 1));
+    DateTime lastDayOfWeek = add(Duration(days: 7 - currentWeekday));
+    return DateTimeRange(start: firstDayOfWeek, end: lastDayOfWeek);
+  }
+
+  DateTimeRange get getRangeYear {
+    DateTime firstDayOfYear = DateTime(year, 1, 1);
+    DateTime lastDayOfYear = DateTime(year, 12, 31);
+    return DateTimeRange(start: firstDayOfYear, end: lastDayOfYear);
   }
 }
 
