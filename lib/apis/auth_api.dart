@@ -1,4 +1,5 @@
 import 'package:budget_app/apis/firestore_path.dart';
+import 'package:budget_app/core/devices/devices.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
@@ -77,7 +78,15 @@ class AuthAPI implements IAuthApi {
       createdDate: now,
       updatedDate: now,
     );
-    return _db.doc(FirestorePath.user(user.uid)).set(newUser.toMap());
+    // Write user
+    await _db.doc(FirestorePath.user(user.uid)).set(newUser.toMap());
+
+    // Write current device
+    Devices device = Devices();
+    final currentDevice = await device.infoDevice();
+    await _db
+        .doc(FirestorePath.devices(uid: user.uid))
+        .set(currentDevice.toMap());
   }
 
   @override
