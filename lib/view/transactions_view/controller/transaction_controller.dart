@@ -5,7 +5,6 @@ import 'package:budget_app/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 
 final transactionControllerProvider =
     StateNotifierProvider<TransactionsController, List<TransactionCardModel>>(
