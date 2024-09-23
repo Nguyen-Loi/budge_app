@@ -6,9 +6,18 @@ import 'package:flutter/material.dart';
 class BudgetExpenseStatus extends StatelessWidget {
   const BudgetExpenseStatus({super.key, required this.budget});
   final BudgetModel budget;
-  int get progress => budget.currentAmount <= budget.limit
-      ? (budget.currentAmount / budget.limit * 100).round()
-      : 100;
+  int get progress {
+    final currentAmount = budget.currentAmount.abs();
+    final limit = budget.limit;
+    if (currentAmount == 0 && limit == 0) {
+      return 0;
+    } else if (currentAmount <= limit) {
+      return (currentAmount / limit * 100).round();
+    } else {
+      return 100;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BProgressBar(
