@@ -30,11 +30,13 @@ extension BudgetTypeValue on TransactionTypeEnum {
   String content(BuildContext context) {
     switch (this) {
       case TransactionTypeEnum.incomeWallet:
+        return context.loc.incomeWallet;
       case TransactionTypeEnum.incomeBudget:
-        return context.loc.income;
+        return context.loc.incomeBudget;
       case TransactionTypeEnum.expenseBudget:
+        return context.loc.expenseBudget;
       case TransactionTypeEnum.expenseWallet:
-        return context.loc.expense;
+        return context.loc.expenseWallet;
     }
   }
 }

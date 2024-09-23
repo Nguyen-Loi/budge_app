@@ -238,5 +238,13 @@
     "budgetTypeIsNotEmpty": "Loại ngân sách không được để trống",
     "select": "Chọn",
     "startDate": "Ngày bắt đầu",
-    "endDate": "Ngày kết thúc"
+    "endDate": "Ngày kết thúc",
+    "incomeWallet": "Ví thu nhập",
+    "expenseWallet": "Ví chi tiêu",
+    "incomeBudget": "Ngân sách thu nhập",
+    "expenseBudget": "Ngân sách chi tiêu",
+    "chooseBudgets": "Chọn các ngân sách",
+    "chooseMonth": "Chọn tháng",
+    "filter": "Bộ lọc",
+    "accept": "Đồng ý"
 }
