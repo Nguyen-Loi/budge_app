@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/models/budget_model.dart';
@@ -33,33 +34,35 @@ class TransactionModel {
 
   TransactionCardModel toTransactionCard(Ref ref,
       {required List<BudgetModel> budgets}) {
-    if (budgetId == GenId.budgetWallet()) {
-      String transactionName;
-      int iconId;
-      switch (transactionType) {
-        case TransactionTypeEnum.incomeBudget:
-        case TransactionTypeEnum.incomeWallet:
-          transactionName = ref.read(appLocalizationsProvider).deposit;
-          iconId = IconManagerData.idMoneyIn;
-          break;
-        case TransactionTypeEnum.expenseBudget:
-        case TransactionTypeEnum.expenseWallet:
-          transactionName = ref.read(appLocalizationsProvider).withdrawal;
-          iconId = IconManagerData.idMoneyOut;
-          break;
-      }
+    final budgetOfTransaction =
+        budgets.firstWhereOrNull((e) => e.id == budgetId);
+    if (budgetOfTransaction != null) {
       return TransactionCardModel(
           transaction: this,
-          transactionName: transactionName,
-          iconId: iconId,
+          transactionName: budgetOfTransaction.name,
+          iconId: budgetOfTransaction.iconId,
           transactionType: transactionType);
     }
-    final e = budgets.firstWhere((e) => e.id == budgetId);
-
+    // Handle transaction of wallet
+    String transactionName = '';
+    int iconId = 1;
+    switch (transactionType) {
+      case TransactionTypeEnum.incomeWallet:
+        transactionName = ref.read(appLocalizationsProvider).deposit;
+        iconId = IconManagerData.idMoneyIn;
+        break;
+      case TransactionTypeEnum.expenseWallet:
+        transactionName = ref.read(appLocalizationsProvider).withdrawal;
+        iconId = IconManagerData.idMoneyOut;
+        break;
+      case TransactionTypeEnum.incomeBudget:
+      case TransactionTypeEnum.expenseBudget:
+        break;
+    }
     return TransactionCardModel(
         transaction: this,
-        transactionName: e.name,
-        iconId: e.iconId,
+        transactionName: transactionName,
+        iconId: iconId,
         transactionType: transactionType);
   }
 
