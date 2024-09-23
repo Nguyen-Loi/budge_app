@@ -81,7 +81,7 @@ class _ReportFilterViewState extends State<ReportFilterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BAppBar(text: 'Filter'.hardcoded),
+      appBar: BAppBar(text: context.loc.filter),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -141,7 +141,7 @@ class _ReportFilterViewState extends State<ReportFilterView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _baseItem(
-            label: 'Choose month'.hardcoded,
+            label: context.loc.chooseMonth,
             item: BFilterSingleSelectItem<DateTimeRange>(
                 values: rangeDateTimeEveryMonth,
                 init: _initFilterModel.dateTimeRange,
@@ -152,7 +152,7 @@ class _ReportFilterViewState extends State<ReportFilterView> {
                 label: (model) =>
                     model!.start.toFormatDate(strFormat: 'MM-yyyy'))),
         _baseItem(
-            label: 'Choose budgets'.hardcoded,
+            label: context.loc.chooseBudgets,
             item: BFilterMultipleSelectItem<TransactionTypeEnum>(
                 values: _valueFilterModel.transactionTypes,
                 init: _initFilterModel.transactionTypes,

@@ -28,6 +28,8 @@ class BudgetTransactionsModel {
           budget: budget, transactions: transactionsOfBudget);
       list.add(model);
     }
+
+    list.removeWhere((e) => e.transactions.isEmpty);
     return list;
   }
 }

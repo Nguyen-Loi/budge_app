@@ -1,3 +1,4 @@
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/models/models_widget/chart_budget_model.dart';
@@ -16,12 +17,12 @@ class HomeChartController extends StateNotifier<List<ChartBudgetModel>> {
         super([]) {
     // List available
     state = ChartBudgetModel.toList(
-      allTransactionCard: _listTransactionCard
-          .filterByMonth(
-              time: DateTime.now(),
-              getDate: (e) => e.transaction.transactionDate)
-          .toList(),
-    );
+        allTransactionCard: _listTransactionCard
+            .filterByMonth(
+                time: DateTime.now(),
+                getDate: (e) => e.transaction.transactionDate)
+            .toList(),
+        transactionTypes: [TransactionTypeEnum.expenseBudget]);
   }
   final List<TransactionCardModel> _listTransactionCard;
 }
