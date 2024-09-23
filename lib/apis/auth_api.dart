@@ -2,6 +2,7 @@ import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/core/devices/devices.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
+import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
@@ -71,7 +72,7 @@ class AuthAPI implements IAuthApi {
       email: email,
       balance: 0,
       profileUrl: user.photoURL ??
-          'https://static.vecteezy.com/system/resources/previews/023/220/595/non_2x/3d-robot-illustration-kawaii-friendly-suitable-for-tech-mascot-free-png.png',
+          'https://cdn-icons-png.flaticon.com/512/1144/1144760.png',
       name: user.displayName ?? email.split('@')[0],
       accountTypeValue: accountType.value,
       currencyTypeValue: CurrencyType.vnd.value,
@@ -85,7 +86,8 @@ class AuthAPI implements IAuthApi {
     Devices device = Devices();
     final currentDevice = await device.infoDevice();
     await _db
-        .doc(FirestorePath.devices(uid: user.uid))
+        .collection(FirestorePath.devices(uid: user.uid))
+        .doc(GenId.device())
         .set(currentDevice.toMap());
   }
 

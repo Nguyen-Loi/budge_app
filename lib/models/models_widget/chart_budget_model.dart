@@ -26,13 +26,12 @@ class ChartBudgetModel {
     };
   }
 
-  static List<ChartBudgetModel> toList({
-    required List<TransactionCardModel> allTransactionCard,
-  }) {
+  static List<ChartBudgetModel> toList(
+      {required List<TransactionCardModel> allTransactionCard,
+      required List<TransactionTypeEnum> transactionTypes}) {
     List<ChartBudgetModel> list = [];
     final listInChart = allTransactionCard
-        .where((e) =>
-            e.transaction.transactionType == TransactionTypeEnum.expenseBudget)
+        .where((e) => transactionTypes.contains(e.transactionType))
         .toList();
 
     final groupBudgetId = listInChart.groupBy((e) => e.transaction.budgetId);
