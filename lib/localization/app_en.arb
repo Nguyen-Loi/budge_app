@@ -238,5 +238,13 @@
     "budgetTypeIsNotEmpty": "Budget type is not empty",
     "select": "Select",
     "startDate": "Start date",
-    "endDate": "endDate date"
+    "endDate": "endDate date",
+    "incomeWallet": "Wallet for Income",
+    "expenseWallet": "Wallet for Expenses",
+    "incomeBudget": "Budget for Income",
+    "expenseBudget": "Budget for Expenses",
+    "chooseBudgets": "Choose budgets",
+    "chooseMonth": "Choose month",
+    "filter": "Filter",
+    "accept": "Accept"
 }

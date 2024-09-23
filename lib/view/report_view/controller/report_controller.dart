@@ -4,6 +4,7 @@ import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/b_excel.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/core/extension/extension_datetime_range.dart';
 import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
@@ -34,8 +35,7 @@ class ReportController extends StateNotifier<ReportFilterModel> {
         super(ReportFilterModel(
             dateTimeRange: DateTime.now().getRangeMonth,
             transactionTypes: [
-              TransactionTypeEnum.incomeBudget,
-              TransactionTypeEnum.expenseBudget
+              TransactionTypeEnum.expenseBudget,
             ])) {
     _init();
   }
@@ -46,6 +46,12 @@ class ReportController extends StateNotifier<ReportFilterModel> {
         dateTimeRange: DateTimeRange(start: now, end: now),
         transactionTypes: TransactionTypeEnum.values);
 
+    if (_budgets.isEmpty || _transactionsCard.isEmpty) {
+      _chartBudgetCurrent = [];
+      _budgetTransantionsList = [];
+      return;
+    }
+
     // Update model options
     final minDate = _budgets
         .map((e) => e.startDate)
@@ -53,7 +59,8 @@ class ReportController extends StateNotifier<ReportFilterModel> {
     DateTime maxDate =
         _budgets.map((e) => e.endDate).reduce((a, b) => a.isAfter(b) ? a : b);
     final maxEndTimeThismonth = state.dateTimeRange.end;
-    maxDate = maxDate.isBefore(maxEndTimeThismonth) ? maxEndTimeThismonth : maxDate;
+    maxDate =
+        maxDate.isBefore(maxEndTimeThismonth) ? maxEndTimeThismonth : maxDate;
 
     DateTimeRange dateTimeRangeInBudget =
         DateTimeRange(start: minDate, end: maxDate);
@@ -85,23 +92,20 @@ class ReportController extends StateNotifier<ReportFilterModel> {
   }
 
   void _setData() {
-    if (_budgets.isEmpty) {
-      return;
-    }
-    _chartBudgetCurrent = ChartBudgetModel.toList(
-        allTransactionCard: _transactionsCard
-            .where((e) =>
-                state.transactionTypes.contains(e.transactionType) &&
-                e.transaction.transactionDate
-                    .isBetweenDateTimeRange(state.dateTimeRange))
-            .toList());
-    final transactions = _transactionsCard
-        .map((e) => e.transaction)
-        .where((e) =>
-            e.transactionDate.isBetweenDateTimeRange(state.dateTimeRange))
+    final transactionCardFilter = _transactionsCard
+        .where((e) => state.transactionTypes.contains(e.transactionType))
         .toList();
-    _budgetTransantionsList =
-        BudgetTransactionsModel.mapList(_budgets, transactions);
+    final budgetFilter = _budgets.where((e) {
+      final budgetRange = DateTimeRange(start: e.startDate, end: e.endDate);
+      return budgetRange.hasOverlapWith(state.dateTimeRange);
+    }).toList();
+
+    _chartBudgetCurrent = ChartBudgetModel.toList(
+        allTransactionCard: transactionCardFilter,
+        transactionTypes: state.transactionTypes);
+
+    _budgetTransantionsList = BudgetTransactionsModel.mapList(
+        budgetFilter, transactionCardFilter.map((e) => e.transaction).toList());
   }
 
   void exportExcel(BuildContext context, {required UserModel user}) async {
