@@ -2,6 +2,7 @@ import 'package:budget_app/apis/budget_api.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // This budgets filter on budget screen
 final budgetBaseControllerProvider =
@@ -30,6 +31,11 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
   List<BudgetModel> _budgetsAvailable = [];
   List<BudgetModel> get budgetAvailable => _budgetsAvailable;
 
+  // Add wallet model follow budget
+  List<BudgetModel> budgetsWithWallet(AppLocalizations loc) {
+    return _allBudgets.withBudgetWallet(loc).toList();
+  }
+
   Future<List<BudgetModel>> fetch() async {
     final budgets = await _budgetApi.fetch(_uid);
     _allBudgets = budgets;
@@ -51,12 +57,11 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
   void _notifier({required List<BudgetModel> newList}) {
     state = newList.toList();
     final now = DateTime.now();
-    _budgetsAvailable = newList.where((e){
-      if(now.isBefore(e.startDate)&&now.isAfter(e.endDate)){
+    _budgetsAvailable = newList.where((e) {
+      if (now.isBefore(e.startDate) && now.isAfter(e.endDate)) {
         return true;
       }
       return false;
     }).toList();
   }
-
 }
