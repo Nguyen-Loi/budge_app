@@ -22,7 +22,10 @@ class HomeChartController extends StateNotifier<List<ChartBudgetModel>> {
                 time: DateTime.now(),
                 getDate: (e) => e.transaction.transactionDate)
             .toList(),
-        transactionTypes: [TransactionTypeEnum.expenseBudget]);
+        transactionTypes: [
+          TransactionTypeEnum.expenseBudget,
+          TransactionTypeEnum.expenseWallet
+        ]);
   }
   final List<TransactionCardModel> _listTransactionCard;
 }

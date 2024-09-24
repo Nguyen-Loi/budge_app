@@ -1,4 +1,3 @@
-
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/assets_constants.dart';
@@ -25,57 +24,58 @@ class _ChartBudgetState extends State<ChartBudget> {
   @override
   Widget build(BuildContext context) {
     final list = widget.list;
-    return list.isEmpty
-        ? Column(
-            children: [
-              Lottie.asset(LottieAssets.emptyChart, width: 160, height: 160),
-              gapH16,
-              BText(context.loc.noData)
-            ],
-          )
-        : AspectRatio(
-            aspectRatio: 1.3,
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: PieChart(
-                      PieChartData(
-                        pieTouchData: PieTouchData(
-                          touchCallback:
-                              (FlTouchEvent event, pieTouchResponse) {
-                            setState(() {
-                              if (!event.isInterestedForInteractions ||
-                                  pieTouchResponse == null ||
-                                  pieTouchResponse.touchedSection == null) {
-                                touchedIndex = -1;
-                                return;
-                              }
-                              touchedIndex = pieTouchResponse
-                                  .touchedSection!.touchedSectionIndex;
-                            });
-                          },
-                        ),
-                        borderData: FlBorderData(
-                          show: false,
-                        ),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 40,
-                        sections: showingSections(list),
-                      ),
-                    ),
+    if (list.isEmpty) {
+      return Column(
+        children: [
+          Lottie.asset(LottieAssets.emptyChart, width: 160, height: 160),
+          gapH16,
+          BText(context.loc.noData)
+        ],
+      );
+    }
+
+    return AspectRatio(
+      aspectRatio: 1.3,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: PieChart(
+                PieChartData(
+                  pieTouchData: PieTouchData(
+                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                      setState(() {
+                        if (!event.isInterestedForInteractions ||
+                            pieTouchResponse == null ||
+                            pieTouchResponse.touchedSection == null) {
+                          touchedIndex = -1;
+                          return;
+                        }
+                        touchedIndex = pieTouchResponse
+                            .touchedSection!.touchedSectionIndex;
+                      });
+                    },
                   ),
+                  borderData: FlBorderData(
+                    show: false,
+                  ),
+                  sectionsSpace: 0,
+                  centerSpaceRadius: 40,
+                  sections: showingSections(list),
                 ),
-                ColumnWithSpacing(
-                  spacing: 4,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: _informations(list),
-                ),
-              ],
+              ),
             ),
-          );
+          ),
+          ColumnWithSpacing(
+            spacing: 4,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: _informations(list),
+          ),
+        ],
+      ),
+    );
   }
 
   PieChartSectionData _itemChart(

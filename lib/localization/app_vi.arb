@@ -246,5 +246,6 @@
   "chooseBudgets": "Chọn các ngân sách",
   "chooseMonth": "Chọn tháng",
   "filter": "Bộ lọc",
-  "accept": "Đồng ý"
+  "accept": "Đồng ý",
+  "reasonChartNotVisible": "Biểu đồ không hiện thị vì bộ lọc đang hiện nguồn thu và chi tiêu"
 }
