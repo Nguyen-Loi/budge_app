@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/b_text_money.dart';
 import 'package:budget_app/common/widget/chart_budget.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -38,10 +39,21 @@ class ReportView extends ConsumerWidget {
   }
 
   Widget _body({required BuildContext context, required WidgetRef ref}) {
+    bool isOnlyIncomeOrExpense = ref
+        .watch(reportControllerProvider)
+        .transactionTypes
+        .isOnlyContainIncomeOrExpense;
     return Column(
       children: [
-        ChartBudget(
-            list: ref.watch(reportControllerProvider.notifier).chartBudgetList),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: isOnlyIncomeOrExpense
+              ? ChartBudget(
+                  list: ref
+                      .watch(reportControllerProvider.notifier)
+                      .chartBudgetList)
+              : BText.b1(context.loc.reasonChartNotVisible),
+        ),
         gapH16,
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -52,7 +64,8 @@ class ReportView extends ConsumerWidget {
                 .map((e) => _cardBudget(context, budgetTransactions: e))
                 .toList(),
           ),
-        )
+        ),
+        gapH16
       ],
     );
   }
@@ -103,7 +116,7 @@ class ReportView extends ConsumerWidget {
                   _animationPageFilter(ref: ref),
                 );
               },
-              child: const BText.b1('Filter'),
+              child: BText.b1(context.loc.filter),
             ),
           ),
           gapW24,

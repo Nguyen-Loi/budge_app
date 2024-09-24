@@ -7,6 +7,7 @@ import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_datetime_range.dart';
 import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
@@ -21,7 +22,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final reportControllerProvider =
     StateNotifierProvider.autoDispose<ReportController, ReportFilterModel>(
         (ref) {
-  final budgets = ref.watch(budgetBaseControllerProvider);
+  final loc = ref.watch(appLocalizationsProvider);
+  final budgets = ref
+      .watch(budgetBaseControllerProvider.notifier)
+      .budgetsWithWallet(loc)
+      .toList();
   final transactionsCard = ref.watch(transactionsBaseControllerProvider);
   return ReportController(budgets: budgets, transactionsCard: transactionsCard);
 });
@@ -36,6 +41,7 @@ class ReportController extends StateNotifier<ReportFilterModel> {
             dateTimeRange: DateTime.now().getRangeMonth,
             transactionTypes: [
               TransactionTypeEnum.expenseBudget,
+              TransactionTypeEnum.expenseWallet,
             ])) {
     _init();
   }
@@ -46,7 +52,7 @@ class ReportController extends StateNotifier<ReportFilterModel> {
         dateTimeRange: DateTimeRange(start: now, end: now),
         transactionTypes: TransactionTypeEnum.values);
 
-    if (_budgets.isEmpty || _transactionsCard.isEmpty) {
+    if (_transactionsCard.isEmpty) {
       _chartBudgetCurrent = [];
       _budgetTransantionsList = [];
       return;
@@ -100,14 +106,31 @@ class ReportController extends StateNotifier<ReportFilterModel> {
       return budgetRange.hasOverlapWith(state.dateTimeRange);
     }).toList();
 
-    budgetFilter = budgetFilter.withBudgetWallet(list: _transactionsCard);
+    // Update summry budget of wallet
+    var caculatorBudgetWallet = _valueTotalWallet(transactionCardFilter);
+    budgetFilter = budgetFilter.updateValueWallet(
+        income: caculatorBudgetWallet.$1, expense: caculatorBudgetWallet.$2);
 
+    // Update chart base on data filter
     _chartBudgetCurrent = ChartBudgetModel.toList(
         allTransactionCard: transactionCardFilter,
         transactionTypes: state.transactionTypes);
 
+    // Update list item base on data filter
     _budgetTransantionsList = BudgetTransactionsModel.mapList(
         budgetFilter, transactionCardFilter.map((e) => e.transaction).toList());
+  }
+
+  (int, int) _valueTotalWallet(List<TransactionCardModel> transactionCard) {
+    final totalIncomeWallet = transactionCard
+        .where((e) => e.transactionType == TransactionTypeEnum.incomeWallet)
+        .map((e) => e.transaction.amount)
+        .fold(0, (a, b) => a + b);
+    final totalExpenseWallet = transactionCard
+        .where((e) => e.transactionType == TransactionTypeEnum.expenseWallet)
+        .map((e) => e.transaction.amount)
+        .fold(0, (a, b) => a + b);
+    return (totalIncomeWallet, totalExpenseWallet);
   }
 
   void exportExcel(BuildContext context, {required UserModel user}) async {
