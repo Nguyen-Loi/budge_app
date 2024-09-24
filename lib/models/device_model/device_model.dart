@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:budget_app/core/enums/device_type_enum.dart';
 import 'package:flutter/foundation.dart';
 
 class DeviceModel {
@@ -18,6 +19,9 @@ class DeviceModel {
     required this.createdDate,
     required this.updatedDate,
   });
+
+  DeviceTypeEnum get deviceType =>
+      DeviceTypeEnum.values.firstWhere((e) => e.value == operatingSystem);
 
   DeviceModel copyWith({
     String? deviceName,
@@ -54,14 +58,17 @@ class DeviceModel {
       operatingSystem: map['operatingSystem'] as String,
       isPhysicalDevice: map['isPhysicalDevice'] as bool,
       data: Map<String, dynamic>.from((map['data'] as Map<String, dynamic>)),
-      createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
-      updatedDate: DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
+      createdDate:
+          DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
+      updatedDate:
+          DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory DeviceModel.fromJson(String source) => DeviceModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory DeviceModel.fromJson(String source) =>
+      DeviceModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -71,23 +78,29 @@ class DeviceModel {
   @override
   bool operator ==(covariant DeviceModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.deviceName == deviceName &&
-      other.operatingSystem == operatingSystem &&
-      other.isPhysicalDevice == isPhysicalDevice &&
-      mapEquals(other.data, data) &&
-      other.createdDate == createdDate &&
-      other.updatedDate == updatedDate;
+
+    return other.deviceName == deviceName &&
+        other.operatingSystem == operatingSystem &&
+        other.isPhysicalDevice == isPhysicalDevice &&
+        mapEquals(other.data, data);
   }
 
   @override
   int get hashCode {
     return deviceName.hashCode ^
-      operatingSystem.hashCode ^
-      isPhysicalDevice.hashCode ^
-      data.hashCode ^
-      createdDate.hashCode ^
-      updatedDate.hashCode;
+        operatingSystem.hashCode ^
+        isPhysicalDevice.hashCode ^
+        data.hashCode ^
+        createdDate.hashCode ^
+        updatedDate.hashCode;
+  }
+
+  bool infoDeviceIsExist(List<DeviceModel> devices) {
+    for (var e in devices) {
+      if (e == this) {
+        return true;
+      }
+    }
+    return false;
   }
 }

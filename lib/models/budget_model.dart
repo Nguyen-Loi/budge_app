@@ -3,6 +3,11 @@ import 'dart:convert';
 
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/core/icon_manager_data.dart';
+import 'package:budget_app/models/merge_model/transaction_card_model.dart';
+
 
 enum StatusBudgetProgress { start, progress, almostDone, complete }
 
@@ -160,5 +165,61 @@ class BudgetModel {
         endDate.hashCode ^
         createdDate.hashCode ^
         updatedDate.hashCode;
+  }
+}
+
+extension BudgetWallet on List<BudgetModel> {
+  List<BudgetModel> withBudgetWallet(
+      {required List<TransactionCardModel> list}) {
+    String id = 'WALLET';
+    final now = DateTime.now();
+    final currentRangeMonth = now.getRangeMonth;
+
+    final transactionOfWalletIncome = list
+        .where((e) => e.transactionType == TransactionTypeEnum.incomeWallet)
+        .toList();
+    final transactionOfWalletExpense = list
+        .where((e) => e.transactionType == TransactionTypeEnum.expenseWallet)
+        .toList();
+
+    BudgetModel budgetBase = BudgetModel(
+        id: id,
+        userId: id,
+        name: 'Budget Base',
+        iconId: IconManagerData.idMoneyIn,
+        currentAmount: 0,
+        limit: 0,
+        budgetTypeValue: BudgetTypeEnum.income.value,
+        rangeDateTimeTypeValue: RangeDateTimeEnum.month.value,
+        startDate: currentRangeMonth.start,
+        endDate: currentRangeMonth.end,
+        createdDate: now,
+        updatedDate: now);
+
+    if (transactionOfWalletIncome.isNotEmpty) {
+      final summary = transactionOfWalletIncome
+          .map((e) => e.transaction.amount)
+          .reduce((value, element) => value + element);
+      BudgetModel incomeWallet = budgetBase.copyWith(
+          name: transactionOfWalletIncome.first.transactionName,
+          budgetTypeValue: BudgetTypeEnum.income.value,
+          iconId: IconManagerData.idMoneyIn,
+          currentAmount: summary);
+      add(incomeWallet);
+    }
+
+    if (transactionOfWalletExpense.isNotEmpty) {
+      final summary = transactionOfWalletExpense
+          .map((e) => e.transaction.amount)
+          .reduce((value, element) => value + element);
+      BudgetModel expenseWallet = budgetBase.copyWith(
+          name: transactionOfWalletExpense.first.transactionName,
+          budgetTypeValue: BudgetTypeEnum.expense.value,
+          iconId: IconManagerData.idMoneyOut,
+          currentAmount: summary);
+      add(expenseWallet);
+    }
+
+    return this;
   }
 }
