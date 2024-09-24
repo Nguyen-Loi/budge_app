@@ -1,3 +1,4 @@
+import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
 
@@ -16,14 +17,20 @@ class BudgetTransactionsModel {
     Map<String, List<TransactionModel>> transactionsMap = {};
 
     for (var transaction in transactions) {
-      if (!transactionsMap.containsKey(transaction.budgetId)) {
-        transactionsMap[transaction.budgetId] = [];
+      String transactionId = transaction.budgetId;
+      if (transaction.budgetId == GenId.budgetWallet()) {
+        transactionId = transaction.transactionTypeValue;
       }
-      transactionsMap[transaction.budgetId]!.add(transaction);
+      if (!transactionsMap.containsKey(transactionId)) {
+        transactionsMap[transactionId] = [];
+      }
+      transactionsMap[transactionId]!.add(transaction);
     }
 
     for (var budget in budgets) {
       final transactionsOfBudget = transactionsMap[budget.id] ?? [];
+      transactionsOfBudget
+          .sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
       final model = BudgetTransactionsModel(
           budget: budget, transactions: transactionsOfBudget);
       list.add(model);

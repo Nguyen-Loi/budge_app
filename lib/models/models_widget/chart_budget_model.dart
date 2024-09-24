@@ -30,6 +30,7 @@ class ChartBudgetModel {
       {required List<TransactionCardModel> allTransactionCard,
       required List<TransactionTypeEnum> transactionTypes}) {
     List<ChartBudgetModel> list = [];
+
     final listInChart = allTransactionCard
         .where((e) => transactionTypes.contains(e.transactionType))
         .toList();

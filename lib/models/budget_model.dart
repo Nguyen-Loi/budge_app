@@ -7,7 +7,7 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum StatusBudgetProgress { start, progress, almostDone, complete }
 
@@ -169,22 +169,41 @@ class BudgetModel {
 }
 
 extension BudgetWallet on List<BudgetModel> {
+  List<BudgetModel> updateValueWallet(
+      {required int income, required int expense}) {
+    BudgetModel bIncome =
+        firstWhere((e) => e.id == TransactionTypeEnum.incomeWallet.value)
+            .copyWith(currentAmount: income);
+    BudgetModel bExpense =
+        firstWhere((e) => e.id == TransactionTypeEnum.expenseWallet.value)
+            .copyWith(currentAmount: expense);
+    int bIncomeIndex =
+        indexWhere((e) => e.id == TransactionTypeEnum.incomeWallet.value);
+    int bExpenseIndex =
+        indexWhere((e) => e.id == TransactionTypeEnum.expenseWallet.value);
+    this[bIncomeIndex] = bIncome;
+    this[bExpenseIndex] = bExpense;
+    return this;
+  }
+
   List<BudgetModel> withBudgetWallet(
-      {required List<TransactionCardModel> list}) {
-    String id = 'WALLET';
+    AppLocalizations loc,
+  ) {
+    final budgetWalletExist = any((e) =>
+        e.id == TransactionTypeEnum.incomeWallet.value ||
+        e.id == TransactionTypeEnum.expenseWallet.value);
+
+    if (budgetWalletExist) {
+      return this;
+    }
     final now = DateTime.now();
     final currentRangeMonth = now.getRangeMonth;
-
-    final transactionOfWalletIncome = list
-        .where((e) => e.transactionType == TransactionTypeEnum.incomeWallet)
-        .toList();
-    final transactionOfWalletExpense = list
-        .where((e) => e.transactionType == TransactionTypeEnum.expenseWallet)
-        .toList();
+    String incomeValue = TransactionTypeEnum.incomeWallet.value;
+    String expenseValue = TransactionTypeEnum.expenseWallet.value;
 
     BudgetModel budgetBase = BudgetModel(
-        id: id,
-        userId: id,
+        id: '0',
+        userId: '0',
         name: 'Budget Base',
         iconId: IconManagerData.idMoneyIn,
         currentAmount: 0,
@@ -196,29 +215,20 @@ extension BudgetWallet on List<BudgetModel> {
         createdDate: now,
         updatedDate: now);
 
-    if (transactionOfWalletIncome.isNotEmpty) {
-      final summary = transactionOfWalletIncome
-          .map((e) => e.transaction.amount)
-          .reduce((value, element) => value + element);
-      BudgetModel incomeWallet = budgetBase.copyWith(
-          name: transactionOfWalletIncome.first.transactionName,
-          budgetTypeValue: BudgetTypeEnum.income.value,
-          iconId: IconManagerData.idMoneyIn,
-          currentAmount: summary);
-      add(incomeWallet);
-    }
-
-    if (transactionOfWalletExpense.isNotEmpty) {
-      final summary = transactionOfWalletExpense
-          .map((e) => e.transaction.amount)
-          .reduce((value, element) => value + element);
-      BudgetModel expenseWallet = budgetBase.copyWith(
-          name: transactionOfWalletExpense.first.transactionName,
-          budgetTypeValue: BudgetTypeEnum.expense.value,
-          iconId: IconManagerData.idMoneyOut,
-          currentAmount: summary);
-      add(expenseWallet);
-    }
+    BudgetModel incomeWallet = budgetBase.copyWith(
+        id: incomeValue,
+        name: TransactionTypeEnum.incomeWallet.contentLoc(loc),
+        budgetTypeValue: BudgetTypeEnum.income.value,
+        iconId: IconManagerData.idMoneyIn,
+        currentAmount: 0);
+    BudgetModel expenseWallet = budgetBase.copyWith(
+        id: expenseValue,
+        name: TransactionTypeEnum.expenseWallet.contentLoc(loc),
+        budgetTypeValue: BudgetTypeEnum.expense.value,
+        iconId: IconManagerData.idMoneyOut,
+        currentAmount: 0);
+    add(incomeWallet);
+    add(expenseWallet);
 
     return this;
   }
