@@ -98,7 +98,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
             Navigator.pushNamed(context, RoutePath.newTransaction);
           }
         },
-        heroTag: RoutePath.newTransaction,
+        heroTag: UniqueKey(),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(100))),
         child: Icon(

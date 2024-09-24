@@ -55,7 +55,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
     return BaseView(
       title: context.loc.budgetInUse,
       floatingActionButton: FloatingActionButton(
-        heroTag: RoutePath.newBudget,
+        heroTag: UniqueKey(),
         onPressed: () {
           Navigator.pushNamed(context, RoutePath.newBudget);
         },
