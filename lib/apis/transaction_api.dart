@@ -77,10 +77,11 @@ class TransactionApi extends ITransactionApi {
 
       // Add transaction
       int amountChanged = newValue - user.balance;
+
       final transactionType = TransactionTypeEnum.fromAmount(amountChanged);
       final newTransaction = await _add(user.id,
           budgetId: GenId.budgetWallet(),
-          amount: amountChanged.abs(),
+          amount: amountChanged,
           note: note,
           transactionType: transactionType);
       return right((newUser, newTransaction));

@@ -95,10 +95,12 @@ class ReportController extends StateNotifier<ReportFilterModel> {
     final transactionCardFilter = _transactionsCard
         .where((e) => state.transactionTypes.contains(e.transactionType))
         .toList();
-    final budgetFilter = _budgets.where((e) {
+    List<BudgetModel> budgetFilter = _budgets.where((e) {
       final budgetRange = DateTimeRange(start: e.startDate, end: e.endDate);
       return budgetRange.hasOverlapWith(state.dateTimeRange);
     }).toList();
+
+    budgetFilter = budgetFilter.withBudgetWallet(list: _transactionsCard);
 
     _chartBudgetCurrent = ChartBudgetModel.toList(
         allTransactionCard: transactionCardFilter,
