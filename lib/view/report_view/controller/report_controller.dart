@@ -152,6 +152,7 @@ class ReportController extends StateNotifier<ReportFilterModel> {
         message: context.loc.reportExportedSuccessfully,
       ).presentAction(
         context,
+        textSubmit: context.loc.openFile,
         onSubmit: () async {
           final closeDialog = showLoading(context: context);
           await BFileStorage.openFile(r);
