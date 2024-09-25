@@ -58,6 +58,7 @@ extension Present<T> on BDialogInfo {
     }
     return showDialog<T?>(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return _baseDialog(context,
             bColor: bColor,
@@ -122,6 +123,7 @@ extension Present<T> on BDialogInfo {
     }
     return showDialog<T?>(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return _baseDialog(context,
             bColor: bColorButtonSubmit,
@@ -164,6 +166,7 @@ extension Present<T> on BDialogInfo {
       required IconData bIcon,
       required String bTitle,
       required List<Widget> actions}) {
+    final letterSpacing = bTitle.split(' ').isEmpty ? 3.0 : null;
     return AlertDialog(
       actionsAlignment: MainAxisAlignment.center,
       title: Container(
@@ -178,7 +181,7 @@ extension Present<T> on BDialogInfo {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          BText.h2(bTitle, letterSpacing: 3),
+          BText.h3(bTitle, letterSpacing: letterSpacing),
           gapH8,
           BText.b3(message)
         ],
