@@ -6,7 +6,7 @@ require 'ostruct'
 platform :android do
   desc "Deploy a new version to the Google Play"
   lane :deploy do |options|
-    mode_distribute = "alpha" # "internal", "alpha", "beta", "production"
+    mode_distribute = "production" # "internal", "alpha", "beta", "production"
     newVersion = updateVersion(options)
 
     gradle(
