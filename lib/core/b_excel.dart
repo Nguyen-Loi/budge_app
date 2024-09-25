@@ -138,6 +138,39 @@ class BExcel {
           rowIndex++;
         }
       }
+
+      // Summary
+      rowIndex++;
+      final allTransactions = list.expand((e) => e.transactions).toList();
+      final totalIncome = allTransactions
+          .where((e) => e.transactionType.budgetType == BudgetTypeEnum.income)
+          .map((e) => e.amount)
+          .fold(0, (a, b) => a + b);
+      final totalExpense = allTransactions
+          .where((e) => e.transactionType.budgetType == BudgetTypeEnum.expense)
+          .map((e) => e.amount)
+          .fold(0, (a, b) => a + b);
+
+      int summaryLabelColIndex = 5;
+      int summaryValueColIndex = 6;
+      sheet.getRangeByIndex(rowIndex, summaryLabelColIndex)
+        ..setText(context.loc.totalIncome)
+        ..cellStyle.bold = true;
+      sheet.getRangeByIndex(rowIndex, summaryValueColIndex)
+        ..setText(totalIncome.toMoneyStr())
+        ..cellStyle.bold = true
+        ..cellStyle.fontColor = '#28a745';
+
+      rowIndex++;
+
+      sheet.getRangeByIndex(rowIndex, summaryLabelColIndex)
+        ..setText(context.loc.totalExpense)
+        ..cellStyle.bold = true;
+      sheet.getRangeByIndex(rowIndex, summaryValueColIndex)
+        ..setText(totalExpense.abs().toMoneyStr())
+        ..cellStyle.bold = true
+        ..cellStyle.fontColor = '#dc3545';
+
       // Set default
       sheet.autoFitColumn(1);
       sheet.autoFitColumn(2);

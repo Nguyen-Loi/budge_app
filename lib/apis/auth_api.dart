@@ -123,7 +123,6 @@ class AuthAPI implements IAuthApi {
       {required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      await _writeNewInfoToDB(accountType: AccountType.emailAndPassword);
       return right(_currentUserAccount());
     } on FirebaseAuthException catch (e) {
       return left(Failure(
