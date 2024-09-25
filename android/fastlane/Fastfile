@@ -12,8 +12,9 @@ platform :android do
     gradle(
       task: 'bundle',
       build_type: 'Release',
-      flags: '--stacktrace' # Add --stacktrace option to provide more detailed error information
+      flags: '--stacktrace'
     )
+    
     upload_to_play_store(
       track: mode_distribute, 
       skip_upload_changelogs: true,
