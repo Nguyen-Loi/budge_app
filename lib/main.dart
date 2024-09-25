@@ -1,7 +1,9 @@
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/common/shared_pref/theme_controller.dart';
+import 'package:budget_app/core/crashlytics.dart';
 import 'package:budget_app/core/logger_observer.dart';
+import 'package:budget_app/core/remote_config.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/theme/app_theme.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
@@ -19,6 +21,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final sharedPreferences = await SharedPreferences.getInstance();
+  _initServices();
   runApp(ProviderScope(
     observers: [
       LoggerObserver(),
@@ -28,6 +31,16 @@ Future<void> main() async {
     ],
     child: const MyApp(),
   ));
+}
+
+Future<void> _initServices() async {
+  // Init remote config
+  RemoteConfig remoteConfig = RemoteConfig();
+  await remoteConfig.initialize();
+
+  // Manage error
+  Crashlytics crashlytics = Crashlytics();
+  await crashlytics.initialize();
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
