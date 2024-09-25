@@ -2,6 +2,7 @@ import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/b_excel.dart';
+import 'package:budget_app/core/b_file_storage.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_datetime_range.dart';
@@ -143,6 +144,7 @@ class ReportController extends StateNotifier<ReportFilterModel> {
     closeDialog();
     res.fold((l) {
       logInfo(l.error);
+
       showSnackBar(context, l.message);
     }, (r) {
       BDialogInfo(
@@ -150,6 +152,11 @@ class ReportController extends StateNotifier<ReportFilterModel> {
         message: context.loc.reportExportedSuccessfully,
       ).presentAction(
         context,
+        onSubmit: () async {
+          final closeDialog = showLoading(context: context);
+          await BFileStorage.openFile(r);
+          closeDialog();
+        },
       );
     });
   }
