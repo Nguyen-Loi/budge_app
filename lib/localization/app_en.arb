@@ -248,5 +248,7 @@
     "filter": "Filter",
     "accept": "Accept",
     "reasonChartNotVisible": "The chart is not displayed because the filter is showing income and expense",
-    "transactionNotScopeBudget": "The transaction date is not within the budget time range"
+    "transactionNotScopeBudget": "The transaction date is not within the budget time range",
+    "totalIncome": "Total Income",
+   "totalExpense": "Total Expense"
 }
