@@ -6,7 +6,6 @@ import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
-import 'package:budget_app/models/merge_model/transaction_card_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum StatusBudgetProgress { start, progress, almostDone, complete }
