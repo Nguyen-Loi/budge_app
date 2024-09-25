@@ -8,6 +8,8 @@ platform :android do
   lane :deploy do |options|
     mode_distribute = "production" # "internal", "alpha", "beta", "production"
     newVersion = updateVersion(options)
+    version_code = current_version_code + 1
+    version_name = "#{version_code}_(#{newVersion})"
 
     gradle(
       task: 'bundle',
@@ -20,8 +22,10 @@ platform :android do
       skip_upload_changelogs: true,
       skip_upload_metadata: true,
       aab: '../build/app/outputs/bundle/release/app-release.aab',
+      version_code: version_code,
+      version_name: version_name
     )
-    push_git_tag(newVersion)
+    push_git_tag(version_name)
   end
 end
 
@@ -44,6 +48,13 @@ def current_version
   s = File.read(path)
   versionName = s[re, 1].gsub!('"', '').split('.')
   return versionName.join(".")
+end
+
+def current_version_code
+  path = '../app/build.gradle'
+  re = /versionCode\s+(\d+)/
+  s = File.read(path)
+  s[re, 1].to_i
 end
 
 def increment_version_number(bump_type: nil, version_number: nil)
