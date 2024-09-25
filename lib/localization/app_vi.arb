@@ -252,5 +252,6 @@
   "totalIncome": "Tổng Thu Nhập",
   "totalExpense": "Tổng Chi Phí",
   "newVersionDescription": "Bạn hãy cập nhật ứng dụng để có trải nghiệm tốt hơn.",
-  "newVersionTitle": "Đã có phiên bản mới"
+  "newVersionTitle": "Đã có phiên bản mới",
+   "openFile": "Mở file"
 }
