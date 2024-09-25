@@ -247,5 +247,6 @@
   "chooseMonth": "Chọn tháng",
   "filter": "Bộ lọc",
   "accept": "Đồng ý",
-  "reasonChartNotVisible": "Biểu đồ không hiện thị vì bộ lọc đang hiện nguồn thu và chi tiêu"
+  "reasonChartNotVisible": "Biểu đồ không hiện thị vì bộ lọc đang hiện nguồn thu và chi tiêu",
+  "transactionNotScopeBudget": "Ngày giao dịch không nằm trong phạm vi thời gian của ngân sách"
 }
