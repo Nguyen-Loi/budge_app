@@ -69,7 +69,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return ref.watch(mainPageFutureProvider).when(
+    return ref.watch(mainPageFutureProvider(context)).when(
           data: (_) => _body(),
           error: (_, __) => const Scaffold(body: BStatus.error()),
           loading: () => const Scaffold(body: Center(child: BStatus.loading())),

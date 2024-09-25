@@ -44,6 +44,9 @@ dependencies:
   device_info_plus: ^10.1.2
   open_file: ^3.5.4
   firebase_remote_config: ^4.4.7
+  firebase_crashlytics: ^3.5.7
+  package_info_plus: ^8.0.2
+  url_launcher: ^6.3.0
   
 dev_dependencies:
   flutter_test:

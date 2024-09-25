@@ -250,5 +250,7 @@
   "reasonChartNotVisible": "Biểu đồ không hiện thị vì bộ lọc đang hiện nguồn thu và chi tiêu",
   "transactionNotScopeBudget": "Ngày giao dịch không nằm trong phạm vi thời gian của ngân sách",
   "totalIncome": "Tổng Thu Nhập",
-  "totalExpense": "Tổng Chi Phí"
+  "totalExpense": "Tổng Chi Phí",
+  "newVersionDescription": "Bạn hãy cập nhật ứng dụng để có trải nghiệm tốt hơn.",
+  "newVersionTitle": "Đã có phiên bản mới"
 }
