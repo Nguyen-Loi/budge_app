@@ -2,10 +2,14 @@ import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
+import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:budget_app/core/extension/extension_query.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/transaction_model.dart';
 import 'package:budget_app/models/user_model.dart';
@@ -15,7 +19,8 @@ import 'package:fpdart/fpdart.dart';
 
 final transactionApiProvider = Provider(((ref) {
   final db = ref.watch(dbProvider);
-  return TransactionApi(db: db);
+  final loc = ref.watch(appLocalizationsProvider);
+  return TransactionApi(db: db, loc: loc);
 }));
 
 abstract class ITransactionApi {
@@ -36,7 +41,10 @@ abstract class ITransactionApi {
 
 class TransactionApi extends ITransactionApi {
   final FirebaseFirestore _db;
-  TransactionApi({required FirebaseFirestore db}) : _db = db;
+  final AppLocalizations _loc;
+  TransactionApi({required FirebaseFirestore db, required AppLocalizations loc})
+      : _db = db,
+        _loc = loc;
 
   Future<TransactionModel> _add(String uid,
       {required String budgetId,
@@ -91,6 +99,15 @@ class TransactionApi extends ITransactionApi {
     }
   }
 
+  void _validateBudgetTransaction(
+      BudgetModel budget, DateTime transactionDate) {
+    DateTimeRange dateTimeRangeBudget =
+        DateTimeRange(start: budget.startDate, end: budget.endDate);
+    if (!transactionDate.isBetweenDateTimeRange(dateTimeRangeBudget)) {
+      throw _loc.transactionNotScopeBudget;
+    }
+  }
+
   @override
   FutureEither<(TransactionModel, BudgetModel, UserModel)> addBudgetTransaction(
       {required UserModel user,
@@ -99,6 +116,7 @@ class TransactionApi extends ITransactionApi {
       required String? note,
       required DateTime transactionDate}) async {
     try {
+      _validateBudgetTransaction(budgetModel, transactionDate);
       TransactionTypeEnum transactionType;
       switch (budgetModel.budgetType) {
         case BudgetTypeEnum.income:
@@ -128,8 +146,7 @@ class TransactionApi extends ITransactionApi {
           .update(newBudget.toMap());
       return right((newTransaction, newBudget, newUser));
     } catch (e) {
-      logError(e.toString());
-      return left(Failure(error: e.toString()));
+      return left(Failure(error: e.toString(), message: e.toString()));
     }
   }
 

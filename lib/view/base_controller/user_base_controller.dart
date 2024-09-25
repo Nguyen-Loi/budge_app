@@ -79,7 +79,7 @@ class UserBaseController extends StateNotifier<UserModel?> {
         transactionDate: transactionDate);
 
     res.fold((l) {
-      showSnackBar(context, context.loc.anErrorUnexpectedOccur);
+      showSnackBar(context, l.message);
     }, (r) {
       updateUser(r.$3);
       _ref.read(transactionsBaseControllerProvider.notifier).addState(r.$1);
