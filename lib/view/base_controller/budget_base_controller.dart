@@ -33,7 +33,7 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
 
   // Add wallet model follow budget
   List<BudgetModel> budgetsWithWallet(AppLocalizations loc) {
-    return _allBudgets.withBudgetWallet(loc).toList();
+    return _allBudgets.toList().withBudgetWallet(loc);
   }
 
   Future<List<BudgetModel>> fetch() async {

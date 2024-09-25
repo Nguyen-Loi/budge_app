@@ -141,6 +141,10 @@ class AppTheme {
       /// COLOR
       brightness: Brightness.dark,
       disabledColor: darkColors.disabledSurface,
+      snackBarTheme: SnackBarThemeData(
+          actionTextColor: darkColors.onPrimary,
+          backgroundColor: darkColors.secondary,
+          elevation: 20),
       colorScheme: ColorScheme(
           brightness: darkColors.brightness,
           primary: darkColors.primary,
@@ -262,6 +266,10 @@ class AppTheme {
       /// COLOR
       brightness: Brightness.dark,
       disabledColor: lightColors.disabledSurface,
+      snackBarTheme: SnackBarThemeData(
+          actionTextColor: lightColors.onPrimary,
+          backgroundColor: lightColors.secondary,
+          elevation: 20),
       colorScheme: ColorScheme(
         brightness: lightColors.brightness,
         primary: lightColors.primary,

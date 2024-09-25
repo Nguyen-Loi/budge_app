@@ -247,5 +247,6 @@
     "chooseMonth": "Choose month",
     "filter": "Filter",
     "accept": "Accept",
-    "reasonChartNotVisible": "The chart is not displayed because the filter is showing income and expense"
+    "reasonChartNotVisible": "The chart is not displayed because the filter is showing income and expense",
+    "transactionNotScopeBudget": "The transaction date is not within the budget time range"
 }
