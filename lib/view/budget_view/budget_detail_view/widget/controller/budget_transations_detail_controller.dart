@@ -1,39 +1,28 @@
-import 'package:budget_app/apis/transaction_api.dart';
 import 'package:budget_app/models/transaction_model.dart';
-import 'package:budget_app/view/home_page/controller/uid_controller.dart';
+import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 
 /// Get lastest transaction of this budget
-final budgetTransactionDetailControllerProvider =
-    StateNotifierProvider<BudgetTransactionsDetailController, TransactionModel?>((ref) {
-  final uid = ref.watch(uidControllerProvider);
-  final transactionApi = ref.watch(transactionApiProvider);
-  return BudgetTransactionsDetailController(transactionApi: transactionApi, uid: uid);
+final budgetTransactionDetailControllerProvider = StateNotifierProvider.family<
+    BudgetTransactionsDetailController,
+    List<TransactionModel>,
+    String>((ref, budgetId) {
+  final transactionsById = ref
+      .watch(transactionsBaseControllerProvider)
+      .expand((e) => [e.transaction])
+      .filter((e) => e.budgetId == budgetId)
+      .sorted((a, b) => b.transactionDate.compareTo(a.transactionDate))
+      .toList();
+  return BudgetTransactionsDetailController(
+    transactions: transactionsById,
+  );
 });
 
-final budgetDetailFutureProvider =
-    FutureProvider.autoDispose.family((ref, String budgetId) {
-  final controller =
-      ref.watch(budgetTransactionDetailControllerProvider.notifier);
-  return controller.fetchListTransaction(budgetId);
-});
-
-class BudgetTransactionsDetailController extends StateNotifier<TransactionModel?> {
-  final TransactionApi _transactionApi;
-  final String _uid;
+class BudgetTransactionsDetailController
+    extends StateNotifier<List<TransactionModel>> {
   BudgetTransactionsDetailController(
-      {required TransactionApi transactionApi, required String uid})
-      : _transactionApi = transactionApi,
-        _uid = uid,
-        super(null);
-
-  Future<List<TransactionModel>> fetchListTransaction(String budgetId) async {
-    final list = await _transactionApi.getTransactionsByBudgetId(
-        uid: _uid, budgetId: budgetId);
-    list.sort((a, b) => b.createdDate.compareTo(a.createdDate));
-    if (list.isNotEmpty) {
-      state = list.first;
-    }
-    return list;
-  }
+      {required List<TransactionModel> transactions})
+      : super(transactions);
 }

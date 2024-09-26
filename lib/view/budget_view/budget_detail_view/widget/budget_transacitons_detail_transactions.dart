@@ -1,5 +1,4 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/async/b_async_list.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
@@ -9,38 +8,34 @@ import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/transaction_model.dart';
-import 'package:budget_app/view/budget_view/budget_detail_view/widget/controller/budget_transations_detail_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BudgetDetailTransactions extends ConsumerWidget {
-  const BudgetDetailTransactions(this.budgetId, {super.key});
-  final String budgetId;
+  const BudgetDetailTransactions(this.transactions, {super.key});
+  final List<TransactionModel> transactions;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final data = ref.watch(budgetDetailFutureProvider(budgetId));
-    return BListAsync.customList(
-        data: data,
-        itemsBuilder: (context, items) {
-          List<_GroupDateTransactionModel> listGroupTransactionByDay =
-              _GroupDateTransactionModel.toList(items);
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              BText.h3(context.loc.transactions, textAlign: TextAlign.left),
-              gapH16,
-              listGroupTransactionByDay.isEmpty
-                  ? _transactionEmpty(context)
-                  : ColumnWithSpacing(
-                      spacing: 24,
-                      children: listGroupTransactionByDay
-                          .map((e) => _groupDateTransactionsCard(context, e))
-                          .toList(),
-                    )
-            ],
-          );
-        });
+    final data = transactions;
+    List<_GroupDateTransactionModel> listGroupTransactionByDay =
+        _GroupDateTransactionModel.toList(data);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        BText(context.loc.transactions,
+            fontWeight: FontWeight.bold, textAlign: TextAlign.left),
+        gapH16,
+        listGroupTransactionByDay.isEmpty
+            ? _transactionEmpty(context)
+            : ColumnWithSpacing(
+                spacing: 24,
+                children: listGroupTransactionByDay
+                    .map((e) => _groupDateTransactionsCard(context, e))
+                    .toList(),
+              )
+      ],
+    );
   }
 
   Widget _groupDateTransactionsCard(BuildContext context,
@@ -81,7 +76,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
                             ),
                             gapW16,
                             _itemMoneyTransaction(context,
-                                type: e.transactionType, amount: e.amount)
+                                type: e.transactionType, amount: e.amount.abs())
                           ],
                         ),
                       ],

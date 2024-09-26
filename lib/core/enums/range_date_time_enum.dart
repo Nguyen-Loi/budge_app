@@ -21,7 +21,7 @@ enum RangeDateTimeEnum {
         String strFormat = 'MM/dd';
         return context.loc.pThisWeek(
             rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat),
-            rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat));
+            rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat));
       case RangeDateTimeEnum.month:
         String strFormat = 'MM/dd';
         return context.loc.pThisMonth(

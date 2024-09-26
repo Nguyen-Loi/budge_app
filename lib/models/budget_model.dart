@@ -6,6 +6,8 @@ import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum StatusBudgetProgress { start, progress, almostDone, complete }
@@ -164,6 +166,37 @@ class BudgetModel {
         endDate.hashCode ^
         createdDate.hashCode ^
         updatedDate.hashCode;
+  }
+}
+
+extension BudgetFormatModel on BudgetModel {
+  String getReview(BuildContext context) {
+    String incomeContent;
+    String expenseContent;
+    switch (status) {
+      case StatusBudgetProgress.start:
+        incomeContent = context.loc.startIncome;
+        expenseContent = context.loc.startExpense;
+        break;
+      case StatusBudgetProgress.progress:
+        incomeContent = context.loc.processIncome;
+        expenseContent = context.loc.processExpense;
+        break;
+      case StatusBudgetProgress.almostDone:
+        incomeContent = context.loc.almostDoneIncome;
+        expenseContent = context.loc.almostDoneExpense;
+        break;
+      case StatusBudgetProgress.complete:
+        incomeContent = context.loc.completeIncome;
+        expenseContent = context.loc.completeExpense;
+        break;
+    }
+    switch (budgetType) {
+      case BudgetTypeEnum.income:
+        return incomeContent;
+      case BudgetTypeEnum.expense:
+        return expenseContent;
+    }
   }
 }
 
