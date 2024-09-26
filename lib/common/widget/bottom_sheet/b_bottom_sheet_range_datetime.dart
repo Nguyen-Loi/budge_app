@@ -13,7 +13,7 @@ class BBottomsheetRangeDatetime extends StatefulWidget {
   const BBottomsheetRangeDatetime(
       {super.key, required this.initialValue, required this.onChanged});
   final void Function(DatetimeRangeModel rangeTime) onChanged;
-  final RangeDateTimeEnum initialValue;
+  final DatetimeRangeModel? initialValue;
 
   @override
   State<BBottomsheetRangeDatetime> createState() =>
@@ -21,39 +21,49 @@ class BBottomsheetRangeDatetime extends StatefulWidget {
 }
 
 class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
+  late DatetimeRangeModel _rangeDatetimeModelInit;
   late DatetimeRangeModel _rangeDatetimeModelSelected;
-  late DatetimeRangeModel _rangeDatetimeModelCurrent;
 
   late List<DatetimeRangeModel> _list;
   String _title = '';
   final now = DateTime.now();
+  DatetimeRangeModel get _defaultValue => getMonthRange(now);
 
   DatetimeRangeModel getWeekRange(DateTime time) {
-    int currentWeekday = time.weekday;
-    DateTime firstDayOfWeek = time.subtract(Duration(days: currentWeekday - 1));
-    DateTime lastDayOfWeek = time.add(Duration(days: 7 - currentWeekday));
+    final weekRange = time.getRangeWeek;
     return DatetimeRangeModel(
-        startDate: firstDayOfWeek,
-        endDate: lastDayOfWeek,
+        startDate: weekRange.start,
+        endDate: weekRange.end,
         rangeDateTimeType: RangeDateTimeEnum.week);
   }
 
   DatetimeRangeModel getMonthRange(DateTime time) {
-    DateTime firstDayOfMonth = DateTime(time.year, time.month, 1);
-    DateTime lastDayOfMonth = DateTime(time.year, time.month + 1, 0);
+    final monRange = time.getRangeMonth;
     return DatetimeRangeModel(
-        startDate: firstDayOfMonth,
-        endDate: lastDayOfMonth,
+        startDate: monRange.start,
+        endDate: monRange.end,
         rangeDateTimeType: RangeDateTimeEnum.month);
   }
 
   DatetimeRangeModel getYearRange(DateTime time) {
-    DateTime firstDayOfYear = DateTime(time.year, 1, 1);
-    DateTime lastDayOfYear = DateTime(time.year, 12, 31);
+    final yearRange = time.getRangeMonth;
     return DatetimeRangeModel(
-        startDate: firstDayOfYear,
-        endDate: lastDayOfYear,
+        startDate: yearRange.start,
+        endDate: yearRange.end,
         rangeDateTimeType: RangeDateTimeEnum.year);
+  }
+
+  DatetimeRangeModel getCustomRange() {
+    final initValue = widget.initialValue;
+    if (initValue != null &&
+        initValue.rangeDateTimeType == RangeDateTimeEnum.custom) {
+      return DatetimeRangeModel(
+          startDate: initValue.startDate,
+          endDate: initValue.endDate,
+          rangeDateTimeType: RangeDateTimeEnum.custom);
+    }
+    return getMonthRange(now)
+        .copyWith(rangeDateTimeType: RangeDateTimeEnum.custom);
   }
 
   @override
@@ -62,13 +72,13 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
       getWeekRange(now),
       getMonthRange(now),
       getYearRange(now),
-      getMonthRange(now).copyWith(rangeDateTimeType: RangeDateTimeEnum.custom),
+      getCustomRange()
     ];
 
-    _rangeDatetimeModelSelected =
-        _list.firstWhere((e) => e.rangeDateTimeType == widget.initialValue);
-    _rangeDatetimeModelCurrent = _rangeDatetimeModelSelected;
-    widget.onChanged(_rangeDatetimeModelSelected);
+    _rangeDatetimeModelInit = widget.initialValue ?? _defaultValue;
+
+    _rangeDatetimeModelSelected = _rangeDatetimeModelInit;
+    widget.onChanged(_rangeDatetimeModelInit);
     Future.delayed(Duration.zero, () {
       setState(() {
         _loadTitle();
@@ -79,17 +89,17 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
   }
 
   void _loadTitle() {
-    _title = _rangeDatetimeModelCurrent.rangeDateTimeType
-        .content(context, rangeDatetimeModel: _rangeDatetimeModelCurrent);
+    _title = _rangeDatetimeModelSelected.rangeDateTimeType
+        .content(context, rangeDatetimeModel: _rangeDatetimeModelSelected);
   }
 
   void _save() {
-    _rangeDatetimeModelCurrent = _rangeDatetimeModelSelected;
+    _rangeDatetimeModelSelected = _rangeDatetimeModelInit;
     setState(() {
       _loadTitle();
     });
 
-    widget.onChanged(_rangeDatetimeModelCurrent);
+    widget.onChanged(_rangeDatetimeModelSelected);
     Navigator.pop(context);
   }
 
@@ -146,7 +156,7 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
             width: 130,
             child: OutlinedButton(
               onPressed: () {
-                _rangeDatetimeModelSelected = _rangeDatetimeModelCurrent;
+                _rangeDatetimeModelInit = _rangeDatetimeModelSelected;
                 Navigator.of(context).pop();
               },
               child: BText(context.loc.cancel),
@@ -185,21 +195,24 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
         return;
       }
 
+      final endDate = newDateRangeCustom.end;
+
       DatetimeRangeModel newData = DatetimeRangeModel(
           startDate: newDateRangeCustom.start,
-          endDate: newDateRangeCustom.end,
+          endDate:
+              DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59),
           rangeDateTimeType: RangeDateTimeEnum.custom);
       stateSetter(() {
         _list[3] = newData;
-        _rangeDatetimeModelSelected = newData;
+        _rangeDatetimeModelInit = newData;
       });
       return;
     }
 
     //
-    if (e.rangeDateTimeType != _rangeDatetimeModelSelected.rangeDateTimeType) {
+    if (e.rangeDateTimeType != _rangeDatetimeModelInit.rangeDateTimeType) {
       stateSetter(() {
-        _rangeDatetimeModelSelected = e;
+        _rangeDatetimeModelInit = e;
       });
     }
   }
@@ -217,7 +230,7 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
                 e.rangeDateTimeType.content(context, rangeDatetimeModel: e);
             bool isChooseCustom =
                 e.rangeDateTimeType == RangeDateTimeEnum.custom &&
-                    _rangeDatetimeModelSelected.rangeDateTimeType ==
+                    _rangeDatetimeModelInit.rangeDateTimeType ==
                         RangeDateTimeEnum.custom;
             if (e.rangeDateTimeType == RangeDateTimeEnum.custom) {
               title = context.loc.custom;
@@ -231,7 +244,7 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
                 '${dateRangeCustom.startDate.toFormatDate(strFormat: customFormat)} - ${dateRangeCustom.endDate.toFormatDate(strFormat: customFormat)}';
             return RadioListTile(
                 value: e,
-                groupValue: _rangeDatetimeModelSelected,
+                groupValue: _rangeDatetimeModelInit,
                 title: isChooseCustom
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
