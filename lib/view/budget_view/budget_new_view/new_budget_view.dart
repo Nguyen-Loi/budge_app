@@ -7,7 +7,6 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
-import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -123,7 +122,7 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
             ),
           gapH16,
           BBottomsheetRangeDatetime(
-              initialValue: RangeDateTimeEnum.month,
+              initialValue: null,
               onChanged: (e) {
                 _rangeDatetimeModel = e;
               }),

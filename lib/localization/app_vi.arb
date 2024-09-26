@@ -40,7 +40,6 @@
   "noTransactionThisBudget": "Bạn chưa có giao dịch nào với ngân sách này.",
   "youAlreadySpent": "Bạn đã chi tiêu",
   "spendLimitPerMonth": "Giới hạn chi tiêu hàng tháng",
-  "expenseGood": "Tuyệt vời! Hãy giữ chi tiêu của bạn dưới mức giới hạn.",
   "modifyBudget": "Sửa đổi ngân sách",
   "budgetName": "Tên ngân sách",
   "errorChooseYourBudgetIcon": "Vui lòng chọn biểu tượng ngân sách của bạn",
@@ -253,5 +252,15 @@
   "totalExpense": "Tổng Chi Phí",
   "newVersionDescription": "Bạn hãy cập nhật ứng dụng để có trải nghiệm tốt hơn.",
   "newVersionTitle": "Đã có phiên bản mới",
-   "openFile": "Mở file"
+  "openFile": "Mở file",
+  "currentIncome": "Thu nhập hiện tại",
+  "currentExpense": "Chi phí hiện tại",
+  "startIncome": "Bắt đầu theo dõi thu nhập của bạn để đảm bảo bạn đạt mục tiêu tài chính.",
+  "processIncome": "Thu nhập của bạn đang ổn định. Hãy cố gắng để đạt được mục tiêu tài chính.",
+  "almostDoneIncome": "Bạn gần đạt được mục tiêu thu nhập. Hãy tiếp tục duy trì!",
+  "completeIncome": "Xuất sắc! Bạn đã đạt hoặc vượt mục tiêu thu nhập.",
+  "startExpense": "Bắt đầu theo dõi chi tiêu của bạn để tránh vượt quá ngân sách.",
+  "processExpense": "Chi tiêu của bạn đang trong tầm kiểm soát. Tiếp tục quản lý chặt chẽ nhé!",
+  "almostDoneExpense": "Bạn sắp hoàn thành mục tiêu chi tiêu. Đừng quên giữ chi tiêu dưới mức cho phép!",
+  "completeExpense": "Chú ý, ngân sách của bạn đã chạm mức giới hạn!"
 }
