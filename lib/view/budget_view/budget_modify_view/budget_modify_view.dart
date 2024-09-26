@@ -1,12 +1,16 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/bottom_sheet/b_bottom_sheet_range_datetime.dart';
 import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_modify_view/controller/budget_modify_controller.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +28,7 @@ class BudgetModifyView extends ConsumerStatefulWidget {
 class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
   late int _iconId;
   late int _limit;
+  late DatetimeRangeModel _dateTimeRangeModel;
   final _formKey = GlobalKey<FormState>();
   late BudgetModel _budget;
   @override
@@ -31,6 +36,10 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
     _budget = widget.budgetModel;
     _iconId = _budget.iconId;
     _limit = _budget.limit;
+    _dateTimeRangeModel = DatetimeRangeModel(
+        startDate: _budget.startDate,
+        endDate: _budget.endDate,
+        rangeDateTimeType: _budget.rangeDateTimeType);
     super.initState();
   }
 
@@ -41,7 +50,10 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
             budgetModifyControllerProvider(_budget),
           )
           .updateBudget(context,
-              budget: _budget, iconId: _iconId, limit: _limit);
+              budget: _budget,
+              iconId: _iconId,
+              limit: _limit,
+              dateTimeRange: _dateTimeRangeModel);
     }
   }
 
@@ -85,13 +97,21 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
             },
           ),
           gapH16,
-          BFormFieldAmount(
-              initialValue: _limit,
-              label: context.loc.limit,
-              onChanged: (v) {
-                if (v != null) {
-                  _limit = v;
-                }
+          if (_budget.budgetType == BudgetTypeEnum.expense)
+            BFormFieldAmount(
+                initialValue: _limit,
+                label: context.loc.limit,
+                onChanged: (v) {
+                  if (v != null) {
+                    _limit = v;
+                  }
+                }),
+          gapH16,
+          BBottomsheetRangeDatetime(
+              initialValue: _dateTimeRangeModel,
+              onChanged: (e) {
+                _dateTimeRangeModel = e;
+                logSuccess(_dateTimeRangeModel.toString());
               }),
           const SizedBox(height: 64),
           FilledButton(

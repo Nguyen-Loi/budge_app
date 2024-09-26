@@ -54,21 +54,28 @@ extension HandleDateTime on DateTime {
 
   DateTimeRange get getRangeMonth {
     final date = this;
-    DateTime firstDayOfMonth = DateTime(date.year, date.month, 1);
-    DateTime lastDayOfMonth = DateTime(date.year, date.month + 1, 0);
+    DateTime firstDayOfMonth = DateTime(date.year, date.month, 1).copyWith(
+        hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+    DateTime lastDayOfMonth = DateTime(date.year, date.month + 1, 0).copyWith(
+        hour: 23, minute: 59, second: 59, millisecond: 999, microsecond: 999);
     return DateTimeRange(start: firstDayOfMonth, end: lastDayOfMonth);
   }
 
   DateTimeRange get getRangeWeek {
     int currentWeekday = weekday;
-    DateTime firstDayOfWeek = subtract(Duration(days: currentWeekday - 1));
-    DateTime lastDayOfWeek = add(Duration(days: 7 - currentWeekday));
+    DateTime firstDayOfWeek = subtract(Duration(days: currentWeekday - 1))
+        .copyWith(
+            hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+    DateTime lastDayOfWeek = add(Duration(days: 7 - currentWeekday)).copyWith(
+        hour: 23, minute: 59, second: 59, millisecond: 999, microsecond: 999);
     return DateTimeRange(start: firstDayOfWeek, end: lastDayOfWeek);
   }
 
   DateTimeRange get getRangeYear {
-    DateTime firstDayOfYear = DateTime(year, 1, 1);
-    DateTime lastDayOfYear = DateTime(year, 12, 31);
+    DateTime firstDayOfYear = DateTime(year, 1, 1).copyWith(
+        hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+    DateTime lastDayOfYear = DateTime(year, 12, 31).copyWith(
+        hour: 23, minute: 59, second: 59, millisecond: 999, microsecond: 999);
     return DateTimeRange(start: firstDayOfYear, end: lastDayOfYear);
   }
 }

@@ -31,12 +31,8 @@ class BFormPickerIcon extends FormField<IconModel> {
                   Column(
                     children: [
                       gapH8,
-                      Text(
-                        field.errorText ?? field.context.loc.invalid,
-                        style: Theme.of(field.context)
-                            .inputDecorationTheme
-                            .errorStyle,
-                      ),
+                      BText(field.errorText ?? field.context.loc.invalid,
+                          color: Theme.of(field.context).colorScheme.error),
                     ],
                   ),
                 gapH8,
