@@ -40,7 +40,6 @@
     "noTransactionThisBudget": "You don't have any transactions with this budget.",
     "youAlreadySpent": "You've already spent",
     "spendLimitPerMonth": "Spend limit per Month",
-    "expenseGood": "Cool! Let't keep your expense below the limit.",
     "modifyBudget": "Modify Budget",
     "budgetName": "Budget name",
     "errorChooseYourBudgetIcon": "Please choose your budget icon",
@@ -253,5 +252,15 @@
     "totalExpense": "Total Expense",
     "newVersionDescription": "Please update to the latest version of the app.",
     "newVersionTitle": "New version available",
-    "openFile": "Open file"
+    "openFile": "Open file",
+    "currentIncome": "Current Income",
+    "currentExpense": "Current Expense",
+    "startIncome": "Start tracking your income to ensure you're meeting your financial goals.",
+    "processIncome": "Your income is steady. Keep aiming for your financial goals.",
+    "almostDoneIncome": "You're close to hitting your income goal. Keep it up!",
+    "completeIncome": "Excellent! You've met or exceeded your income goal.",
+    "startExpense": "Start tracking your expenses to avoid exceeding your budget.",
+    "processExpense": "Your expenses are under control. Keep managing them carefully!",
+    "almostDoneExpense": "You're almost done with your spending goal. Don’t forget to stay under the limit!",
+    "completeExpense": "Attention, your budget has reached its limit!"
 }
