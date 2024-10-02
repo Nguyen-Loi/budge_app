@@ -1,45 +1,45 @@
 {
   "project_info": {
-    "project_number": "79455569094",
-    "project_id": "budget-ss",
-    "storage_bucket": "budget-ss.appspot.com"
+    "project_number": "609396856381",
+    "project_id": "budget-beta-2f3a5",
+    "storage_bucket": "budget-beta-2f3a5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:79455569094:android:a48a2488a696f0138643c7",
+        "mobilesdk_app_id": "1:609396856381:android:7062fd66e106769a697c54",
         "android_client_info": {
           "package_name": "com.NguyenLoi.BudgetSS"
         }
       },
       "oauth_client": [
         {
-          "client_id": "79455569094-ufdkksi1h0el6aoi1fbfh0eok3744lvu.apps.googleusercontent.com",
+          "client_id": "609396856381-bgqt3k5suu3urnb3jme0b49q1sok8ror.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.NguyenLoi.BudgetSS",
-            "certificate_hash": "5d5fb11e3b694ece97367026e56ff0c67209efe3"
+            "certificate_hash": "1a7fb82372970c4d03c7e78522bb3067e7d451b3"
           }
         },
         {
-          "client_id": "79455569094-jo4ng8fulo1ng9mc4bcd79im4kh7kfsr.apps.googleusercontent.com",
+          "client_id": "609396856381-18hcug5uav30fbpaaevesrhalrqmjjn7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCBf35WTLVC6chSowshmne23vRVdxGHbAQ"
+          "current_key": "AIzaSyBW81xUQxlNyQu0skfNXhGIT5tUK1hynd4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "79455569094-jo4ng8fulo1ng9mc4bcd79im4kh7kfsr.apps.googleusercontent.com",
+              "client_id": "609396856381-18hcug5uav30fbpaaevesrhalrqmjjn7.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "79455569094-bjp0n8njj02v9esqhq0dmhtd1upntjk3.apps.googleusercontent.com",
+              "client_id": "609396856381-ur003arvfi75e8gkcdpvfn78lh34j1qk.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.NguyenLoi.BudgetSS"
