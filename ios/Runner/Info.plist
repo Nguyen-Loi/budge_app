@@ -63,13 +63,13 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1096352272056555</string>
+				<string>fb407772455439263</string>
 				<string>com.googleusercontent.apps.856201938981-r493pe36ntn9b3kgoo9iejnoi14smod1</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1096352272056555</string>
+	<string>407772455439263</string>
 	<key>FacebookDisplayName</key>
 	<string>Budget SS</string>
 	<key>FacebookClientToken</key>
