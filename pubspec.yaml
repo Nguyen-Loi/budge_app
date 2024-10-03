@@ -47,6 +47,8 @@ dependencies:
   firebase_crashlytics: ^3.5.7
   package_info_plus: ^8.0.2
   url_launcher: ^6.3.0
+  google_generative_ai: ^0.4.6
+  animated_text_kit: ^4.2.2
   
 dev_dependencies:
   flutter_test:

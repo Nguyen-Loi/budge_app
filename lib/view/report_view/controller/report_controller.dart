@@ -5,7 +5,6 @@ import 'package:budget_app/core/b_excel.dart';
 import 'package:budget_app/core/b_file_storage.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
-import 'package:budget_app/core/extension/extension_datetime_range.dart';
 import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
@@ -60,17 +59,18 @@ class ReportController extends StateNotifier<ReportFilterModel> {
     }
 
     // Update model options
-    final minDate = _budgets
+    final minDateInBudget = _budgets
         .map((e) => e.startDate)
         .reduce((a, b) => a.isBefore(b) ? a : b);
-    DateTime maxDate =
+    DateTime maxDateInBudget =
         _budgets.map((e) => e.endDate).reduce((a, b) => a.isAfter(b) ? a : b);
     final maxEndTimeThismonth = state.dateTimeRange.end;
-    maxDate =
-        maxDate.isBefore(maxEndTimeThismonth) ? maxEndTimeThismonth : maxDate;
+    maxDateInBudget = maxDateInBudget.isBefore(maxEndTimeThismonth)
+        ? maxEndTimeThismonth
+        : maxDateInBudget;
 
     DateTimeRange dateTimeRangeInBudget =
-        DateTimeRange(start: minDate, end: maxDate);
+        DateTimeRange(start: minDateInBudget, end: maxDateInBudget);
     _reportFilterValues =
         _reportFilterValues.copyWith(dateTimeRange: dateTimeRangeInBudget);
 
@@ -99,16 +99,20 @@ class ReportController extends StateNotifier<ReportFilterModel> {
   }
 
   void _setData() {
-    final transactionCardFilter = _transactionsCard
-        .where((e) => state.transactionTypes.contains(e.transactionType))
-        .toList();
-    List<BudgetModel> budgetFilter = _budgets.where((e) {
-      final budgetRange = DateTimeRange(start: e.startDate, end: e.endDate);
-      return budgetRange.hasOverlapWith(state.dateTimeRange);
+    final transactionCardFilter = _transactionsCard.where((e) {
+      bool isHasTransactionType =
+          state.transactionTypes.contains(e.transactionType);
+      bool isInRangeTime = e.transaction.transactionDate
+          .isBetweenDateTimeRange(state.dateTimeRange);
+      return isHasTransactionType && isInRangeTime;
     }).toList();
 
     // Update summry budget of wallet
     var caculatorBudgetWallet = _valueTotalWallet(transactionCardFilter);
+
+    List<BudgetModel> budgetFilter = _budgets.updateValueWallet(
+        income: caculatorBudgetWallet.$1, expense: caculatorBudgetWallet.$2);
+
     budgetFilter = budgetFilter.updateValueWallet(
         income: caculatorBudgetWallet.$1, expense: caculatorBudgetWallet.$2);
 
