@@ -19,6 +19,8 @@ class ChatRowItem extends StatelessWidget {
     bool isUser = chatModel.roleType == RoleChatEnum.user;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment:
+          isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         if (isUser)
           SizedBox(
@@ -32,9 +34,9 @@ class ChatRowItem extends StatelessWidget {
           ),
           gapW8,
         ],
-        Expanded(
+        Flexible(
           child: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(isUser ? 16 : 0),
@@ -43,10 +45,10 @@ class ChatRowItem extends StatelessWidget {
                 bottomRight: const Radius.circular(16),
               ),
               color: isUser
-                  ? Theme.of(context).colorScheme.secondary
+                  ? Theme.of(context).colorScheme.secondaryContainer
                   : Theme.of(context).disabledColor,
             ),
-            child: item?.call(chatModel.message) ?? _showText(),
+            child: item?.call(chatModel.message) ?? _showText(isUser),
           ),
         ),
         if (!isUser)
@@ -57,11 +59,16 @@ class ChatRowItem extends StatelessWidget {
     );
   }
 
-  Widget _showText() {
-    return Markdown(
-      data: chatModel.message,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-    );
+  Widget _showText(bool isUser) {
+    return isUser
+        ? BText(
+            chatModel.message,
+          )
+        : Markdown(
+            padding: EdgeInsets.zero,
+            data: chatModel.message,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+          );
   }
 }
