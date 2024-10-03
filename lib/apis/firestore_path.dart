@@ -5,6 +5,7 @@ class FirestorePath {
   static const String _transaction = 'Transactions';
   static const String _user = 'Users';
   static const String _devices = 'Devices';
+  static const String _chats = 'Chats';
 
   static String users() => _user;
   static String user(String uid) => '$_user/$uid';
@@ -16,6 +17,7 @@ class FirestorePath {
       '$_user/$uid/$_transaction';
 
   static String devices({required String uid}) => '$_user/$uid/$_devices';
+  static String chats({required String uid}) => '$_user/$uid/$_chats';
 }
 
 extension Converter<T> on CollectionReference<Map<String, dynamic>> {

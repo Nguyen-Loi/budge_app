@@ -1,6 +1,7 @@
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/remote_config.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
+import 'package:budget_app/view/base_controller/chat_base_controller.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
@@ -44,19 +45,24 @@ class MainPageController extends StateNotifier<void> {
         super(null);
 
   Future<void> loadBaseData(BuildContext context) async {
+    // Package info
     logInfo('Loading package info app...');
     PackageInfo packageInfo =
         await _ref.read(packageInfoBaseControllerProvider.notifier).init();
+
     logInfo('Check version update ...');
     if (!context.mounted) return;
     RemoteConfig remoteConfig = RemoteConfig();
     remoteConfig.checkVersionUpdate(context, packageInfo: packageInfo);
 
+    // Base data
     logInfo('Loading infomation user....');
     await _userController.fetchUserInfo();
     logInfo('Loading infomation budget...');
     await _budgetController.fetch();
     logInfo('Loading infomation transactions...');
     await _transactionsController.fetch();
+    logInfo('Loading infomation chat...');
+    await _ref.watch(chatBaseControllerProvider.notifier).init();
   }
 }
