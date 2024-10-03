@@ -65,7 +65,8 @@ class _ReportFilterViewState extends State<ReportFilterView> {
       if (monthEnd.isAfter(end)) {
         monthEnd = end;
       }
-      ranges.add(DateTimeRange(start: current, end: monthEnd));
+      ranges
+          .add(DateTimeRange(start: current, end: monthEnd.getRangeMonth.end));
       current = DateTime(current.year, current.month + 1);
     }
     return ranges;
