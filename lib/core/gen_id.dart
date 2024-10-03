@@ -17,4 +17,5 @@ class GenId {
   static String device() => _time;
   static String budgetWallet() => 'WALLET';
   static String transaction() => _time;
+  static String get chat => _time;
 }

@@ -64,7 +64,7 @@
   "settings": "Cài đặt",
   "contact": "Liên hệ",
   "signOut": "Đăng xuất",
-  "pUserJoinDescriptions": "Bạn đã tham gia BudgetSS vào ngày {dateTime}. Đã qua {numberMonth} tháng từ đó và sứ mệnh của chúng tôi vẫn là giúp bạn quản lý tiền của mình tốt hơn",
+  "pUserJoinDescriptions": "Bạn đã tham gia Ví Nhỏ vào ngày {dateTime}. Đã qua {numberMonth} tháng từ đó và sứ mệnh của chúng tôi vẫn là giúp bạn quản lý tiền của mình tốt hơn",
   "@pUserJoinDescription": {
     "description": "A plural message",
     "placeholders": {
@@ -262,5 +262,8 @@
   "startExpense": "Bắt đầu theo dõi chi tiêu của bạn để tránh vượt quá ngân sách.",
   "processExpense": "Chi tiêu của bạn đang trong tầm kiểm soát. Tiếp tục quản lý chặt chẽ nhé!",
   "almostDoneExpense": "Bạn sắp hoàn thành mục tiêu chi tiêu. Đừng quên giữ chi tiêu dưới mức cho phép!",
-  "completeExpense": "Chú ý, ngân sách của bạn đã chạm mức giới hạn!"
+  "completeExpense": "Chú ý, ngân sách của bạn đã chạm mức giới hạn!",
+  "send": "Gửi",
+  "chatHint": "Tin nhắn đến ViBot",
+  "chatWithViBot": "Chat với ViBot"
 }
