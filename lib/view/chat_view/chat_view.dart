@@ -31,7 +31,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
     super.initState();
   }
 
-
   @override
   void dispose() {
     _textEditingController.dispose();
@@ -111,7 +110,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
 
   Widget _listChat() {
     List<ChatModel> list = ref.watch(chatBaseControllerProvider).toList();
-    list.sort((a, b) => a.createdDate.compareTo(b.createdDate));
+    list.sort((a, b) => b.createdDate.compareTo(a.createdDate));
     bool isTyping = ref.watch(chatControllerProvider);
 
     return ListView(
@@ -120,6 +119,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
       addAutomaticKeepAlives: true,
       controller: _scrollController,
       children: [
+        if (isTyping) const ChatRowTypingItem(),
         ...list.map((e) {
           return Column(
             children: [
@@ -128,7 +128,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
             ],
           );
         }),
-        if (isTyping) const ChatRowTypingItem()
       ],
     );
   }
