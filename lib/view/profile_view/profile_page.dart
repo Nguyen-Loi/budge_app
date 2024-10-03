@@ -3,6 +3,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -79,6 +80,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                 );
               }),
           _item(
+              icon: IconManager.botChat,
+              text: context.loc.chatWithViBot,
+              onPressed: () {
+                Navigator.pushNamed(context, RoutePath.chat);
+              }),
+          _item(
               icon: IconManager.setting,
               text: context.loc.settings,
               onPressed: () {
@@ -106,12 +113,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
   }
 
   Widget _content() {
+    DateTime userJoinDate = ref.watch(userBaseControllerProvider)!.createdDate;
+    final monthUserAvailable = DateTime.now().month - userJoinDate.month;
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 24),
         child: BText.caption(
-            context.loc.pUserJoinDescriptions('Novemer2023', '4'),
+            context.loc
+                .pUserJoinDescriptions(userJoinDate.toYM(), monthUserAvailable),
             textAlign: TextAlign.center),
       ),
     );
