@@ -2,6 +2,7 @@ import 'package:budget_app/apis/transaction_api.dart';
 import 'package:budget_app/apis/user_api.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
+import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
@@ -35,8 +36,14 @@ class UserBaseController extends StateNotifier<UserModel?> {
         super(null);
 
   Future<UserModel> fetchUserInfo() async {
-    UserModel data = await _userApi.getUserById(_uid);
-    updateUser(data);
+    UserModel currentUser = await _userApi.getUserById(_uid);
+    String? token = await _ref.read(messagingProvider).getToken();
+    currentUser = currentUser.copyWith(token: token);
+
+    // update token profile
+    await _userApi.updateUser(user: currentUser, file: null);
+    updateUser(currentUser);
+
     return state!;
   }
 
