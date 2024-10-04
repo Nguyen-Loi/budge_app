@@ -265,5 +265,6 @@
     "completeExpense": "Attention, your budget has reached its limit!",
     "send": "Send",
     "chatHint": "Message ViBot",
-    "chatWithViBot": "Chat with ViBot"
+    "chatWithViBot": "Chat with ViBot",
+    "viBotHello": "Hello, I am ViBot, the virtual assistant of Vi Nho app.\nHow can I help you?"
 }
