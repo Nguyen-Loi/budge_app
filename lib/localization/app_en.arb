@@ -64,7 +64,7 @@
     "settings": "Settings",
     "contact": "Contact",
     "signOut": "Sign Out",
-    "pUserJoinDescriptions": "You joined BudgetApp on {dateTime}. It's been {numberMonth} month since then and our mission is still the same and help you better manage your money",
+    "pUserJoinDescriptions": "You joined ViNho on {dateTime}. It's been {numberMonth} month since then and our mission is still the same and help you better manage your money",
     "@pUserJoinDescription": {
         "description": "A plural message",
         "placeholders": {
@@ -262,5 +262,9 @@
     "startExpense": "Start tracking your expenses to avoid exceeding your budget.",
     "processExpense": "Your expenses are under control. Keep managing them carefully!",
     "almostDoneExpense": "You're almost done with your spending goal. Don’t forget to stay under the limit!",
-    "completeExpense": "Attention, your budget has reached its limit!"
+    "completeExpense": "Attention, your budget has reached its limit!",
+    "send": "Send",
+    "chatHint": "Message ViBot",
+    "chatWithViBot": "Chat with ViBot",
+    "viBotHello": "Hello, I am ViBot, the virtual assistant of Vi Nho app.\nHow can I help you?"
 }

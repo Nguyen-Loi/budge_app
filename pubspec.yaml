@@ -1,11 +1,11 @@
 name: budget_app
 description: "A new Flutter project."
 
-publish_to: 'none' 
+publish_to: "none"
 version: 1.0.4+5
 
 environment:
-  sdk: '>=3.2.6 <4.0.0'
+  sdk: ">=3.2.6 <4.0.0"
 
 dependencies:
   flutter:
@@ -47,7 +47,10 @@ dependencies:
   firebase_crashlytics: ^3.5.7
   package_info_plus: ^8.0.2
   url_launcher: ^6.3.0
-  
+  google_generative_ai: ^0.4.6
+  animated_text_kit: ^4.2.2
+  flutter_markdown: ^0.7.3+2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -58,16 +61,16 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
 
 fonts:
-    - family: PublicSans
-      fonts:
-        - asset: assets/fonts/PublicSans-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/PublicSans-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/PublicSans-Medium.ttf
-          weight: 500
-        - asset: assets/fontsPublicSans-Regular.ttf
-          weight: 400
+  - family: PublicSans
+    fonts:
+      - asset: assets/fonts/PublicSans-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/PublicSans-SemiBold.ttf
+        weight: 600
+      - asset: assets/fonts/PublicSans-Medium.ttf
+        weight: 500
+      - asset: assets/fontsPublicSans-Regular.ttf
+        weight: 400
 
 flutter:
   uses-material-design: true
@@ -82,4 +85,3 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "assets/icon/icon.png"
-  

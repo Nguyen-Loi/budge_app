@@ -3,7 +3,6 @@ import 'package:budget_app/common/widget/filter/b_filter_multiple_select_item.da
 import 'package:budget_app/common/widget/filter/b_filter_single_select_item.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import 'package:budget_app/common/color_manager.dart';
@@ -65,7 +64,8 @@ class _ReportFilterViewState extends State<ReportFilterView> {
       if (monthEnd.isAfter(end)) {
         monthEnd = end;
       }
-      ranges.add(DateTimeRange(start: current, end: monthEnd));
+      ranges
+          .add(DateTimeRange(start: current, end: monthEnd.getRangeMonth.end));
       current = DateTime(current.year, current.month + 1);
     }
     return ranges;
@@ -127,7 +127,7 @@ class _ReportFilterViewState extends State<ReportFilterView> {
               Navigator.of(context).pop();
             },
             child: BText.b1(
-              'Accept'.hardcoded,
+              context.loc.accept,
               color: ColorManager.white,
             ),
           ),

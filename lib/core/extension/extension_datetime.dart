@@ -9,6 +9,10 @@ extension HandleDateTime on DateTime {
     return DateFormat(strFormat).format(this);
   }
 
+  String toYM() {
+    return DateFormat.yMMMM().format(this);
+  }
+
   String toHHmm() {
     return DateFormat.jm().format(this);
   }
