@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:budget_app/common/log.dart';
+import 'package:budget_app/core/type_defs.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -36,10 +38,12 @@ class BFileStorage {
     return file.writeAsBytes(bytes);
   }
 
-  static Future<void> openFile(String filePath) async {
+  static FutureEitherVoid openFile(String filePath) async {
     final result = await OpenFile.open(filePath);
     if (result.type != ResultType.done) {
-      throw "Failed to open file: ${result.message}";
+      String strError = "Failed to open file: ${result.message}";
+      return left(Failure(message: strError, error: strError));
     }
+    return right(null);
   }
 }
