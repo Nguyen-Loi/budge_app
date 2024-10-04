@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final chatControllerProvider =
-    StateNotifierProvider<ChatController, bool>((ref) {
+    StateNotifierProvider.autoDispose<ChatController, bool>((ref) {
   final chatBaseController = ref.watch(chatBaseControllerProvider.notifier);
   final chatApi = ref.watch(chatAPIProvider);
   final uid = ref.watch(uidControllerProvider);
@@ -36,12 +36,12 @@ class ChatController extends StateNotifier<bool> {
   List<ChatModel> get _recentChats {
     final prompt = _chatBaseController.chats.toList();
     prompt.sort((a, b) => b.createdDate.compareTo(a.createdDate));
-    return prompt.take(10).toList();
+    return prompt.take(5).toList();
   }
 
   Future<void> sendMessage(BuildContext context,
       {required String message}) async {
-    if (message.isEmpty) {
+    if (message.isEmpty || state == true) {
       BDialogInfo(
               message: context.loc.dataEmpty,
               dialogInfoType: BDialogInfoType.warning)
@@ -60,7 +60,7 @@ class ChatController extends StateNotifier<bool> {
     _chatBaseController.addChat(userChat);
 
     final botChat =
-        await _chatApi.sendMessage(history: _recentChats, userChat: userChat);
+        await _chatApi.sendMessage(history: _recentChats);
 
     state = false;
     botChat.fold(
