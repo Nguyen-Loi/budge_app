@@ -159,6 +159,8 @@ class AppTheme {
           onSurface: darkColors.onSurface,
           tertiaryFixed: darkColors.tertiaryFixed,
           onSurfaceVariant: darkColors.onSurfaceVariant,
+          //custom
+          secondaryContainer: const Color.fromARGB(255, 7, 130, 118),
 
           // Success
           tertiary: darkColors.success),
@@ -285,6 +287,8 @@ class AppTheme {
         onSurface: lightColors.onSurface,
         tertiaryFixed: lightColors.tertiaryFixed,
         onSurfaceVariant: lightColors.onSurfaceVariant,
+        //custom
+        secondaryContainer: ColorManager.purple25,
 
         // Success
         tertiary: lightColors.success,

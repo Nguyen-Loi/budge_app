@@ -20,10 +20,32 @@ class ChartBudget extends StatefulWidget {
 
 class _ChartBudgetState extends State<ChartBudget> {
   int touchedIndex = -1;
+  List<Color> get colorsChart {
+    return [
+      Colors.blue,
+      Colors.red,
+      Colors.green,
+      Colors.orange,
+      Colors.purple,
+      Colors.yellow,
+      Colors.cyan,
+      Colors.pink,
+      Colors.teal,
+      Colors.lime,
+      Colors.indigo,
+      Colors.amber,
+      Colors.deepOrange,
+      Colors.lightBlue,
+      Colors.deepPurple,
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     final list = widget.list;
+    if (list.length > colorsChart.length) {
+      return const SizedBox.shrink();
+    }
     if (list.isEmpty) {
       return Column(
         children: [
@@ -83,7 +105,7 @@ class _ChartBudgetState extends State<ChartBudget> {
     final isTouched = index == touchedIndex;
     final fontSize = isTouched ? 25.0 : 16.0;
     final radius = isTouched ? 60.0 : 50.0;
-    final colour = IconManagerData.getIconModel(model.iconId).color;
+    final colour = colorsChart[index];
 
     double value = model.value;
     return PieChartSectionData(
@@ -97,8 +119,10 @@ class _ChartBudgetState extends State<ChartBudget> {
   }
 
   List<Widget> _informations(List<ChartBudgetModel> list) {
+    int index = -1;
     return list.map((e) {
-      Color colour = IconManagerData.getIconModel(e.iconId).color;
+      index++;
+      Color colour = colorsChart[index];
       return Indicator(
         color: colour,
         text: '${e.budgetName} (${e.value.toStringAsFixed(2)}%)',
