@@ -1,5 +1,6 @@
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/remote_config.dart';
+import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
@@ -58,6 +59,7 @@ class MainPageController extends StateNotifier<void> {
     // Base data
     logInfo('Loading infomation user....');
     await _userController.fetchUserInfo();
+    
     logInfo('Loading infomation budget...');
     await _budgetController.fetch();
     logInfo('Loading infomation transactions...');
