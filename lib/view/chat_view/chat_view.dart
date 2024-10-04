@@ -5,6 +5,7 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/chat_model.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
 import 'package:budget_app/view/chat_view/components/chat_row_item.dart';
+import 'package:budget_app/view/chat_view/components/chat_row_start.dart';
 import 'package:budget_app/view/chat_view/components/chat_row_typing_item.dart';
 import 'package:budget_app/view/chat_view/controller/chat_controller.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +129,9 @@ class _ChatViewState extends ConsumerState<ChatView> {
             ],
           );
         }),
+        // Hello in chat
+        gapH16,
+        const ChatRowStart(),
       ],
     );
   }
