@@ -38,7 +38,7 @@ class _ChartBudgetState extends State<ChartBudget> {
       Colors.lightBlue,
       Colors.deepPurple,
     ];
-  }// Cách để tiết kiệm chi tiêu
+  }
 
   @override
   Widget build(BuildContext context) {
