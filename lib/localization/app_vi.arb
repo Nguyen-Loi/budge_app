@@ -265,5 +265,6 @@
   "completeExpense": "Chú ý, ngân sách của bạn đã chạm mức giới hạn!",
   "send": "Gửi",
   "chatHint": "Tin nhắn đến ViBot",
-  "chatWithViBot": "Chat với ViBot"
+  "chatWithViBot": "Chat với ViBot",
+  "viBotHello": "Xin chào, tôi là ViBot trợ lý ảo của ứng dụng Vi Nhỏ.\nTôi có thể giúp gì cho bạn"
 }
