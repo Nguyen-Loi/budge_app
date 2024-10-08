@@ -1,10 +1,7 @@
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/providers.dart';
-import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/src/b_notification_widget.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final notificationProvider = Provider((ref) {
@@ -29,7 +26,6 @@ class BNotification {
       sound: true,
     );
     logInfo(settings.authorizationStatus.toString());
-    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     logInfo('Init notification forground');
     _listenForMessages();
   }
@@ -63,8 +59,4 @@ class BNotification {
     }
   }
 
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    await Firebase.initializeApp();
-  }
 }
