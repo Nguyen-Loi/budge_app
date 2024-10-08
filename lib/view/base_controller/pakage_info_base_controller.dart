@@ -11,8 +11,12 @@ class PackageInfoBaseController extends StateNotifier<PackageInfo> {
       : super(PackageInfo(
             appName: 'Ví Nhỏ',
             packageName: '',
-            version: '1.0.0',
-            buildNumber: '1'));
+            version: '0.0.0',
+            buildNumber: '0'));
+  bool get isInit {
+    bool isDataDefault = state.version == '0.0.0';
+    return !isDataDefault;
+  }
 
   Future<PackageInfo> init() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
