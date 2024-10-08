@@ -12,7 +12,7 @@ final deviceAPIProvider = Provider((ref) {
 
 abstract class IDeviceApi {
   Future<List<DeviceModel>> fetch(String uid);
-  Future<void> addDevice(String uid);
+  Future<void> writeDeviceInfo(String uid);
 }
 
 class DeviceApi implements IDeviceApi {
@@ -32,7 +32,7 @@ class DeviceApi implements IDeviceApi {
   }
 
   @override
-  Future<void> addDevice(String uid) async {
+  Future<void> writeDeviceInfo(String uid) async {
     Devices device = Devices();
     final currentDevice = await device.infoDevice();
     final allDeviceOfSignIn = await fetch(uid);
