@@ -10,8 +10,7 @@ class BNotificationWidget {
     NotificationModel notification =
         NotificationModel.fromRemoteMessage(remoteMessage);
 
-    const android =
-        AndroidInitializationSettings('@drawable/ic_notifications_icon');
+    const android = AndroidInitializationSettings('@mipmap/launcher_icon');
     const iOS = DarwinInitializationSettings();
     const initSettings = InitializationSettings(android: android, iOS: iOS);
 
@@ -32,12 +31,11 @@ class BNotificationWidget {
     // Show the notification
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'your_channel_id', // id
-      'your_channel_name', // name
-      channelDescription: 'your_channel_description', // description
+      '1', // id
+      'Vi Nho', // name
+      icon: "@mipmap/ic_launcher",
       importance: Importance.max,
       priority: Priority.high,
-      showWhen: false,
     );
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
