@@ -33,7 +33,7 @@ class BNotificationWidget {
         AndroidNotificationDetails(
       '1', // id
       'Vi Nho', // name
-      icon: "@mipmap/ic_launcher",
+      icon: "@drawable/ic_launcher",
       importance: Importance.max,
       priority: Priority.high,
     );
