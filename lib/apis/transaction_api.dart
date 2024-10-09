@@ -56,6 +56,7 @@ class TransactionApi extends ITransactionApi {
 
     TransactionModel transaction = TransactionModel(
         id: GenId.transaction(),
+        userId: uid,
         budgetId: budgetId,
         amount: amount,
         note: note,
