@@ -34,7 +34,7 @@ class DeviceApi implements IDeviceApi {
   @override
   Future<void> writeDeviceInfo(String uid) async {
     Devices device = Devices();
-    final currentDevice = await device.infoDevice();
+    final currentDevice = await device.infoDevice(uid);
     final allDeviceOfSignIn = await fetch(uid);
     if (currentDevice.infoDeviceIsExist(allDeviceOfSignIn) == false) {
       await db

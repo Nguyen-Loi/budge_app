@@ -1,4 +1,5 @@
 import 'package:budget_app/core/enums/device_type_enum.dart';
+import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/models/device_model/android_device_model.dart';
 import 'package:budget_app/models/device_model/device_model.dart';
 import 'package:budget_app/models/device_model/ios_device_model.dart';
@@ -9,8 +10,9 @@ import 'package:flutter/services.dart';
 
 class Devices {
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  Future<DeviceModel> infoDevice() async {
+  Future<DeviceModel> infoDevice(String uid) async {
     final now = DateTime.now();
+    final id = GenId.devices(uid);
     try {
       if (kIsWeb) {
         var webInfo = await deviceInfoPlugin.webBrowserInfo;
@@ -18,6 +20,8 @@ class Devices {
             browserName: webInfo.browserName.name,
             userAgent: webInfo.userAgent);
         return DeviceModel(
+            id: id,
+            userId: uid,
             deviceName: 'Web Browser',
             operatingSystem: DeviceTypeEnum.web.value,
             isPhysicalDevice: false,
@@ -33,6 +37,8 @@ class Devices {
                 model: androidInfo.model,
                 sdkVersion: androidInfo.version.sdkInt);
             return DeviceModel(
+                id: id,
+                userId: uid,
                 deviceName: androidInfo.model,
                 operatingSystem: DeviceTypeEnum.android.value,
                 isPhysicalDevice: true,
@@ -45,6 +51,8 @@ class Devices {
                 systemName: iosInfo.systemName,
                 identifierForVendor: iosInfo.identifierForVendor);
             return DeviceModel(
+                id: id,
+                userId: uid,
                 deviceName: iosInfo.name,
                 operatingSystem: DeviceTypeEnum.ios.value,
                 isPhysicalDevice: true,
