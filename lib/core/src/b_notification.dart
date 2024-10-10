@@ -1,4 +1,3 @@
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';

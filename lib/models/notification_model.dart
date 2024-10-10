@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:budget_app/core/enums/notification_priority_enum.dart';
 import 'package:budget_app/core/enums/notification_status_enum.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 
 class NotificationModel {
   final String id;
