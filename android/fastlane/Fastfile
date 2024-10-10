@@ -8,7 +8,7 @@ platform :android do
   lane :deploy do |options|
     mode_distribute = "production" # "internal", "alpha", "beta", "production"
     newVersion = updateVersion(options)
-    version_code = current_version_code + 1
+    version_code = current_version_code
     version_name = "#{version_code}_(#{newVersion})"
 
     gradle(
