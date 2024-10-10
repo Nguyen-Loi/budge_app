@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_status.dart';
