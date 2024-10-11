@@ -139,7 +139,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
   void _send() async {
     String content = _textEditingController.text.trim();
     _textEditingController.clear();
-    FocusScope.of(context).unfocus();
     await ref
         .read(chatControllerProvider.notifier)
         .sendMessage(context, message: content);
