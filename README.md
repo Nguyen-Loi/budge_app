@@ -31,4 +31,4 @@ fastlane add_plugin increment_version_code
     flutter build appbundle
     ```
 ### Chính sách quyền riêng tư
-- [Chính sách](https://www.termsfeed.com/live/0664e91c-deac-4944-86d8-a1d1eb5b0060)
+- [Chính sách](https://www.termsfeed.com/live/2d5f7165-d7ba-49b3-b191-6f3f94b412ac)
