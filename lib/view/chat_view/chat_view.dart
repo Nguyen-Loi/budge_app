@@ -20,23 +20,17 @@ class ChatView extends ConsumerStatefulWidget {
 
 class _ChatViewState extends ConsumerState<ChatView> {
   late TextEditingController _textEditingController;
-  late ScrollController _scrollController;
-  late FocusNode _focusNode;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     _textEditingController = TextEditingController();
-    _scrollController = ScrollController();
-    _focusNode = FocusNode();
     super.initState();
   }
 
   @override
   void dispose() {
     _textEditingController.dispose();
-    _scrollController.dispose();
-    _focusNode.dispose();
 
     super.dispose();
   }
@@ -87,7 +81,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
         children: [
           Expanded(
             child: TextField(
-              focusNode: _focusNode,
               controller: _textEditingController,
               decoration: InputDecoration(
                 hintText: context.loc.chatHint,
@@ -117,8 +110,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
     return ListView(
       reverse: true,
       padding: const EdgeInsets.all(16),
-      addAutomaticKeepAlives: true,
-      controller: _scrollController,
       children: [
         if (isTyping) const ChatRowTypingItem(),
         ...list.map((e) {

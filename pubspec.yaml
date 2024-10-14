@@ -52,6 +52,7 @@ dependencies:
   flutter_markdown: ^0.7.3+2
   firebase_messaging: ^14.9.4
   flutter_local_notifications: ^17.2.3
+  google_mobile_ads: ^4.0.0
 
 dev_dependencies:
   flutter_test:
