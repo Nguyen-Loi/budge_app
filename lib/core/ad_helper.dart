@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 const String _bannerAdUnitIdReleased = 'ca-app-pub-8868188970067927/9197227611';
+const String _interstitialAdUnitIdReleased =
+    'ca-app-pub-8868188970067927/5122552551';
 
 class AdHelper {
   static String get bannerAdUnitId {
@@ -19,6 +21,9 @@ class AdHelper {
   }
 
   static String get interstitialAdUnitId {
+    if (kReleaseMode) {
+      return _interstitialAdUnitIdReleased;
+    }
     if (Platform.isAndroid) {
       return "ca-app-pub-3940256099942544/1033173712";
     } else if (Platform.isIOS) {
