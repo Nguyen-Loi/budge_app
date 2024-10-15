@@ -54,6 +54,9 @@
   		<string>vi</string>
  		<string>en</string>
 	</array>
+	<!-- Ads -->
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-8868188970067927~2788226777</string>
 	<!--Sign-In section -->
 	<key>CFBundleURLTypes</key>
 	<array>
