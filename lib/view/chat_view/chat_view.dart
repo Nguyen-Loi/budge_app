@@ -1,4 +1,5 @@
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -60,16 +61,8 @@ class _ChatViewState extends ConsumerState<ChatView> {
             ],
           ),
         ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: _listChat(),
-              ),
-              _bottomChat(context),
-            ],
-          ),
-        ),
+        body: _listChat(),
+        bottomSheet: _bottomChat(context),
       ),
     );
   }
@@ -107,23 +100,26 @@ class _ChatViewState extends ConsumerState<ChatView> {
     list.sort((a, b) => b.createdDate.compareTo(a.createdDate));
     bool isTyping = ref.watch(chatControllerProvider);
 
-    return ListView(
-      reverse: true,
-      padding: const EdgeInsets.all(16),
-      children: [
-        if (isTyping) const ChatRowTypingItem(),
-        ...list.map((e) {
-          return Column(
-            children: [
-              ChatRowItem(chatModel: e),
-              gapH16,
-            ],
-          );
-        }),
-        // Hello in chat
-        gapH16,
-        const ChatRowStart(),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 80),
+      child: ListView(
+        reverse: true,
+        padding: const EdgeInsets.all(16),
+        children: [
+          if (isTyping) const ChatRowTypingItem(),
+          ...list.map((e) {
+            return Column(
+              children: [
+                ChatRowItem(chatModel: e),
+                gapH16,
+              ],
+            );
+          }),
+          // Hello in chat
+          gapH16,
+          const ChatRowStart(),
+        ],
+      ),
     );
   }
 

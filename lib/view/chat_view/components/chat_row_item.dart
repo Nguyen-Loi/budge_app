@@ -27,7 +27,7 @@ class ChatRowItem extends StatelessWidget {
           ),
         if (!isUser) ...[
           SvgPicture.asset(
-            SvgAssets.iconApp,
+            SvgAssets.iconBotApp,
             width: 32,
             height: 32,
           ),
