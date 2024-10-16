@@ -19,7 +19,7 @@ class SvgAssets {
   static const String google = '$_svgsPath/google.svg';
   static const String facebook = '$_svgsPath/facebook.svg';
   static const String iconApp = '$_svgsPath/icon.svg';
-  static const String iconBotApp = '$_svgsPath/icon.svg';
+  static const String iconBotApp = '$_svgsPath/chatIcon.svg';
   static const String vi = '$_svgsPath/vi.svg';
   static const String en = '$_svgsPath/en.svg';
   static const String wallet = '$_svgsPath/wallet.svg';
