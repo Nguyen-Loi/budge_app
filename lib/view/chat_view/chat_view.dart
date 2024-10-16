@@ -1,5 +1,4 @@
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
