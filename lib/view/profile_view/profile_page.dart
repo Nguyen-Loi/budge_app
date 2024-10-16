@@ -8,6 +8,7 @@ import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
@@ -23,8 +24,7 @@ class ProfilePage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends ConsumerState<ProfilePage>
-    with AutomaticKeepAliveClientMixin {
+class _ProfilePageState extends ConsumerState<ProfilePage> {
   BannerAd? _bannerAd;
 
   @override
@@ -54,11 +54,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
   }
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return BaseView(
         title: context.loc.profile,
         child: Column(
@@ -154,14 +150,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
   Widget _content() {
     DateTime userJoinDate = ref.watch(userBaseControllerProvider)!.createdDate;
     final monthUserAvailable = DateTime.now().month - userJoinDate.month;
+    final appVersion = ref.watch(packageInfoBaseControllerProvider).version;
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 24),
-        child: BText.caption(
-            context.loc
-                .pUserJoinDescriptions(userJoinDate.toYM(), monthUserAvailable),
-            textAlign: TextAlign.center),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BText.caption(
+              context.loc.pUserJoinDescriptions(
+                  userJoinDate.toYM(), monthUserAvailable),
+              textAlign: TextAlign.center),
+          gapH8,
+          BText.caption(context.loc.pAppVersion(appVersion),
+              textAlign: TextAlign.center),
+        ],
       ),
     );
   }
