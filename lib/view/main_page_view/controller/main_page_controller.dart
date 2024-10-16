@@ -1,5 +1,6 @@
 import 'package:budget_app/apis/device_api.dart';
 import 'package:budget_app/common/log.dart';
+import 'package:budget_app/constants/constants.dart';
 import 'package:budget_app/core/remote_config.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
@@ -9,6 +10,7 @@ import 'package:budget_app/view/base_controller/transaction_base_controller.dart
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 final mainPageControllerProvider = Provider((ref) {
@@ -71,6 +73,9 @@ class MainPageController extends StateNotifier<void> {
 
       // ads
       _initGoogleMobileAds();
+
+      // assets svg
+      _loadSvgAssets();
     }
 
     logInfo('Loading infomation budget...');
@@ -82,5 +87,10 @@ class MainPageController extends StateNotifier<void> {
   Future<InitializationStatus> _initGoogleMobileAds() {
     logInfo('Initialize Google Mobile Ads SDK');
     return MobileAds.instance.initialize();
+  }
+
+  Future<void> _loadSvgAssets() async {
+    const loader = SvgAssetLoader(SvgAssets.iconBotApp);
+    svg.cache.putIfAbsent(loader.cacheKey(null), () => loader.loadBytes(null));
   }
 }
