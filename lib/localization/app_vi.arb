@@ -266,5 +266,6 @@
   "send": "Gửi",
   "chatHint": "Tin nhắn đến ViBot",
   "chatWithViBot": "Chat với ViBot",
-  "viBotHello": "Xin chào, tôi là ViBot trợ lý ảo của ứng dụng Vi Nhỏ.\nTôi có thể giúp gì cho bạn"
+  "viBotHello": "Xin chào, tôi là ViBot trợ lý ảo của ứng dụng Vi Nhỏ.\nTôi có thể giúp gì cho bạn",
+  "pAppVersion": "Version {version}" 
 }

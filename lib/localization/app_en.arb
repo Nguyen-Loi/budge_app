@@ -266,5 +266,6 @@
     "send": "Send",
     "chatHint": "Message ViBot",
     "chatWithViBot": "Chat with ViBot",
-    "viBotHello": "Hello, I am ViBot, the virtual assistant of Vi Nho app.\nHow can I help you?"
+    "viBotHello": "Hello, I am ViBot, the virtual assistant of Vi Nho app.\nHow can I help you?",
+    "pAppVersion": "Version {version}" 
 }
