@@ -12,6 +12,7 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class BudgetCard extends StatelessWidget {
   const BudgetCard({super.key, required this.model});
@@ -23,32 +24,65 @@ class BudgetCard extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, RoutePath.budgetDetail, arguments: model);
       },
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: Column(
-            children: [
-              Row(
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: Column(
                 children: [
-                  BIcon(id: model.iconId),
-                  gapW8,
-                  Expanded(
-                    child: BText(model.name, fontWeight: FontWeight.w700),
+                  Row(
+                    children: [
+                      BIcon(id: model.iconId),
+                      gapW8,
+                      Expanded(
+                        child: BText(model.name, fontWeight: FontWeight.w700),
+                      ),
+                      gapW8,
+                      Icon(
+                        IconManager.arrowNext,
+                        color: ColorManager.black,
+                      )
+                    ],
                   ),
-                  gapW8,
-                  Icon(
-                    IconManager.arrowNext,
-                    color: ColorManager.black,
-                  )
+                  gapH8,
+                  ..._itemType(context)
                 ],
               ),
-              gapH8,
-              ..._itemType(context)
-            ],
+            ),
           ),
-        ),
+          _tagItem(context)
+        ],
       ),
     );
+  }
+
+  Widget _tagItem(BuildContext context) {
+    if (model.budgetStatusTime == BudgetStatusTime.active) {
+      return const SizedBox.shrink();
+    }
+    return Positioned(
+        right: -8,
+        top: -8,
+        child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color: model.budgetStatusTime.color(context),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  model.budgetStatusTime.svgAsset(context),
+                  width: 16,
+                  height: 16,
+                ),
+                gapW8,
+                BText.caption(model.budgetStatusTime.contentLoc(context),
+                    color: ColorManager.white, fontWeight: FontWeight.w700),
+              ],
+            )));
   }
 
   List<Widget> _itemType(BuildContext context) {
