@@ -183,7 +183,10 @@ extension Present<T> on BDialogInfo {
         children: [
           BText.h3(bTitle, letterSpacing: letterSpacing),
           gapH8,
-          BText.b3(message)
+          BText(
+            message,
+            textAlign: TextAlign.center,
+          )
         ],
       ),
       actions: actions,
