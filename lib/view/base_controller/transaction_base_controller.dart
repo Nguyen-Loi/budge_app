@@ -20,11 +20,6 @@ final transactionsBaseControllerProvider = StateNotifierProvider<
       loc: loc);
 });
 
-final transactionsFutureProvider = FutureProvider((ref) {
-  final controller = ref.watch(transactionsBaseControllerProvider.notifier);
-  return controller.fetch();
-});
-
 class TransactionsBaseController
     extends StateNotifier<List<TransactionCardModel>> {
   TransactionsBaseController({
@@ -36,7 +31,11 @@ class TransactionsBaseController
         _uid = uid,
         _budgetController = budgetController,
         _loc = loc,
-        super([]);
+        super([]) {
+    if (uid.isNotEmpty) {
+      fetch();
+    }
+  }
   final TransactionApi _transactionApi;
   final BudgetBaseController _budgetController;
   final String _uid;
