@@ -3,19 +3,28 @@ import 'dart:io';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/models/remote_config_model.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class RemoteConfig {
+final remoteConfigBaseControllerProvider =
+    StateNotifierProvider<RemoteConfigBaseController, RemoteConfigModel>((ref) {
+  return RemoteConfigBaseController();
+});
+
+class RemoteConfigBaseController extends StateNotifier<RemoteConfigModel> {
+  RemoteConfigBaseController()
+      : super(RemoteConfigModel(
+            geminiApiKey: '0',
+            recommendedMinimumVersion: '1.0.0',
+            requiredMinimumVersion: '1.0.0'));
   final remoteConfig = FirebaseRemoteConfig.instance;
-  final String _requiredMinimumVersion = 'requiredMinimumVersion';
-  final String _recommendedMinimumVersion = 'recommendedMinimumVersion';
 
   Future<void> initialize() async {
     final remoteConfig = FirebaseRemoteConfig.instance;
-    String defaulValueConfig = '1.0.0';
 
     // Set configuration
     await remoteConfig.setConfigSettings(
@@ -26,17 +35,17 @@ class RemoteConfig {
     );
 
     // These will be used before the values are fetched from Firebase Remote Config.
-    await remoteConfig.setDefaults({
-      _requiredMinimumVersion: defaulValueConfig,
-      _recommendedMinimumVersion: defaulValueConfig,
-    });
+    await remoteConfig.setDefaults(state.toMap());
 
     // Fetch the values from Firebase Remote Config
     await remoteConfig.fetchAndActivate();
+    state = RemoteConfigModel.fromMapRemoteConfig(remoteConfig.getAll());
 
     // Optional: listen for and activate changes to the Firebase Remote Config values
     remoteConfig.onConfigUpdated.listen((event) async {
       await remoteConfig.activate();
+      logSuccess(remoteConfig.getAll().toString());
+      state = RemoteConfigModel.fromMap(remoteConfig.getAll());
     });
   }
 
@@ -46,9 +55,9 @@ class RemoteConfig {
       final appVerion = _getExtendedVersionNumber(packageInfo.version);
 
       final requiredMinVersion =
-          _getExtendedVersionNumber(getRequiredMinimumVersion());
+          _getExtendedVersionNumber(state.requiredMinimumVersion);
       final recommendedMinVersion =
-          _getExtendedVersionNumber(getRecommendedMinimumVersion());
+          _getExtendedVersionNumber(state.recommendedMinimumVersion);
 
       if (appVerion < requiredMinVersion) {
         await _showUpdateVersionDialog(context, false, packageInfo);
@@ -73,12 +82,6 @@ class RemoteConfig {
         versionNumbers[1] * 1000 +
         versionNumbers[2];
   }
-
-  String getRequiredMinimumVersion() =>
-      remoteConfig.getString(_requiredMinimumVersion);
-
-  String getRecommendedMinimumVersion() =>
-      remoteConfig.getString(_recommendedMinimumVersion);
 
   Future<void> _showUpdateVersionDialog(
       BuildContext context, bool isSkippable, PackageInfo packageInfo) async {
