@@ -58,6 +58,7 @@ class MainPageController extends StateNotifier<void> {
       await refPackage.init().then((e) {
         logInfo('Check version update ...');
         RemoteConfig remoteConfig = RemoteConfig();
+        if (!context.mounted) return;
         remoteConfig.checkVersionUpdate(context, packageInfo: e);
       });
 
