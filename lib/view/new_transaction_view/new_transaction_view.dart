@@ -99,7 +99,7 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
   Widget _chooseBudgets() {
     return BFormCategoryBudget(
       label: context.loc.chooseYourBudget,
-      list: ref.watch(budgetBaseControllerProvider.notifier).getAll,
+      list: ref.watch(budgetBaseControllerProvider.notifier).budgetAvailable,
       validator: (p0) {
         if (p0 == null) {
           return context.loc.errorChooseYourBudget;

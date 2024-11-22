@@ -28,8 +28,11 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
   List<BudgetModel> _allBudgets = [];
   List<BudgetModel> get getAll => _allBudgets;
 
-  List<BudgetModel> _budgetsAvailable = [];
-  List<BudgetModel> get budgetAvailable => _budgetsAvailable;
+  List<BudgetModel> get budgetAvailable {
+    return state
+        .where((e) => e.budgetStatusTime == BudgetStatusTime.active)
+        .toList();
+  }
 
   // Add wallet model follow budget
   List<BudgetModel> budgetsWithWallet(AppLocalizations loc) {
@@ -56,12 +59,5 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
 
   void _notifier({required List<BudgetModel> newList}) {
     state = newList.toList();
-    final now = DateTime.now();
-    _budgetsAvailable = newList.where((e) {
-      if (now.isBefore(e.startDate) && now.isAfter(e.endDate)) {
-        return true;
-      }
-      return false;
-    }).toList();
   }
 }
