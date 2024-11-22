@@ -1,6 +1,5 @@
 import 'package:budget_app/apis/chat_api.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
-import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/role_chat_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
