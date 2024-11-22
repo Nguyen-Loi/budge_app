@@ -159,9 +159,9 @@ class ReportController extends StateNotifier<ReportFilterModel> {
         textSubmit: context.loc.openFile,
         onSubmit: () async {
           final closeDialog = showLoading(context: context);
-
           await BFileStorage.openFile(r).then((e) {
             closeDialog();
+            if (!context.mounted) return;
             if (e.isLeft()) {
               BDialogInfo(
                 dialogInfoType: BDialogInfoType.error,
