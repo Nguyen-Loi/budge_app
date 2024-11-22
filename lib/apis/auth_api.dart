@@ -1,4 +1,3 @@
-
 import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
@@ -6,6 +5,7 @@ import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -108,6 +108,9 @@ class AuthAPI implements IAuthApi {
   @override
   FutureEitherVoid signOut() async {
     try {
+      _ref.invalidate(packageInfoBaseControllerProvider);
+      FacebookAuth.instance.logOut();
+      GoogleSignIn().signOut();
       await _auth.signOut();
       return right(null);
     } catch (e) {
@@ -141,6 +144,18 @@ class AuthAPI implements IAuthApi {
       await _auth.signInWithCredential(facebookCredential);
       await _writeNewInfoToDB(accountType: AccountType.facebook);
       return right(null);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        return left(Failure(error: e.message, message: e.message));
+      } else if (e.code == 'invalid-credential') {
+        return left(
+          Failure(
+            error: _ref.read(appLocalizationsProvider).errorCredentials,
+            message: _ref.read(appLocalizationsProvider).errorCredentials,
+          ),
+        );
+      }
+      return left(Failure(message: defaultError, error: e.toString()));
     } catch (e) {
       return left(Failure(error: e.toString(), message: defaultError));
     }
@@ -168,9 +183,7 @@ class AuthAPI implements IAuthApi {
       return left(Failure(message: defaultError));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
-        return left(Failure(
-            error: _ref.read(appLocalizationsProvider).accountAlreadyExits,
-            message: _ref.read(appLocalizationsProvider).accountAlreadyExits));
+        return left(Failure(error: e.message, message: e.message));
       } else if (e.code == 'invalid-credential') {
         return left(
           Failure(
