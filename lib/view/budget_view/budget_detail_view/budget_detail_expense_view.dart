@@ -1,6 +1,4 @@
-import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/custom/budget_expense_status.dart';
-import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/budget_model.dart';
@@ -14,39 +12,20 @@ class BudgetDetailExpenseView extends BudgetBaseDetailView {
   @override
   List<Widget> header(BuildContext context, BudgetModel budget) {
     return [
-      _sendLimitPerMonth(context),
-      gapH8,
-      _moneys(context, budget),
-      gapH16,
-      BudgetExpenseStatus(budget: budget),
-      gapH8,
-      BText.b3(budget.getReview(context)),
-      BText.b3(strTime(context, model: budget)),
+      itemStatus(context),
+      itemRow(context,
+          svgAsset: SvgAssets.money,
+          label: context.loc.currentExpense,
+          value: budget.currentAmount.toMoneyStr(),
+          colorValue: Theme.of(context).colorScheme.error),
+      itemRow(
+        context,
+        svgAsset: SvgAssets.limit,
+        label: context.loc.limit,
+        value: budget.limit.toMoneyStr(),
+      ),
+      itemOperatingTime(context),
+      itemReview(context)
     ];
-  }
-
-  Widget _sendLimitPerMonth(BuildContext context) {
-    return Row(
-      children: [
-        BText.b3(context.loc.currentExpense),
-        gapW16,
-        Expanded(
-            child: BText.b3(context.loc.spendLimitPerMonth,
-                textAlign: TextAlign.end)),
-      ],
-    );
-  }
-
-  Widget _moneys(BuildContext context, BudgetModel model) {
-    return Row(
-      children: [
-        BText.h3(model.currentAmount.toMoneyStr(),
-            color: Theme.of(context).colorScheme.secondary),
-        gapW16,
-        Expanded(
-            child:
-                BText.h3(model.limit.toMoneyStr(), textAlign: TextAlign.end)),
-      ],
-    );
   }
 }

@@ -1,11 +1,9 @@
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/role_chat_enum.dart';
 import 'package:budget_app/models/chat_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ChatRowItem extends StatelessWidget {
   const ChatRowItem({super.key, required this.chatModel, this.item});
@@ -26,11 +24,6 @@ class ChatRowItem extends StatelessWidget {
             width: MediaQuery.of(context).size.width / 8,
           ),
         if (!isUser) ...[
-          SvgPicture.asset(
-            SvgAssets.iconBotApp,
-            width: 32,
-            height: 32,
-          ),
           gapW8,
         ],
         Flexible(
