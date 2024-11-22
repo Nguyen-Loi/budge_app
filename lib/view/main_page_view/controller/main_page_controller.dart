@@ -11,7 +11,6 @@ import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 final mainPageControllerProvider = Provider((ref) {
   final userController = ref.watch(userBaseControllerProvider.notifier);
@@ -72,9 +71,6 @@ class MainPageController extends StateNotifier<void> {
       logInfo('Loading infomation chat...');
       await _ref.watch(chatBaseControllerProvider.notifier).init();
 
-      // ads
-      _initGoogleMobileAds();
-
       // assets svg
       _loadSvgAssets();
     }
@@ -85,10 +81,6 @@ class MainPageController extends StateNotifier<void> {
     await _transactionsController.fetch();
   }
 
-  Future<InitializationStatus> _initGoogleMobileAds() {
-    logInfo('Initialize Google Mobile Ads SDK');
-    return MobileAds.instance.initialize();
-  }
 
   Future<void> _loadSvgAssets() async {
     const loader = SvgAssetLoader(SvgAssets.iconBotApp);

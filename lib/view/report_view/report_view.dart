@@ -1,4 +1,3 @@
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
@@ -6,7 +5,6 @@ import 'package:budget_app/common/widget/b_text_money.dart';
 import 'package:budget_app/common/widget/chart_budget.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/ad_helper.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager.dart';
@@ -19,7 +17,6 @@ import 'package:budget_app/view/report_view/components/report_filter_view.dart';
 import 'package:budget_app/view/report_view/controller/report_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class ReportView extends ConsumerStatefulWidget {
   const ReportView({super.key});
@@ -29,61 +26,6 @@ class ReportView extends ConsumerStatefulWidget {
 }
 
 class _ReportViewState extends ConsumerState<ReportView> {
-  InterstitialAd? _interstitialAd;
-  BannerAd? _bannerAd;
-
-  void _loadInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: AdHelper.interstitialAdUnitId,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (_) {},
-          );
-
-          setState(() {
-            _interstitialAd = ad;
-          });
-        },
-        onAdFailedToLoad: (err) {
-          logError('Failed to load an interstitial ad: ${err.message}');
-        },
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    Future.delayed(const Duration(seconds: 5), () {
-      _loadInterstitialAd();
-    });
-
-    BannerAd(
-      adUnitId: AdHelper.bannerAdUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        },
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-      ),
-    ).load();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _interstitialAd?.dispose();
-    _bannerAd?.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final list = ref.watch(reportControllerProvider.notifier).chartBudgetList;
@@ -103,15 +45,6 @@ class _ReportViewState extends ConsumerState<ReportView> {
               ],
             ),
           ),
-          if (_bannerAd != null)
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: _bannerAd!.size.width.toDouble(),
-                height: _bannerAd!.size.height.toDouble(),
-                child: AdWidget(ad: _bannerAd!),
-              ),
-            ),
         ],
       ),
     );
@@ -203,9 +136,6 @@ class _ReportViewState extends ConsumerState<ReportView> {
               child: GestureDetector(
             onTap: () {
               if (!disableButton) {
-                if (_interstitialAd != null) {
-                  _interstitialAd?.show();
-                }
                 ref
                     .read(reportControllerProvider.notifier)
                     .exportExcel(context, user: user!);
