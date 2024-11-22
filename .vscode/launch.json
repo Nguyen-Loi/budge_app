@@ -6,9 +6,6 @@
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
-            "args": [
-                "--dart-define=GEMINI_KEY=AIzaSyAIDtZmWheHMbETli2MnU1pBw3psU4JZRQ"
-              ]
         },
     ]
   }
