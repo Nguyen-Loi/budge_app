@@ -1,6 +1,5 @@
 import 'package:budget_app/apis/chat_api.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
-import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/role_chat_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -63,7 +62,7 @@ class ChatController extends StateNotifier<bool> {
 
     state = false;
     botChat.fold(
-      (l) => showSnackBar(context, l.message),
+      (l) => showBDialogInfoError(context, message: l.message),
       (r) => _chatBaseController.addChat(r),
     );
   }
