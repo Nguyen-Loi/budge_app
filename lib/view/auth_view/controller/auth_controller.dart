@@ -61,7 +61,9 @@ class AuthController extends StateNotifier<void> {
   }
 
   void loginWithFacebook(BuildContext context) async {
+    final closeLoading = showLoading(context: context);
     final res = await _authAPI.loginWithFacebook();
+    closeLoading();
     res.fold((l) {
       logError(l.error);
       showSnackBar(context, l.message);
@@ -75,7 +77,9 @@ class AuthController extends StateNotifier<void> {
   void loginWithGoogle(
     BuildContext context,
   ) async {
+    final closeLoading = showLoading(context: context);
     final res = await _authAPI.loginWithGoogle();
+    closeLoading();
     res.fold((l) {
       logError(l.error);
       showSnackBar(context, l.message);

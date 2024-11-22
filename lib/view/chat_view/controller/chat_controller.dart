@@ -36,7 +36,7 @@ class ChatController extends StateNotifier<bool> {
   List<ChatModel> get _recentChats {
     final prompt = _chatBaseController.chats.toList();
     prompt.sort((a, b) => b.createdDate.compareTo(a.createdDate));
-    return prompt.take(5).toList();
+    return prompt.take(3).toList();
   }
 
   Future<void> sendMessage(BuildContext context,
@@ -59,8 +59,7 @@ class ChatController extends StateNotifier<bool> {
     state = true;
     _chatBaseController.addChat(userChat);
 
-    final botChat =
-        await _chatApi.sendMessage(history: _recentChats);
+    final botChat = await _chatApi.sendMessage(history: _recentChats);
 
     state = false;
     botChat.fold(

@@ -1,8 +1,10 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/budget_view/budget_page.dart';
@@ -10,6 +12,7 @@ import 'package:budget_app/view/main_page_view/controller/main_page_controller.d
 import 'package:budget_app/view/transactions_view/transaction_view.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
 import 'package:budget_app/view/profile_view/profile_page.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -56,8 +59,22 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
       const BudgetPage(),
       const ProfilePage(),
     ];
+    _listenNotification();
 
     super.initState();
+  }
+
+  void _listenNotification() {
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((e) => logInfo(e?.toMap().toString() ?? 'NoData'));
+
+    FirebaseMessaging.onMessage
+        .listen(ref.read(notificationProvider).showFlutterNotification);
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      logInfo(message.data.toString());
+    });
   }
 
   @override
@@ -70,13 +87,13 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   @override
   Widget build(BuildContext context) {
     return ref.watch(mainPageFutureProvider(context)).when(
-          data: (_) => _body(),
+          data: (_) => body(),
           error: (_, __) => const Scaffold(body: BStatus.error()),
           loading: () => const Scaffold(body: Center(child: BStatus.loading())),
         );
   }
 
-  Widget _body() {
+  Widget body() {
     final width = MediaQuery.of(context).size.width;
     final bool isSmallScreen = width < 600;
     final bool isLargeScreen = width > 800;

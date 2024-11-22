@@ -4,4 +4,7 @@
     <string name="facebook_app_id">1096352272056555</string>
     <string name="fb_login_protocol_scheme">fb1096352272056555</string>
     <string name="facebook_client_token">a018e1f278d258ed9d74f16e03afd6ee</string>
+
+    <string name="default_notification_channel_id" translatable="false">vi_nho</string>
+    <string name="default_notification_channel_name" translatable="false">vi_nho</string>
 </resources>

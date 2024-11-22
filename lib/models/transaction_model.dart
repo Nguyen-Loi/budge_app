@@ -1,14 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/models/budget_model.dart';
 import 'package:budget_app/models/merge_model/transaction_card_model.dart';
 
 class TransactionModel {
   final String id;
+  final String userId;
   final String budgetId;
   final int amount;
   final String note;
@@ -18,6 +21,7 @@ class TransactionModel {
   final DateTime updatedDate;
   TransactionModel({
     required this.id,
+    required this.userId,
     required this.budgetId,
     required this.amount,
     required this.note,
@@ -26,6 +30,7 @@ class TransactionModel {
     required this.transactionDate,
     required this.updatedDate,
   });
+ 
 
   TransactionTypeEnum get transactionType =>
       TransactionTypeEnum.fromValue(transactionTypeValue);
@@ -64,8 +69,13 @@ class TransactionModel {
         transactionType: transactionType);
   }
 
+  
+
+
+
   TransactionModel copyWith({
     String? id,
+    String? userId,
     String? budgetId,
     int? amount,
     String? note,
@@ -76,6 +86,7 @@ class TransactionModel {
   }) {
     return TransactionModel(
       id: id ?? this.id,
+      userId: userId ?? this.userId,
       budgetId: budgetId ?? this.budgetId,
       amount: amount ?? this.amount,
       note: note ?? this.note,
@@ -89,6 +100,7 @@ class TransactionModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
+      'userId': userId,
       'budgetId': budgetId,
       'amount': amount,
       'note': note,
@@ -102,52 +114,52 @@ class TransactionModel {
   factory TransactionModel.fromMap(Map<String, dynamic> map) {
     return TransactionModel(
       id: map['id'] as String,
+      userId: map['userId'] as String,
       budgetId: map['budgetId'] as String,
       amount: map['amount'] as int,
       note: map['note'] as String,
       transactionTypeValue: map['transactionTypeValue'] as String,
-      createdDate:
-          DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
-      transactionDate:
-          DateTime.fromMillisecondsSinceEpoch(map['transactionDate'] as int),
-      updatedDate:
-          DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
+      createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
+      transactionDate: DateTime.fromMillisecondsSinceEpoch(map['transactionDate'] as int),
+      updatedDate: DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory TransactionModel.fromJson(String source) =>
-      TransactionModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory TransactionModel.fromJson(String source) => TransactionModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'TransactionModel(id: $id, budgetId: $budgetId, amount: $amount, note: $note, transactionTypeValue: $transactionTypeValue, createdDate: $createdDate, transactionDate: $transactionDate, updatedDate: $updatedDate)';
+    return 'TransactionModel(id: $id, userId: $userId, budgetId: $budgetId, amount: $amount, note: $note, transactionTypeValue: $transactionTypeValue, createdDate: $createdDate, transactionDate: $transactionDate, updatedDate: $updatedDate)';
   }
 
   @override
   bool operator ==(covariant TransactionModel other) {
     if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.budgetId == budgetId &&
-        other.amount == amount &&
-        other.note == note &&
-        other.transactionTypeValue == transactionTypeValue &&
-        other.createdDate == createdDate &&
-        other.transactionDate == transactionDate &&
-        other.updatedDate == updatedDate;
+  
+    return 
+      other.id == id &&
+      other.userId == userId &&
+      other.budgetId == budgetId &&
+      other.amount == amount &&
+      other.note == note &&
+      other.transactionTypeValue == transactionTypeValue &&
+      other.createdDate == createdDate &&
+      other.transactionDate == transactionDate &&
+      other.updatedDate == updatedDate;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-        budgetId.hashCode ^
-        amount.hashCode ^
-        note.hashCode ^
-        transactionTypeValue.hashCode ^
-        createdDate.hashCode ^
-        transactionDate.hashCode ^
-        updatedDate.hashCode;
+      userId.hashCode ^
+      budgetId.hashCode ^
+      amount.hashCode ^
+      note.hashCode ^
+      transactionTypeValue.hashCode ^
+      createdDate.hashCode ^
+      transactionDate.hashCode ^
+      updatedDate.hashCode;
   }
 }

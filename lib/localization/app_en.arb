@@ -19,15 +19,6 @@
     "signUpToStart": "Complete then sign up to get started",
     "pleaseEnableService": "Please enable our terms of service",
     "nEableServiceDescription": "{count, plural, =0{By the signing up, you agree to the  } =1{Terms of Service and Privay Policy} other{{count} errorText}}",
-    "@nEnableServiceDescription": {
-        "description": "A plural message",
-        "placeholders": {
-            "count": {
-                "type": "num",
-                "format": "compact"
-            }
-        }
-    },
     "emailHint": "peter@gmail.com",
     "password": "Password",
     "passwordHint": "*******",
@@ -39,7 +30,6 @@
     "monthlyExpense": "Monthly Expense",
     "noTransactionThisBudget": "You don't have any transactions with this budget.",
     "youAlreadySpent": "You've already spent",
-    "spendLimitPerMonth": "Spend limit per Month",
     "modifyBudget": "Modify Budget",
     "budgetName": "Budget name",
     "errorChooseYourBudgetIcon": "Please choose your budget icon",
@@ -65,19 +55,6 @@
     "contact": "Contact",
     "signOut": "Sign Out",
     "pUserJoinDescriptions": "You joined ViNho on {dateTime}. It's been {numberMonth} month since then and our mission is still the same and help you better manage your money",
-    "@pUserJoinDescription": {
-        "description": "A plural message",
-        "placeholders": {
-            "dateTime": {
-                "type": "String",
-                "example": "November 2023"
-            },
-            "numberMonth": {
-                "type": "String",
-                "example": "2"
-            }
-        }
-    },
     "home": "Home",
     "appName": "Budget SS",
     "left": "Left",
@@ -214,7 +191,7 @@
         }
     },
     "custom": "Custom",
-    "operatingPeriod": "Operating period",
+    "operatingTime": "Time",
     "newTransaction": "New transaction",
     "developingFreatures": "Developing Features",
     "exportExcel": "Export Excel",
@@ -255,16 +232,23 @@
     "openFile": "Open file",
     "currentIncome": "Current Income",
     "currentExpense": "Current Expense",
-    "startIncome": "Start tracking your income to ensure you're meeting your financial goals.",
-    "processIncome": "Your income is steady. Keep aiming for your financial goals.",
-    "almostDoneIncome": "You're close to hitting your income goal. Keep it up!",
-    "completeIncome": "Excellent! You've met or exceeded your income goal.",
-    "startExpense": "Start tracking your expenses to avoid exceeding your budget.",
-    "processExpense": "Your expenses are under control. Keep managing them carefully!",
-    "almostDoneExpense": "You're almost done with your spending goal. Don’t forget to stay under the limit!",
-    "completeExpense": "Attention, your budget has reached its limit!",
+    "startIncome": "Start tracking your income to meet your goals.",
+    "processIncome": "Your income is steady. Keep it up!",
+    "almostDoneIncome": "You're close to your goal. Stay focused!",
+    "completeIncome": "Great! You've met your goal.",
+    "startExpense": "Start tracking your expenses to stay on budget.",
+    "processExpense": "Expenses are under control. Keep it up!",
+    "almostDoneExpense": "Almost there! Stay within your limit.",
+    "completeExpense": "Budget limit reached. Watch out!",
     "send": "Send",
     "chatHint": "Message ViBot",
     "chatWithViBot": "Chat with ViBot",
-    "viBotHello": "Hello, I am ViBot, the virtual assistant of Vi Nho app.\nHow can I help you?"
+    "viBotHello": "Hello, I am ViBot, the virtual assistant of Vi Nho app.\nHow can I help you?",
+    "pAppVersion": "Version {version}",
+    "coming": "Coming soon",
+    "expired": "Expired",
+    "active": "Active",
+    "status": "Status",
+    "review": "Review",
+    "reviewExpense": "You need to make your last transaction on {date} to have more {money} in coins. Continue"
 }

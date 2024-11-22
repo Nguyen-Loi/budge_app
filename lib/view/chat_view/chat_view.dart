@@ -20,23 +20,17 @@ class ChatView extends ConsumerStatefulWidget {
 
 class _ChatViewState extends ConsumerState<ChatView> {
   late TextEditingController _textEditingController;
-  late ScrollController _scrollController;
-  late FocusNode _focusNode;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     _textEditingController = TextEditingController();
-    _scrollController = ScrollController();
-    _focusNode = FocusNode();
     super.initState();
   }
 
   @override
   void dispose() {
     _textEditingController.dispose();
-    _scrollController.dispose();
-    _focusNode.dispose();
 
     super.dispose();
   }
@@ -66,16 +60,8 @@ class _ChatViewState extends ConsumerState<ChatView> {
             ],
           ),
         ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: _listChat(),
-              ),
-              _bottomChat(context),
-            ],
-          ),
-        ),
+        body: _listChat(),
+        bottomSheet: _bottomChat(context),
       ),
     );
   }
@@ -87,7 +73,6 @@ class _ChatViewState extends ConsumerState<ChatView> {
         children: [
           Expanded(
             child: TextField(
-              focusNode: _focusNode,
               controller: _textEditingController,
               decoration: InputDecoration(
                 hintText: context.loc.chatHint,
@@ -114,32 +99,32 @@ class _ChatViewState extends ConsumerState<ChatView> {
     list.sort((a, b) => b.createdDate.compareTo(a.createdDate));
     bool isTyping = ref.watch(chatControllerProvider);
 
-    return ListView(
-      reverse: true,
-      padding: const EdgeInsets.all(16),
-      addAutomaticKeepAlives: true,
-      controller: _scrollController,
-      children: [
-        if (isTyping) const ChatRowTypingItem(),
-        ...list.map((e) {
-          return Column(
-            children: [
-              ChatRowItem(chatModel: e),
-              gapH16,
-            ],
-          );
-        }),
-        // Hello in chat
-        gapH16,
-        const ChatRowStart(),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 80),
+      child: ListView(
+        reverse: true,
+        padding: const EdgeInsets.all(16),
+        children: [
+          if (isTyping) const ChatRowTypingItem(),
+          ...list.map((e) {
+            return Column(
+              children: [
+                ChatRowItem(chatModel: e),
+                gapH16,
+              ],
+            );
+          }),
+          // Hello in chat
+          gapH16,
+          const ChatRowStart(),
+        ],
+      ),
     );
   }
 
   void _send() async {
     String content = _textEditingController.text.trim();
     _textEditingController.clear();
-    FocusScope.of(context).unfocus();
     await ref
         .read(chatControllerProvider.notifier)
         .sendMessage(context, message: content);
