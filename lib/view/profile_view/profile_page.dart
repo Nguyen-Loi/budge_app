@@ -3,16 +3,19 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/ad_helper.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -21,14 +24,37 @@ class ProfilePage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends ConsumerState<ProfilePage>
-    with AutomaticKeepAliveClientMixin {
+class _ProfilePageState extends ConsumerState<ProfilePage> {
+  BannerAd? _bannerAd;
+
   @override
-  bool get wantKeepAlive => true;
+  void initState() {
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+      ),
+    ).load();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return BaseView(
         title: context.loc.profile,
         child: Column(
@@ -106,7 +132,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
               onPressed: () {
                 ref.read(profileController.notifier).signOut(context);
               }),
-          Expanded(child: _content())
+          Expanded(child: _content()),
+          if (_bannerAd != null)
+            Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!),
+              ),
+            ),
         ],
       ),
     );
@@ -115,14 +150,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
   Widget _content() {
     DateTime userJoinDate = ref.watch(userBaseControllerProvider)!.createdDate;
     final monthUserAvailable = DateTime.now().month - userJoinDate.month;
+    final appVersion = ref.watch(packageInfoBaseControllerProvider).version;
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 24),
-        child: BText.caption(
-            context.loc
-                .pUserJoinDescriptions(userJoinDate.toYM(), monthUserAvailable),
-            textAlign: TextAlign.center),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BText.caption(
+              context.loc.pUserJoinDescriptions(
+                  userJoinDate.toYM(), monthUserAvailable),
+              textAlign: TextAlign.center),
+          gapH8,
+          BText.caption(context.loc.pAppVersion(appVersion),
+              textAlign: TextAlign.center),
+        ],
       ),
     );
   }

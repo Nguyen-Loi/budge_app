@@ -19,15 +19,6 @@
   "signUpToStart": "Hoàn thành sau đó đăng ký để bắt đầu",
   "pleaseEnableService": "Vui lòng bật điều khoản dịch vụ của chúng tôi",
   "nEableServiceDescription": "{count, plural, =0{Bằng việc đăng ký, bạn đồng ý với  } =1{điều khoản dịch vụ và chính sách quyền riêng tư} other{{count} errorText}}",
-  "@nEnableServiceDescription": {
-    "description": "A plural message",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }
-  },
   "emailHint": "peter@gmail.com",
   "password": "Mật khẩu",
   "passwordHint": "*******",
@@ -39,7 +30,6 @@
   "monthlyExpense": "Chi tiêu hàng tháng",
   "noTransactionThisBudget": "Bạn chưa có giao dịch nào với ngân sách này.",
   "youAlreadySpent": "Bạn đã chi tiêu",
-  "spendLimitPerMonth": "Giới hạn chi tiêu hàng tháng",
   "modifyBudget": "Sửa đổi ngân sách",
   "budgetName": "Tên ngân sách",
   "errorChooseYourBudgetIcon": "Vui lòng chọn biểu tượng ngân sách của bạn",
@@ -65,19 +55,6 @@
   "contact": "Liên hệ",
   "signOut": "Đăng xuất",
   "pUserJoinDescriptions": "Bạn đã tham gia Ví Nhỏ vào ngày {dateTime}. Đã qua {numberMonth} tháng từ đó và sứ mệnh của chúng tôi vẫn là giúp bạn quản lý tiền của mình tốt hơn",
-  "@pUserJoinDescription": {
-    "description": "A plural message",
-    "placeholders": {
-      "dateTime": {
-        "type": "String",
-        "example": "November 2023"
-      },
-      "numberMonth": {
-        "type": "String",
-        "example": "2"
-      }
-    }
-  },
   "home": "Trang chủ",
   "appName": "Ví Nhỏ",
   "left": "Còn lại",
@@ -214,7 +191,7 @@
     }
   },
   "custom": "Tuỳ chỉnh",
-  "operatingPeriod": "Khoảng thời gian",
+  "operatingTime": "Thời gian",
   "newTransaction": "Giao dịch mới",
   "developingFreatures": "Tính năng đang phát triển",
   "exportExcel": "Xuất Excel",
@@ -254,17 +231,24 @@
   "newVersionTitle": "Đã có phiên bản mới",
   "openFile": "Mở file",
   "currentIncome": "Thu nhập hiện tại",
-  "currentExpense": "Chi phí hiện tại",
-  "startIncome": "Bắt đầu theo dõi thu nhập của bạn để đảm bảo bạn đạt mục tiêu tài chính.",
-  "processIncome": "Thu nhập của bạn đang ổn định. Hãy cố gắng để đạt được mục tiêu tài chính.",
-  "almostDoneIncome": "Bạn gần đạt được mục tiêu thu nhập. Hãy tiếp tục duy trì!",
-  "completeIncome": "Xuất sắc! Bạn đã đạt hoặc vượt mục tiêu thu nhập.",
-  "startExpense": "Bắt đầu theo dõi chi tiêu của bạn để tránh vượt quá ngân sách.",
-  "processExpense": "Chi tiêu của bạn đang trong tầm kiểm soát. Tiếp tục quản lý chặt chẽ nhé!",
-  "almostDoneExpense": "Bạn sắp hoàn thành mục tiêu chi tiêu. Đừng quên giữ chi tiêu dưới mức cho phép!",
-  "completeExpense": "Chú ý, ngân sách của bạn đã chạm mức giới hạn!",
+  "currentExpense": "Chi phí đã bỏ ra",
+  "startIncome": "Bắt đầu theo dõi thu nhập để đạt mục tiêu.",
+  "processIncome": "Thu nhập ổn định. Tiếp tục cố gắng!",
+  "almostDoneIncome": "Gần đạt mục tiêu rồi. Cố lên!",
+  "completeIncome": "Tuyệt vời! Bạn đã đạt mục tiêu.",
+  "startExpense": "Bắt đầu theo dõi chi tiêu để giữ ngân sách.",
+  "processExpense": "Chi tiêu đang được kiểm soát. Tiếp tục nhé!",
+  "almostDoneExpense": "Sắp chạm ngưỡng chi tiêu rồi. Cẩn thận nhé!",
+  "completeExpense": "Ngân sách đã đạt giới hạn. Hãy chú ý!",
   "send": "Gửi",
   "chatHint": "Tin nhắn đến ViBot",
   "chatWithViBot": "Chat với ViBot",
-  "viBotHello": "Xin chào, tôi là ViBot trợ lý ảo của ứng dụng Vi Nhỏ.\nTôi có thể giúp gì cho bạn"
+  "viBotHello": "Xin chào, tôi là ViBot trợ lý ảo của ứng dụng Vi Nhỏ.\nTôi có thể giúp gì cho bạn",
+  "pAppVersion": "Version {version}",
+  "coming": "Sắp ra mắt",
+  "expired": "Hết hạn",
+  "active": "Hoạt động",
+  "status": "Trạng thái",
+  "review": "Nhận xét",
+  "reviewExpense": "Lần cuối giao dịch của bạn vào ngày {date} đã có thêm {money} đồng. Tiếp tục nhé"
 }
