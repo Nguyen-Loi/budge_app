@@ -4,7 +4,6 @@ import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/common/shared_pref/theme_controller.dart';
 import 'package:budget_app/core/crashlytics.dart';
 import 'package:budget_app/core/logger_observer.dart';
-import 'package:budget_app/core/remote_config.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/theme/app_theme.dart';
@@ -45,9 +44,6 @@ Future<void> main() async {
 }
 
 Future<void> _initServices() async {
-  // Init remote config
-  RemoteConfig remoteConfig = RemoteConfig();
-  await remoteConfig.initialize();
 
   // Manage error
   Crashlytics crashlytics = Crashlytics();

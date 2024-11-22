@@ -63,7 +63,7 @@ class ChatController extends StateNotifier<bool> {
 
     state = false;
     botChat.fold(
-      (l) => showSnackBar(context, l.message),
+      (l) => showBDialogInfoError(context, message: l.message),
       (r) => _chatBaseController.addChat(r),
     );
   }
