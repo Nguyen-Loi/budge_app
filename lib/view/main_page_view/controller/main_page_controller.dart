@@ -1,7 +1,7 @@
 import 'package:budget_app/apis/device_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/constants/constants.dart';
-import 'package:budget_app/core/remote_config.dart';
+import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
@@ -57,9 +57,11 @@ class MainPageController extends StateNotifier<void> {
       logInfo('Loading package info app...');
       await refPackage.init().then((e) {
         logInfo('Check version update ...');
-        RemoteConfig remoteConfig = RemoteConfig();
         if (!context.mounted) return;
-        remoteConfig.checkVersionUpdate(context, packageInfo: e);
+        _ref.read(remoteConfigBaseControllerProvider.notifier).initialize();
+        _ref
+            .read(remoteConfigBaseControllerProvider.notifier)
+            .checkVersionUpdate(context, packageInfo: e);
       });
 
       // Write current device

@@ -145,6 +145,7 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
           child: BText(
             context.loc.select,
             fontWeight: FontWeight.bold,
+            color: ColorManager.white,
           ),
         )
       ],
