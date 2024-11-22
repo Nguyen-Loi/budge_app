@@ -13,7 +13,7 @@
   "dart.warnWhenEditingFilesOutsideWorkspace": false,
   "dart.renameFilesWithClasses": "prompt",
   "window.zoomLevel": 0.6,
-  "workbench.colorTheme": "Dracula",
+  "workbench.colorTheme": "Dracula Theme",
   "editor.bracketPairColorization.enabled": true,
   "editor.inlineSuggest.enabled": true,
   "editor.formatOnSave": true,
@@ -23,5 +23,4 @@
   },
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
-  "dart.flutterSdkPath": "~/.development/flutter_3.22.0"
 }
