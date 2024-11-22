@@ -1,16 +1,26 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/models/transaction_model.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum StatusBudgetProgress { start, progress, almostDone, complete }
+
+enum BudgetStatusTime {
+  expired,
+  active,
+  coming;
+}
 
 class BudgetModel {
   final String id;
@@ -54,6 +64,16 @@ class BudgetModel {
       return StatusBudgetProgress.almostDone;
     } else {
       return StatusBudgetProgress.complete;
+    }
+  }
+
+  BudgetStatusTime get budgetStatusTime {
+    if (DateTime.now().isAfter(endDate)) {
+      return BudgetStatusTime.expired;
+    } else if (DateTime.now().isBefore(startDate)) {
+      return BudgetStatusTime.coming;
+    } else {
+      return BudgetStatusTime.active;
     }
   }
 
@@ -170,32 +190,73 @@ class BudgetModel {
 }
 
 extension BudgetFormatModel on BudgetModel {
-  String getReview(BuildContext context) {
+  String getReview(BuildContext context,
+      {required List<TransactionModel> transactions}) {
     String incomeContent;
     String expenseContent;
     switch (status) {
       case StatusBudgetProgress.start:
         incomeContent = context.loc.startIncome;
-        expenseContent = context.loc.startExpense;
         break;
       case StatusBudgetProgress.progress:
         incomeContent = context.loc.processIncome;
-        expenseContent = context.loc.processExpense;
         break;
       case StatusBudgetProgress.almostDone:
         incomeContent = context.loc.almostDoneIncome;
-        expenseContent = context.loc.almostDoneExpense;
         break;
       case StatusBudgetProgress.complete:
         incomeContent = context.loc.completeIncome;
-        expenseContent = context.loc.completeExpense;
         break;
     }
+    final lastestTransaction = transactions.firstOrNull;
+    if (lastestTransaction == null) {
+      expenseContent = context.loc.startExpense;
+    } else {
+      expenseContent = context.loc.reviewExpense(
+          lastestTransaction.transactionDate.toFormatDate(),
+          lastestTransaction.amount.toMoneyStr());
+    }
+
     switch (budgetType) {
       case BudgetTypeEnum.income:
         return incomeContent;
       case BudgetTypeEnum.expense:
         return expenseContent;
+    }
+  }
+}
+
+extension StatusBudgetTimeType on BudgetStatusTime {
+  String contentLoc(BuildContext context) {
+    switch (this) {
+      case BudgetStatusTime.expired:
+        return context.loc.expired;
+      case BudgetStatusTime.active:
+        return context.loc.active;
+      case BudgetStatusTime.coming:
+        return context.loc.coming;
+    }
+  }
+
+  Color color(BuildContext context) {
+    switch (this) {
+      case BudgetStatusTime.expired:
+        return Theme.of(context).colorScheme.error;
+      case BudgetStatusTime.active:
+        return Theme.of(context).colorScheme.tertiary;
+      case BudgetStatusTime.coming:
+        return Theme.of(context).colorScheme.secondary;
+    }
+  }
+
+  String svgAsset(BuildContext context) {
+    switch (this) {
+      case BudgetStatusTime.expired:
+        return SvgAssets.coming;
+      case BudgetStatusTime.active:
+        return SvgAssets.active;
+      case BudgetStatusTime.coming:
+        return SvgAssets.coming;
     }
   }
 }
