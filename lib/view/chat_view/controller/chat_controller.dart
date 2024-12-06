@@ -58,7 +58,7 @@ class ChatController extends StateNotifier<bool> {
     state = true;
     _chatBaseController.addChat(userChat);
 
-    final botChat = await _chatApi.sendMessage(history: _recentChats);
+    final botChat = await _chatApi.sendMessage(context, history: _recentChats);
 
     state = false;
     botChat.fold(
