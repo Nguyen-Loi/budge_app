@@ -46,8 +46,8 @@ android {
         applicationId "com.NguyenLoi.BudgetSS"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 26
-        versionName "2.0.8"
+        versionCode 27
+        versionName "2.0.9"
         multiDexEnabled true
     }
 
