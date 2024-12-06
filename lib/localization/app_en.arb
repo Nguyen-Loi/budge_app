@@ -250,5 +250,8 @@
     "active": "Active",
     "status": "Status",
     "review": "Review",
-    "reviewExpense": "You need to make your last transaction on {date} to have more {money} in coins. Continue"
+    "reviewExpense": "You need to make your last transaction on {date} to have more {money} in coins. Continue",
+    "featureMaintain": "This feature is under maintenance, please try again later",
+    "errorContactSupport": "An error occurred, please contact support",
+    "errorInternet": "No internet connection"
 }
