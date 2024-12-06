@@ -250,5 +250,8 @@
   "active": "Hoạt động",
   "status": "Trạng thái",
   "review": "Nhận xét",
-  "reviewExpense": "Lần cuối giao dịch của bạn vào ngày {date} đã có thêm {money} đồng. Tiếp tục nhé"
+  "reviewExpense": "Lần cuối giao dịch của bạn vào ngày {date} đã có thêm {money} đồng. Tiếp tục nhé",
+  "featureMaintain": "Tính năng này đang được bảo trì, vui lòng thử lại sau",
+  "errorContactSupport": "Đã xảy ra lỗi, vui lòng liên hệ với bộ phận hỗ trợ",
+  "errorInternet": "Không có kết nối internet"
 }
