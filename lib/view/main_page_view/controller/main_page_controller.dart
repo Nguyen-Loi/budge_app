@@ -1,7 +1,7 @@
 import 'package:budget_app/apis/device_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/constants/constants.dart';
-import 'package:budget_app/core/remote_config.dart';
+import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
@@ -13,15 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 final mainPageControllerProvider = Provider((ref) {
-  final userController = ref.watch(userBaseControllerProvider.notifier);
-  final budgetController = ref.watch(budgetBaseControllerProvider.notifier);
-  final transactionController =
-      ref.watch(transactionsBaseControllerProvider.notifier);
-  return MainPageController(
-      userController: userController,
-      budgetController: budgetController,
-      transactionController: transactionController,
-      ref: ref);
+  return MainPageController(ref: ref);
 });
 
 final mainPageFutureProvider =
@@ -31,20 +23,10 @@ final mainPageFutureProvider =
 });
 
 class MainPageController extends StateNotifier<void> {
-  final UserBaseController _userController;
-  final BudgetBaseController _budgetController;
-  final TransactionsBaseController _transactionsController;
   final Ref _ref;
 
-  MainPageController(
-      {required UserBaseController userController,
-      required BudgetBaseController budgetController,
-      required TransactionsBaseController transactionController,
-      required Ref ref})
-      : _userController = userController,
-        _budgetController = budgetController,
-        _transactionsController = transactionController,
-        _ref = ref,
+  MainPageController({required Ref ref})
+      : _ref = ref,
         super(null);
 
   Future<void> loadBaseData(BuildContext context) async {
@@ -52,33 +34,36 @@ class MainPageController extends StateNotifier<void> {
 
     // Package info
     final refPackage = _ref.read(packageInfoBaseControllerProvider.notifier);
-    if (!refPackage.isInit) {
-      logInfo('Loading package info app...');
-      await refPackage.init().then((e) {
-        logInfo('Check version update ...');
-        RemoteConfig remoteConfig = RemoteConfig();
-        if (!context.mounted) return;
-        remoteConfig.checkVersionUpdate(context, packageInfo: e);
-      });
+    logInfo('Loading package info app...');
+    await refPackage.init().then((e) {
+      logInfo('Check version update ...');
+      if (!context.mounted) return;
+      _ref.read(remoteConfigBaseControllerProvider.notifier).initialize();
+      _ref
+          .read(remoteConfigBaseControllerProvider.notifier)
+          .checkVersionUpdate(context, packageInfo: e);
+    });
 
-      // Write current device
-      await _ref.read(deviceAPIProvider).writeDeviceInfo(uid);
+    // Write current device
+    await _ref.read(deviceAPIProvider).writeDeviceInfo(uid);
 
-      // Base data
-      logInfo('Loading infomation user....');
-      await _userController.fetchUserInfo();
+    // Base data
+    logInfo('Loading infomation user....');
+    await _ref.read(userBaseControllerProvider.notifier).fetchUserInfo();
 
-      logInfo('Loading infomation chat...');
-      await _ref.watch(chatBaseControllerProvider.notifier).init();
+    logInfo('Loading infomation chat...');
+    await _ref.watch(chatBaseControllerProvider.notifier).init();
 
-      // assets svg
-      _loadSvgAssets();
-    }
+    // ads
+    // _initGoogleMobileAds();
+
+    // assets svg
+    _loadSvgAssets();
 
     logInfo('Loading infomation budget...');
-    await _budgetController.fetch();
+    await _ref.read(budgetBaseControllerProvider.notifier).fetch();
     logInfo('Loading infomation transactions...');
-    await _transactionsController.fetch();
+    await _ref.read(transactionsBaseControllerProvider.notifier).fetch();
   }
 
 
