@@ -7,6 +7,7 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -16,6 +17,7 @@ import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/foundation.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -73,22 +75,29 @@ class _LoginViewState extends ConsumerState<LoginView> {
       },
       child: Scaffold(
         appBar: BAppBar(text: context.loc.signIn),
-        body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              gapH32,
-              BText.h1(
-                context.loc.welecomeBack,
-                textAlign: TextAlign.left,
-              ),
-              gapH16,
-              BText(
-                context.loc.signInDescription,
-                textAlign: TextAlign.left,
-              ),
-              gapH48,
-              _form()
-            ]),
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: SizeConstants.maxWidthBase,
+            ),
+            child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: [
+                  gapH32,
+                  BText.h1(
+                    context.loc.welecomeBack,
+                    textAlign: TextAlign.left,
+                  ),
+                  gapH16,
+                  BText(
+                    context.loc.signInDescription,
+                    textAlign: TextAlign.left,
+                  ),
+                  gapH48,
+                  _form()
+                ]),
+          ),
+        ),
       ),
     );
   }
@@ -162,6 +171,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Widget _iconButtons() {
+    bool isMobile = !kIsWeb;
     return RowWithSpacing(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -175,22 +185,24 @@ class _LoginViewState extends ConsumerState<LoginView> {
             height: 48,
           ),
         ),
-        IconButton(
-          onPressed: _onLoginGoogle,
-          icon: SvgPicture.asset(
-            SvgAssets.google,
-            width: 48,
-            height: 48,
+        if (isMobile)
+          IconButton(
+            onPressed: _onLoginGoogle,
+            icon: SvgPicture.asset(
+              SvgAssets.google,
+              width: 48,
+              height: 48,
+            ),
           ),
-        ),
-        IconButton(
-          onPressed: _onLoginFacebook,
-          icon: SvgPicture.asset(
-            SvgAssets.facebook,
-            width: 48,
-            height: 48,
+        if (isMobile)
+          IconButton(
+            onPressed: _onLoginFacebook,
+            icon: SvgPicture.asset(
+              SvgAssets.facebook,
+              width: 48,
+              height: 48,
+            ),
           ),
-        ),
       ],
     );
   }
