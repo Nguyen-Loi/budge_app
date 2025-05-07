@@ -20,6 +20,11 @@ class BNotification {
   late AndroidNotificationChannel channel;
 
   void initialize() async {
+    if (kIsWeb) {
+      await _messaging.getToken(
+          vapidKey:
+              'BLyP35SHlV2lPENVzzK0WO2AR7EgaNAre0OI-EnCD3VrBMMkkRvH17R49YP1LNytttvlouXaN1fBN91rJcXHYlU');
+    }
     final settings = await _messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -83,5 +88,4 @@ class BNotification {
       );
     }
   }
-
 }
