@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import 'package:budget_app/core/enums/account_type_enum.dart';
@@ -17,6 +18,7 @@ class UserModel {
   final int balance;
   final PhoneNumber? phoneNumber;
   final String? token;
+  final UserRole role;
   final DateTime createdDate;
   final DateTime updatedDate;
   UserModel({
@@ -29,10 +31,12 @@ class UserModel {
     required this.balance,
     this.phoneNumber,
     this.token,
+    required this.role,
     required this.createdDate,
     required this.updatedDate,
   });
 
+  bool get roleAds => role == UserRole.normal;
   AccountType get accountType => AccountType.fromValue(accountTypeValue);
   CurrencyType get currencyType => CurrencyType.fromValue(currencyTypeValue);
   String get balanceMoney => balance.toMoneyStr(currencyType: currencyType);
@@ -47,6 +51,7 @@ class UserModel {
     int? balance,
     PhoneNumber? phoneNumber,
     String? token,
+    UserRole? role,
     DateTime? createdDate,
     DateTime? updatedDate,
   }) {
@@ -60,6 +65,7 @@ class UserModel {
       balance: balance ?? this.balance,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       token: token ?? this.token,
+      role: role ?? this.role,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
     );
@@ -76,6 +82,7 @@ class UserModel {
       'balance': balance,
       'phoneNumber': phoneNumber?.toMap(),
       'token': token,
+      'role': role.value,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
@@ -99,6 +106,7 @@ class UserModel {
       balance: map['balance'] as int,
       phoneNumber: phoneNumber,
       token: map['token'] != null ? map['token'] as String : null,
+      role: UserRole.fromValue(map['role'] as String? ?? UserRole.normal.value),
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       updatedDate:
@@ -129,6 +137,7 @@ class UserModel {
         other.balance == balance &&
         other.phoneNumber == phoneNumber &&
         other.token == token &&
+        other.role == role &&
         other.createdDate == createdDate &&
         other.updatedDate == updatedDate;
   }
@@ -144,6 +153,7 @@ class UserModel {
         balance.hashCode ^
         phoneNumber.hashCode ^
         token.hashCode ^
+        role.hashCode ^
         createdDate.hashCode ^
         updatedDate.hashCode;
   }
