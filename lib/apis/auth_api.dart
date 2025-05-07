@@ -1,6 +1,7 @@
 import 'package:budget_app/apis/firestore_path.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
+import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
@@ -75,6 +76,7 @@ class AuthAPI implements IAuthApi {
       name: user.displayName ?? email.split('@')[0],
       accountTypeValue: accountType.value,
       currencyTypeValue: CurrencyType.vnd.value,
+      role: UserRole.normal,
       createdDate: now,
       updatedDate: now,
     );
