@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -59,6 +60,19 @@ class BAvatar extends StatelessWidget {
   }
 
   Widget _network() {
+    if (kIsWeb) {
+      return CircleAvatar(
+        radius: size,
+        backgroundColor: Colors.transparent,
+        child: Image.network(
+          url!,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Icon(Icons.error, size: size);
+          },
+        ),
+      );
+    }
     return CachedNetworkImage(
       imageUrl: url!,
       placeholder: (context, url) => CircleAvatar(
