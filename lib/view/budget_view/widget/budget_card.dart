@@ -31,6 +31,7 @@ class BudgetCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(
                     children: [
@@ -99,14 +100,19 @@ class BudgetCard extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          BText('${context.loc.startDate}: ${model.startDate.toFormatDate()}'),
+          Expanded(
+            child: BText(
+              '${context.loc.startDate}: ${model.startDate.toFormatDate()}',
+              maxLines: 1,
+            ),
+          ),
           gapH8,
           BText.b1(
             model.currentAmount.toMoneyStr(isPrefix: true),
             color: Theme.of(context).colorScheme.tertiary,
-          )
+          ),
         ],
-      )
+      ),
     ];
   }
 

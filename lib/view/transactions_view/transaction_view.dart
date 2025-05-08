@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/view/base_view.dart';
@@ -32,7 +33,7 @@ class _TransactionViewState extends State<TransactionView>
       title: context.loc.transactions,
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: _builder(),
+        child: _builder().responsiveCenter(),
       ),
     );
   }
