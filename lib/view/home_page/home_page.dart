@@ -1,6 +1,7 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/user_model.dart';
@@ -55,7 +56,7 @@ class _HomePageState extends ConsumerState<HomePage>
           gapH16,
           HomeTransactionsRecently(),
         ],
-      ),
+      ).responsiveCenter(),
     );
   }
 

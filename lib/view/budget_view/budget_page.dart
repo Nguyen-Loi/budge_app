@@ -1,6 +1,7 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
+import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
@@ -74,19 +75,38 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
   }
 
   Widget _itemView({required List<BudgetModel> list}) {
+    bool sizeSmall = SizeConstants.isSmallScreen(context);
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return list.isEmpty
         ? Center(
             child: BStatus.empty(
               text: context.loc.budgetEmpty,
             ),
           )
-        : ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            children: [
-              ColumnWithSpacing(
-                children: list.map((e) => BudgetCard(model: e)).toList(),
+        : sizeSmall
+            ? ListView(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                children: [
+                  ColumnWithSpacing(
+                    children: list.map((e) => BudgetCard(model: e)).toList(),
+                  )
+                ],
               )
-            ],
-          );
+            : GridView.builder(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: screenWidth > SizeConstants.gridSize ? 3 : 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 5 / 2,
+                ),
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  return BudgetCard(model: list[index]);
+                },
+              );
   }
 }

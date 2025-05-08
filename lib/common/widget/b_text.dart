@@ -1,4 +1,3 @@
-
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +21,7 @@ class BText extends StatelessWidget {
   final double? wordSpacing;
   final double? letterSpacing;
   final FontStyle? fontStyle;
+  final TextOverflow? overflow;
 
   const BText.h1(
     this.text, {
@@ -32,6 +32,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
+    this.overflow = TextOverflow.ellipsis,
     super.key,
   }) : _textType = _BTextType.headline1;
 
@@ -44,6 +45,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
+    this.overflow = TextOverflow.ellipsis,
     super.key,
   }) : _textType = _BTextType.headline2;
 
@@ -56,6 +58,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
+    this.overflow = TextOverflow.ellipsis,
     super.key,
   }) : _textType = _BTextType.headline3;
 
@@ -68,6 +71,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
+    this.overflow = TextOverflow.ellipsis,
     super.key,
   }) : _textType = _BTextType.bodyLarge;
 
@@ -80,6 +84,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
+    this.overflow = TextOverflow.ellipsis,
     super.key,
   }) : _textType = _BTextType.bodyMedium;
 
@@ -92,6 +97,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
+    this.overflow = TextOverflow.ellipsis,
     super.key,
   }) : _textType = _BTextType.bodySmall;
 
@@ -104,6 +110,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
+    this.overflow = TextOverflow.ellipsis,
     super.key,
   }) : _textType = _BTextType.caption;
 
@@ -132,6 +139,7 @@ class BText extends StatelessWidget {
         wordSpacing: wordSpacing,
         letterSpacing: letterSpacing,
         fontWeight: fontWeight,
-        fontStyle: fontStyle);
+        fontStyle: fontStyle,
+        overflow: overflow);
   }
 }

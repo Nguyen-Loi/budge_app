@@ -38,7 +38,7 @@ class MainPageController extends StateNotifier<void> {
     final refPackage = _ref.read(packageInfoBaseControllerProvider.notifier);
     logInfo('Loading package info app...');
     await refPackage.init().then((e) {
-      if (!context.mounted||kIsWeb) return;
+      if (!context.mounted || kIsWeb) return;
       logInfo('Check version update ...');
       _ref.read(remoteConfigBaseControllerProvider.notifier).initialize();
       _ref
@@ -57,7 +57,10 @@ class MainPageController extends StateNotifier<void> {
     await _ref.watch(chatBaseControllerProvider.notifier).init();
 
     // ads
-    _initGoogleMobileAds();
+    if (!kIsWeb) {
+      logInfo('Initialize Google Mobile Ads SDK');
+      await _initGoogleMobileAds();
+    }
 
     // assets svg
     _loadSvgAssets();
