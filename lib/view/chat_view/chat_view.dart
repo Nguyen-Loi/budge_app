@@ -1,5 +1,7 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/constants/size_constants.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/chat_model.dart';
@@ -118,7 +120,7 @@ class _ChatViewState extends ConsumerState<ChatView> {
           gapH16,
           const ChatRowStart(),
         ],
-      ),
+      ).responsiveCenter(width: SizeConstants.tablet),
     );
   }
 

@@ -135,6 +135,16 @@ class AppTheme {
         borderRadius: 12,
       );
 
+  static ButtonStyle get _buttonStyleBase => ButtonStyle(
+      padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(
+        vertical: 16,
+        horizontal: 24,
+      )),
+      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      )));
+
   /// theme
   static ThemeData get darkTheme {
     return ThemeData(
@@ -188,14 +198,7 @@ class AppTheme {
         ),
       ),
       dialogBackgroundColor: darkColors.primaryContainer,
-      filledButtonTheme: FilledButtonThemeData(
-          style: ButtonStyle(
-              padding:
-                  WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.all(10)),
-              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              )))),
+      filledButtonTheme: FilledButtonThemeData(style: _buttonStyleBase),
       floatingActionButtonTheme:
           FloatingActionButtonThemeData(backgroundColor: ColorManager.purple13),
 
@@ -317,14 +320,8 @@ class AppTheme {
         ),
       ),
       dialogBackgroundColor: lightColors.primaryContainer,
-      filledButtonTheme: FilledButtonThemeData(
-          style: ButtonStyle(
-              padding:
-                  WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.all(10)),
-              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              )))),
+      filledButtonTheme: FilledButtonThemeData(style: _buttonStyleBase),
+
       floatingActionButtonTheme:
           FloatingActionButtonThemeData(backgroundColor: ColorManager.purple13),
       outlinedButtonTheme: OutlinedButtonThemeData(
