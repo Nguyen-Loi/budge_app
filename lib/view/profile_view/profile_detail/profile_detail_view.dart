@@ -8,10 +8,12 @@ import 'package:budget_app/common/widget/form/b_form_picker_image.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/profile_view/profile_detail/controller/profile_detail_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -34,9 +36,10 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
     return BaseView(
         title: context.loc.myAccount,
         child: Padding(
-            padding:
-                const EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
-            child: _form()));
+          padding:
+              const EdgeInsets.only(top: 24, left: 16, right: 16, bottom: 16),
+          child: _form().responsiveCenter(),
+        ));
   }
 
   Widget _form() {
@@ -71,7 +74,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                   gapH16,
                   BFormPickerImage(
                       initialUrl: user.profileUrl,
-                      disable: disable,
+                      disable: disable || kIsWeb,
                       onChanged: (f) {
                         _file = f;
                       }),

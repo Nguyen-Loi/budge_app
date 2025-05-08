@@ -4,6 +4,7 @@ class SizeConstants {
   static const double maxWidthBase = 700;
   static const double tablet = 700;
   static const double desktop = 1200;
+  static const double gridSize = 1000;
 
   static bool isSmallScreen(BuildContext context) {
     return MediaQuery.of(context).size.width < 600;
