@@ -12,12 +12,11 @@ class BButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: padding,
-      constraints: const BoxConstraints(maxWidth: SizeConstants.maxWidthBase),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: SizeConstants.buttonMaxWidth),
       child: FilledButton(
           onPressed: onPressed,
+          style: FilledButton.styleFrom(padding: padding),
           clipBehavior: Clip.antiAlias,
           child: BText.b1(
             title,
