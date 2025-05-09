@@ -64,8 +64,9 @@ class _HomePageState extends ConsumerState<HomePage>
     return Consumer(builder: (_, ref, __) {
       final UserModel user = ref.watch(userBaseControllerProvider)!;
       return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          gapH8,
           RichText(
               text: TextSpan(children: [
             TextSpan(
@@ -77,7 +78,6 @@ class _HomePageState extends ConsumerState<HomePage>
                     .copyWith(color: Theme.of(context).colorScheme.primary)),
           ])),
           gapH8,
-          BText.caption(context.loc.financesGood),
         ],
       );
     });

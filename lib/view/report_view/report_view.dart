@@ -13,6 +13,7 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/models/models_widget/chart_budget_model.dart';
+import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/report_view/components/report_filter_view.dart';
@@ -55,25 +56,29 @@ class _ReportViewState extends ConsumerState<ReportView> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 5), () {
-      _loadInterstitialAd();
-    });
+    bool isAds =
+        ref.read(remoteConfigBaseControllerProvider.notifier).isUserAds;
+    if (isAds) {
+      Future.delayed(const Duration(seconds: 5), () {
+        _loadInterstitialAd();
+      });
 
-    BannerAd(
-      adUnitId: AdHelper.bannerAdUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        },
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-      ),
-    ).load();
+      BannerAd(
+        adUnitId: AdHelper.bannerAdUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            setState(() {
+              _bannerAd = ad as BannerAd;
+            });
+          },
+          onAdFailedToLoad: (ad, err) {
+            ad.dispose();
+          },
+        ),
+      ).load();
+    }
     super.initState();
   }
 
