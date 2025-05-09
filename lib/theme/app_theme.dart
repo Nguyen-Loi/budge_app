@@ -145,10 +145,6 @@ class AppTheme {
             RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         )),
-        maximumSize: WidgetStateProperty.all<Size>(
-          const Size(
-              SizeConstants.buttonMaxWidth, 120),
-        ),
       );
 
   /// theme

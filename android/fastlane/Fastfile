@@ -6,26 +6,36 @@ require 'ostruct'
 platform :android do
   desc "Deploy a new version to the Google Play"
   lane :deploy do |options|
-    mode_distribute = "production" # "internal", "alpha", "beta", "production"
-    newVersion = updateVersion(options)
-    version_code = current_version_code
-    version_name = "#{version_code}_(#{newVersion})"
+    begin
+      mode_distribute = "production" # "internal", "alpha", "beta", "production"
+      newVersion = updateVersion(options)
+      version_code = current_version_code
+      version_name = "#{version_code}_(#{newVersion})"
 
-    gradle(
-      task: 'bundle',
-      build_type: 'Release',
-      flags: '--stacktrace'
-    )
-    
-    upload_to_play_store(
-      track: mode_distribute, 
-      skip_upload_changelogs: true,
-      skip_upload_metadata: true,
-      aab: '../build/app/outputs/bundle/release/app-release.aab',
-      version_code: version_code,
-      version_name: version_name
-    )
-    push_git_tag(version_name)
+      gradle(
+        task: 'bundle',
+        build_type: 'Release',
+        flags: '--stacktrace'
+      )
+      
+      upload_to_play_store(
+        track: mode_distribute, 
+        skip_upload_changelogs: false,
+        skip_upload_metadata: true,
+        aab: '../build/app/outputs/bundle/release/app-release.aab',
+        version_code: version_code,
+        version_name: version_name
+      )
+
+      commit_and_push_build_gradle("Android_#{newVersion}")
+
+      push_git_tag(version_name)
+    rescue => e
+      UI.error("An error occurred: #{e.message}")
+      sh("git checkout -- ../app/build.gradle")
+      UI.error("Reverted changes to build.gradle")
+      raise e
+    end
   end
 end
 
@@ -116,4 +126,11 @@ def push_git_tag(version)
     tag: "GooglePlay_#{version}"
   )
   push_to_git_remote
+end
+
+def commit_and_push_build_gradle(commit_message)
+  path = '../app/build.gradle'
+  sh("git add #{path}")
+  sh("git commit -m '#{commit_message}'")
+  sh("git push")
 end

@@ -9,7 +9,7 @@ final packageInfoBaseControllerProvider =
 class PackageInfoBaseController extends StateNotifier<PackageInfo> {
   PackageInfoBaseController()
       : super(PackageInfo(
-            appName: 'Ví Nhỏ',
+            appName: 'SmartBudget',
             packageName: '',
             version: '0.0.0',
             buildNumber: '0'));
