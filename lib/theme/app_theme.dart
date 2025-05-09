@@ -1,4 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/theme/app_colors.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/theme/asset_tile_style.dart';
@@ -136,14 +137,19 @@ class AppTheme {
       );
 
   static ButtonStyle get _buttonStyleBase => ButtonStyle(
-      padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(
-        vertical: 16,
-        horizontal: 24,
-      )),
-      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      )));
+        padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(
+          vertical: 16,
+          horizontal: 24,
+        )),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        )),
+        maximumSize: WidgetStateProperty.all<Size>(
+          const Size(
+              SizeConstants.buttonMaxWidth, 120),
+        ),
+      );
 
   /// theme
   static ThemeData get darkTheme {

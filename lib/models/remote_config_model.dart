@@ -6,17 +6,20 @@ class RemoteConfigModel {
   final String geminiApiKey;
   final String recommendedMinimumVersion;
   final String requiredMinimumVersion;
+  final bool isAds;
 
   RemoteConfigModel({
     required this.geminiApiKey,
     required this.recommendedMinimumVersion,
     required this.requiredMinimumVersion,
+    required this.isAds,
   });
 
   RemoteConfigModel copyWith({
     String? geminiApiKey,
     String? recommendedMinimumVersion,
     String? requiredMinimumVersion,
+    bool? isAds,
   }) {
     return RemoteConfigModel(
       geminiApiKey: geminiApiKey ?? this.geminiApiKey,
@@ -24,6 +27,7 @@ class RemoteConfigModel {
           recommendedMinimumVersion ?? this.recommendedMinimumVersion,
       requiredMinimumVersion:
           requiredMinimumVersion ?? this.requiredMinimumVersion,
+      isAds: isAds ?? this.isAds,
     );
   }
 
@@ -32,6 +36,7 @@ class RemoteConfigModel {
       'geminiApiKey': geminiApiKey,
       'recommendedMinimumVersion': recommendedMinimumVersion,
       'requiredMinimumVersion': requiredMinimumVersion,
+      'isAds': isAds,
     };
   }
 
@@ -40,6 +45,7 @@ class RemoteConfigModel {
       geminiApiKey: map['geminiApiKey'] as String,
       recommendedMinimumVersion: map['recommendedMinimumVersion'] as String,
       requiredMinimumVersion: map['requiredMinimumVersion'] as String,
+      isAds: map['isAds'] as bool,
     );
   }
 
@@ -51,6 +57,7 @@ class RemoteConfigModel {
           map['recommendedMinimumVersion']?.asString() ?? '1.0.0',
       requiredMinimumVersion:
           map['requiredMinimumVersion']?.asString() ?? '1.0.0',
+      isAds: map['isAds']?.asBool() ?? false,
     );
   }
 
@@ -61,7 +68,7 @@ class RemoteConfigModel {
 
   @override
   String toString() =>
-      'RemoteConfigModel(geminiApiKey: $geminiApiKey, recommendedMinimumVersion: $recommendedMinimumVersion, requiredMinimumVersion: $requiredMinimumVersion)';
+      'RemoteConfigModel(geminiApiKey: $geminiApiKey, recommendedMinimumVersion: $recommendedMinimumVersion, requiredMinimumVersion: $requiredMinimumVersion, isAds: $isAds)';
 
   @override
   bool operator ==(covariant RemoteConfigModel other) {
@@ -69,12 +76,14 @@ class RemoteConfigModel {
 
     return other.geminiApiKey == geminiApiKey &&
         other.recommendedMinimumVersion == recommendedMinimumVersion &&
-        other.requiredMinimumVersion == requiredMinimumVersion;
+        other.requiredMinimumVersion == requiredMinimumVersion
+        && other.isAds == isAds;
   }
 
   @override
   int get hashCode =>
       geminiApiKey.hashCode ^
       recommendedMinimumVersion.hashCode ^
-      requiredMinimumVersion.hashCode;
+      requiredMinimumVersion.hashCode ^
+      isAds.hashCode;
 }
