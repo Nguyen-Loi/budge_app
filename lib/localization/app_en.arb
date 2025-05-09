@@ -15,7 +15,7 @@
     "email": "Email",
     "orLoginWith": "Or login with",
     "signUp": "Sign up",
-    "welecomeAppName": "Welecome to Budget Application!",
+    "welecomeAppName": "Welecome to SmartBudget!",
     "signUpToStart": "Complete then sign up to get started",
     "pleaseEnableService": "Please enable our terms of service",
     "nEableServiceDescription": "{count, plural, =0{By the signing up, you agree to the  } =1{Terms of Service and Privay Policy} other{{count} errorText}}",
