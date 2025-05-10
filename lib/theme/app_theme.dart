@@ -1,5 +1,4 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/theme/app_colors.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/theme/asset_tile_style.dart';
@@ -199,7 +198,9 @@ class AppTheme {
           textStyle: AppTextTheme.labelLarge.copyWith(color: darkColors.error),
         ),
       ),
-      dialogBackgroundColor: darkColors.primaryContainer,
+      dialogTheme: DialogTheme(
+        backgroundColor: darkColors.primaryContainer
+      ),
       filledButtonTheme: FilledButtonThemeData(style: _buttonStyleBase),
       floatingActionButtonTheme:
           FloatingActionButtonThemeData(backgroundColor: ColorManager.purple13),
@@ -321,7 +322,9 @@ class AppTheme {
           textStyle: AppTextTheme.labelLarge.copyWith(color: lightColors.error),
         ),
       ),
-      dialogBackgroundColor: lightColors.primaryContainer,
+       dialogTheme: DialogTheme(
+        backgroundColor: lightColors.primaryContainer
+      ),
       filledButtonTheme: FilledButtonThemeData(style: _buttonStyleBase),
 
       floatingActionButtonTheme:

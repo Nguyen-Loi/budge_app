@@ -94,13 +94,15 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                           _name = v;
                         },
                       ),
-                      BFormFieldPhoneNumber(
-                        disable: disable,
-                        initialValue: user.phoneNumber,
-                        validator: (v) => v.validatePhoneNumber(context),
-                        onInputChanged: (PhoneNumber value) {
-                          _phoneNumber = value;
-                        },
+                      AbsorbPointer(
+                        absorbing: disable,
+                        child: BFormFieldPhoneNumber(
+                          initialValue: user.phoneNumber,
+                          validator: (v) => v.validatePhoneNumber(context),
+                          onInputChanged: (PhoneNumber value) {
+                            _phoneNumber = value;
+                          },
+                        ),
                       ),
                     ],
                   ),

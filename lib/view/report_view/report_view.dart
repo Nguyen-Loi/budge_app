@@ -221,7 +221,8 @@ class _ReportViewState extends ConsumerState<ReportView> {
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                 border: Border.all(
-                    color: Theme.of(context).dividerColor.withOpacity(0.3),
+                    color:
+                        Theme.of(context).dividerColor.withValues(alpha: 0.3),
                     width: 0.5),
               ),
               child: Column(
@@ -257,7 +258,8 @@ class _ReportViewState extends ConsumerState<ReportView> {
         collapsedShape: RoundedRectangleBorder(
           borderRadius: const BorderRadius.all(Radius.circular(8)),
           side: BorderSide(
-              color: Theme.of(context).dividerColor.withOpacity(0.2), width: 1),
+              color: Theme.of(context).dividerColor.withValues(alpha: 0.2),
+              width: 1),
         ),
         title: BText(budget.name, fontWeight: FontWeight.w700),
         trailing: BTextMoney(
