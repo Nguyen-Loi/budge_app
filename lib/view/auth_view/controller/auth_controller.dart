@@ -16,10 +16,10 @@ final authControllerProvider =
 
 class AuthController extends StateNotifier<void> {
   final AuthAPI _authAPI;
-  final StateNotifierProviderRef<AuthController, void> _ref;
+  final Ref _ref;
   AuthController(
       {required AuthAPI authApi,
-      required StateNotifierProviderRef<AuthController, void> ref})
+      required Ref ref})
       : _authAPI = authApi,
         _ref = ref,
         super(null);

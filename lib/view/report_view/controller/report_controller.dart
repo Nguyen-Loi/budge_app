@@ -59,11 +59,12 @@ class ReportController extends StateNotifier<ReportFilterModel> {
     }
 
     // Update model options
-    final minDateInBudget = _budgets
+    DateTime minDateInBudget = _budgets
         .map((e) => e.startDate)
         .reduce((a, b) => a.isBefore(b) ? a : b);
-    DateTime maxDateInBudget =
-        _budgets.map((e) => e.endDate).reduce((a, b) => a.isAfter(b) ? a : b);
+    DateTime maxDateInBudget = _budgets
+        .map((e) => e.endDate.isAfter(now) ? now : e.endDate)
+        .fold(now, (max, endDate) => endDate.isAfter(max) ? endDate : max);
     final maxEndTimeThismonth = state.dateTimeRange.end;
     maxDateInBudget = maxDateInBudget.isBefore(maxEndTimeThismonth)
         ? maxEndTimeThismonth

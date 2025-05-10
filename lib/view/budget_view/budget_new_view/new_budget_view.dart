@@ -81,6 +81,7 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
           ),
           gapH16,
           BFormPickerIcon(
+            label: context.loc.budget,
             items: IconManagerData.listIconSelect(),
             onChanged: (value) {
               if (value != null) {

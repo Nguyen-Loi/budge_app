@@ -15,7 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 final remoteConfigBaseControllerProvider =
     StateNotifierProvider<RemoteConfigBaseController, RemoteConfigModel>((ref) {
-  UserModel? userModel = ref.watch(userBaseControllerProvider)!;
+  UserModel? userModel = ref.watch(userBaseControllerProvider);
   return RemoteConfigBaseController(userModel: userModel);
 });
 
