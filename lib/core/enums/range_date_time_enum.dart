@@ -4,10 +4,12 @@ import 'package:budget_app/models/models_widget/datetime_range_model.dart';
 import 'package:flutter/widgets.dart';
 
 enum RangeDateTimeEnum {
+  allTime('UNKNOWN'),
   week('WEEK'),
   month('MONTH'),
   year('YEAR'),
-  custom('CUSTOM');
+  custom('CUSTOM'),
+  ;
 
   factory RangeDateTimeEnum.fromValue(String value) {
     return RangeDateTimeEnum.values
@@ -17,13 +19,15 @@ enum RangeDateTimeEnum {
   String content(BuildContext context,
       {required DatetimeRangeModel rangeDatetimeModel}) {
     switch (rangeDatetimeModel.rangeDateTimeType) {
+      case RangeDateTimeEnum.allTime:
+        return context.loc.allTime;
       case RangeDateTimeEnum.week:
         String strFormat = 'MM/dd';
         return context.loc.pThisWeek(
             rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat),
             rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat));
       case RangeDateTimeEnum.month:
-        String strFormat = 'MM/dd';
+        String strFormat = 'dd/MM/yyyy';
         return context.loc.pThisMonth(
             rangeDatetimeModel.startDate.toFormatDate(strFormat: strFormat),
             rangeDatetimeModel.endDate.toFormatDate(strFormat: strFormat));

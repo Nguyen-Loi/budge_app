@@ -34,10 +34,6 @@ class BFormCategoryBudget extends FormField<BudgetModel> {
                     )
                 ],
               ),
-              if (field.hasError) gapH8,
-              if (field.hasError)
-                BText.b1(field.errorText ?? field.context.loc.invalid,
-                    color: Theme.of(field.context).colorScheme.error),
               gapH16,
               list.isEmpty
                   ? BText(
@@ -49,6 +45,10 @@ class BFormCategoryBudget extends FormField<BudgetModel> {
                       initialValue: field.value, onChanged: (model) {
                       field.didChange(model);
                     }),
+              if (field.hasError) gapH8,
+              if (field.hasError)
+                BText.b3("  ${field.errorText ?? field.context.loc.invalid}",
+                    color: Theme.of(field.context).colorScheme.error),
             ],
           );
         });

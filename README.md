@@ -1,6 +1,6 @@
 ## Information
 - App Name: Budget
-- Language: Flutter (3.22.0)
+- Language: Flutter (3.29.3)
 - Java: 17
 - Description: Budget is app for manage your money. Base on from transacntions and the app not get information about Bank card and releated it. It help user can caculator expense every day, every week,...
 ## Document

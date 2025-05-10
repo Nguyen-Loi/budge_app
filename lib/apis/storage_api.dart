@@ -23,9 +23,9 @@ abstract class IStorageAPI {
 
 class StorageApi extends IStorageAPI {
   final FirebaseStorage _storage;
-  final ProviderRef<Object?> _ref;
+  final Ref<Object?> _ref;
   StorageApi(
-      {required FirebaseStorage storage, required ProviderRef<Object?> ref})
+      {required FirebaseStorage storage, required Ref<Object?> ref})
       : _storage = storage,
         _ref = ref;
 

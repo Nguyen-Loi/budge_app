@@ -252,5 +252,7 @@
     "reviewExpense": "You need to make your last transaction on {date} to have more {money} in coins. Continue",
     "featureMaintain": "This feature is under maintenance, please try again later",
     "errorContactSupport": "An error occurred, please contact support",
-    "errorInternet": "No internet connection"
+    "errorInternet": "No internet connection",
+    "allTime": "All time",
+    "invalidDateRange": "The new date range must fully include the current date range."
 }

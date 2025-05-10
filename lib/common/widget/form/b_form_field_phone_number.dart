@@ -4,16 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class BFormFieldPhoneNumber extends StatelessWidget {
-  const BFormFieldPhoneNumber(
+  BFormFieldPhoneNumber(
       {super.key,
       this.label = 'Phone number',
       this.disable = false,
       required this.onInputChanged,
       this.validator,
-      this.initialValue});
+      PhoneNumber? initialValue})
+      : _initialValue =
+            initialValue ?? PhoneNumber(isoCode: 'VN', phoneNumber: '');
   final String label;
   final void Function(PhoneNumber)? onInputChanged;
-  final PhoneNumber? initialValue;
+  final PhoneNumber _initialValue;
   final bool disable;
   final String? Function(String?)? validator;
 
@@ -31,9 +33,9 @@ class BFormFieldPhoneNumber extends StatelessWidget {
           validator: validator,
           isEnabled: !disable,
           onInputChanged: onInputChanged,
-          initialValue: initialValue,
+          initialValue: _initialValue,
           hintText: 'x-xxx-xxx',
-          countries: const ['VN', 'SG', 'JP'],
+          countries: const ['VN', 'SG', 'JP', 'US', 'CN', 'KR', 'TH'],
           inputDecoration: InputDecoration(
             filled: Theme.of(context).inputDecorationTheme.filled,
             fillColor: Theme.of(context).inputDecorationTheme.fillColor,
