@@ -1,5 +1,3 @@
-import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/common/type_def.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
@@ -40,12 +38,11 @@ class _BPickerMonthState extends State<BPickerMonth> {
       return OutlinedButton(
         onPressed: () async {
           DateTime? dateTime = await showMonthPicker(
-              headerColor: ColorManager.primary,
               context: context,
               firstDate: widget.firstDate,
               lastDate: widget.lastDate,
               initialDate: _dateTimePicker ?? DateTime.now(),
-              locale: Locale(ref.read(languageControllerProvider).code));
+          );
           if (dateTime != null) {
             setState(() {
               _dateTimePicker = dateTime;

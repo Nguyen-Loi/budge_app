@@ -34,6 +34,10 @@ class MainPageController extends StateNotifier<void> {
   Future<void> loadBaseData(BuildContext context) async {
     final uid = _ref.watch(uidControllerProvider);
 
+        // Base data
+    logInfo('Loading infomation user....');
+    await _ref.read(userBaseControllerProvider.notifier).fetchUserInfo();
+
     // Package info
     final refPackage = _ref.read(packageInfoBaseControllerProvider.notifier);
     logInfo('Loading package info app...');
@@ -48,10 +52,6 @@ class MainPageController extends StateNotifier<void> {
 
     // Write current device
     await _ref.read(deviceAPIProvider).writeDeviceInfo(uid);
-
-    // Base data
-    logInfo('Loading infomation user....');
-    await _ref.read(userBaseControllerProvider.notifier).fetchUserInfo();
 
     logInfo('Loading infomation chat...');
     await _ref.watch(chatBaseControllerProvider.notifier).init();

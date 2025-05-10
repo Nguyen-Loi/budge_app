@@ -32,7 +32,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
-    this.overflow = TextOverflow.ellipsis,
+    this.overflow,
     super.key,
   }) : _textType = _BTextType.headline1;
 
@@ -45,7 +45,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
-    this.overflow = TextOverflow.ellipsis,
+    this.overflow,
     super.key,
   }) : _textType = _BTextType.headline2;
 
@@ -58,7 +58,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
-    this.overflow = TextOverflow.ellipsis,
+    this.overflow,
     super.key,
   }) : _textType = _BTextType.headline3;
 
@@ -71,7 +71,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
-    this.overflow = TextOverflow.ellipsis,
+    this.overflow,
     super.key,
   }) : _textType = _BTextType.bodyLarge;
 
@@ -84,7 +84,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
-    this.overflow = TextOverflow.ellipsis,
+    this.overflow,
     super.key,
   }) : _textType = _BTextType.bodyMedium;
 
@@ -97,7 +97,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
-    this.overflow = TextOverflow.ellipsis,
+    this.overflow,
     super.key,
   }) : _textType = _BTextType.bodySmall;
 
@@ -110,7 +110,7 @@ class BText extends StatelessWidget {
     this.wordSpacing,
     this.letterSpacing,
     this.fontStyle,
-    this.overflow = TextOverflow.ellipsis,
+    this.overflow,
     super.key,
   }) : _textType = _BTextType.caption;
 

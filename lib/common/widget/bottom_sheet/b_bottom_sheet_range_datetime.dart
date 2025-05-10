@@ -1,5 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
@@ -27,7 +28,14 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
   late List<DatetimeRangeModel> _list;
   String _title = '';
   final now = DateTime.now();
-  DatetimeRangeModel get _defaultValue => getMonthRange(now);
+  DatetimeRangeModel get _defaultValue => getAllTime;
+
+  DatetimeRangeModel get getAllTime {
+    return DatetimeRangeModel(
+        startDate: DateTime(now.year, now.month, now.day),
+        endDate: DateTime(9999, 01, 01),
+        rangeDateTimeType: RangeDateTimeEnum.allTime);
+  }
 
   DatetimeRangeModel getWeekRange(DateTime time) {
     final weekRange = time.getRangeWeek;
@@ -46,7 +54,7 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
   }
 
   DatetimeRangeModel getYearRange(DateTime time) {
-    final yearRange = time.getRangeMonth;
+    final yearRange = time.getRangeYear;
     return DatetimeRangeModel(
         startDate: yearRange.start,
         endDate: yearRange.end,
@@ -69,7 +77,8 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
   @override
   void initState() {
     _list = [
-      getWeekRange(now),
+      getAllTime,
+      // getWeekRange(now),
       getMonthRange(now),
       getYearRange(now),
       getCustomRange()
@@ -94,6 +103,9 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
   }
 
   void _save() {
+    if (!_validate()) {
+      return;
+    }
     _rangeDatetimeModelSelected = _rangeDatetimeModelInit;
     setState(() {
       _loadTitle();
@@ -101,6 +113,20 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
 
     widget.onChanged(_rangeDatetimeModelSelected);
     Navigator.pop(context);
+  }
+
+  bool _validate() {
+    DatetimeRangeModel currentTime = _rangeDatetimeModelInit;
+    DatetimeRangeModel newTime = _rangeDatetimeModelSelected;
+    bool isInitValue = widget.initialValue == null;
+    if ((newTime.startDate.isBefore(currentTime.startDate) ||
+            newTime.endDate.isAfter(currentTime.endDate)) &&
+        !isInitValue) {
+      Navigator.pop(context);
+      showSnackBar(context, context.loc.invalidDateRange);
+      return false;
+    }
+    return true;
   }
 
   @override

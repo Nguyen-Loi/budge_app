@@ -252,5 +252,7 @@
   "reviewExpense": "Lần cuối giao dịch của bạn vào ngày {date} đã có thêm {money} đồng. Tiếp tục nhé",
   "featureMaintain": "Tính năng này đang được bảo trì, vui lòng thử lại sau",
   "errorContactSupport": "Đã xảy ra lỗi, vui lòng liên hệ với bộ phận hỗ trợ",
-  "errorInternet": "Không có kết nối internet"
+  "errorInternet": "Không có kết nối internet",
+  "allTime": "Không giới hạn",
+  "invalidDateRange": "Khoảng thời gian mới phải bao gồm toàn bộ khoảng thời gian hiện tại."
 }

@@ -38,11 +38,11 @@ abstract class IAuthApi {
 class AuthAPI implements IAuthApi {
   final FirebaseAuth _auth;
   final FirebaseFirestore _db;
-  final ProviderRef<Object?> _ref;
+  final Ref<Object?> _ref;
   AuthAPI({
     required FirebaseAuth auth,
     required FirebaseFirestore db,
-    required ProviderRef<Object?> ref,
+    required Ref<Object?> ref,
   })  : _auth = auth,
         _ref = ref,
         _db = db;
