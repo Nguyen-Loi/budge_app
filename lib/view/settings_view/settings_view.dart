@@ -1,5 +1,6 @@
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/common/shared_pref/theme_controller.dart';
+import 'package:budget_app/common/widget/b_switch_list_tile.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -32,8 +33,8 @@ class SettingsView extends StatelessWidget {
   }
 
   Widget _themeSwitch(BuildContext context, WidgetRef ref) {
-    return SwitchListTile(
-        title: BText(context.loc.darkMode),
+    return BSwitchListTile(
+        title: context.loc.darkMode,
         value: ref.watch(isDarkControllerProvider),
         onChanged: (_) {
           ref.read(isDarkControllerProvider.notifier).toggleTheme();
@@ -41,8 +42,8 @@ class SettingsView extends StatelessWidget {
   }
 
   Widget _dailyTransactionReminderSwitch(BuildContext context, WidgetRef ref) {
-    return SwitchListTile(
-        title: BText(context.loc.dailyTransactionReminder),
+    return BSwitchListTile(
+        title: context.loc.dailyTransactionReminder,
         value:
             ref.watch(userBaseControllerProvider)!.isRemindTransactionEveryDate,
         onChanged: (value) {
@@ -50,6 +51,7 @@ class SettingsView extends StatelessWidget {
               .read(userBaseControllerProvider.notifier)
               .toggleNotificationTransaction(context, isOn: value);
         });
+        
   }
 
   Widget _languageDropdown(BuildContext context, WidgetRef ref) {
