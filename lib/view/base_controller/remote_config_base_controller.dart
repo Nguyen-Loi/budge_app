@@ -32,7 +32,8 @@ class RemoteConfigBaseController extends StateNotifier<RemoteConfigModel> {
 
   bool get isUserAds => state.isAds && !kIsWeb && _userModel?.roleAds == true;
 
-  Future<void> initialize() async {
+  Future<void> initialize(BuildContext context,
+      {required PackageInfo packageInfo}) async {
     final remoteConfig = FirebaseRemoteConfig.instance;
 
     // Set configuration
@@ -50,12 +51,8 @@ class RemoteConfigBaseController extends StateNotifier<RemoteConfigModel> {
     await remoteConfig.fetchAndActivate();
     state = RemoteConfigModel.fromMapRemoteConfig(remoteConfig.getAll());
 
-    // Optional: listen for and activate changes to the Firebase Remote Config values
-    remoteConfig.onConfigUpdated.listen((event) async {
-      await remoteConfig.activate();
-      logSuccess(remoteConfig.getAll().toString());
-      state = RemoteConfigModel.fromMap(remoteConfig.getAll());
-    });
+    if(!context.mounted) return;
+    checkVersionUpdate(context, packageInfo: packageInfo);
   }
 
   Future<void> checkVersionUpdate(BuildContext context,
@@ -70,12 +67,10 @@ class RemoteConfigBaseController extends StateNotifier<RemoteConfigModel> {
 
       if (appVerion < requiredMinVersion) {
         await _showUpdateVersionDialog(context, false, packageInfo);
-
         return;
       }
       if (appVerion < recommendedMinVersion) {
         await _showUpdateVersionDialog(context, true, packageInfo);
-
         return;
       }
     } catch (e) {
