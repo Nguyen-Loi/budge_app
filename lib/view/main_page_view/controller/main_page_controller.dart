@@ -44,10 +44,8 @@ class MainPageController extends StateNotifier<void> {
     await refPackage.init().then((e) {
       if (!context.mounted || kIsWeb) return;
       logInfo('Check version update ...');
-      _ref.read(remoteConfigBaseControllerProvider.notifier).initialize();
-      _ref
-          .read(remoteConfigBaseControllerProvider.notifier)
-          .checkVersionUpdate(context, packageInfo: e);
+      _ref.read(remoteConfigBaseControllerProvider.notifier).initialize(context, packageInfo: e);
+     
     });
 
     // Write current device
