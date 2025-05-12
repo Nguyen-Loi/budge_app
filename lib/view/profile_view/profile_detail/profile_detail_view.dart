@@ -111,6 +111,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                     FilledButton(
                         onPressed: () {
                           if (_keyState.currentState!.validate()) {
+                            FocusScope.of(context).requestFocus(FocusNode());
                             ref
                                 .read(profileDetailControllerProvider.notifier)
                                 .update(context,

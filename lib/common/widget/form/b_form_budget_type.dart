@@ -48,7 +48,7 @@ class BFormBudgetType extends FormField<BudgetTypeEnum> {
                 if (field.hasError) ...[
                   gapH8,
                   BText(
-                    field.errorText ?? field.context.loc.invalid,
+                    '   ${field.errorText ?? field.context.loc.invalid}',
                     color: Theme.of(field.context).colorScheme.error,
                   )
                 ]
