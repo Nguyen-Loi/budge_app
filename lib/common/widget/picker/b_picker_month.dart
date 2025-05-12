@@ -43,7 +43,6 @@ class _BPickerMonthState extends State<BPickerMonth> {
               firstDate: widget.firstDate,
               lastDate: widget.lastDate,
               initialDate: _dateTimePicker ?? DateTime.now(),
-              selectableMonthPredicate: (p0) => true,
               monthPickerDialogSettings: MonthPickerDialogSettings(
                 headerSettings: PickerHeaderSettings(
                   headerSelectedIntervalTextStyle:
