@@ -1,4 +1,4 @@
-import 'package:budget_app/models/transaction_model.dart';
+import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

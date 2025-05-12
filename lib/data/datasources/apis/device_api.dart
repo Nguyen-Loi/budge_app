@@ -1,8 +1,8 @@
-import 'package:budget_app/apis/firestore_path.dart';
+import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/core/devices/devices.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/providers.dart';
-import 'package:budget_app/models/device_model/device_model.dart';
+import 'package:budget_app/data/models/device_model/device_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

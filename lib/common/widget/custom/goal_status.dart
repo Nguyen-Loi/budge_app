@@ -3,7 +3,7 @@ import 'package:budget_app/common/widget/b_progress_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
-import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
 import 'package:flutter/material.dart';
 
 class GoalStatus extends StatelessWidget {

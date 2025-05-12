@@ -4,7 +4,7 @@ import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/merge_model/budget_transactions_model.dart';
+import 'package:budget_app/data/models/merge_model/budget_transactions_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as xcel;

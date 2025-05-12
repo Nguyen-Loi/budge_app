@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:budget_app/apis/firestore_path.dart';
-import 'package:budget_app/apis/storage_api.dart';
-import 'package:budget_app/apis/storage_path.dart';
+import 'package:budget_app/data/datasources/apis/firestore_path.dart';
+import 'package:budget_app/data/datasources/apis/storage_api.dart';
+import 'package:budget_app/data/datasources/apis/storage_path.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
-import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/data/datasources/repositories/user_repository.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -17,13 +18,7 @@ final userApiProvider = Provider((ref) {
       db: db, storageApi: storageApi);
 });
 
-abstract class IUserApi {
-  Future<UserModel> getUserById(String uid);
-  FutureEither<UserModel> updateUser(
-      {required UserModel user, required File? file});
-}
-
-class UserApi extends IUserApi {
+class UserApi extends UserRepository {
   final FirebaseFirestore _db;
   final StorageApi _storageApi;
   UserApi({

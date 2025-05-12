@@ -1,7 +1,7 @@
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
-import 'package:budget_app/models/merge_model/transaction_card_model.dart';
+import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

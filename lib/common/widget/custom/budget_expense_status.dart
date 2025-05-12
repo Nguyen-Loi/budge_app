@@ -1,6 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_progress_bar.dart';
-import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
 import 'package:flutter/material.dart';
 
 class BudgetExpenseStatus extends StatelessWidget {

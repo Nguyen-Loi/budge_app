@@ -1,5 +1,5 @@
-import 'package:budget_app/apis/budget_api.dart';
-import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/data/datasources/apis/budget_api.dart';
+import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

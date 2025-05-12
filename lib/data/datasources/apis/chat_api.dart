@@ -1,11 +1,11 @@
-import 'package:budget_app/apis/firestore_path.dart';
+import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/core/enums/role_chat_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:budget_app/models/chat_model.dart';
+import 'package:budget_app/data/models/chat_model.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

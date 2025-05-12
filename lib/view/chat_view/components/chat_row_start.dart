@@ -1,7 +1,7 @@
 import 'package:budget_app/core/enums/role_chat_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/chat_model.dart';
+import 'package:budget_app/data/models/chat_model.dart';
 import 'package:budget_app/view/chat_view/components/chat_row_item.dart';
 import 'package:flutter/material.dart';
 
