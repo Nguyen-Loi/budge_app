@@ -42,13 +42,18 @@ class UserBaseController extends StateNotifier<UserModel?> {
 
     // update token profile
     await _userApi.updateUser(user: currentUser, file: null);
-    updateUser(currentUser);
+    reload(currentUser);
 
     return state!;
   }
 
-  void updateUser(UserModel user) {
+  void reload(UserModel user) {
     state = user;
+  }
+
+  Future<void> updateUser(UserModel user) async {
+    await _userApi.updateUser(user: user, file: null);
+    reload(user);
   }
 
   void updateWallet(BuildContext context, {required int newValue}) async {
@@ -61,7 +66,7 @@ class UserBaseController extends StateNotifier<UserModel?> {
     res.fold((l) {
       showSnackBar(context, l.message);
     }, (r) {
-      updateUser(r.$1);
+      reload(r.$1);
       _ref.read(transactionsBaseControllerProvider.notifier).addState(r.$2);
       Navigator.pop(context);
     });
@@ -87,12 +92,32 @@ class UserBaseController extends StateNotifier<UserModel?> {
     res.fold((l) {
       showSnackBar(context, l.message);
     }, (r) {
-      updateUser(r.$3);
+      reload(r.$3);
       _ref.read(transactionsBaseControllerProvider.notifier).addState(r.$1);
       _ref.read(budgetBaseControllerProvider.notifier).updateState(r.$2);
       Navigator.of(context).pop();
     });
 
     closeDialog();
+  }
+
+  void toggleNotificationTransaction(
+    BuildContext context, {
+    required bool isOn,
+  }) async {
+    final currentUser = state!;
+    if (isOn == currentUser.isRemindTransactionEveryDate) {
+      return;
+    }
+
+    final newUser = currentUser.copyWith(
+        isRemindTransactionEveryDate:
+            !currentUser.isRemindTransactionEveryDate);
+    final res = await _userApi.updateUser(user: newUser, file: null);
+    res.fold((l) {
+      showSnackBar(context, l.message);
+    }, (r) {
+      reload(r);
+    });
   }
 }
