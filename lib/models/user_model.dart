@@ -19,6 +19,8 @@ class UserModel {
   final PhoneNumber? phoneNumber;
   final String? token;
   final UserRole role;
+  final String languageCode;
+  final bool isRemindTransactionEveryDate;
   final DateTime createdDate;
   final DateTime updatedDate;
   UserModel({
@@ -31,6 +33,8 @@ class UserModel {
     required this.balance,
     this.phoneNumber,
     this.token,
+    required this.languageCode,
+    required this.isRemindTransactionEveryDate,
     required this.role,
     required this.createdDate,
     required this.updatedDate,
@@ -52,6 +56,8 @@ class UserModel {
     PhoneNumber? phoneNumber,
     String? token,
     UserRole? role,
+    String? languageCode,
+    bool? isRemindTransactionEveryDate,
     DateTime? createdDate,
     DateTime? updatedDate,
   }) {
@@ -66,6 +72,9 @@ class UserModel {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       token: token ?? this.token,
       role: role ?? this.role,
+      languageCode: languageCode ?? this.languageCode,
+      isRemindTransactionEveryDate:
+          isRemindTransactionEveryDate ?? this.isRemindTransactionEveryDate,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
     );
@@ -83,6 +92,8 @@ class UserModel {
       'phoneNumber': phoneNumber?.toMap(),
       'token': token,
       'role': role.value,
+      'languageCode': languageCode,
+      'isRemindTransactionEveryDate': isRemindTransactionEveryDate,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
@@ -107,6 +118,11 @@ class UserModel {
       phoneNumber: phoneNumber,
       token: map['token'] != null ? map['token'] as String : null,
       role: UserRole.fromValue(map['role'] as String? ?? UserRole.normal.value),
+      languageCode:
+          map['languageCode'] != null ? map['languageCode'] as String : 'en',
+      isRemindTransactionEveryDate: map['isRemindTransactionEveryDate'] != null
+          ? map['isRemindTransactionEveryDate'] as bool
+          : true,
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       updatedDate:
@@ -121,7 +137,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountTypeValue: $accountTypeValue, currencyTypeValue: $currencyTypeValue, balance: $balance, phoneNumber: $phoneNumber, token: $token, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountTypeValue: $accountTypeValue, currencyTypeValue: $currencyTypeValue, balance: $balance, phoneNumber: $phoneNumber, token: $token, languageCode: $languageCode, isRemindTransactionEveryDate: $isRemindTransactionEveryDate, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -154,6 +170,8 @@ class UserModel {
         phoneNumber.hashCode ^
         token.hashCode ^
         role.hashCode ^
+        languageCode.hashCode ^
+        isRemindTransactionEveryDate.hashCode ^
         createdDate.hashCode ^
         updatedDate.hashCode;
   }

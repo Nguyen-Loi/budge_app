@@ -1,4 +1,5 @@
 import 'package:budget_app/apis/firestore_path.dart';
+import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
@@ -80,6 +81,8 @@ class AuthAPI implements IAuthApi {
       accountTypeValue: accountType.value,
       currencyTypeValue: CurrencyType.vnd.value,
       role: UserRole.normal,
+      languageCode: _ref.read(languageControllerProvider).code,
+      isRemindTransactionEveryDate: true,
       createdDate: now,
       updatedDate: now,
     );
