@@ -32,6 +32,9 @@ abstract class IAuthApi {
   FutureEitherVoid loginWithFacebook();
   FutureEitherVoid loginWithGoogle();
   FutureEitherVoid signOut();
+  FutureEitherVoid resetPassword({
+    required String email,
+  });
   bool get isLogin;
 }
 
@@ -202,4 +205,20 @@ class AuthAPI implements IAuthApi {
 
   @override
   bool get isLogin => _auth.currentUser != null;
+
+  @override
+  FutureEitherVoid resetPassword({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return right(null);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+      return left(Failure(
+            error: _ref.read(appLocalizationsProvider).emailNotFound));
+      }
+      return left(Failure(error: e.toString()));
+    } catch (e) {
+      return left(Failure(error: e.toString()));
+    }
+  }
 }

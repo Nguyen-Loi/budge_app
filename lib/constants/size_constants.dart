@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SizeConstants {
+  SizeConstants._();
+
   static const double maxWidthBase = 700;
   static const double buttonMaxWidth = 200;
   static const double tablet = 700;

@@ -1,4 +1,5 @@
 import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/view/auth_view/forgot_password.dart';
 import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/view/auth_view/sign_up_view.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/budget_detail_view.dart';
@@ -17,6 +18,7 @@ class RoutePath {
   RoutePath._();
   static const String login = "/login";
   static const String signUp = "/signUp";
+  static const String forgotPassword = "/forgotPassword";
   static const String home = "/home";
 
   static const String newBudget = "/newBudget";
@@ -41,6 +43,8 @@ class MainRouter {
         return MaterialPageRoute(builder: (_) => const LoginView());
       case RoutePath.signUp:
         return MaterialPageRoute(builder: (_) => const SignUpView());
+      case RoutePath.forgotPassword:
+        return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       case RoutePath.home:
         return MaterialPageRoute(builder: (_) => const MainPageView());
 

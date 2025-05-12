@@ -62,5 +62,5 @@ class UserApi extends IUserApi {
     final newUser = user.copyWith(profileUrl: profileUrl);
     await _db.doc(FirestorePath.user(user.id)).set(newUser.toMap());
     return right(newUser);
-  }
+}
 }

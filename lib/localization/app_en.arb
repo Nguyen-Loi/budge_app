@@ -53,7 +53,7 @@
     "settings": "Settings",
     "contact": "Contact",
     "signOut": "Sign Out",
-    "pUserJoinDescriptions": "You joined ViNho on {dateTime}. It's been {numberMonth} month since then and our mission is still the same and help you better manage your money",
+    "pUserJoinDescriptions": "You joined SmartBudget on {dateTime}. It's been {numberMonth} month since then and our mission is still the same and help you better manage your money",
     "home": "Home",
     "appName": "Budget SS",
     "left": "Left",
@@ -82,16 +82,7 @@
     "passwordMininum6": "Password minimum is 6 characters",
     "confirmPasswordInvalid": "Confirm password invalid",
     "accountCreatePleaseLogin": "Account created! Please login",
-    "nForgotPassword": "{count, plural, =0{Forgot} =1{ password?} other{{count} errorText}}",
-    "@nForgotPassword": {
-        "description": "A plural message",
-        "placeholders": {
-            "count": {
-                "type": "num",
-                "format": "compact"
-            }
-        }
-    },
+    "forgetPassword": "Forgot password?",
     "pBudgetNameExits": "Budget {budgetName} already exist. Please change budget name and try again",
     "@pBudgetNameExits": {
         "placeholders": {
@@ -254,5 +245,11 @@
     "errorContactSupport": "An error occurred, please contact support",
     "errorInternet": "No internet connection",
     "allTime": "All time",
-    "invalidDateRange": "The new date range must fully include the current date range."
+    "invalidDateRange": "The new date range must fully include the current date range.",
+    "emailNotFound": "Email not found",
+    "weAreSendEmailPassword": "We've sent you an email to reset your password. Please check your inbox.",
+    "resetPassword": "Reset password",
+    "resetPasswordTitle": "Forgot your password?",
+    "resetPasswordDescription": "Enter your email address and we'll send you a link to reset your password.",
+    "invalidPhoneNumber": "Invalid phone number"
 }
