@@ -30,7 +30,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   void initState() {
-    bool isAds = ref.read(remoteConfigBaseControllerProvider.notifier).isUserAds;
+    bool isAds =
+        ref.read(remoteConfigBaseControllerProvider.notifier).isUserAds;
     if (isAds) {
       BannerAd(
         adUnitId: AdHelper.bannerAdUnitId,
@@ -159,7 +160,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           BText.caption(
               context.loc.pUserJoinDescriptions(
