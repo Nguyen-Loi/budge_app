@@ -17,9 +17,7 @@ final authControllerProvider =
 class AuthController extends StateNotifier<void> {
   final AuthAPI _authAPI;
   final Ref _ref;
-  AuthController(
-      {required AuthAPI authApi,
-      required Ref ref})
+  AuthController({required AuthAPI authApi, required Ref ref})
       : _authAPI = authApi,
         _ref = ref,
         super(null);
@@ -87,6 +85,20 @@ class AuthController extends StateNotifier<void> {
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
       initBaseUid();
+    });
+  }
+
+  void resetPassword(BuildContext context, {required String email}) async {
+    final closeLoading = showLoading(context: context);
+    final res = await _authAPI.resetPassword(email: email);
+    closeLoading();
+    res.fold((l) {
+      logError(l.error);
+      showSnackBar(context, l.message);
+    }, (r) {
+      showSnackBar(context, context.loc.weAreSendEmailPassword);
+      Navigator.pushNamedAndRemoveUntil(
+          context, RoutePath.login, (route) => false);
     });
   }
 }

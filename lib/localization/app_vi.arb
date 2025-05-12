@@ -82,16 +82,7 @@
   "passwordMininum6": "Mật khẩu tối thiểu là 6 ký tự",
   "confirmPasswordInvalid": "Xác nhận mật khẩu không hợp lệ",
   "accountCreatePleaseLogin": "Tài khoản đã được tạo! Vui lòng đăng nhập",
-  "nForgotPassword": "{count, plural, =0{Quên} =1{ mật khẩu?} other{{count} errorText}}",
-  "@nForgotPassword": {
-    "description": "A plural message",
-    "placeholders": {
-      "count": {
-        "type": "num",
-        "format": "compact"
-      }
-    }
-  },
+  "forgetPassword": "Quên mật khẩu?",
   "pBudgetNameExits": "Ngân sách {budgetName} đã tồn tại. Vui lòng thay đổi tên ngân sách và thử lại",
   "@pBudgetNameExits": {
     "placeholders": {
@@ -254,5 +245,11 @@
   "errorContactSupport": "Đã xảy ra lỗi, vui lòng liên hệ với bộ phận hỗ trợ",
   "errorInternet": "Không có kết nối internet",
   "allTime": "Không giới hạn",
-  "invalidDateRange": "Khoảng thời gian mới phải bao gồm toàn bộ khoảng thời gian hiện tại."
+  "invalidDateRange": "Khoảng thời gian mới phải bao gồm toàn bộ khoảng thời gian hiện tại.",
+  "emailNotFound": "Email không tồn tại",
+  "weAreSendEmailPassword": "Chúng tôi đã gửi email để bạn đặt lại mật khẩu. Vui lòng kiểm tra hộp thư.",
+  "resetPassword": "Đặt lại mật khẩu",
+  "resetPasswordTitle": "Quên mật khẩu?",
+  "resetPasswordDescription": "Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn hướng dẫn để đặt lại mật khẩu.",
+  "invalidPhoneNumber": "Số điện thoại không hợp lệ"
 }
