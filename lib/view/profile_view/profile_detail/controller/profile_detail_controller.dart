@@ -51,7 +51,7 @@ class ProfileDetailController extends StateNotifier<bool> {
 
     res.fold((l) => showSnackBar(context, l.message), (user) {
       updateDisable(true);
-      _userController.updateUser(user);
+      _userController.reload(user);
     });
     closeLoading();
   }
