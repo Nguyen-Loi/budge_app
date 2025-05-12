@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:budget_app/apis/user_api.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
+import 'package:budget_app/core/validate.dart';
 import 'package:budget_app/models/user_model.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,11 @@ class ProfileDetailController extends StateNotifier<bool> {
       required UserModel user,
       required String name,
       required PhoneNumber phoneNumber}) async {
+    if (!Validate.phoneNumber(context, phoneNumber: phoneNumber.phoneNumber)) {
+      return;
+    }
     final closeLoading = showLoading(context: context);
+
     final res = await _userApi.updateUser(
         user: user.copyWith(
           name: name,

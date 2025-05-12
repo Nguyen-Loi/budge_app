@@ -1,18 +1,16 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_app_bar.dart';
 import 'package:budget_app/common/widget/b_divider.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/theme/app_text_theme.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,29 +73,22 @@ class _LoginViewState extends ConsumerState<LoginView> {
       },
       child: Scaffold(
         appBar: BAppBar(text: context.loc.signIn),
-        body: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: SizeConstants.maxWidthBase,
-            ),
-            child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                children: [
-                  gapH32,
-                  BText.h1(
-                    context.loc.welecomeBack,
-                    textAlign: TextAlign.left,
-                  ),
-                  gapH16,
-                  BText(
-                    context.loc.signInDescription,
-                    textAlign: TextAlign.left,
-                  ),
-                  gapH48,
-                  _form()
-                ]),
-          ),
-        ),
+        body: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            children: [
+              gapH32,
+              BText.h2(
+                context.loc.welecomeBack,
+                textAlign: TextAlign.left,
+              ),
+              gapH16,
+              BText(
+                context.loc.signInDescription,
+                textAlign: TextAlign.left,
+              ),
+              gapH48,
+              _form()
+            ]).responsiveCenter(),
       ),
     );
   }
@@ -124,12 +115,14 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Widget _forgotPassword() {
-    return Text.rich(TextSpan(children: [
-      TextSpan(text: AppLocalizations.of(context).nForgotPassword(0)),
-      TextSpan(
-          text: AppLocalizations.of(context).nForgotPassword(1),
-          style: context.textTheme.bodyMedium),
-    ]));
+    return Align(
+      alignment: Alignment.centerRight, // Align the text to the right
+      child: BButton.text(
+          onPressed: () {
+            Navigator.pushNamed(context, RoutePath.forgotPassword);
+          },
+          title: context.loc.forgetPassword),
+    );
   }
 
   Widget _bFieldEmail() {
@@ -149,12 +142,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   Widget _button() {
-    return FilledButton(
+    return BButton(
       onPressed: _onLogin,
-      child: BText.b1(
-        context.loc.signIn,
-        color: ColorManager.white,
-      ),
+      title: context.loc.signIn,
     );
   }
 
@@ -199,8 +189,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
             onPressed: _onLoginFacebook,
             icon: SvgPicture.asset(
               SvgAssets.facebook,
-              width: 48,
-              height: 48,
+              width: 56,
+              height: 56,
             ),
           ),
       ],

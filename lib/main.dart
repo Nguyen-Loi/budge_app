@@ -10,6 +10,7 @@ import 'package:budget_app/theme/app_theme.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/view/main_page_view/main_page_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,8 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     // Init notification
     ref.read(notificationProvider).initialize();
+    // Inin language firebase
+    FirebaseAuth.instance.setLanguageCode(ref.read(languageControllerProvider).code);
     super.initState();
   }
 
@@ -71,6 +74,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     final language = ref.watch(languageControllerProvider);
     final isDark = ref.watch(isDarkControllerProvider);
+    
     return MaterialApp(
       theme: AppTheme.lightTheme,
       navigatorKey: navigatorKey,

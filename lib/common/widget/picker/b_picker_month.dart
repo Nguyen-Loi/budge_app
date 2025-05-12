@@ -1,3 +1,4 @@
+import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/common/type_def.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
@@ -42,7 +43,18 @@ class _BPickerMonthState extends State<BPickerMonth> {
               firstDate: widget.firstDate,
               lastDate: widget.lastDate,
               initialDate: _dateTimePicker ?? DateTime.now(),
-          );
+              selectableMonthPredicate: (p0) => true,
+              monthPickerDialogSettings: MonthPickerDialogSettings(
+                headerSettings: PickerHeaderSettings(
+                  headerSelectedIntervalTextStyle:
+                      Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                ),
+                dialogSettings: PickerDialogSettings(
+                  locale: Locale(ref.read(languageControllerProvider).code),
+                ),
+              ));
           if (dateTime != null) {
             setState(() {
               _dateTimePicker = dateTime;

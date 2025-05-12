@@ -4,8 +4,8 @@ import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
@@ -50,30 +50,25 @@ class _LoginViewState extends ConsumerState<SignUpView> {
       },
       child: Scaffold(
         appBar: BAppBar(text: context.loc.signUp),
-        body: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: SizeConstants.maxWidthBase,
-            ),
-            child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                children: [
-                  // gapH24,
-                  gapH32,
-                  BText.h1(
-                    context.loc.welecomeAppName,
-                    textAlign: TextAlign.left,
-                  ),
-                  gapH16,
-                  BText(
-                    context.loc.signUpToStart,
-                    textAlign: TextAlign.left,
-                  ),
-                  gapH48,
-                  _form()
-                ]),
-          ),
-        ),
+        body: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            children: [
+              // gapH24,
+              gapH32,
+              BText.h2(
+                context.loc.welecomeAppName,
+                textAlign: TextAlign.left,
+              ),
+              gapH16,
+              BText(
+                context.loc.signUpToStart,
+                textAlign: TextAlign.left,
+              ),
+              gapH48,
+              _form(),
+              gapH32,
+              _button(),
+            ]).responsiveCenter(),
       ),
     );
   }
@@ -90,9 +85,6 @@ class _LoginViewState extends ConsumerState<SignUpView> {
             _bConfirmPassword(),
             // gapH16,
             // _terms(),
-            gapH32,
-            _button(),
-            gapH16,
           ],
         ));
   }
