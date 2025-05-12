@@ -1,4 +1,4 @@
-import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

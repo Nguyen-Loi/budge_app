@@ -1,11 +1,12 @@
+import 'package:budget_app/data/datasources/table_name.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestorePath {
-  static const String _budget = 'Budgets';
-  static const String _transaction = 'Transactions';
-  static const String _user = 'Users';
-  static const String _devices = 'Devices';
-  static const String _chats = 'Chats';
+  static const String _budget = TableName.budget;
+  static const String _transaction = TableName.transaction;
+  static const String _user = TableName.user;
+  static const String _devices = TableName.devices;
+  static const String _chats = TableName.chats;
 
   static String users() => _user;
   static String user(String uid) => '$_user/$uid';

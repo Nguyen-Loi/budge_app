@@ -1,9 +1,9 @@
-import 'package:budget_app/apis/chat_api.dart';
+import 'package:budget_app/data/datasources/apis/chat_api.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/core/enums/role_chat_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/chat_model.dart';
+import 'package:budget_app/data/models/chat_model.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:budget_app/apis/firestore_path.dart';
+import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
@@ -6,7 +6,7 @@ import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
-import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

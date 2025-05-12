@@ -1,4 +1,4 @@
-import 'package:budget_app/apis/auth_api.dart';
+import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/route_path.dart';

@@ -1,4 +1,4 @@
-import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/auth_view/forgot_password.dart';
 import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/view/auth_view/sign_up_view.dart';

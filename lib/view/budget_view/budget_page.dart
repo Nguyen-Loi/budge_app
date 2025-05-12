@@ -6,7 +6,7 @@ import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/widget/budget_card.dart';

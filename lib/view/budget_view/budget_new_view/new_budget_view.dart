@@ -10,7 +10,7 @@ import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/models_widget/datetime_range_model.dart';
+import 'package:budget_app/data/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/budget_new_view/controller/new_budget_controller.dart';
 import 'package:flutter/material.dart';

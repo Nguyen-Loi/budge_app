@@ -1,6 +1,6 @@
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/core/enums/language_enum.dart';
-import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

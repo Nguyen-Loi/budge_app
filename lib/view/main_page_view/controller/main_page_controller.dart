@@ -1,6 +1,7 @@
-import 'package:budget_app/apis/device_api.dart';
+import 'package:budget_app/data/datasources/apis/device_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/constants/constants.dart';
+import 'package:budget_app/data/datasources/offline/database_helper.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
@@ -34,9 +35,14 @@ class MainPageController extends StateNotifier<void> {
   Future<void> loadBaseData(BuildContext context) async {
     final uid = _ref.watch(uidControllerProvider);
 
-        // Base data
+    // Base data
     logInfo('Loading infomation user....');
     await _ref.read(userBaseControllerProvider.notifier).fetchUserInfo();
+
+    if(!kIsWeb) {
+      logInfo('Loading infomation database....');
+      await _ref.read(dbHelperProvider.notifier).initDatabase();
+    }
 
     // Package info
     final refPackage = _ref.read(packageInfoBaseControllerProvider.notifier);
