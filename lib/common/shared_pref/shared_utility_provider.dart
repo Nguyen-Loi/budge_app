@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,8 +32,11 @@ class SharedUtility {
   }
 
   String languageCode() {
+    final defaultLanguage = Platform.localeName.split('_')[0];
+    LanguageEnum languageEnumDefault =
+        defaultLanguage == 'vi' ? LanguageEnum.vietnamese : LanguageEnum.english;
     return sharedPreferences.getString(_languageCodeKey) ??
-        LanguageEnum.vietnamese.code;
+        languageEnumDefault.code;
   }
 
   void setLanguageCode({required String code}) {

@@ -196,7 +196,7 @@
     "thisMonth": "This month",
     "viewAll": "View all",
     "youMustCreateAtLeastOneBudget": "You must create at least one budget to use this feature",
-    "navigateToIt": "Navigate to it",
+    "navigateToIt": "Navigate",
     "reportExportedSuccessfully": "Report exported successfully",
     "report": "Report",
     "value": "Value",
@@ -251,5 +251,6 @@
     "resetPassword": "Reset password",
     "resetPasswordTitle": "Forgot your password?",
     "resetPasswordDescription": "Enter your email address and we'll send you a link to reset your password.",
-    "invalidPhoneNumber": "Invalid phone number"
+    "invalidPhoneNumber": "Invalid phone number",
+    "dailyTransactionReminder": "Daily Transaction Reminder"
 }
