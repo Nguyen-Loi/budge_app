@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">SmartBudget</string>
     <string name="facebook_app_id">407772455439263</string>
     <string name="fb_login_protocol_scheme">fb407772455439263</string>
     <string name="facebook_client_token">a018e1f278d258ed9d74f16e03afd6ee</string>
