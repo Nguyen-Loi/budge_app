@@ -6,9 +6,8 @@ import 'package:budget_app/view/base_controller/transaction_base_controller.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final transactionControllerProvider =
-    StateNotifierProvider<TransactionsController, List<TransactionCardModel>>(
-        (ref) {
+final transactionControllerProvider = StateNotifierProvider.autoDispose<
+    TransactionsController, List<TransactionCardModel>>((ref) {
   final transactionBase = ref.watch(transactionsBaseControllerProvider);
   return TransactionsController(transactionsState: transactionBase);
 });

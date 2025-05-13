@@ -168,8 +168,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
               },
               extended: !isMediumScreen,
               selectedLabelTextStyle: TextStyle(
-                color:
-                    Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
               destinations: _navBarItems(context)
