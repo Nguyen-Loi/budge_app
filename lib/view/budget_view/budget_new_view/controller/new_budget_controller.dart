@@ -13,7 +13,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final newBudgetControllerProvider = Provider((ref) {
+final newBudgetControllerProvider = Provider.autoDispose((ref) {
   final budgetRepository = ref.watch(budgetRepositoryProvider);
   final uid = ref.watch(uidControllerProvider);
   final budgetController = ref.watch(budgetBaseControllerProvider.notifier);

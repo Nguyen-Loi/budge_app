@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final budgetModifyControllerProvider =
-    Provider.family<BudgetModifyController, BudgetModel>((ref, budgetModel) {
+    Provider.autoDispose.family<BudgetModifyController, BudgetModel>((ref, budgetModel) {
   final budgetRepository = ref.watch(budgetRepositoryProvider);
   final uid = ref.watch(uidControllerProvider);
   final budgetDetailController =

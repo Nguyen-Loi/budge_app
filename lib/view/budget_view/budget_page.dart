@@ -21,9 +21,7 @@ class BudgetPage extends ConsumerStatefulWidget {
 }
 
 class _BudgetPageState extends ConsumerState<BudgetPage>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
-  @override
-  bool get wantKeepAlive => true;
+    with  SingleTickerProviderStateMixin {
 
   late TabController _tabController;
 
@@ -52,7 +50,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final list = ref.watch(budgetBaseControllerProvider);
     return BaseView(
       title: context.loc.budgetInUse,
