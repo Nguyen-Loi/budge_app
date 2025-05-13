@@ -213,7 +213,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
                 }
                 ref
                     .read(reportControllerProvider.notifier)
-                    .exportExcel(context, user: user!);
+                    .exportExcel(context, user: user);
               }
             },
             child: Container(

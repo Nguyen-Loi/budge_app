@@ -1,6 +1,6 @@
-import 'package:budget_app/data/datasources/apis/budget_api.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
+import 'package:budget_app/data/datasources/repositories/budget_repository.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/controller/budget_detail_controller.dart';
@@ -10,25 +10,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final budgetModifyControllerProvider =
     Provider.family<BudgetModifyController, BudgetModel>((ref, budgetModel) {
-  final budgetApi = ref.watch(budgetAPIProvider);
+  final budgetRepository = ref.watch(budgetRepositoryProvider);
   final uid = ref.watch(uidControllerProvider);
   final budgetDetailController =
       ref.watch(budgetDetailControllerProvider(budgetModel).notifier);
   return BudgetModifyController(
-      budgetApi: budgetApi,
+      budgetRepository: budgetRepository,
       uid: uid,
       budgetDetailController: budgetDetailController);
 });
 
 class BudgetModifyController extends StateNotifier<void> {
-  final BudgetApi _budgetApi;
+  final BudgetRepository _budgetRepository;
   final BudgetDetailController _budgetDetailController;
 
   BudgetModifyController(
-      {required BudgetApi budgetApi,
+      {required BudgetRepository budgetRepository,
       required String uid,
       required BudgetDetailController budgetDetailController})
-      : _budgetApi = budgetApi,
+      : _budgetRepository = budgetRepository,
         _budgetDetailController = budgetDetailController,
         super(null);
 
@@ -40,14 +40,14 @@ class BudgetModifyController extends StateNotifier<void> {
     final now = DateTime.now();
     final budgetModify = budget.copyWith(
         iconId: iconId,
-        limit: limit,
+        budgetLimit: limit,
         updatedDate: now,
         startDate: dateTimeRange.startDate,
         endDate: dateTimeRange.endDate,
         rangeDateTimeTypeValue: dateTimeRange.rangeDateTimeType.value);
 
     final closeDialog = showLoading(context: context);
-    final res = await _budgetApi.updateBudget(model: budgetModify);
+    final res = await _budgetRepository.updateBudget(model: budgetModify);
     closeDialog();
     res.fold((failure) {
       showSnackBar(context, failure.message);

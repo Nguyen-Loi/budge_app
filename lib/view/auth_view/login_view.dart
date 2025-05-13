@@ -109,14 +109,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
             gapH16,
             _orLoginWidth(),
             gapH48,
-            _iconButtons()
+            _iconButtons(),
+            if (!kIsWeb) ...[gapH48, _signInWithGuest()]
           ],
         ));
   }
 
   Widget _forgotPassword() {
     return Align(
-      alignment: Alignment.centerRight, // Align the text to the right
+      alignment: Alignment.centerRight,
       child: BButton.text(
           onPressed: () {
             Navigator.pushNamed(context, RoutePath.forgotPassword);
@@ -194,6 +195,19 @@ class _LoginViewState extends ConsumerState<LoginView> {
             ),
           ),
       ],
+    );
+  }
+
+  Widget _signInWithGuest() {
+    return Align(
+      alignment: Alignment.center,
+      child: BButton.text(
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, RoutePath.home);
+        },
+        title: context.loc.guestAccess,
+        textDecoration: TextDecoration.underline,
+      ),
     );
   }
 }

@@ -20,10 +20,9 @@ class LanguageController extends StateNotifier<LanguageEnum> {
     ref.watch(sharedUtilityProvider).setLanguageCode(
           code: language.code,
         );
-    UserModel? user = ref.read(userBaseControllerProvider.notifier).state;
+    UserModel user = ref.read(userBaseControllerProvider.notifier).state;
     state = language;
 
-    if (user == null) return;
     user = user.copyWith(languageCode: language.code);
     ref.read(userBaseControllerProvider.notifier).updateUser(user);
   }

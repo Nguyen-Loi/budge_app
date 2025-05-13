@@ -27,6 +27,7 @@ class DatabaseHelper extends StateNotifier<Database?> {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, _databaseName);
 
+    await deleteDatabase(path);
     Database database = await openDatabase(
       path,
       version: _databaseVersion,
@@ -45,13 +46,13 @@ class DatabaseHelper extends StateNotifier<Database?> {
       name TEXT,
       iconId INTEGER,
       currentAmount INTEGER,
-      limit INTEGER,
+      budgetLimit INTEGER,
       budgetTypeValue TEXT,
       rangeDateTimeTypeValue TEXT,
-      startDate TEXT,
-      endDate TEXT,
-      createdDate TEXT,
-      updatedDate TEXT
+      startDate INTEGER,
+      endDate INTEGER,
+      createdDate INTEGER,
+      updatedDate INTEGER
     )
   ''');
 
@@ -63,9 +64,9 @@ class DatabaseHelper extends StateNotifier<Database?> {
       amount INTEGER,
       note TEXT,
       transactionTypeValue TEXT,
-      createdDate TEXT,
-      transactionDate TEXT,
-      updatedDate TEXT
+      createdDate INTEGER,
+      transactionDate INTEGER,
+      updatedDate INTEGER
     )
   ''');
 
@@ -83,8 +84,8 @@ class DatabaseHelper extends StateNotifier<Database?> {
       role TEXT,
       languageCode TEXT,
       isRemindTransactionEveryDate INTEGER,
-      createdDate TEXT,
-      updatedDate TEXT
+      createdDate INTEGER,
+      updatedDate INTEGER
     )
   ''');
   }

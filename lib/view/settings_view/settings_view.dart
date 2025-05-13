@@ -2,6 +2,7 @@ import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/common/shared_pref/theme_controller.dart';
 import 'package:budget_app/common/widget/b_switch_list_tile.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/language_enum.dart';
@@ -24,9 +25,7 @@ class SettingsView extends StatelessWidget {
             children: [
               _themeSwitch(context, ref),
               _languageDropdown(context, ref),
-              if (ref.watch(userBaseControllerProvider) != null) ...[
-                _dailyTransactionReminderSwitch(context, ref),
-              ],
+              _dailyTransactionReminderSwitch(context, ref),
             ],
           );
         }));
@@ -45,13 +44,19 @@ class SettingsView extends StatelessWidget {
     return BSwitchListTile(
         title: context.loc.dailyTransactionReminder,
         value:
-            ref.watch(userBaseControllerProvider)!.isRemindTransactionEveryDate,
+            ref.watch(userBaseControllerProvider).isRemindTransactionEveryDate,
         onChanged: (value) {
+          if (!ref.read(userBaseControllerProvider.notifier).isLogin) {
+            BDialogInfo(
+                    message: context.loc.loginToUse,
+                    dialogInfoType: BDialogInfoType.warning)
+                .present(context);
+            return;
+          }
           ref
               .read(userBaseControllerProvider.notifier)
               .toggleNotificationTransaction(context, isOn: value);
         });
-        
   }
 
   Widget _languageDropdown(BuildContext context, WidgetRef ref) {

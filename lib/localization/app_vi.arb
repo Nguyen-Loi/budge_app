@@ -252,5 +252,7 @@
   "resetPasswordTitle": "Quên mật khẩu?",
   "resetPasswordDescription": "Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn hướng dẫn để đặt lại mật khẩu.",
   "invalidPhoneNumber": "Số điện thoại không hợp lệ",
-  "dailyTransactionReminder": "Nhắc nhở giao dịch hàng ngày"
+  "dailyTransactionReminder": "Nhắc nhở giao dịch hàng ngày",
+  "guestAccess": "Truy cập khách",
+  "loginToUse": "Bạn cần đăng nhập để sử dụng tính năng này"
 }

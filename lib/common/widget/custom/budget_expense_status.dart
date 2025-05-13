@@ -8,7 +8,7 @@ class BudgetExpenseStatus extends StatelessWidget {
   final BudgetModel budget;
   int get progress {
     final currentAmount = budget.currentAmount.abs();
-    final limit = budget.limit;
+    final limit = budget.budgetLimit;
     if (currentAmount == 0 && limit == 0) {
       return 0;
     } else if (currentAmount <= limit) {

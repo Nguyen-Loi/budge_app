@@ -50,7 +50,7 @@ class AuthAPI implements IAuthApi {
   })  : _auth = auth,
         _ref = ref,
         _db = db;
-  String get uid => _auth.currentUser!.uid;
+  String get uid => _auth.currentUser?.uid??'';
 
   User _currentUserAccount() {
     return _auth.currentUser!;

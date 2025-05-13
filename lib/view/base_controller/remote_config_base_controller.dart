@@ -15,12 +15,12 @@ import 'package:url_launcher/url_launcher.dart';
 
 final remoteConfigBaseControllerProvider =
     StateNotifierProvider<RemoteConfigBaseController, RemoteConfigModel>((ref) {
-  UserModel? userModel = ref.watch(userBaseControllerProvider);
+  UserModel userModel = ref.watch(userBaseControllerProvider);
   return RemoteConfigBaseController(userModel: userModel);
 });
 
 class RemoteConfigBaseController extends StateNotifier<RemoteConfigModel> {
-  RemoteConfigBaseController({required UserModel? userModel})
+  RemoteConfigBaseController({required UserModel userModel})
       : _userModel = userModel,
         super(RemoteConfigModel(
             geminiApiKey: '0',
@@ -28,9 +28,9 @@ class RemoteConfigBaseController extends StateNotifier<RemoteConfigModel> {
             requiredMinimumVersion: '1.0.0',
             isAds: false));
   final remoteConfig = FirebaseRemoteConfig.instance;
-  final UserModel? _userModel;
+  final UserModel _userModel;
 
-  bool get isUserAds => state.isAds && !kIsWeb && _userModel?.roleAds == true;
+  bool get isUserAds => state.isAds && !kIsWeb && _userModel.roleAds == true;
 
   Future<void> initialize(BuildContext context,
       {required PackageInfo packageInfo}) async {

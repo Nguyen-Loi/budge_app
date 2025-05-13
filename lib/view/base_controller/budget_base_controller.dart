@@ -1,4 +1,4 @@
-import 'package:budget_app/data/datasources/apis/budget_api.dart';
+import 'package:budget_app/data/datasources/repositories/budget_repository.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,8 +8,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 final budgetBaseControllerProvider =
     StateNotifierProvider<BudgetBaseController, List<BudgetModel>>((ref) {
   final uid = ref.watch(uidControllerProvider);
-  final budgetApi = ref.watch(budgetAPIProvider);
-  return BudgetBaseController(budgetApi: budgetApi, uid: uid);
+  final budgetRepository = ref.watch(budgetRepositoryProvider);
+  return BudgetBaseController(budgetRepository: budgetRepository, uid: uid);
 });
 final budgetsFutureProvider = FutureProvider((ref) {
   final data = ref.watch(budgetBaseControllerProvider.notifier);
@@ -17,12 +17,12 @@ final budgetsFutureProvider = FutureProvider((ref) {
 });
 
 class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
-  BudgetBaseController({required BudgetApi budgetApi, required String uid})
-      : _budgetApi = budgetApi,
+  BudgetBaseController({required BudgetRepository budgetRepository, required String uid})
+      : _budgetRepository = budgetRepository,
         _uid = uid,
         super([]);
 
-  final BudgetApi _budgetApi;
+  final BudgetRepository _budgetRepository;
   final String _uid;
 
   List<BudgetModel> _allBudgets = [];
@@ -40,7 +40,7 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
   }
 
   Future<List<BudgetModel>> fetch() async {
-    final budgets = await _budgetApi.fetch(_uid);
+    final budgets = await _budgetRepository.fetch(_uid);
     _allBudgets = budgets;
     _notifier(newList: _allBudgets);
     return _allBudgets;

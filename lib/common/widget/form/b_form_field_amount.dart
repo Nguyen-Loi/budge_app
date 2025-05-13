@@ -71,7 +71,7 @@ class _BFormFieldAmountState extends State<BFormFieldAmount> {
         gapH8,
         Consumer(builder: (context, ref, _) {
           String userCurrency = ref.watch(userBaseControllerProvider
-              .select((value) => value!.currencyType.code));
+              .select((value) => value.currencyType.code));
           String currency =
               NumberFormat.compactSimpleCurrency(locale: userCurrency)
                   .currencySymbol;
