@@ -18,7 +18,7 @@ class GoalStatus extends StatelessWidget {
 
   int get progress {
     int amount = goal.currentAmount;
-    int limit = goal.limit;
+    int limit = goal.budgetLimit;
     if (limit == 0) {
       return 0;
     }
@@ -42,7 +42,8 @@ class GoalStatus extends StatelessWidget {
   List<Widget> _textInfo() {
     return [
       gapH8,
-      BText.b3('${goal.currentAmount.toMoneyStr()}/${goal.limit.toMoneyStr()}')
+      BText.b3(
+          '${goal.currentAmount.toMoneyStr()}/${goal.budgetLimit.toMoneyStr()}')
     ];
   }
 

@@ -53,7 +53,7 @@ class TransactionApi extends TransactionRepository {
       updatedDate: now,
     );
     await _db.insert(
-      TableName.budget,
+      TableName.transaction,
       transaction.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -162,7 +162,7 @@ class TransactionApi extends TransactionRepository {
       await _db.update(
         TableName.budget,
         newBudget.toMap(),
-        where: 'budgetId = ?',
+        where: 'id = ?',
         whereArgs: [budgetModel.id],
       );
 

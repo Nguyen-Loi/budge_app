@@ -1,9 +1,9 @@
-import 'package:budget_app/data/datasources/apis/budget_api.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
+import 'package:budget_app/data/datasources/repositories/budget_repository.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/models_widget/datetime_range_model.dart';
@@ -14,23 +14,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final newBudgetControllerProvider = Provider((ref) {
-  final budgetApi = ref.watch(budgetAPIProvider);
+  final budgetRepository = ref.watch(budgetRepositoryProvider);
   final uid = ref.watch(uidControllerProvider);
   final budgetController = ref.watch(budgetBaseControllerProvider.notifier);
   return NewBudgetController(
-      budgetApi: budgetApi, uid: uid, budgetController: budgetController);
+      budgetRepository: budgetRepository,
+      uid: uid,
+      budgetController: budgetController);
 });
 
 class NewBudgetController extends StateNotifier<bool> {
-  final BudgetApi _budgetApi;
+  final BudgetRepository _budgetRepository;
   final BudgetBaseController _budgetBaseController;
   final String _uid;
 
   NewBudgetController(
-      {required BudgetApi budgetApi,
+      {required BudgetRepository budgetRepository,
       required String uid,
       required BudgetBaseController budgetController})
-      : _budgetApi = budgetApi,
+      : _budgetRepository = budgetRepository,
         _uid = uid,
         _budgetBaseController = budgetController,
         super(false);
@@ -44,14 +46,12 @@ class NewBudgetController extends StateNotifier<bool> {
     return null;
   }
 
-  void addBudget(
-    BuildContext context, {
-    required String budgetName,
-    required int iconId,
-    required int limit,
-    required DatetimeRangeModel rangeDatetimeModel,
-    required BudgetTypeEnum budgetType
-  }) async {
+  void addBudget(BuildContext context,
+      {required String budgetName,
+      required int iconId,
+      required int limit,
+      required DatetimeRangeModel rangeDatetimeModel,
+      required BudgetTypeEnum budgetType}) async {
     //Check valid
     String? error = _errorValidate(context, budgetName: budgetName);
     if (error != null) {
@@ -65,7 +65,7 @@ class NewBudgetController extends StateNotifier<bool> {
       name: budgetName,
       iconId: iconId,
       currentAmount: 0,
-      limit: limit,
+      budgetLimit: limit,
       createdDate: now,
       updatedDate: now,
       rangeDateTimeTypeValue: rangeDatetimeModel.rangeDateTimeType.value,
@@ -74,7 +74,7 @@ class NewBudgetController extends StateNotifier<bool> {
       budgetTypeValue: budgetType.value,
     );
     final closeDialog = showLoading(context: context);
-    final res = await _budgetApi.addBudget(model: model);
+    final res = await _budgetRepository.addBudget(model: model);
     closeDialog();
     res.fold((failure) {
       showSnackBar(context, failure.message);

@@ -12,8 +12,6 @@ final budgetAPIProvider = Provider((ref) {
   return BudgetApi(db: ref.watch(dbProvider));
 });
 
-
-
 class BudgetApi implements BudgetRepository {
   final FirebaseFirestore db;
   BudgetApi({

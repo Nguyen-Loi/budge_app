@@ -34,7 +34,7 @@ class _UpdateWalletViewState extends ConsumerState<UpdateWalletView> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userBaseControllerProvider)!;
+    final user = ref.watch(userBaseControllerProvider);
     return BaseView(
         actions: [
           TextButton(

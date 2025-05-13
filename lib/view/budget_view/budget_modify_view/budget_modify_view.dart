@@ -35,7 +35,7 @@ class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
   void initState() {
     _budget = widget.budgetModel;
     _iconId = _budget.iconId;
-    _limit = _budget.limit;
+    _limit = _budget.budgetLimit;
     _dateTimeRangeModel = DatetimeRangeModel(
         startDate: _budget.startDate,
         endDate: _budget.endDate,

@@ -17,7 +17,7 @@ class HomeUpdateWalletCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final balance = ref.watch(userBaseControllerProvider)!.balance;
+    final balance = ref.watch(userBaseControllerProvider).balance;
   return _item(context, value: balance, onPressed: () {
       Navigator.pushNamed(context, RoutePath.updateWallet);
     });

@@ -22,7 +22,7 @@ class BudgetDetailExpenseView extends BudgetBaseDetailView {
         context,
         svgAsset: SvgAssets.limit,
         label: context.loc.limit,
-        value: budget.limit.toMoneyStr(),
+        value: budget.budgetLimit.toMoneyStr(),
       ),
       itemOperatingTime(context),
       itemReview(context)

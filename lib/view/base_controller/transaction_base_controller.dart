@@ -1,4 +1,4 @@
-import 'package:budget_app/data/datasources/apis/transaction_api.dart';
+import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
@@ -10,11 +10,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 final transactionsBaseControllerProvider = StateNotifierProvider<
     TransactionsBaseController, List<TransactionCardModel>>((ref) {
   final uid = ref.watch(uidControllerProvider).toString();
-  final transactionApi = ref.watch(transactionApiProvider);
+  final transactionRepository = ref.watch(transactionRepositoryProvider);
   final budgetController = ref.watch(budgetBaseControllerProvider.notifier);
   final loc = ref.watch(appLocalizationsProvider);
   return TransactionsBaseController(
-      transactionApi: transactionApi,
+      transactionRepository: transactionRepository,
       uid: uid,
       budgetController: budgetController,
       loc: loc);
@@ -23,11 +23,11 @@ final transactionsBaseControllerProvider = StateNotifierProvider<
 class TransactionsBaseController
     extends StateNotifier<List<TransactionCardModel>> {
   TransactionsBaseController({
-    required TransactionApi transactionApi,
+    required TransactionRepository transactionRepository,
     required BudgetBaseController budgetController,
     required AppLocalizations loc,
     required String uid,
-  })  : _transactionApi = transactionApi,
+  })  : _transactionRepository = transactionRepository,
         _uid = uid,
         _budgetController = budgetController,
         _loc = loc,
@@ -36,7 +36,7 @@ class TransactionsBaseController
       fetch();
     }
   }
-  final TransactionApi _transactionApi;
+  final TransactionRepository _transactionRepository;
   final BudgetBaseController _budgetController;
   final String _uid;
   final AppLocalizations _loc;
@@ -44,7 +44,7 @@ class TransactionsBaseController
   List<TransactionCardModel> _allCardTranctions = [];
 
   Future<List<TransactionCardModel>> fetch() async {
-    final transactions = await _transactionApi.fetchTransaction(_uid);
+    final transactions = await _transactionRepository.fetchTransaction(_uid);
     _allCardTranctions = await TransactionCardModel.transactionCard(_loc,
         transactions: transactions, budgets: _budgetController.getAll);
 

@@ -252,5 +252,7 @@
     "resetPasswordTitle": "Forgot your password?",
     "resetPasswordDescription": "Enter your email address and we'll send you a link to reset your password.",
     "invalidPhoneNumber": "Invalid phone number",
-    "dailyTransactionReminder": "Daily Transaction Reminder"
+    "dailyTransactionReminder": "Daily Transaction Reminder",
+    "guestAccess": "Guest Access",
+    "loginToUse": "You need to login to use this feature"
 }

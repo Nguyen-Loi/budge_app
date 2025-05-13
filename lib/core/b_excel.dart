@@ -78,7 +78,7 @@ class BExcel {
           ..setText(budget.currentAmount.toMoneyStr());
         sheet.getRangeByIndex(rowIndex, budgetLimitColIndex)
           ..cellStyle = valueItemStyle
-          ..setText(budget.limit.toMoneyStr().toString());
+          ..setText(budget.budgetLimit.toMoneyStr().toString());
         sheet.getRangeByIndex(rowIndex, budgetDurationColIndex)
           ..cellStyle = valueItemStyle
           ..setText(

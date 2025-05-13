@@ -38,7 +38,13 @@ class UserLocal extends UserRepository {
       if (result.isNotEmpty) {
         return UserModel.fromMap(result.first);
       } else {
-        throw Exception('User not found');
+        UserModel userDefault = UserModel.defaultData();
+        await _db.insert(
+          TableName.user,
+          userDefault.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+        return userDefault;
       }
     } catch (e) {
       throw Exception('Error fetching user: $e');

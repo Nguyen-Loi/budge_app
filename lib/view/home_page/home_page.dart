@@ -61,7 +61,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   Widget _appbarInfo() {
     return Consumer(builder: (_, ref, __) {
-      final UserModel user = ref.watch(userBaseControllerProvider)!;
+      final UserModel user = ref.watch(userBaseControllerProvider);
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

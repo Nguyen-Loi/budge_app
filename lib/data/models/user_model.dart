@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
@@ -80,6 +81,27 @@ class UserModel {
     );
   }
 
+  factory UserModel.defaultData() {
+    final now = DateTime.now();
+    return UserModel(
+      id: '',
+      email: 'guest@example.com"',
+      profileUrl:
+          'https://icons.veryicon.com/png/o/miscellaneous/youyinzhibo/guest.png',
+      name: 'guest',
+      accountTypeValue: AccountType.emailAndPassword.value,
+      currencyTypeValue: CurrencyType.usd.value,
+      balance: 0,
+      phoneNumber: null,
+      token: null,
+      role: UserRole.normal,
+      languageCode: LanguageEnum.english.code,
+      isRemindTransactionEveryDate: false,
+      createdDate: now,
+      updatedDate: now,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -107,6 +129,12 @@ class UserModel {
             dialCode: objectPhone["dialCode"],
             isoCode: objectPhone["isoCode"])
         : null;
+    bool isRemindTransactionEveryDate =
+        map['isRemindTransactionEveryDate'] != null
+            ? (map['isRemindTransactionEveryDate'] is bool
+                ? map['isRemindTransactionEveryDate'] as bool
+                : (map['isRemindTransactionEveryDate'] as int) == 1)
+            : true;
     return UserModel(
       id: map['id'] as String,
       email: map['email'] as String,
@@ -120,9 +148,7 @@ class UserModel {
       role: UserRole.fromValue(map['role'] as String? ?? UserRole.normal.value),
       languageCode:
           map['languageCode'] != null ? map['languageCode'] as String : 'en',
-      isRemindTransactionEveryDate: map['isRemindTransactionEveryDate'] != null
-          ? map['isRemindTransactionEveryDate'] as bool
-          : true,
+      isRemindTransactionEveryDate: isRemindTransactionEveryDate,
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       updatedDate:
