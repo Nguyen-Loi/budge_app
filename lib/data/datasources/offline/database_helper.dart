@@ -27,7 +27,7 @@ class DatabaseHelper extends StateNotifier<Database?> {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, _databaseName);
 
-    await deleteDatabase(path);
+    // await deleteDatabase(path);
     Database database = await openDatabase(
       path,
       version: _databaseVersion,

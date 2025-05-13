@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import 'package:budget_app/core/enums/account_type_enum.dart';
@@ -103,7 +104,7 @@ class UserModel {
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    Map<String, dynamic> data = {
       'id': id,
       'email': email,
       'profileUrl': profileUrl,
@@ -119,6 +120,11 @@ class UserModel {
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
+    if (!kIsWeb) {
+      data['isRemindTransactionEveryDate'] =
+          isRemindTransactionEveryDate ? 1 : 0;
+    }
+    return data;
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
