@@ -5,6 +5,7 @@ import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/data/datasources/offline/database_helper.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
@@ -50,7 +51,7 @@ class AuthAPI implements IAuthApi {
   })  : _auth = auth,
         _ref = ref,
         _db = db;
-  String get uid => _auth.currentUser?.uid??'';
+  String get uid => _auth.currentUser?.uid ?? '';
 
   User _currentUserAccount() {
     return _auth.currentUser!;
@@ -117,6 +118,7 @@ class AuthAPI implements IAuthApi {
   FutureEitherVoid signOut() async {
     try {
       _ref.invalidate(packageInfoBaseControllerProvider);
+      _ref.read(dbHelperProvider.notifier).deleteDb();
       FacebookAuth.instance.logOut();
       GoogleSignIn().signOut();
       await _auth.signOut();
@@ -216,8 +218,8 @@ class AuthAPI implements IAuthApi {
       return right(null);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-      return left(Failure(
-            error: _ref.read(appLocalizationsProvider).emailNotFound));
+        return left(
+            Failure(error: _ref.read(appLocalizationsProvider).emailNotFound));
       }
       return left(Failure(error: e.toString()));
     } catch (e) {

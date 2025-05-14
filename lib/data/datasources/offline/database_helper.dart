@@ -38,6 +38,13 @@ class DatabaseHelper extends StateNotifier<Database?> {
     return database;
   }
 
+  Future<void> deleteDb() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, _databaseName);
+    await deleteDatabase(path);
+  }
+
+
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
     CREATE TABLE $budgetTable (
