@@ -52,4 +52,31 @@ class BudgetLocal implements BudgetRepository {
       return left(Failure(error: e.toString()));
     }
   }
+
+  @override
+  FutureEitherVoid saveAll({
+    required List<BudgetModel> budgets,
+  }) async {
+    if (budgets.isEmpty) {
+      await _db.delete(TableName.budget);
+      return right(null);
+    }
+    try {
+      await _db.transaction((txn) async {
+        await txn.delete(TableName.budget);
+        final batch = txn.batch();
+        for (var budget in budgets) {
+          batch.insert(
+            TableName.budget,
+            budget.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
+        await batch.commit(noResult: true);
+      });
+      return right(null);
+    } catch (e, _) {
+      return left(Failure(error: e.toString()));
+    }
+  }
 }
