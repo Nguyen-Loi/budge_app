@@ -83,4 +83,18 @@ class UserLocal extends UserRepository {
       return left(Failure(message: 'Error updating user', error: e.toString()));
     }
   }
+
+  @override
+  FutureEitherVoid add({required UserModel user}) async {
+    try {
+      await _db.insert(
+        TableName.user,
+        user.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      return right(null);
+    } catch (e) {
+      return left(Failure(error: e.toString()));
+    }
+  }
 }

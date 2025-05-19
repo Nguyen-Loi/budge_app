@@ -54,30 +54,4 @@ class BudgetApi implements BudgetRepository {
       return left(Failure(error: e.toString()));
     }
   }
-  
-  @override
-FutureEitherVoid saveAll({required List<BudgetModel> budgets}) async {
-  if (budgets.isEmpty) {
-    return right(null);
-  }
-  try {
-    final userId = budgets.first.userId;
-
-    final snapshot = await db.collection(FirestorePath.budgets(uid: userId)).get();
-    WriteBatch batch = db.batch();
-    for (final doc in snapshot.docs) {
-      batch.delete(doc.reference);
-    }
-
-    for (var budget in budgets) {
-      final docRef = db.collection(FirestorePath.budgets(uid: userId)).doc(budget.id);
-      batch.set(docRef, budget.toMap());
-    }
-    await batch.commit();
-    return right(null);
-  } catch (e) {
-    logError(e.toString());
-    return left(Failure(error: e.toString()));
-  }
-}
 }
