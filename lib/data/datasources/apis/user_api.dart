@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/data/datasources/apis/storage_api.dart';
 import 'package:budget_app/data/datasources/apis/storage_path.dart';
@@ -14,8 +15,7 @@ import 'package:fpdart/fpdart.dart';
 final userApiProvider = Provider((ref) {
   final db = ref.watch(dbProvider);
   final storageApi = ref.watch(storageAPIProvider);
-  return UserApi(
-      db: db, storageApi: storageApi);
+  return UserApi(db: db, storageApi: storageApi);
 });
 
 class UserApi extends UserRepository {
@@ -57,5 +57,16 @@ class UserApi extends UserRepository {
     final newUser = user.copyWith(profileUrl: profileUrl);
     await _db.doc(FirestorePath.user(user.id)).set(newUser.toMap());
     return right(newUser);
-}
+  }
+
+  @override
+  FutureEitherVoid add({required UserModel user}) async {
+    try {
+      await _db.doc(FirestorePath.user(user.id)).set(user.toMap());
+      return right(null);
+    } catch (e) {
+      logError(e.toString());
+      return left(Failure(error: e.toString()));
+    }
+  }
 }

@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/language_enum.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
@@ -26,6 +27,7 @@ class SettingsView extends StatelessWidget {
               _themeSwitch(context, ref),
               _languageDropdown(context, ref),
               _dailyTransactionReminderSwitch(context, ref),
+              _asyncDb(context, ref),
             ],
           );
         }));
@@ -82,6 +84,22 @@ class SettingsView extends StatelessWidget {
           onChanged: (e) {
             ref.read(languageControllerProvider.notifier).updateLanguage(e!);
           }),
+    );
+  }
+
+  Widget _asyncDb(BuildContext context, WidgetRef ref) {
+    final user = ref.read(userBaseControllerProvider.notifier);
+    if (!user.isLogin) {
+      return const SizedBox();
+    }
+    return ListTile(
+      title: BText(context.loc.syncLocalToCloud),
+      trailing: IconButton(
+        icon: Icon(IconManager.sync),
+        onPressed: () async {
+          ref.read(userBaseControllerProvider.notifier).transferData(context);
+        },
+      ),
     );
   }
 }

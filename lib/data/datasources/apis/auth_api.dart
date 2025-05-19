@@ -1,3 +1,4 @@
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
@@ -5,12 +6,16 @@ import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/offline/database_helper.dart';
+import 'package:budget_app/data/datasources/transfer_data_source.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -57,6 +62,36 @@ class AuthAPI implements IAuthApi {
     return _auth.currentUser!;
   }
 
+  Future<void> transferData(BuildContext context) async {
+    final user = _currentUserAccount();
+    final res = await TransferData.sqliteToFirestore(
+      _ref,
+      user: user,
+      validateSetup: true,
+    );
+    res.fold((l) async {
+      if (!context.mounted) {
+        throw Exception('context is not mounted');
+      }
+      await BDialogInfo(
+        dialogInfoType: BDialogInfoType.warning,
+        message: l.message,
+      ).presentAction(
+        context,
+        onClose: () {
+          signOut();
+          throw Exception(context.loc.loginCancelledByUser);
+        },
+      );
+    }, (r) async {
+      await TransferData.sqliteToFirestore(
+        _ref,
+        user: user,
+        validateSetup: false,
+      );
+    });
+  }
+
   Future<void> _writeNewInfoToDB({required AccountType accountType}) async {
     User user = _currentUserAccount();
     if (accountType == AccountType.google ||
@@ -87,8 +122,8 @@ class AuthAPI implements IAuthApi {
       createdDate: now,
       updatedDate: now,
     );
-    // Write user
-    await _db.doc(FirestorePath.user(user.uid)).set(newUser.toMap());
+
+    await _ref.read(userApiProvider).add(user: newUser);
   }
 
   @override

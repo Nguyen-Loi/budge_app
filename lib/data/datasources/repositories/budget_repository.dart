@@ -16,7 +16,4 @@ abstract class BudgetRepository {
   Future<List<BudgetModel>> fetch(String uid);
   FutureEitherVoid addBudget({required BudgetModel model});
   FutureEitherVoid updateBudget({required BudgetModel model});
-  FutureEitherVoid saveAll({
-    required List<BudgetModel> budgets,
-  });
 }

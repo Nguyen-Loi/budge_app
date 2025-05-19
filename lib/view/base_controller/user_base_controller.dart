@@ -1,12 +1,17 @@
+import 'package:budget_app/common/log.dart';
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
 import 'package:budget_app/data/datasources/repositories/user_repository.dart';
+import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/data/models/user_model.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,7 +34,9 @@ class UserBaseController extends StateNotifier<UserModel> {
   final Ref _ref;
 
   UserBaseController(
-      {required UserRepository userRepository, required Ref ref, required String uid})
+      {required UserRepository userRepository,
+      required Ref ref,
+      required String uid})
       : _userRepository = userRepository,
         _ref = ref,
         _uid = uid,
@@ -84,12 +91,14 @@ class UserBaseController extends StateNotifier<UserModel> {
         .read(budgetBaseControllerProvider)
         .firstWhere((e) => e.id == budgetId);
 
-    final res = await _ref.read(transactionRepositoryProvider).addBudgetTransaction(
-        user: state,
-        budgetModel: currentBudget,
-        amount: amount,
-        note: note,
-        transactionDate: transactionDate);
+    final res = await _ref
+        .read(transactionRepositoryProvider)
+        .addBudgetTransaction(
+            user: state,
+            budgetModel: currentBudget,
+            amount: amount,
+            note: note,
+            transactionDate: transactionDate);
 
     res.fold((l) {
       showSnackBar(context, l.message);
@@ -120,6 +129,28 @@ class UserBaseController extends StateNotifier<UserModel> {
       showSnackBar(context, l.message);
     }, (r) {
       reload(r);
+    });
+  }
+
+  void transferData(BuildContext context) async {
+    User? user = _ref.read(authProvider).currentUser;
+    if (user == null) {
+      throw Exception('User need login to transfer data');
+    }
+
+    final closeDialog = showLoading(
+        context: context, text: context.loc.syncLocalToCloudLoading);
+    final res = await TransferData.sqliteToFirestore(_ref,
+        user: user, validateSetup: false);
+    closeDialog();
+
+    res.fold((l) {
+      logError(l.message);
+      showBDialogInfoError(context, message: context.loc.syncLocalToCloudError);
+    }, (r) {
+      showBDialog(context,
+          dialogInfoType: BDialogInfoType.success,
+          message: context.loc.syncLocalToCloudSuccess);
     });
   }
 }

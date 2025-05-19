@@ -37,7 +37,9 @@ class AuthController extends StateNotifier<void> {
     res.fold((l) {
       logError(l.error);
       showSnackBar(context, l.message);
-    }, (r) {
+    }, (r) async {
+      await _authAPI.transferData(context);
+      if (!context.mounted) return;
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
       initBaseUid();
@@ -65,7 +67,9 @@ class AuthController extends StateNotifier<void> {
     res.fold((l) {
       logError(l.error);
       showSnackBar(context, l.message);
-    }, (r) {
+    }, (r) async {
+      await _authAPI.transferData(context);
+      if (!context.mounted) return;
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
       initBaseUid();
@@ -81,7 +85,9 @@ class AuthController extends StateNotifier<void> {
     res.fold((l) {
       logError(l.error);
       showSnackBar(context, l.message);
-    }, (r) {
+    }, (r) async {
+      await _authAPI.transferData(context);
+      if (!context.mounted) return;
       Navigator.pushNamedAndRemoveUntil(
           context, RoutePath.home, (route) => false);
       initBaseUid();

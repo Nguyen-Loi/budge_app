@@ -254,5 +254,11 @@
   "invalidPhoneNumber": "Số điện thoại không hợp lệ",
   "dailyTransactionReminder": "Nhắc nhở giao dịch hàng ngày",
   "guestAccess": "Truy cập khách",
-  "loginToUse": "Bạn cần đăng nhập để sử dụng tính năng này"
+  "loginToUse": "Bạn cần đăng nhập để sử dụng tính năng này",
+  "pAccountAlreadyHasExistingData": "Tài khoản {accountName} đã có dữ liệu. Nếu bạn tiếp tục đăng nhập, toàn bộ dữ liệu hiện tại sẽ bị xóa.\nBạn có chắc chắn muốn tiếp tục không?",
+  "loginCancelledByUser": "Đăng nhập đã bị hủy bởi người dùng",
+  "syncLocalToCloud": "Lưu trữ dữ liệu cục bộ lên cloud",
+  "syncLocalToCloudLoading": "Đang đồng bộ hóa dữ liệu cục bộ lên đám mây...",
+  "syncLocalToCloudSuccess": "Đồng bộ hóa dữ liệu cục bộ lên đám mây thành công",
+  "syncLocalToCloudError": "Đã xảy ra lỗi khi đồng bộ hóa dữ liệu cục bộ lên đám mây. Vui lòng thử lại sau"
 }

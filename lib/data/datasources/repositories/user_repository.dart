@@ -19,4 +19,5 @@ abstract class UserRepository {
   Future<UserModel> getUserById(String uid);
   FutureEither<UserModel> updateUser(
       {required UserModel user, required File? file});
+  FutureEitherVoid add({required UserModel user});
 }

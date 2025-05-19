@@ -111,19 +111,20 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         final isLogin = ref.watch(userBaseControllerProvider.notifier).isLogin;
         return ColumnWithSpacing(
           children: [
-            _item(
-                icon: IconManager.account,
-                text: context.loc.myAccount,
-                onPressed: () {
-                  if (_validateLogin(isLogin) == true) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const ProfileDetailView(),
-                      ),
-                    );
-                  }
-                }),
+            if (isLogin)
+              _item(
+                  icon: IconManager.account,
+                  text: context.loc.myAccount,
+                  onPressed: () {
+                    if (_validateLogin(isLogin) == true) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ProfileDetailView(),
+                        ),
+                      );
+                    }
+                  }),
             _item(
                 icon: IconManager.botChat,
                 text: context.loc.chatWithViBot,
