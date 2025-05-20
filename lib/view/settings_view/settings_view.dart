@@ -10,6 +10,7 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -89,7 +90,7 @@ class SettingsView extends StatelessWidget {
 
   Widget _asyncDb(BuildContext context, WidgetRef ref) {
     final user = ref.read(userBaseControllerProvider.notifier);
-    if (!user.isLogin) {
+    if (!user.isLogin&&!kIsWeb) {
       return const SizedBox();
     }
     return ListTile(

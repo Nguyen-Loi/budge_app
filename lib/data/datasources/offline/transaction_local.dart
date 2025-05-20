@@ -20,14 +20,14 @@ import 'package:sqflite/sqflite.dart';
 final transactionLocalProvider = Provider(((ref) {
   final loc = ref.watch(appLocalizationsProvider);
   final db = ref.watch(dbHelperProvider.notifier).db;
-  return TransactionApi(loc: loc, db: db);
+  return TransactionLocal(loc: loc, db: db);
 }));
 
-class TransactionApi extends TransactionRepository {
+class TransactionLocal extends TransactionRepository {
   final AppLocalizations _loc;
   final Database _db;
 
-  TransactionApi({required AppLocalizations loc, required Database db})
+  TransactionLocal({required AppLocalizations loc, required Database db})
       : _loc = loc,
         _db = db;
 
