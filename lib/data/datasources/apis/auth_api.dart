@@ -15,6 +15,7 @@ import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,13 +64,16 @@ class AuthAPI implements IAuthApi {
   }
 
   Future<void> transferData(BuildContext context) async {
+    if (kIsWeb) {
+      return;
+    }
     final user = _currentUserAccount();
     final res = await TransferData.sqliteToFirestore(
       _ref,
       user: user,
       validateSetup: true,
     );
-    res.fold((l) async {
+    await res.fold((l) async {
       if (!context.mounted) {
         throw Exception('context is not mounted');
       }
@@ -79,8 +83,10 @@ class AuthAPI implements IAuthApi {
       ).presentAction(
         context,
         onClose: () {
+          Navigator.of(context).pop();
           signOut();
-          throw Exception(context.loc.loginCancelledByUser);
+          showBDialogInfoError(context,
+              message: context.loc.loginCancelledByUser);
         },
       );
     }, (r) async {

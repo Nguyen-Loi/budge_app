@@ -1,6 +1,7 @@
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
+import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/offline/budget_local.dart';
 import 'package:budget_app/data/datasources/offline/database_helper.dart';
 import 'package:budget_app/data/datasources/offline/transaction_local.dart';
@@ -26,7 +27,7 @@ class TransferData {
         await ref.read(userLocalProvider).getUserById('');
 
     UserModel accountUserModel =
-        await ref.read(userLocalProvider).getUserById(userId);
+        await ref.read(userApiProvider).getUserById(userId);
 
     UserModel newUserModel = accountUserModel.copyWith(
         balance: userLocalModel.balance,
