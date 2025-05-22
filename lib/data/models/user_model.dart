@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
-import 'package:flutter/foundation.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import 'package:budget_app/core/enums/account_type_enum.dart';
@@ -103,7 +102,7 @@ class UserModel {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap({bool isSqliteFomat = false}) {
     Map<String, dynamic> data = {
       'id': id,
       'email': email,
@@ -120,27 +119,49 @@ class UserModel {
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
-    if (!kIsWeb) {
+    if (isSqliteFomat) {
       data['isRemindTransactionEveryDate'] =
           isRemindTransactionEveryDate ? 1 : 0;
+      data['phoneNumber'] = phoneNumber?.toString();
     }
     return data;
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
-    Map<String, dynamic>? objectPhone = map['phoneNumber'];
-    PhoneNumber? phoneNumber = objectPhone != null
-        ? PhoneNumber(
-            phoneNumber: objectPhone["phoneNumber"],
-            dialCode: objectPhone["dialCode"],
-            isoCode: objectPhone["isoCode"])
-        : null;
-    bool isRemindTransactionEveryDate =
-        map['isRemindTransactionEveryDate'] != null
-            ? (map['isRemindTransactionEveryDate'] is bool
-                ? map['isRemindTransactionEveryDate'] as bool
-                : (map['isRemindTransactionEveryDate'] as int) == 1)
-            : true;
+    PhoneNumber? phoneNumber;
+    if (map['phoneNumber'] != null) {
+      if (map['phoneNumber'] is String) {
+        final phoneStr = map['phoneNumber'] as String;
+        final reg = RegExp(
+            r'PhoneNumber\(phoneNumber: ([^,]+), dialCode: ([^,]+), isoCode: ([^)]+)\)');
+        final match = reg.firstMatch(phoneStr);
+        if (match != null) {
+          phoneNumber = PhoneNumber(
+            phoneNumber: match.group(1),
+            dialCode: match.group(2),
+            isoCode: match.group(3),
+          );
+        }
+      }
+      if (map['phoneNumber'] is Map<String, dynamic>) {
+        final objectPhone = map['phoneNumber'] as Map<String, dynamic>;
+        phoneNumber = PhoneNumber(
+          phoneNumber: objectPhone["phoneNumber"],
+          dialCode: objectPhone["dialCode"],
+          isoCode: objectPhone["isoCode"],
+        );
+      }
+    }
+    bool isRemindTransactionEveryDate = true;
+    if (map['isRemindTransactionEveryDate'] != null) {
+      final value = map['isRemindTransactionEveryDate'];
+      if (value is bool) {
+        isRemindTransactionEveryDate = value;
+      } else if (value is int) {
+        isRemindTransactionEveryDate = value == 1;
+      }
+    }
+
     return UserModel(
       id: map['id'] as String,
       email: map['email'] as String,

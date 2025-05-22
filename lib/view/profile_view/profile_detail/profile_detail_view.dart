@@ -57,6 +57,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
               alignment: Alignment.topRight,
               child: OutlinedButton(
                   onPressed: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
                     ref
                         .read(profileDetailControllerProvider.notifier)
                         .updateDisable(!disable);

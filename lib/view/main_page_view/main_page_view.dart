@@ -1,6 +1,7 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_status.dart';
+import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
@@ -8,9 +9,11 @@ import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/budget_view/budget_page.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
+import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
 import 'package:budget_app/view/transactions_view/transaction_view.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
 import 'package:budget_app/view/profile_view/profile_page.dart';
@@ -115,7 +118,22 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   Widget build(BuildContext context) {
     return ref.watch(mainPageFutureProvider(context)).when(
           data: (_) => body(),
-          error: (_, __) => const Scaffold(body: BStatus.error()),
+          error: (_, __) => Scaffold(
+              body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                  child: BStatus.error(
+                text: context.loc.anErrorUnexpectedOccur,
+              )),
+              SizedBox(height: 16),
+              BButton(
+                  onPressed: () {
+                    ref.read(profileController.notifier).signOut(context);
+                  },
+                  title: context.loc.signIn)
+            ],
+          )),
           loading: () => const Scaffold(body: Center(child: BStatus.loading())),
         );
   }

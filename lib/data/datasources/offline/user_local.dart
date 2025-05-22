@@ -73,7 +73,7 @@ class UserLocal extends UserRepository {
       final updatedUser = user.copyWith(profileUrl: profileUrl);
       await _db.update(
         TableName.user,
-        updatedUser.toMap(),
+        updatedUser.toMap(isSqliteFomat: true),
         where: 'id = ?',
         whereArgs: [updatedUser.id],
       );
