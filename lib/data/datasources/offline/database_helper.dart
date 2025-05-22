@@ -1,3 +1,4 @@
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/data/datasources/table_name.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
@@ -26,7 +27,7 @@ class DatabaseHelper extends StateNotifier<Database?> {
   Future<Database> initDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, _databaseName);
-
+    logInfo('Database path: $path');
     // await deleteDatabase(path);
     Database database = await openDatabase(
       path,
@@ -38,12 +39,12 @@ class DatabaseHelper extends StateNotifier<Database?> {
     return database;
   }
 
-  Future<void> deleteDb() async {
+  Future<void> clearDb() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, _databaseName);
     await deleteDatabase(path);
+    initDatabase();
   }
-
 
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''

@@ -59,7 +59,7 @@
   "left": "Còn lại",
   "approaced": "Tiếp cận",
   "exceeded": "Vượt quá",
-  "anErrorUnexpectedOccur": "Đã xảy ra một lỗi không mong muốn",
+  "anErrorUnexpectedOccur": "Đã xảy ra một lỗi không mong muốn, vui lòng thử lại",
   "errorUploadFiles": "Lỗi khi tải lên tệp",
   "errorUploadFile": "Đã xảy ra lỗi khi tải lên hình ảnh",
   "deleteTitle": "Xóa {obj}",

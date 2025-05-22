@@ -11,7 +11,6 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -48,8 +47,10 @@ class UserBaseController extends StateNotifier<UserModel> {
     currentUser = currentUser.copyWith(token: token);
 
     // update token profile
-    await _userRepository.updateUser(user: currentUser, file: null);
-    reload(currentUser);
+    if (token != null) {
+      await _userRepository.updateUser(user: currentUser, file: null);
+      reload(currentUser);
+    }
 
     return state;
   }
@@ -133,15 +134,9 @@ class UserBaseController extends StateNotifier<UserModel> {
   }
 
   void transferData(BuildContext context) async {
-    User? user = _ref.read(authProvider).currentUser;
-    if (user == null) {
-      throw Exception('User need login to transfer data');
-    }
-
     final closeDialog = showLoading(
         context: context, text: context.loc.syncLocalToCloudLoading);
-    final res = await TransferData.sqliteToFirestore(_ref,
-        user: user, validateSetup: false);
+    final res = await TransferData.asyncData(_ref, context);
     closeDialog();
 
     res.fold((l) {

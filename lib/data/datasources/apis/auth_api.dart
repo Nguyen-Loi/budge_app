@@ -1,4 +1,3 @@
-import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
@@ -8,15 +7,11 @@ import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/offline/database_helper.dart';
-import 'package:budget_app/data/datasources/transfer_data_source.dart';
-import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -61,41 +56,6 @@ class AuthAPI implements IAuthApi {
 
   User _currentUserAccount() {
     return _auth.currentUser!;
-  }
-
-  Future<void> transferData(BuildContext context) async {
-    if (kIsWeb) {
-      return;
-    }
-    final user = _currentUserAccount();
-    final res = await TransferData.sqliteToFirestore(
-      _ref,
-      user: user,
-      validateSetup: true,
-    );
-    await res.fold((l) async {
-      if (!context.mounted) {
-        throw Exception('context is not mounted');
-      }
-      await BDialogInfo(
-        dialogInfoType: BDialogInfoType.warning,
-        message: l.message,
-      ).presentAction(
-        context,
-        onClose: () {
-          Navigator.of(context).pop();
-          signOut();
-          showBDialogInfoError(context,
-              message: context.loc.loginCancelledByUser);
-        },
-      );
-    }, (r) async {
-      await TransferData.sqliteToFirestore(
-        _ref,
-        user: user,
-        validateSetup: false,
-      );
-    });
   }
 
   Future<void> _writeNewInfoToDB({required AccountType accountType}) async {
@@ -159,9 +119,10 @@ class AuthAPI implements IAuthApi {
   FutureEitherVoid signOut() async {
     try {
       _ref.invalidate(packageInfoBaseControllerProvider);
-      _ref.read(dbHelperProvider.notifier).deleteDb();
+      _ref.read(dbHelperProvider.notifier).clearDb();
       FacebookAuth.instance.logOut();
       GoogleSignIn().signOut();
+      await _ref.read(dbHelperProvider.notifier).clearDb();
       await _auth.signOut();
       return right(null);
     } catch (e) {

@@ -34,7 +34,10 @@ class UserApi extends UserRepository {
         .mapModel<UserModel>(
             modelFrom: UserModel.fromMap, modelTo: (model) => model.toMap())
         .get();
-    UserModel newData = data.data()!;
+    UserModel? newData = data.data();
+    if (newData == null) {
+      throw Exception('User not found');
+    }
     return newData;
   }
 

@@ -59,7 +59,7 @@
     "left": "Left",
     "approaced": "Approaced",
     "exceeded": "Exceeded",
-    "anErrorUnexpectedOccur": "An error unexpected occur",
+    "anErrorUnexpectedOccur": "An error unexpected occur, please try again",
     "errorUploadFiles": "Error when upload files",
     "errorUploadFile": "'An error occur when upload image'",
     "deleteTitle": "Delete {obj}",
