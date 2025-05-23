@@ -8,7 +8,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:sqflite/sqflite.dart';
 
 final budgetLocalProvider = Provider((ref) {
-  final db = ref.watch(dbHelperProvider.notifier).db;
+  final db = ref.watch(sqlProvider);
   return BudgetLocal(db: db);
 });
 

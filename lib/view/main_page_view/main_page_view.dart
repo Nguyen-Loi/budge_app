@@ -9,7 +9,6 @@ import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
-import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/budget_view/budget_page.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
@@ -128,10 +127,11 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
               )),
               SizedBox(height: 16),
               BButton(
-                  onPressed: () {
-                    ref.read(profileController.notifier).signOut(context);
-                  },
-                  title: context.loc.signIn)
+                onPressed: () {
+                  ref.read(profileController.notifier).signOut(context);
+                },
+                title: context.loc.signIn,
+              )
             ],
           )),
           loading: () => const Scaffold(body: Center(child: BStatus.loading())),

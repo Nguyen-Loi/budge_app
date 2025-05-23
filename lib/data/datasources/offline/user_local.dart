@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/data/datasources/apis/storage_api.dart';
 import 'package:budget_app/data/datasources/apis/storage_path.dart';
 import 'package:budget_app/core/type_defs.dart';
@@ -12,7 +13,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 final userLocalProvider = Provider((ref) {
-  final db = ref.watch(dbHelperProvider.notifier).db;
+  final db = ref.watch(sqlProvider);
   final storageApi = ref.watch(storageAPIProvider);
   return UserLocal(db: db, storageApi: storageApi);
 });
@@ -47,6 +48,7 @@ class UserLocal extends UserRepository {
         return userDefault;
       }
     } catch (e) {
+      logError('Error fetching user: $e');
       throw Exception('Error fetching user: $e');
     }
   }
