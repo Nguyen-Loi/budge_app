@@ -19,7 +19,7 @@ import 'package:sqflite/sqflite.dart';
 
 final transactionLocalProvider = Provider(((ref) {
   final loc = ref.watch(appLocalizationsProvider);
-  final db = ref.watch(dbHelperProvider.notifier).db;
+  final db = ref.watch(sqlProvider);
   return TransactionLocal(loc: loc, db: db);
 }));
 

@@ -1,3 +1,4 @@
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
@@ -119,13 +120,13 @@ class AuthAPI implements IAuthApi {
   FutureEitherVoid signOut() async {
     try {
       _ref.invalidate(packageInfoBaseControllerProvider);
-      _ref.read(dbHelperProvider.notifier).clearDb();
       FacebookAuth.instance.logOut();
       GoogleSignIn().signOut();
-      await _ref.read(dbHelperProvider.notifier).clearDb();
+      await _ref.read(sqlHelperProvider.notifier).clearDb();
       await _auth.signOut();
       return right(null);
     } catch (e) {
+      logError('Error signing out: $e');
       return Left(Failure(error: e.toString()));
     }
   }

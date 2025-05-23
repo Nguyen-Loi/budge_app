@@ -1,6 +1,6 @@
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart'
-    show BDialogInfo, BDialogInfoType, Present, showBDialogInfoError;
+    show BDialogInfo, BDialogInfoType, Present;
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/apis/budget_api.dart';
@@ -111,10 +111,8 @@ class TransferData {
             context,
             onClose: () async {
               ref.read(authProvider).signOut();
+              result = left(Failure(message: context.loc.loginCancelledByUser));
               Navigator.of(context).pop();
-              showBDialogInfoError(context,
-                  message: context.loc.loginCancelledByUser);
-              result = right(null);
             },
             onSubmit: () async {
               // Return the result so it can be awaited outside
@@ -216,10 +214,7 @@ class TransferData {
       List<BudgetModel> budgets = data['budgetsModelApi'];
       List<TransactionModel> transactions = data['transactionsModelApi'];
 
-      final db = ref.read(dbHelperProvider);
-      if (db == null) {
-        return left(Failure(message: 'Database not initialized'));
-      }
+      final db = ref.read(sqlProvider);
 
       // Start SQLite batch operation
       final Batch batch = db.batch();

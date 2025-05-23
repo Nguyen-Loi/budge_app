@@ -38,7 +38,7 @@ class MainPageController extends StateNotifier<void> {
 
     if (!kIsWeb) {
       logInfo('Loading infomation database....');
-      await _ref.read(dbHelperProvider.notifier).initDatabase();
+      await _ref.read(sqlHelperProvider.notifier).initDatabase();
     }
 
     // Base data

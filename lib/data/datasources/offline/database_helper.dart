@@ -4,7 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-final dbHelperProvider = StateNotifierProvider<DatabaseHelper, Database?>((_) {
+final sqlProvider = Provider<Database>((ref) {
+  final databaseState = ref.watch(sqlHelperProvider);
+
+  if (databaseState == null) {
+    throw Exception(
+        'Database is not available. Ensure it is initialized and not currently being cleared/reinitialized.');
+  }
+  return databaseState;
+});
+
+final sqlHelperProvider = StateNotifierProvider<DatabaseHelper, Database?>((_) {
   return DatabaseHelper(null);
 });
 
@@ -25,6 +35,10 @@ class DatabaseHelper extends StateNotifier<Database?> {
   }
 
   Future<Database> initDatabase() async {
+    if (state != null) {
+      logInfo('Database already initialized. Path: ${state?.path}');
+      return state!;
+    }
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, _databaseName);
     logInfo('Database path: $path');
@@ -40,10 +54,20 @@ class DatabaseHelper extends StateNotifier<Database?> {
   }
 
   Future<void> clearDb() async {
+    Database? currentDb = state;
+    if (currentDb != null) {
+      logInfo('Closing database for clearDb. Path: ${currentDb.path}');
+      await currentDb.close();
+      if (state == currentDb) {
+        state = null;
+      }
+    }
+
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, _databaseName);
     await deleteDatabase(path);
-    initDatabase();
+    logInfo('Database file deleted from $path. Re-initializing...');
+    await initDatabase();
   }
 
   Future<void> _onCreate(Database db, int version) async {
