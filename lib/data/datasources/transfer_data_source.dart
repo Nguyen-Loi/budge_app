@@ -201,7 +201,11 @@ class TransferData {
       }
 
       await batch.commit();
-      return right(null);
+
+      data['userModelApi'] = userModel;
+      data['budgetsModelApi'] = budgets;
+      data['transactionsModelApi'] = transactions;
+      return _apiToSqlite(ref, data: data);
     } catch (e) {
       return left(Failure(message: 'Error transferring data to Firebase: $e'));
     }

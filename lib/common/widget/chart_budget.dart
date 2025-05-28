@@ -88,11 +88,16 @@ class _ChartBudgetState extends State<ChartBudget> {
               ),
             ),
           ),
-          ColumnWithSpacing(
-            spacing: 4,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _informations(list),
+          SizedBox(
+            width: 4,
+          ),
+          Expanded(
+            child: ColumnWithSpacing(
+              spacing: 4,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _informations(list),
+            ),
           ),
         ],
       ),
@@ -169,12 +174,14 @@ class Indicator extends StatelessWidget {
         const SizedBox(
           width: 4,
         ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            ),
           ),
         )
       ],
