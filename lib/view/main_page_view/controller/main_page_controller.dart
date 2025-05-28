@@ -80,7 +80,6 @@ class MainPageController extends StateNotifier<void> {
   }
 
   Future<InitializationStatus> _initGoogleMobileAds() {
-    logInfo('Initialize Google Mobile Ads SDK');
     return MobileAds.instance.initialize();
   }
 
