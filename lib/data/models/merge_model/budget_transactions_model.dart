@@ -1,6 +1,6 @@
 import 'package:budget_app/core/gen_id.dart';
-import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/models/transaction_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
+import 'package:budget_app/data/models/transaction_model.dart';
 
 class BudgetTransactionsModel {
   final BudgetModel budget;

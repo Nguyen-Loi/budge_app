@@ -1,4 +1,4 @@
-import 'package:budget_app/apis/auth_api.dart';
+import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final uidControllerProvider =

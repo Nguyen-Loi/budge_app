@@ -12,6 +12,7 @@ class IconManager {
   static IconData tap = Icons.touch_app_sharp;
   static IconData send = Icons.send;
   static IconData botChat = FontAwesomeIcons.rocketchat;
+  static IconData signIn = Icons.login;
 
   static IconData arrowNext = Icons.arrow_forward_ios_rounded;
   static IconData dropdown = Icons.keyboard_arrow_down;
@@ -23,6 +24,7 @@ class IconManager {
   static IconData signOut = Icons.logout;
   static IconData modify = FontAwesomeIcons.pen;
   static IconData excel = FontAwesomeIcons.fileExcel;
+  static IconData sync = Icons.sync;
 
   static IconData account = FontAwesomeIcons.user;
   static IconData setting = Icons.settings_outlined;

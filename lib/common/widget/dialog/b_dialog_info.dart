@@ -32,6 +32,20 @@ Future<void> showBDialogInfoError(BuildContext context,
   ).present(context);
 }
 
+Future<void> showBDialog(BuildContext context,
+    {String? title,
+    required BDialogInfoType dialogInfoType,
+    required String message,
+    VoidCallback? onConfirm,
+    String? textSubmit}) {
+  return BDialogInfo(
+    message: message,
+    title: title,
+    dialogInfoType: dialogInfoType,
+  ).present(context);
+}
+
+
 extension Present<T> on BDialogInfo {
   Future<T?> present(BuildContext context,
       {String? textSubmit, VoidCallback? onSubmit}) {

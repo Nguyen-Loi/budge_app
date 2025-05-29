@@ -17,3 +17,21 @@ class Failure {
 
 typedef FutureEither<T> = Future<Either<Failure, T>>;
 typedef FutureEitherVoid = FutureEither<void>;
+
+
+extension EitherHelpers<L, R> on Either<L, R> {
+  R? unwrapRight() {
+    return toOption().toNullable();
+  }
+}
+
+extension FutureEitherHelpers<T> on Either<Failure, T> {
+  Failure getLeftOrDefault({String? defaultError}) {
+    final result = this;
+    return result.fold(
+      (l) => l,
+      (r) => Failure(error: defaultError),
+    );
+
+  }
+}

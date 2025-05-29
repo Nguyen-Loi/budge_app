@@ -3,7 +3,7 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/models_widget/chart_budget_model.dart';
+import 'package:budget_app/data/models/models_widget/chart_budget_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -88,11 +88,16 @@ class _ChartBudgetState extends State<ChartBudget> {
               ),
             ),
           ),
-          ColumnWithSpacing(
-            spacing: 4,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _informations(list),
+          SizedBox(
+            width: 4,
+          ),
+          Expanded(
+            child: ColumnWithSpacing(
+              spacing: 4,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _informations(list),
+            ),
           ),
         ],
       ),
@@ -169,12 +174,14 @@ class Indicator extends StatelessWidget {
         const SizedBox(
           width: 4,
         ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            ),
           ),
         )
       ],

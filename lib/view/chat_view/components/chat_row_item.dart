@@ -1,7 +1,7 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/role_chat_enum.dart';
-import 'package:budget_app/models/chat_model.dart';
+import 'package:budget_app/data/models/chat_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 

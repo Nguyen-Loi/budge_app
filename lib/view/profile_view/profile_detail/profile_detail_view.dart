@@ -46,88 +46,84 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
     return Consumer(builder: (_, ref, __) {
       final user = ref.watch(userBaseControllerProvider);
       final disable = ref.watch(profileDetailControllerProvider);
-      if (user != null) {
-        _name = user.name;
-        _phoneNumber = user.phoneNumber;
-      }
+      _name = user.name;
+      _phoneNumber = user.phoneNumber;
 
-      return user == null
-          ? const SizedBox.shrink()
-          : Form(
-              key: _keyState,
-              child: ListView(
-                children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: OutlinedButton(
-                        onPressed: () {
-                          ref
-                              .read(profileDetailControllerProvider.notifier)
-                              .updateDisable(!disable);
-                        },
-                        child: disable
-                            ? BText.caption(
-                                context.loc.modify,
-                              )
-                            : BText.caption(context.loc.readOnly)),
+      return Form(
+        key: _keyState,
+        child: ListView(
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: OutlinedButton(
+                  onPressed: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    ref
+                        .read(profileDetailControllerProvider.notifier)
+                        .updateDisable(!disable);
+                  },
+                  child: disable
+                      ? BText.caption(
+                          context.loc.modify,
+                        )
+                      : BText.caption(context.loc.readOnly)),
+            ),
+            gapH16,
+            BFormPickerImage(
+                initialUrl: user.profileUrl,
+                disable: disable || kIsWeb,
+                onChanged: (f) {
+                  _file = f;
+                }),
+            gapH24,
+            ColumnWithSpacing(
+              children: [
+                BFormFieldText.init(
+                    label: context.loc.email,
+                    disable: true,
+                    initialValue: user.email),
+                BFormFieldText.init(
+                  label: context.loc.name,
+                  disable: disable,
+                  initialValue: user.name,
+                  validator: (v) => v.validateName(context),
+                  onChanged: (v) {
+                    _name = v;
+                  },
+                ),
+                AbsorbPointer(
+                  absorbing: disable,
+                  child: BFormFieldPhoneNumber(
+                    initialValue: user.phoneNumber,
+                    validator: (v) => v.validatePhoneNumber(context),
+                    onInputChanged: (PhoneNumber value) {
+                      _phoneNumber = value;
+                    },
                   ),
-                  gapH16,
-                  BFormPickerImage(
-                      initialUrl: user.profileUrl,
-                      disable: disable || kIsWeb,
-                      onChanged: (f) {
-                        _file = f;
-                      }),
-                  gapH24,
-                  ColumnWithSpacing(
-                    children: [
-                      BFormFieldText.init(
-                          label: context.loc.email,
-                          disable: true,
-                          initialValue: user.email),
-                      BFormFieldText.init(
-                        label: context.loc.name,
-                        disable: disable,
-                        initialValue: user.name,
-                        validator: (v) => v.validateName(context),
-                        onChanged: (v) {
-                          _name = v;
-                        },
-                      ),
-                      AbsorbPointer(
-                        absorbing: disable,
-                        child: BFormFieldPhoneNumber(
-                          initialValue: user.phoneNumber,
-                          validator: (v) => v.validatePhoneNumber(context),
-                          onInputChanged: (PhoneNumber value) {
-                            _phoneNumber = value;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 80),
-                  if (!disable)
-                    FilledButton(
-                        onPressed: () {
-                          if (_keyState.currentState!.validate()) {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            ref
-                                .read(profileDetailControllerProvider.notifier)
-                                .update(context,
-                                    file: _file,
-                                    user: user,
-                                    name: _name,
-                                    phoneNumber: _phoneNumber!);
-                          }
-                        },
-                        child: BText(
-                          context.loc.save,
-                          color: ColorManager.white,
-                        ))
-                ],
-              ),
-            );
+                ),
+              ],
+            ),
+            const SizedBox(height: 80),
+            if (!disable)
+              FilledButton(
+                  onPressed: () {
+                    if (_keyState.currentState!.validate()) {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      ref.read(profileDetailControllerProvider.notifier).update(
+                          context,
+                          file: _file,
+                          user: user,
+                          name: _name,
+                          phoneNumber: _phoneNumber!);
+                    }
+                  },
+                  child: BText(
+                    context.loc.save,
+                    color: ColorManager.white,
+                  ))
+          ],
+        ),
+      );
     });
   }
 }

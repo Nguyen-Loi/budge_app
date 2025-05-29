@@ -50,7 +50,11 @@ class BStatus extends StatelessWidget {
       children: [
         Lottie.asset(LottieAssets.loading1),
         gapH16,
-        BText.b1(text),
+        BText.b1(
+          text,
+          fontWeight: FontWeight.bold,
+          textAlign: TextAlign.center,
+        ),
       ],
     );
   }
@@ -63,7 +67,8 @@ class BStatus extends StatelessWidget {
       children: [
         Lottie.asset(LottieAssets.error),
         gapH16,
-        BText.b1(text),
+        BText.b1(text,
+            fontWeight: FontWeight.bold, textAlign: TextAlign.center),
       ],
     );
   }
@@ -76,7 +81,8 @@ class BStatus extends StatelessWidget {
       children: [
         Lottie.asset(LottieAssets.empty),
         gapH16,
-        BText.b1(text),
+        BText.b1(text,
+            fontWeight: FontWeight.bold, textAlign: TextAlign.center),
       ],
     );
   }

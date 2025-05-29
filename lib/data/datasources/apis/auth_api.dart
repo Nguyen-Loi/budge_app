@@ -1,12 +1,15 @@
-import 'package:budget_app/apis/firestore_path.dart';
+import 'package:budget_app/common/log.dart';
+import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/data/datasources/apis/user_api.dart';
+import 'package:budget_app/data/datasources/offline/database_helper.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
-import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,7 +53,7 @@ class AuthAPI implements IAuthApi {
   })  : _auth = auth,
         _ref = ref,
         _db = db;
-  String get uid => _auth.currentUser!.uid;
+  String get uid => _auth.currentUser?.uid ?? '';
 
   User _currentUserAccount() {
     return _auth.currentUser!;
@@ -86,8 +89,8 @@ class AuthAPI implements IAuthApi {
       createdDate: now,
       updatedDate: now,
     );
-    // Write user
-    await _db.doc(FirestorePath.user(user.uid)).set(newUser.toMap());
+
+    await _ref.read(userApiProvider).add(user: newUser);
   }
 
   @override
@@ -119,9 +122,11 @@ class AuthAPI implements IAuthApi {
       _ref.invalidate(packageInfoBaseControllerProvider);
       FacebookAuth.instance.logOut();
       GoogleSignIn().signOut();
+      await _ref.read(sqlHelperProvider.notifier).clearDb();
       await _auth.signOut();
       return right(null);
     } catch (e) {
+      logError('Error signing out: $e');
       return Left(Failure(error: e.toString()));
     }
   }
@@ -216,8 +221,8 @@ class AuthAPI implements IAuthApi {
       return right(null);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-      return left(Failure(
-            error: _ref.read(appLocalizationsProvider).emailNotFound));
+        return left(
+            Failure(error: _ref.read(appLocalizationsProvider).emailNotFound));
       }
       return left(Failure(error: e.toString()));
     } catch (e) {

@@ -3,7 +3,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/chart_budget.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/models_widget/chart_budget_model.dart';
+import 'package:budget_app/data/models/models_widget/chart_budget_model.dart';
 import 'package:budget_app/view/home_page/widgets/home_chart/controller/home_chart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -8,15 +8,17 @@ enum ButtonType { filled, outlined, text }
 class BButton extends StatelessWidget {
   const BButton(
       {super.key, required this.onPressed, required this.title, this.padding})
-      : type = ButtonType.filled;
+      : type = ButtonType.filled, 
+        textDecoration = null;
 
-  BButton.text({super.key, required this.onPressed, required this.title})
+  BButton.text({super.key, required this.onPressed, required this.title, this.textDecoration})
       : type = ButtonType.text,
         padding = EdgeInsets.symmetric(horizontal: 8, vertical: 4);
 
   final VoidCallback onPressed;
   final String title;
   final EdgeInsets? padding;
+  final TextDecoration? textDecoration;
   final ButtonType type;
 
   @override
@@ -64,6 +66,7 @@ class BButton extends StatelessWidget {
             horizontal: paddingItem?.horizontal ?? 0),
         child: BText(
           title,
+          textDecoration: textDecoration,
           color: Theme.of(context).colorScheme.primary,
           textAlign: TextAlign.end,
         ),

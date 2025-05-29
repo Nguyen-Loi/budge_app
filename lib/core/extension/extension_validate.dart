@@ -20,10 +20,9 @@ extension ValidateForm on String? {
   }
 
   String? validatePhoneNumber(BuildContext context) {
-    final phoneRegExp = RegExp(
-        r"(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})");
+    final phoneRegExp = RegExp(r'^(\+|00)?[0-9]+$');
     String textError = context.loc.phoneNumberInvalid;
-    if (this == null || !phoneRegExp.hasMatch(this!)) {
+    if (this == null || !phoneRegExp.hasMatch(this!.replaceAll(' ', ''))) {
       return textError;
     }
     return null;

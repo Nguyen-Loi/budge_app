@@ -1,4 +1,4 @@
-import 'package:budget_app/apis/auth_api.dart';
+import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';

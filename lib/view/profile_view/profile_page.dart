@@ -53,6 +53,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     super.initState();
   }
 
+  bool _validateLogin(bool isLogin) {
+    if (!isLogin) {
+      BDialogInfo(
+              message: context.loc.loginToUse,
+              dialogInfoType: BDialogInfoType.warning)
+          .present(context);
+      return false;
+    }
+    return true;
+  }
+
   @override
   void dispose() {
     _bannerAd?.dispose();
@@ -85,76 +96,90 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   Widget _info() {
     return Consumer(builder: (_, ref, __) {
       final user = ref.watch(userBaseControllerProvider);
-      return user == null
-          ? const SizedBox.shrink()
-          : ListTile(
-              title: BText.b1(user.name),
-              leading: BAvatar.network(user.profileUrl, size: 20),
-              subtitle: BText.caption(user.email),
-            );
+      return ListTile(
+        title: BText.b1(user.name),
+        leading: BAvatar.network(user.profileUrl, size: 20),
+        subtitle: BText.caption(user.email),
+      );
     });
   }
 
   Widget _body(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 16, bottom: 16),
-      child: ColumnWithSpacing(
-        children: [
-          _item(
-              icon: IconManager.account,
-              text: context.loc.myAccount,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const ProfileDetailView(),
-                  ),
-                );
-              }),
-          _item(
-              icon: IconManager.botChat,
-              text: context.loc.chatWithViBot,
-              onPressed: () {
-                Navigator.pushNamed(context, RoutePath.chat);
-              }),
-          _item(
-              icon: IconManager.setting,
-              text: context.loc.settings,
-              onPressed: () {
-                Navigator.pushNamed(context, RoutePath.settings);
-              }),
-          _item(
-              icon: IconManager.contact,
-              text: context.loc.contact,
-              onPressed: () {
-                BDialogInfo(
-                        message: context.loc.developingFreatures,
-                        dialogInfoType: BDialogInfoType.warning)
-                    .present(context);
-              }),
-          _item(
-              icon: IconManager.signOut,
-              text: context.loc.signOut,
-              onPressed: () {
-                ref.read(profileController.notifier).signOut(context);
-              }),
-          Expanded(child: _content()),
-          if (_bannerAd != null)
-            Align(
-              alignment: Alignment.topCenter,
-              child: SizedBox(
-                width: _bannerAd!.size.width.toDouble(),
-                height: _bannerAd!.size.height.toDouble(),
-                child: AdWidget(ad: _bannerAd!),
+      child: Consumer(builder: (_, ref, __) {
+        final isLogin = ref.watch(userBaseControllerProvider.notifier).isLogin;
+        return ColumnWithSpacing(
+          children: [
+            if (isLogin)
+              _item(
+                  icon: IconManager.account,
+                  text: context.loc.myAccount,
+                  onPressed: () {
+                    if (_validateLogin(isLogin) == true) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ProfileDetailView(),
+                        ),
+                      );
+                    }
+                  }),
+            _item(
+                icon: IconManager.botChat,
+                text: context.loc.chatWithViBot,
+                onPressed: () {
+                  if (_validateLogin(isLogin) == true) {
+                    Navigator.pushNamed(context, RoutePath.chat);
+                  }
+                }),
+            _item(
+                icon: IconManager.setting,
+                text: context.loc.settings,
+                onPressed: () {
+                  Navigator.pushNamed(context, RoutePath.settings);
+                }),
+            _item(
+                icon: IconManager.contact,
+                text: context.loc.contact,
+                onPressed: () {
+                  BDialogInfo(
+                          message: context.loc.developingFreatures,
+                          dialogInfoType: BDialogInfoType.warning)
+                      .present(context);
+                }),
+            if (isLogin)
+              _item(
+                  icon: IconManager.signOut,
+                  text: context.loc.signOut,
+                  onPressed: () {
+                    ref.read(profileController.notifier).signOut(context);
+                  }),
+            if (!isLogin)
+              _item(
+                  icon: IconManager.signIn,
+                  text: context.loc.signIn,
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, RoutePath.login);
+                  }),
+            Expanded(child: _content()),
+            if (_bannerAd != null)
+              Align(
+                alignment: Alignment.topCenter,
+                child: SizedBox(
+                  width: _bannerAd!.size.width.toDouble(),
+                  height: _bannerAd!.size.height.toDouble(),
+                  child: AdWidget(ad: _bannerAd!),
+                ),
               ),
-            ),
-        ],
-      ),
+          ],
+        );
+      }),
     );
   }
 
   Widget _content() {
-    DateTime userJoinDate = ref.watch(userBaseControllerProvider)!.createdDate;
+    DateTime userJoinDate = ref.watch(userBaseControllerProvider).createdDate;
     final monthUserAvailable = DateTime.now().month - userJoinDate.month;
     final appVersion = ref.watch(packageInfoBaseControllerProvider).version;
     return Align(

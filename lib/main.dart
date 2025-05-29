@@ -7,8 +7,6 @@ import 'package:budget_app/core/logger_observer.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/theme/app_theme.dart';
-import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
-import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/view/main_page_view/main_page_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -85,9 +83,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       locale: Locale(language.code),
       supportedLocales: AppLocalizations.supportedLocales,
-      home: ref.watch(authControllerProvider.notifier).isLogin
-          ? const MainPageView()
-          : const LoginView(),
+      home: const MainPageView(),
     );
   }
 }

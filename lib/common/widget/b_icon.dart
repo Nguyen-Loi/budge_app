@@ -1,5 +1,5 @@
 import 'package:budget_app/core/icon_manager_data.dart';
-import 'package:budget_app/models/models_widget/icon_model.dart';
+import 'package:budget_app/data/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
 
 class BIcon extends StatelessWidget {

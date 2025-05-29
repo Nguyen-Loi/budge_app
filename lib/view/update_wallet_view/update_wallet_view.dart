@@ -5,7 +5,7 @@ import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ class _UpdateWalletViewState extends ConsumerState<UpdateWalletView> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userBaseControllerProvider)!;
+    final user = ref.watch(userBaseControllerProvider);
     return BaseView(
         actions: [
           TextButton(

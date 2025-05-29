@@ -1,6 +1,6 @@
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/models_widget/datetime_range_model.dart';
+import 'package:budget_app/data/models/models_widget/datetime_range_model.dart';
 import 'package:flutter/widgets.dart';
 
 enum RangeDateTimeEnum {

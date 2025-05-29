@@ -2,7 +2,7 @@ import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/models_widget/icon_model.dart';
+import 'package:budget_app/data/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
 
 const double _sizeIconMain = 40;

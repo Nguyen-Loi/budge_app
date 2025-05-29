@@ -7,7 +7,7 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/models_widget/datetime_range_model.dart';
+import 'package:budget_app/data/models/models_widget/datetime_range_model.dart';
 import 'package:flutter/material.dart';
 
 class BBottomsheetRangeDatetime extends StatefulWidget {
