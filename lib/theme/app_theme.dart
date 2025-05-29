@@ -51,7 +51,7 @@ class AppTheme {
         onPrimary: ColorManager.black,
         secondary: ColorManager.purple23,
         onSecondary: ColorManager.white,
-        primaryContainer: const Color(0xFFF2F2F2),
+        primaryContainer: const Color(0xFFFFFFFF),
         onPrimaryContainer: const Color(0xFF002E42),
         surface: const Color(0xFFF2F5F6),
         onSurface: const Color(0xFF002E42),

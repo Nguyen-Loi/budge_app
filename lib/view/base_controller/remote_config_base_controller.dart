@@ -22,11 +22,7 @@ final remoteConfigBaseControllerProvider =
 class RemoteConfigBaseController extends StateNotifier<RemoteConfigModel> {
   RemoteConfigBaseController({required UserModel userModel})
       : _userModel = userModel,
-        super(RemoteConfigModel(
-            geminiApiKey: '0',
-            recommendedMinimumVersion: '1.0.0',
-            requiredMinimumVersion: '1.0.0',
-            isAds: false));
+        super(RemoteConfigModel.empty());
   final remoteConfig = FirebaseRemoteConfig.instance;
   final UserModel _userModel;
 
@@ -51,7 +47,7 @@ class RemoteConfigBaseController extends StateNotifier<RemoteConfigModel> {
     await remoteConfig.fetchAndActivate();
     state = RemoteConfigModel.fromMapRemoteConfig(remoteConfig.getAll());
 
-    if(!context.mounted) return;
+    if (!context.mounted) return;
     checkVersionUpdate(context, packageInfo: packageInfo);
   }
 

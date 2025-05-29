@@ -14,8 +14,8 @@ class BFileStorage {
       {bool requestWrite = false}) async {
     var status = await Permission.storage.status;
     if (!status.isGranted) {
-      bool requestWrite = await requestWriteStoragePermission();
-      if (!requestWrite) {
+      bool hasPermission = await requestWriteStoragePermission();
+      if (!hasPermission) {
         throw UnsupportedError(
             "Permission denied. Please allow storage permission.");
       }
@@ -37,20 +37,35 @@ class BFileStorage {
     if (Platform.isAndroid) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      bool storage = true;
-      bool videos = true;
-      bool photos = true;
+
+      List<Permission> permissions = [];
 
       if (androidInfo.version.sdkInt >= 33) {
-        videos = await Permission.videos.status.isGranted;
-        photos = await Permission.photos.status.isGranted;
+        permissions.addAll([
+          Permission.videos,
+          Permission.photos,
+        ]);
       } else {
-        storage = await Permission.storage.status.isGranted;
+        permissions.add(Permission.storage);
       }
-      return storage && videos && photos;
+
+      // Request permissions
+      Map<Permission, PermissionStatus> statuses = await permissions.request();
+
+      // Check if all required permissions are granted
+      bool allGranted = true;
+      for (Permission permission in permissions) {
+        if (statuses[permission] != PermissionStatus.granted) {
+          allGranted = false;
+          break;
+        }
+      }
+
+      return allGranted;
     }
     if (Platform.isIOS) {
-      return Permission.storage.status.isGranted;
+      var status = await Permission.storage.request();
+      return status.isGranted;
     }
     return false;
   }
@@ -66,7 +81,7 @@ class BFileStorage {
     return file.writeAsBytes(bytes);
   }
 
-  static  openFile(String filePath) async {
+  static openFile(String filePath) async {
     final result = await OpenFile.open(filePath);
     if (result.type != ResultType.done) {
       String strError = "Failed to open file: ${result.message}";

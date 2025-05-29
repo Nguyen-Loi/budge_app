@@ -1,7 +1,11 @@
 enum RoleChatEnum {
   user('user'),
-  gemini('model');
+  assistant('assistant');
 
+  static RoleChatEnum fromValue(String value) {
+    return RoleChatEnum.values.firstWhere((e) => e.value == value,
+        orElse: () => RoleChatEnum.assistant);
+  }
 
   const RoleChatEnum(this.value);
 

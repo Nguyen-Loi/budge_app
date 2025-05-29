@@ -2,8 +2,14 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:flutter/material.dart';
 
 class BAppBar extends AppBar {
-  BAppBar({
+  BAppBar(
+    BuildContext context, {
     super.key,
     required String text,
-  }) : super(title: BText.h2(text), centerTitle: true);
+  }) : super(
+          title: BText.h1(text),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        );
 }

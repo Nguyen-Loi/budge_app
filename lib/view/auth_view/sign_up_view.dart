@@ -49,7 +49,7 @@ class _LoginViewState extends ConsumerState<SignUpView> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: BAppBar(text: context.loc.signUp),
+        appBar: BAppBar(context, text: context.loc.signUp),
         body: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
