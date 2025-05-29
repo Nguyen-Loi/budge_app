@@ -4,7 +4,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
 import 'package:flutter/material.dart';
 
 class BFormCategoryBudget extends FormField<BudgetModel> {

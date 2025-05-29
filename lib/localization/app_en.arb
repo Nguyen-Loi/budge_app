@@ -59,7 +59,7 @@
     "left": "Left",
     "approaced": "Approaced",
     "exceeded": "Exceeded",
-    "anErrorUnexpectedOccur": "An error unexpected occur",
+    "anErrorUnexpectedOccur": "An error unexpected occur, please try again",
     "errorUploadFiles": "Error when upload files",
     "errorUploadFile": "'An error occur when upload image'",
     "deleteTitle": "Delete {obj}",
@@ -252,5 +252,13 @@
     "resetPasswordTitle": "Forgot your password?",
     "resetPasswordDescription": "Enter your email address and we'll send you a link to reset your password.",
     "invalidPhoneNumber": "Invalid phone number",
-    "dailyTransactionReminder": "Daily Transaction Reminder"
+    "dailyTransactionReminder": "Daily Transaction Reminder",
+    "guestAccess": "Guest Access",
+    "loginToUse": "You need to login to use this feature",
+    "pAccountAlreadyHasExistingData": "The account {accountName} already has existing data. If you proceed with this login, all current data will be deleted.\nAre you sure you want to continue?",
+    "loginCancelledByUser": "Login cancelled by user",
+    "syncLocalToCloud": "Sync local data to cloud",
+    "syncLocalToCloudLoading": "Syncing local data to cloud...",
+    "syncLocalToCloudSuccess": "Sync local data to cloud success",
+    "syncLocalToCloudError": "Sync local data to cloud error. Please try again"
 }

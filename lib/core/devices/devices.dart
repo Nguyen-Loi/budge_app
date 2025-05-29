@@ -1,9 +1,9 @@
 import 'package:budget_app/core/enums/device_type_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
-import 'package:budget_app/models/device_model/android_device_model.dart';
-import 'package:budget_app/models/device_model/device_model.dart';
-import 'package:budget_app/models/device_model/ios_device_model.dart';
-import 'package:budget_app/models/device_model/web_device_model.dart';
+import 'package:budget_app/data/models/device_model/android_device_model.dart';
+import 'package:budget_app/data/models/device_model/device_model.dart';
+import 'package:budget_app/data/models/device_model/ios_device_model.dart';
+import 'package:budget_app/data/models/device_model/web_device_model.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';

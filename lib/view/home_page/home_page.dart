@@ -3,7 +3,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/home_page/home_transactions_recently.dart';
@@ -19,13 +19,9 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -61,7 +57,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   Widget _appbarInfo() {
     return Consumer(builder: (_, ref, __) {
-      final UserModel user = ref.watch(userBaseControllerProvider)!;
+      final UserModel user = ref.watch(userBaseControllerProvider);
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

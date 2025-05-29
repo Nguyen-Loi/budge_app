@@ -1,6 +1,6 @@
-import 'package:budget_app/apis/chat_api.dart';
+import 'package:budget_app/data/datasources/apis/chat_api.dart';
 
-import 'package:budget_app/models/chat_model.dart';
+import 'package:budget_app/data/models/chat_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final chatBaseControllerProvider =

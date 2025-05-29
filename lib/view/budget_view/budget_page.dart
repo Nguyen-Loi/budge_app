@@ -6,7 +6,7 @@ import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/budget_view/widget/budget_card.dart';
@@ -21,9 +21,7 @@ class BudgetPage extends ConsumerStatefulWidget {
 }
 
 class _BudgetPageState extends ConsumerState<BudgetPage>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
-  @override
-  bool get wantKeepAlive => true;
+    with  SingleTickerProviderStateMixin {
 
   late TabController _tabController;
 
@@ -52,7 +50,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final list = ref.watch(budgetBaseControllerProvider);
     return BaseView(
       title: context.loc.budgetInUse,

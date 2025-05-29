@@ -12,11 +12,10 @@ class GenId {
   //   final month = DateTime(now.year, now.month).millisecondsSinceEpoch;
   //   return month.toString();
   // }
-
   static String budget() => _time;
   static String device() => _time;
   static String budgetWallet() => 'WALLET';
   static String transaction() => _time;
   static String get chat => _time;
-  static String devices(String uid) => uid+_time;
+  static String devices(String uid) => uid + _time;
 }

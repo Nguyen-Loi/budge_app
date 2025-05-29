@@ -9,7 +9,7 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/budget_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -145,7 +145,7 @@ class BudgetCard extends StatelessWidget {
       required Color iconColor,
       required textColor,
       required IconData iconData}) {
-    int left = model.limit + model.currentAmount;
+    int left = model.budgetLimit + model.currentAmount;
     return [
       Row(
         children: [
@@ -157,7 +157,7 @@ class BudgetCard extends StatelessWidget {
                     text: model.currentAmount.abs().toMoneyStr(),
                     style: context.textTheme.bodySmall!),
                 TextSpan(
-                    text: '/${model.limit.toMoneyStr()}',
+                    text: '/${model.budgetLimit.toMoneyStr()}',
                     style: context.textTheme.bodySmall!),
               ],
             ),

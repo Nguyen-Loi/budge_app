@@ -9,7 +9,7 @@ import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/transaction_model.dart';
+import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,7 +28,7 @@ class BudgetModel {
   final String name;
   final int iconId;
   final int currentAmount;
-  final int limit;
+  final int budgetLimit;
   final String budgetTypeValue;
   final String rangeDateTimeTypeValue;
   final DateTime startDate;
@@ -41,7 +41,7 @@ class BudgetModel {
     required this.name,
     required this.iconId,
     required this.currentAmount,
-    required this.limit,
+    required this.budgetLimit,
     required this.budgetTypeValue,
     required this.rangeDateTimeTypeValue,
     required this.startDate,
@@ -56,11 +56,11 @@ class BudgetModel {
   BudgetTypeEnum get budgetType => BudgetTypeEnum.fromValue(budgetTypeValue);
 
   StatusBudgetProgress get status {
-    if (currentAmount <= limit / 4) {
+    if (currentAmount <= budgetLimit / 4) {
       return StatusBudgetProgress.start;
-    } else if (currentAmount <= limit / 2) {
+    } else if (currentAmount <= budgetLimit / 2) {
       return StatusBudgetProgress.progress;
-    } else if (currentAmount < limit) {
+    } else if (currentAmount < budgetLimit) {
       return StatusBudgetProgress.almostDone;
     } else {
       return StatusBudgetProgress.complete;
@@ -83,7 +83,7 @@ class BudgetModel {
     String? name,
     int? iconId,
     int? currentAmount,
-    int? limit,
+    int? budgetLimit,
     String? budgetTypeValue,
     String? rangeDateTimeTypeValue,
     DateTime? startDate,
@@ -97,7 +97,7 @@ class BudgetModel {
       name: name ?? this.name,
       iconId: iconId ?? this.iconId,
       currentAmount: currentAmount ?? this.currentAmount,
-      limit: limit ?? this.limit,
+      budgetLimit: budgetLimit ?? this.budgetLimit,
       budgetTypeValue: budgetTypeValue ?? this.budgetTypeValue,
       rangeDateTimeTypeValue:
           rangeDateTimeTypeValue ?? this.rangeDateTimeTypeValue,
@@ -115,7 +115,7 @@ class BudgetModel {
       'name': name,
       'iconId': iconId,
       'currentAmount': currentAmount,
-      'limit': limit,
+      'budgetLimit': budgetLimit,
       'budgetTypeValue': budgetTypeValue,
       'rangeDateTimeTypeValue': rangeDateTimeTypeValue,
       'startDate': startDate.millisecondsSinceEpoch,
@@ -132,7 +132,7 @@ class BudgetModel {
       name: map['name'] as String,
       iconId: map['iconId'] as int,
       currentAmount: map['currentAmount'] as int,
-      limit: map['limit'] as int,
+      budgetLimit: map['budgetLimit'] as int,
       budgetTypeValue: map['budgetTypeValue'] as String,
       rangeDateTimeTypeValue: map['rangeDateTimeTypeValue'] as String,
       startDate: DateTime.fromMillisecondsSinceEpoch(map['startDate'] as int),
@@ -151,7 +151,7 @@ class BudgetModel {
 
   @override
   String toString() {
-    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, limit: $limit, budgetTypeValue: $budgetTypeValue, rangeDateTimeTypeValue: $rangeDateTimeTypeValue, startDate: $startDate, endDate: $endDate, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, budgetLimit: $budgetLimit, budgetTypeValue: $budgetTypeValue, rangeDateTimeTypeValue: $rangeDateTimeTypeValue, startDate: $startDate, endDate: $endDate, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -163,7 +163,7 @@ class BudgetModel {
         other.name == name &&
         other.iconId == iconId &&
         other.currentAmount == currentAmount &&
-        other.limit == limit &&
+        other.budgetLimit == budgetLimit &&
         other.budgetTypeValue == budgetTypeValue &&
         other.rangeDateTimeTypeValue == rangeDateTimeTypeValue &&
         other.startDate == startDate &&
@@ -179,7 +179,7 @@ class BudgetModel {
         name.hashCode ^
         iconId.hashCode ^
         currentAmount.hashCode ^
-        limit.hashCode ^
+        budgetLimit.hashCode ^
         budgetTypeValue.hashCode ^
         rangeDateTimeTypeValue.hashCode ^
         startDate.hashCode ^
@@ -300,7 +300,7 @@ extension BudgetWallet on List<BudgetModel> {
         name: 'Budget Base',
         iconId: IconManagerData.idMoneyIn,
         currentAmount: 0,
-        limit: 0,
+        budgetLimit: 0,
         budgetTypeValue: BudgetTypeEnum.income.value,
         rangeDateTimeTypeValue: RangeDateTimeEnum.month.value,
         startDate: currentRangeMonth.start,

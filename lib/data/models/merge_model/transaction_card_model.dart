@@ -1,6 +1,6 @@
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
-import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/models/transaction_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
+import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TransactionCardModel {

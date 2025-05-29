@@ -22,6 +22,7 @@ class BText extends StatelessWidget {
   final double? letterSpacing;
   final FontStyle? fontStyle;
   final TextOverflow? overflow;
+  final TextDecoration? textDecoration;
 
   const BText.h1(
     this.text, {
@@ -33,6 +34,7 @@ class BText extends StatelessWidget {
     this.letterSpacing,
     this.fontStyle,
     this.overflow,
+    this.textDecoration,
     super.key,
   }) : _textType = _BTextType.headline1;
 
@@ -46,6 +48,7 @@ class BText extends StatelessWidget {
     this.letterSpacing,
     this.fontStyle,
     this.overflow,
+    this.textDecoration,
     super.key,
   }) : _textType = _BTextType.headline2;
 
@@ -59,6 +62,7 @@ class BText extends StatelessWidget {
     this.letterSpacing,
     this.fontStyle,
     this.overflow,
+    this.textDecoration,
     super.key,
   }) : _textType = _BTextType.headline3;
 
@@ -72,6 +76,7 @@ class BText extends StatelessWidget {
     this.letterSpacing,
     this.fontStyle,
     this.overflow,
+    this.textDecoration,
     super.key,
   }) : _textType = _BTextType.bodyLarge;
 
@@ -85,6 +90,7 @@ class BText extends StatelessWidget {
     this.letterSpacing,
     this.fontStyle,
     this.overflow,
+    this.textDecoration,
     super.key,
   }) : _textType = _BTextType.bodyMedium;
 
@@ -98,6 +104,7 @@ class BText extends StatelessWidget {
     this.letterSpacing,
     this.fontStyle,
     this.overflow,
+    this.textDecoration,
     super.key,
   }) : _textType = _BTextType.bodySmall;
 
@@ -111,6 +118,7 @@ class BText extends StatelessWidget {
     this.letterSpacing,
     this.fontStyle,
     this.overflow,
+    this.textDecoration,
     super.key,
   }) : _textType = _BTextType.caption;
 
@@ -139,7 +147,10 @@ class BText extends StatelessWidget {
         wordSpacing: wordSpacing,
         letterSpacing: letterSpacing,
         fontWeight: fontWeight,
+        height:
+            textDecoration == TextDecoration.underline ? 1.5 : textStyle.height,
         fontStyle: fontStyle,
-        overflow: overflow);
+        overflow: overflow,
+        decoration: textDecoration);
   }
 }

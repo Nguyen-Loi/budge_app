@@ -1,8 +1,9 @@
-import 'package:budget_app/apis/firestore_path.dart';
+import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:budget_app/core/extension/extension_query.dart';
@@ -10,9 +11,9 @@ import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
-import 'package:budget_app/models/budget_model.dart';
-import 'package:budget_app/models/transaction_model.dart';
-import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/data/models/budget_model.dart';
+import 'package:budget_app/data/models/transaction_model.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -23,23 +24,8 @@ final transactionApiProvider = Provider(((ref) {
   return TransactionApi(db: db, loc: loc);
 }));
 
-abstract class ITransactionApi {
-  Future<List<TransactionModel>> fetchTransaction(String uid);
-  Future<List<TransactionModel>> getTransactionsByBudgetId(
-      {required String uid, required String budgetId});
-  Future<List<TransactionModel>> fetchTransactionOfMonth(
-      {required String uid, required DateTime dateTime});
-  FutureEither<(UserModel, TransactionModel)> updateWallet(
-      {required UserModel user, required int newValue, required String note});
-  FutureEither<(TransactionModel, BudgetModel, UserModel)> addBudgetTransaction(
-      {required UserModel user,
-      required BudgetModel budgetModel,
-      required int amount,
-      required String? note,
-      required DateTime transactionDate});
-}
 
-class TransactionApi extends ITransactionApi {
+class TransactionApi extends TransactionRepository {
   final FirebaseFirestore _db;
   final AppLocalizations _loc;
   TransactionApi({required FirebaseFirestore db, required AppLocalizations loc})

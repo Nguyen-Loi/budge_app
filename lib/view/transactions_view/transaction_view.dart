@@ -21,14 +21,9 @@ class TransactionView extends StatefulWidget {
   State<TransactionView> createState() => _TransactionViewState();
 }
 
-class _TransactionViewState extends State<TransactionView>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
+class _TransactionViewState extends State<TransactionView> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return BaseView(
       title: context.loc.transactions,
       child: Padding(
@@ -40,7 +35,7 @@ class _TransactionViewState extends State<TransactionView>
 
   Widget _builder() {
     return Consumer(builder: (_, ref, __) {
-      final controllerWatch = ref.watch(transactionControllerProvider.notifier);
+      final controller = ref.read(transactionControllerProvider.notifier);
       final list = ref.watch(transactionControllerProvider);
       return Column(
         children: [
@@ -53,31 +48,25 @@ class _TransactionViewState extends State<TransactionView>
                   _summaryText(
                     ref: ref,
                     label: context.loc.income,
-                    value: ref
-                        .watch(transactionControllerProvider.notifier)
-                        .sumIncome,
+                    value: controller.sumIncome,
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
                   const SizedBox(height: 16),
                   _summaryText(
                     ref: ref,
                     label: context.loc.expense,
-                    value: ref
-                        .watch(transactionControllerProvider.notifier)
-                        .sumExpense,
+                    value: controller.sumExpense,
                     color: ColorManager.red1,
                   ),
                 ],
               ),
               BPickerMonth(
-                  initialDate: controllerWatch.dateTimePicker,
-                  firstDate: controllerWatch.dateRangeToFilter.start,
-                  lastDate: controllerWatch.dateRangeToFilter.end,
+                  initialDate: controller.dateTimePicker,
+                  firstDate: controller.dateRangeToFilter.start,
+                  lastDate: controller.dateRangeToFilter.end,
                   onChange: (date) async {
-                    if (!date.isSameDate(controllerWatch.dateTimePicker)) {
-                      ref
-                          .read(transactionControllerProvider.notifier)
-                          .updateDate(date);
+                    if (!date.isSameDate(controller.dateTimePicker)) {
+                      controller.updateDate(date);
                     }
                   })
             ],

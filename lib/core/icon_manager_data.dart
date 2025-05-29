@@ -1,5 +1,5 @@
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/models/models_widget/icon_model.dart';
+import 'package:budget_app/data/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

@@ -4,7 +4,7 @@ import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/models/chat_model.dart';
+import 'package:budget_app/data/models/chat_model.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
 import 'package:budget_app/view/chat_view/components/chat_row_item.dart';
 import 'package:budget_app/view/chat_view/components/chat_row_start.dart';

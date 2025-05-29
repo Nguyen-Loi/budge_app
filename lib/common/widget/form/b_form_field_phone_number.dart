@@ -12,7 +12,7 @@ class BFormFieldPhoneNumber extends StatelessWidget {
       this.validator,
       PhoneNumber? initialValue})
       : _initialValue =
-            initialValue ?? PhoneNumber(isoCode: 'VN', phoneNumber: '');
+            initialValue ?? PhoneNumber(isoCode: 'VN', phoneNumber: 'xxxxxxx');
   final String label;
   final void Function(PhoneNumber)? onInputChanged;
   final PhoneNumber _initialValue;
@@ -34,7 +34,6 @@ class BFormFieldPhoneNumber extends StatelessWidget {
           isEnabled: !disable,
           onInputChanged: onInputChanged,
           initialValue: _initialValue,
-          hintText: 'x-xxx-xxx',
           countries: const ['VN', 'SG', 'JP', 'US', 'CN', 'KR', 'TH'],
           inputDecoration: InputDecoration(
             filled: Theme.of(context).inputDecorationTheme.filled,

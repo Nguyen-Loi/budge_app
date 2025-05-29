@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:budget_app/apis/user_api.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/validate.dart';
-import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/data/datasources/repositories/user_repository.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,19 +12,19 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 final profileDetailControllerProvider =
     StateNotifierProvider.autoDispose<ProfileDetailController, bool>((ref) {
-  final userApi = ref.watch(userApiProvider);
+  final userRepository = ref.watch(userRepositoryProvider);
   final userController = ref.watch(userBaseControllerProvider.notifier);
   return ProfileDetailController(
-      userApi: userApi, userController: userController);
+      userRepository: userRepository, userController: userController);
 });
 
 class ProfileDetailController extends StateNotifier<bool> {
   ProfileDetailController(
-      {required UserApi userApi, required UserBaseController userController})
-      : _userApi = userApi,
+      {required UserRepository userRepository, required UserBaseController userController})
+      : _userRepository = userRepository,
         _userController = userController,
         super(true);
-  final UserApi _userApi;
+  final UserRepository _userRepository;
   final UserBaseController _userController;
 
   void updateDisable(bool status) {
@@ -41,7 +41,7 @@ class ProfileDetailController extends StateNotifier<bool> {
     }
     final closeLoading = showLoading(context: context);
 
-    final res = await _userApi.updateUser(
+    final res = await _userRepository.updateUser(
         user: user.copyWith(
           name: name,
           phoneNumber: phoneNumber,

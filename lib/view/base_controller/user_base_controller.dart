@@ -1,9 +1,13 @@
-import 'package:budget_app/apis/transaction_api.dart';
-import 'package:budget_app/apis/user_api.dart';
+import 'package:budget_app/common/log.dart';
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/providers.dart';
-import 'package:budget_app/models/user_model.dart';
+import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
+import 'package:budget_app/data/datasources/repositories/user_repository.dart';
+import 'package:budget_app/data/datasources/transfer_data_source.dart';
+import 'package:budget_app/data/models/user_model.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/home_page/controller/uid_controller.dart';
@@ -11,11 +15,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userBaseControllerProvider =
-    StateNotifierProvider<UserBaseController, UserModel?>((ref) {
+    StateNotifierProvider<UserBaseController, UserModel>((ref) {
   return UserBaseController(
       uid: ref.watch(uidControllerProvider),
       ref: ref,
-      userApi: ref.watch(userApiProvider));
+      userRepository: ref.watch(userRepositoryProvider));
 });
 
 final userFutureProvider = FutureProvider((ref) {
@@ -23,44 +27,50 @@ final userFutureProvider = FutureProvider((ref) {
   return loadUser.fetchUserInfo();
 });
 
-class UserBaseController extends StateNotifier<UserModel?> {
-  final UserApi _userApi;
+class UserBaseController extends StateNotifier<UserModel> {
+  final UserRepository _userRepository;
   final String _uid;
   final Ref _ref;
 
   UserBaseController(
-      {required UserApi userApi, required Ref ref, required String uid})
-      : _userApi = userApi,
+      {required UserRepository userRepository,
+      required Ref ref,
+      required String uid})
+      : _userRepository = userRepository,
         _ref = ref,
         _uid = uid,
-        super(null);
+        super(UserModel.defaultData());
 
   Future<UserModel> fetchUserInfo() async {
-    UserModel currentUser = await _userApi.getUserById(_uid);
+    UserModel currentUser = await _userRepository.getUserById(_uid);
     String? token = await _ref.read(messagingProvider).getToken();
     currentUser = currentUser.copyWith(token: token);
 
     // update token profile
-    await _userApi.updateUser(user: currentUser, file: null);
-    reload(currentUser);
+    if (token != null) {
+      await _userRepository.updateUser(user: currentUser, file: null);
+      reload(currentUser);
+    }
 
-    return state!;
+    return state;
   }
+
+  bool get isLogin => state.id.isNotEmpty;
 
   void reload(UserModel user) {
     state = user;
   }
 
   Future<void> updateUser(UserModel user) async {
-    await _userApi.updateUser(user: user, file: null);
+    await _userRepository.updateUser(user: user, file: null);
     reload(user);
   }
 
   void updateWallet(BuildContext context, {required int newValue}) async {
     final closeLoading = showLoading(context: context);
     final res = await _ref
-        .read(transactionApiProvider)
-        .updateWallet(user: state!, newValue: newValue, note: '');
+        .read(transactionRepositoryProvider)
+        .updateWallet(user: state, newValue: newValue, note: '');
     closeLoading();
 
     res.fold((l) {
@@ -82,12 +92,14 @@ class UserBaseController extends StateNotifier<UserModel?> {
         .read(budgetBaseControllerProvider)
         .firstWhere((e) => e.id == budgetId);
 
-    final res = await _ref.read(transactionApiProvider).addBudgetTransaction(
-        user: state!,
-        budgetModel: currentBudget,
-        amount: amount,
-        note: note,
-        transactionDate: transactionDate);
+    final res = await _ref
+        .read(transactionRepositoryProvider)
+        .addBudgetTransaction(
+            user: state,
+            budgetModel: currentBudget,
+            amount: amount,
+            note: note,
+            transactionDate: transactionDate);
 
     res.fold((l) {
       showSnackBar(context, l.message);
@@ -105,7 +117,7 @@ class UserBaseController extends StateNotifier<UserModel?> {
     BuildContext context, {
     required bool isOn,
   }) async {
-    final currentUser = state!;
+    final currentUser = state;
     if (isOn == currentUser.isRemindTransactionEveryDate) {
       return;
     }
@@ -113,11 +125,27 @@ class UserBaseController extends StateNotifier<UserModel?> {
     final newUser = currentUser.copyWith(
         isRemindTransactionEveryDate:
             !currentUser.isRemindTransactionEveryDate);
-    final res = await _userApi.updateUser(user: newUser, file: null);
+    final res = await _userRepository.updateUser(user: newUser, file: null);
     res.fold((l) {
       showSnackBar(context, l.message);
     }, (r) {
       reload(r);
+    });
+  }
+
+  void transferData(BuildContext context) async {
+    final closeDialog = showLoading(
+        context: context, text: context.loc.syncLocalToCloudLoading);
+    final res = await TransferData.asyncData(_ref, context);
+    closeDialog();
+
+    res.fold((l) {
+      logError(l.message);
+      showBDialogInfoError(context, message: context.loc.syncLocalToCloudError);
+    }, (r) {
+      showBDialog(context,
+          dialogInfoType: BDialogInfoType.success,
+          message: context.loc.syncLocalToCloudSuccess);
     });
   }
 }
