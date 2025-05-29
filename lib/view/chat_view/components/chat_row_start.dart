@@ -14,7 +14,7 @@ class ChatRowStart extends StatelessWidget {
         id: GenId.chat,
         userId: '',
         message: context.loc.viBotHello,
-        roleTypeValue: RoleChatEnum.gemini.value,
+        roleTypeValue: RoleChatEnum.assistant.value,
         createdDate: now,
         updatedDate: now);
   }

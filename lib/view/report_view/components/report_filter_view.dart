@@ -81,7 +81,7 @@ class _ReportFilterViewState extends State<ReportFilterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BAppBar(text: context.loc.filter),
+      appBar: BAppBar(context, text: context.loc.filter),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(

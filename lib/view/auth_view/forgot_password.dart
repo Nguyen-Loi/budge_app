@@ -49,7 +49,7 @@ class _LoginViewState extends ConsumerState<ForgotPasswordView> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: BAppBar(text: context.loc.resetPassword),
+        appBar: BAppBar(context,text: context.loc.resetPassword),
         body: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [

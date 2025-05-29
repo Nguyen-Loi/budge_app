@@ -325,4 +325,19 @@ extension BudgetWallet on List<BudgetModel> {
 
     return this;
   }
+
+  String toChatData() {
+    final budgetList = map((e) {
+      return {
+        'name': e.name,
+        'currentAmount': e.currentAmount,
+        'budgetLimit': e.budgetLimit,
+        'budgetTypeValue': e.budgetTypeValue,
+        'rangeDateTimeTypeValue': e.rangeDateTimeTypeValue,
+        'startDate': e.startDate.toFormatDate(),
+        'endDate': e.endDate.toFormatDate(),
+      };
+    }).toList();
+    return jsonEncode(budgetList);
+  }
 }

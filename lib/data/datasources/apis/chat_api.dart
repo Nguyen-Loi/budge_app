@@ -1,9 +1,16 @@
+import 'dart:convert';
+
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/core/enums/role_chat_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/data/models/budget_model.dart';
+import 'package:budget_app/data/models/chat_content_model.dart';
+import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:budget_app/data/models/chat_model.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
@@ -12,7 +19,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 
 final chatAPIProvider = Provider((ref) {
@@ -35,19 +42,21 @@ class ChatApi implements IBotApi {
   })  : _uid = uid,
         _ref = ref;
 
-  List<Content> get basePrompt {
+  List<ChatContentModel> get basePrompt {
     PackageInfo packageInfo = _ref.read(packageInfoBaseControllerProvider);
-    TextPart intro = TextPart('Tôi là ViBot');
-    TextPart appInfo = TextPart(
-        'Thông tin ứng dụng: \nTên ứng dụng: ${packageInfo.appName} \nPhiên bản: ${packageInfo.version} \nBuild: ${packageInfo.buildNumber}');
-    TextPart admin = TextPart(
-        'Thông tin admin: Họ tên: Nguyễn Hồng Lợi \nEmail: hongloi123123@gmail.com, \nSố điện thoại: 0898066957');
-    TextPart notes =
-        TextPart('Nếu gặp câu hỏi tiếp theo, bạn hãy trả lời theo ý chính');
-    final userContent = Content(RoleChatEnum.user.value, [notes]);
-    final botContent =
-        Content(RoleChatEnum.gemini.value, [intro, appInfo, admin]);
-    return [botContent, userContent];
+    final userModel = _ref.read(userBaseControllerProvider);
+    final budgets = _ref.read(budgetBaseControllerProvider);
+    List<ChatContentModel> baseContents = [
+      ChatContentModel(
+          role: RoleChatEnum.user,
+          content:
+              "You are a helpful assistant. You are designed to assist users with their queries and provide accurate information."
+              "Your responses should be concise, informative, and relevant to the user's request."
+              "Information about the app smart budget:  ${packageInfo.toString()}, "
+              "Info current user: ${userModel.toString()}, "
+              "Budgets information: ${budgets.toChatData()}"),
+    ];
+    return baseContents;
   }
 
   FutureEither<ChatModel> sendMessage(BuildContext context,
@@ -55,52 +64,57 @@ class ChatApi implements IBotApi {
     AppLocalizations loc = AppLocalizations.of(context);
     DateTime now = DateTime.now();
     final currentUserChat = history.last;
-    final apiKey = _ref.read(remoteConfigBaseControllerProvider).geminiApiKey;
-    final model = GenerativeModel(
-      model: 'gemini-1.5-flash',
-      apiKey: apiKey,
-      generationConfig: GenerationConfig(
-        topP: 0.9,
-        maxOutputTokens: 300,
-        temperature: 0.8,
-        responseMimeType: 'text/plain',
-      ),
-    );
+    final remoteConfig = _ref.read(remoteConfigBaseControllerProvider);
+    final url = Uri.parse('https://openrouter.ai/api/v1/chat/completions');
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${remoteConfig.assistantApiKey}',
+    };
 
-    // Sort in ascending order
     history.sort((a, b) => a.createdDate.compareTo(b.createdDate));
-    final content = history
-        .map((e) => Content(e.roleTypeValue, [TextPart(e.message)]))
+    List<ChatContentModel> messages = history
+        .map((e) => ChatContentModel(
+              role: RoleChatEnum.fromValue(e.roleTypeValue),
+              content: e.message,
+            ))
         .toList();
-    content.insertAll(content.length - 1, basePrompt);
+
+    messages.insertAll(messages.length - 1, basePrompt);
+
+    final body = jsonEncode({
+      "model": remoteConfig.assistantModel,
+      "messages": messages.toMapList(),
+    });
 
     try {
-      GenerateContentResponse response = await model.generateContent(content);
-      ChatModel geminiChat = ChatModel(
-        id: GenId.chat,
-        userId: _uid,
-        message: response.text ?? 'An error occurred, contact support',
-        roleTypeValue: RoleChatEnum.gemini.value,
-        createdDate: now,
-        updatedDate: now,
-      );
-
-      // Write to DB
-      List<ChatModel> list = [];
-      list.add(currentUserChat);
-      if (response.text != null) {
-        list.add(geminiChat);
+      final response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final reply = data['choices']?[0]?['message']?['content'] ?? '';
+        if (reply.isEmpty) {
+          return left(Failure(message: loc.errorContactSupport));
+        }
+        ChatModel assistentChat = ChatModel(
+          id: GenId.chat,
+          userId: _uid,
+          message: reply,
+          roleTypeValue: RoleChatEnum.assistant.value,
+          createdDate: now,
+          updatedDate: now,
+        );
+        // Write to DB
+        List<ChatModel> list = [currentUserChat, assistentChat];
+        bool writeSuccess = await _writeToDB(list);
+        if (!writeSuccess) {
+          return left(Failure(message: loc.errorContactSupport));
+        }
+        return right(assistentChat);
+      } else {
+        throw Exception(
+            'Failed to send message: ${response.statusCode} - ${response.body}');
       }
-      bool writeSuccess = await _writeToDB(list);
-
-      if (!writeSuccess || response.text == null) {
-        return left(Failure(message: loc.errorContactSupport));
-      }
-
-      return right(geminiChat);
-    } on InvalidApiKey {
-      return left(Failure(message: loc.featureMaintain));
     } catch (e) {
+      logError('ChatApi sendMessage error: $e');
       return left(Failure(message: loc.errorContactSupport));
     }
   }

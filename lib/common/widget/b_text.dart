@@ -142,7 +142,10 @@ class BText extends StatelessWidget {
       _BTextType.bodySmall => context.textTheme.bodySmall!,
       _BTextType.caption => context.textTheme.labelLarge!,
     };
+
+    // Ensure Inter font family is explicitly set
     return textStyle.copyWith(
+        fontFamily: 'Inter', // Explicitly set font family
         color: color,
         wordSpacing: wordSpacing,
         letterSpacing: letterSpacing,

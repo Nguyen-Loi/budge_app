@@ -1,7 +1,7 @@
 import 'package:budget_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
-const String _fontName = 'PublicSans';
+const String _fontName = 'Inter';
 
 class AppTextTheme {
   const AppTextTheme._();
@@ -20,6 +20,8 @@ class AppTextTheme {
   );
 
   static TextTheme textTheme = TextTheme(
+    headlineLarge:
+        headlineLarge.copyWith(color: AppTheme.lightColors.defaultText),
     headlineMedium:
         headlineMedium.copyWith(color: AppTheme.lightColors.defaultText),
     headlineSmall:
@@ -32,8 +34,8 @@ class AppTextTheme {
 
   static const TextStyle headlineLarge = TextStyle(
     fontFamily: _fontName,
-    fontWeight: FontWeight.w700,
-    fontSize: 28,
+    fontWeight: FontWeight.w900,
+    fontSize: 28
   );
 
   static const TextStyle headlineMedium = TextStyle(
@@ -43,12 +45,12 @@ class AppTextTheme {
   );
   static const TextStyle headlineSmall = TextStyle(
     fontFamily: _fontName,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w600,
     fontSize: 20,
   );
   static const TextStyle bodyLarge = TextStyle(
     fontFamily: _fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500,
     fontSize: 18,
   );
 
@@ -60,13 +62,13 @@ class AppTextTheme {
 
   static const TextStyle bodySmall = TextStyle(
     fontFamily: _fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w400, // Regular
     fontSize: 14,
   );
 
   static const TextStyle labelLarge = TextStyle(
     fontFamily: _fontName,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w500, // Medium
     fontSize: 12,
   );
 }

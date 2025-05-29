@@ -3,26 +3,37 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class RemoteConfigModel {
-  final String geminiApiKey;
+  final String assistantApiKey;
+  final String assistantModel;
   final String recommendedMinimumVersion;
   final String requiredMinimumVersion;
   final bool isAds;
 
   RemoteConfigModel({
-    required this.geminiApiKey,
+    required this.assistantApiKey,
+    required this.assistantModel,
     required this.recommendedMinimumVersion,
     required this.requiredMinimumVersion,
     required this.isAds,
   });
 
+  RemoteConfigModel.empty()
+      : assistantApiKey = '0',
+        assistantModel = 'google/gemma-3n-e4b-it:free',
+        recommendedMinimumVersion = '1.0.0',
+        requiredMinimumVersion = '1.0.0',
+        isAds = false;
+
   RemoteConfigModel copyWith({
-    String? geminiApiKey,
+    String? assistantApiKey,
+    String? assistantModel,
     String? recommendedMinimumVersion,
     String? requiredMinimumVersion,
     bool? isAds,
   }) {
     return RemoteConfigModel(
-      geminiApiKey: geminiApiKey ?? this.geminiApiKey,
+      assistantApiKey: assistantApiKey ?? this.assistantApiKey,
+      assistantModel: assistantModel ?? this.assistantModel,
       recommendedMinimumVersion:
           recommendedMinimumVersion ?? this.recommendedMinimumVersion,
       requiredMinimumVersion:
@@ -33,7 +44,8 @@ class RemoteConfigModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'geminiApiKey': geminiApiKey,
+      'assistantApiKey': assistantApiKey,
+      'assistantModel': assistantModel,
       'recommendedMinimumVersion': recommendedMinimumVersion,
       'requiredMinimumVersion': requiredMinimumVersion,
       'isAds': isAds,
@@ -42,7 +54,8 @@ class RemoteConfigModel {
 
   factory RemoteConfigModel.fromMap(Map<String, dynamic> map) {
     return RemoteConfigModel(
-      geminiApiKey: map['geminiApiKey'] as String,
+      assistantApiKey: map['assistantApiKey'] as String,
+      assistantModel: map['assistantModel'] as String,
       recommendedMinimumVersion: map['recommendedMinimumVersion'] as String,
       requiredMinimumVersion: map['requiredMinimumVersion'] as String,
       isAds: map['isAds'] as bool,
@@ -52,7 +65,9 @@ class RemoteConfigModel {
   factory RemoteConfigModel.fromMapRemoteConfig(
       Map<String, RemoteConfigValue> map) {
     return RemoteConfigModel(
-      geminiApiKey: map['geminiApiKey']?.asString() ?? '0',
+      assistantApiKey: map['assistantApiKey']?.asString() ?? '0',
+      assistantModel:
+          map['assistantModel']?.asString() ?? 'google/gemma-3n-e4b-it:free',
       recommendedMinimumVersion:
           map['recommendedMinimumVersion']?.asString() ?? '1.0.0',
       requiredMinimumVersion:
@@ -68,21 +83,23 @@ class RemoteConfigModel {
 
   @override
   String toString() =>
-      'RemoteConfigModel(geminiApiKey: $geminiApiKey, recommendedMinimumVersion: $recommendedMinimumVersion, requiredMinimumVersion: $requiredMinimumVersion, isAds: $isAds)';
+      'RemoteConfigModel(assistantApiKey: $assistantApiKey, assistantModel: $assistantModel, recommendedMinimumVersion: $recommendedMinimumVersion, requiredMinimumVersion: $requiredMinimumVersion, isAds: $isAds)';
 
   @override
   bool operator ==(covariant RemoteConfigModel other) {
     if (identical(this, other)) return true;
 
-    return other.geminiApiKey == geminiApiKey &&
+    return other.assistantApiKey == assistantApiKey &&
+        other.assistantModel == assistantModel &&
         other.recommendedMinimumVersion == recommendedMinimumVersion &&
-        other.requiredMinimumVersion == requiredMinimumVersion
-        && other.isAds == isAds;
+        other.requiredMinimumVersion == requiredMinimumVersion &&
+        other.isAds == isAds;
   }
 
   @override
   int get hashCode =>
-      geminiApiKey.hashCode ^
+      assistantApiKey.hashCode ^
+      assistantModel.hashCode ^
       recommendedMinimumVersion.hashCode ^
       requiredMinimumVersion.hashCode ^
       isAds.hashCode;
