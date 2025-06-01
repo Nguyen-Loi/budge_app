@@ -57,6 +57,9 @@ class _BFormFieldPasswordState extends State<BFormFieldPassword> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
             ),
+            prefixIcon: Icon(
+              IconManager.password,
+            ),
             suffixIcon: IconButton(
               icon: Icon(
                 _passwordVisible

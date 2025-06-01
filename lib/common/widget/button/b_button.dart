@@ -8,10 +8,16 @@ enum ButtonType { filled, outlined, text }
 class BButton extends StatelessWidget {
   const BButton(
       {super.key, required this.onPressed, required this.title, this.padding})
-      : type = ButtonType.filled, 
+      : type = ButtonType.filled,
+        color = null,
         textDecoration = null;
 
-  BButton.text({super.key, required this.onPressed, required this.title, this.textDecoration})
+  BButton.text(
+      {super.key,
+      required this.onPressed,
+      required this.title,
+      this.color,
+      this.textDecoration})
       : type = ButtonType.text,
         padding = EdgeInsets.symmetric(horizontal: 8, vertical: 4);
 
@@ -19,6 +25,7 @@ class BButton extends StatelessWidget {
   final String title;
   final EdgeInsets? padding;
   final TextDecoration? textDecoration;
+  final Color? color;
   final ButtonType type;
 
   @override
@@ -50,7 +57,7 @@ class BButton extends StatelessWidget {
         onPressed: onPressed,
         style: FilledButton.styleFrom(padding: paddingItem),
         clipBehavior: Clip.antiAlias,
-        child: BText.b1(
+        child: BText.h3(
           title,
           color: ColorManager.white,
         ));
@@ -67,7 +74,8 @@ class BButton extends StatelessWidget {
         child: BText(
           title,
           textDecoration: textDecoration,
-          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.w500,
+          color: color ?? Theme.of(context).colorScheme.primary,
           textAlign: TextAlign.end,
         ),
       ),

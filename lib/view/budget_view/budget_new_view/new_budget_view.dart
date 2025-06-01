@@ -8,6 +8,7 @@ import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/models_widget/datetime_range_model.dart';
@@ -77,6 +78,7 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
             _budgetNameController,
             label: context.loc.budgetName,
             hint: context.loc.budgetNameHint,
+            prefixIcon: IconManager.budget,
             validator: (p0) => p0.validateNotNull(context),
           ),
           gapH16,

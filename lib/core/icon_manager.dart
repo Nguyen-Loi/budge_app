@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class IconManager {
-  static IconData showPassword = Icons.visibility;
-  static IconData hidePassword = Icons.visibility_off;
+  const IconManager._();
+
+  static IconData showPassword = Icons.visibility_outlined;
+  static IconData hidePassword = Icons.visibility_off_outlined;
   static IconData add = Icons.add;
   static IconData minus = FontAwesomeIcons.minus;
   static IconData notification = Icons.notifications_none_outlined;
@@ -13,6 +15,12 @@ class IconManager {
   static IconData send = Icons.send;
   static IconData botChat = FontAwesomeIcons.rocketchat;
   static IconData signIn = Icons.login;
+  static IconData back = Icons.arrow_back_ios_new_rounded;
+  static IconData budget = FontAwesomeIcons.wallet;
+
+  // Field
+  static IconData email = Icons.email_outlined;
+  static IconData password = Icons.lock_outline_rounded;
 
   static IconData arrowNext = Icons.arrow_forward_ios_rounded;
   static IconData dropdown = Icons.keyboard_arrow_down;
@@ -31,10 +39,10 @@ class IconManager {
   static IconData contact = Icons.phone_outlined;
 
   //Bottombar
-  static IconData home = Icons.home_rounded;
-  static IconData profile = FontAwesomeIcons.user;
-  static IconData transaction = FontAwesomeIcons.receipt;
-  static IconData budget = Icons.alternate_email_outlined;
+  static IconData homeBar = Icons.home_rounded;
+  static IconData profileBar = FontAwesomeIcons.user;
+  static IconData transactionBar = FontAwesomeIcons.receipt;
+  static IconData budgetBar = Icons.alternate_email_outlined;
 
   //Dialog status
   static IconData warning = Icons.warning;

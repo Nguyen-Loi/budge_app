@@ -1,8 +1,6 @@
 import 'package:budget_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
-const String _fontName = 'Inter';
-
 class AppTextTheme {
   const AppTextTheme._();
 
@@ -33,41 +31,35 @@ class AppTextTheme {
   );
 
   static const TextStyle headlineLarge = TextStyle(
-    fontFamily: _fontName,
-    fontWeight: FontWeight.w900,
-    fontSize: 28
-  );
+      fontWeight: FontWeight.w900,
+      fontSize: 28,
+      letterSpacing: 2.5,
+      wordSpacing: 1);
 
   static const TextStyle headlineMedium = TextStyle(
-    fontFamily: _fontName,
     fontWeight: FontWeight.w700,
     fontSize: 24,
   );
   static const TextStyle headlineSmall = TextStyle(
-    fontFamily: _fontName,
     fontWeight: FontWeight.w600,
     fontSize: 20,
   );
   static const TextStyle bodyLarge = TextStyle(
-    fontFamily: _fontName,
     fontWeight: FontWeight.w500,
     fontSize: 18,
   );
 
   static const TextStyle bodyMedium = TextStyle(
-    fontFamily: _fontName,
     fontWeight: FontWeight.w400,
     fontSize: 16,
   );
 
   static const TextStyle bodySmall = TextStyle(
-    fontFamily: _fontName,
     fontWeight: FontWeight.w400, // Regular
     fontSize: 14,
   );
 
   static const TextStyle labelLarge = TextStyle(
-    fontFamily: _fontName,
     fontWeight: FontWeight.w500, // Medium
     fontSize: 12,
   );

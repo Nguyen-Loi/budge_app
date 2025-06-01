@@ -37,7 +37,9 @@ class BFormFieldPhoneNumber extends StatelessWidget {
           countries: const ['VN', 'SG', 'JP', 'US', 'CN', 'KR', 'TH'],
           inputDecoration: InputDecoration(
             filled: Theme.of(context).inputDecorationTheme.filled,
-            fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+            fillColor: disable
+                ? Theme.of(context).disabledColor
+                : Theme.of(context).inputDecorationTheme.fillColor,
             errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
             helperStyle: Theme.of(context).inputDecorationTheme.helperStyle,
             hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,

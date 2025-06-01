@@ -32,19 +32,19 @@ List<BottomNavigationBarItem> _navBarItems(BuildContext context) {
   bool isLargeScreen = !SizeConstants.isSmallScreen(context);
   return [
     BottomNavigationBarItem(
-      icon: Icon(IconManager.home),
+      icon: Icon(IconManager.homeBar),
       label: context.loc.home,
     ),
     BottomNavigationBarItem(
-      icon: Icon(IconManager.transaction),
+      icon: Icon(IconManager.transactionBar),
       label: context.loc.transactions,
     ),
     BottomNavigationBarItem(
-      icon: Icon(IconManager.budget),
+      icon: Icon(IconManager.budgetBar),
       label: context.loc.budget,
     ),
     BottomNavigationBarItem(
-      icon: Icon(IconManager.profile),
+      icon: Icon(IconManager.profileBar),
       label: context.loc.profile,
     ),
     if (isLargeScreen)

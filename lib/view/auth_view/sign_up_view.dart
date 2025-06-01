@@ -1,12 +1,12 @@
-import 'package:budget_app/common/widget/b_app_bar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
-import 'package:budget_app/core/extension/extension_widget.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/view/auth_view/base_auth_view.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,32 +44,23 @@ class _LoginViewState extends ConsumerState<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        appBar: BAppBar(context, text: context.loc.signUp),
-        body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              // gapH24,
-              gapH32,
-              BText.h2(
-                context.loc.welecomeAppName,
-                textAlign: TextAlign.left,
-              ),
-              gapH16,
-              BText(
-                context.loc.signUpToStart,
-                textAlign: TextAlign.left,
-              ),
-              gapH48,
-              _form(),
-              gapH32,
-              _button(),
-            ]).responsiveCenter(),
-      ),
+    return BaseAuthView(
+      title: context.loc.signUp,
+      children: [
+        BText.h3(
+          context.loc.welecomeAppName,
+          textAlign: TextAlign.center,
+        ),
+        gapH16,
+        BText(
+          context.loc.signUpToStart,
+          textAlign: TextAlign.center,
+        ),
+        gapH48,
+        _form(),
+        gapH64,
+        _button(),
+      ],
     );
   }
 
@@ -89,32 +80,12 @@ class _LoginViewState extends ConsumerState<SignUpView> {
         ));
   }
 
-  // Widget _terms() {
-  //   return BFormCheckbox(
-  //     validator: (p0) {
-  //       if (p0 == false) {
-  //         return context.loc.pleaseEnableService;
-  //       }
-  //       return null;
-  //     },
-  //     title: Text.rich(
-  //       TextSpan(
-  //         children: [
-  //           TextSpan(text: context.loc.nEableServiceDescription(0)),
-  //           TextSpan(
-  //               text: context.loc.nEableServiceDescription(1),
-  //               style: context.textTheme.bodyMedium)
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _bEmailFormField() {
     return BFormFieldText(
       _emailController,
       label: context.loc.email,
       hint: context.loc.emailHint,
+      prefixIcon: IconManager.email,
       validator: (p0) => p0.validateEmail(context),
     );
   }

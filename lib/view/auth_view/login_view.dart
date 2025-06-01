@@ -1,16 +1,15 @@
-import 'package:budget_app/common/widget/b_app_bar.dart';
 import 'package:budget_app/common/widget/b_divider.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_field_password.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
-import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
-import 'package:budget_app/core/extension/extension_widget.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/view/auth_view/base_auth_view.dart';
 import 'package:budget_app/view/auth_view/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -71,25 +70,19 @@ class _LoginViewState extends ConsumerState<LoginView> {
       onTap: () {
         FocusScope.of(context).unfocus();
       },
-      child: Scaffold(
-        appBar: BAppBar(context, text: context.loc.signIn),
-        body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              gapH32,
-              BText.h2(
-                context.loc.welecomeBack,
-                textAlign: TextAlign.center,
-              ),
-              gapH16,
-              BText(
-                context.loc.signInDescription,
-                textAlign: TextAlign.center,
-              ),
-              gapH48,
-              _form()
-            ]).responsiveCenter(),
-      ),
+      child: BaseAuthView(title: context.loc.signIn, children: [
+        BText.h3(
+          context.loc.welecomeBack,
+          textAlign: TextAlign.center,
+        ),
+        gapH16,
+        BText(
+          context.loc.signInDescription,
+          textAlign: TextAlign.center,
+        ),
+        gapH48,
+        _form(),
+      ]),
     );
   }
 
@@ -106,11 +99,11 @@ class _LoginViewState extends ConsumerState<LoginView> {
             _forgotPassword(),
             gapH32,
             _button(),
-            gapH16,
-            _orLoginWidth(),
             gapH48,
+            _orLoginWidth(),
+            gapH40,
             _iconButtons(),
-            if (!kIsWeb) ...[gapH48, _signInWithGuest()]
+            if (!kIsWeb) ...[gapH32, _signInWithGuest()]
           ],
         ));
   }
@@ -131,6 +124,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       _emailController,
       label: context.loc.email,
       hint: context.loc.emailHint,
+      prefixIcon: IconManager.email,
       validator: (e) => e.validateEmail(context),
     );
   }
@@ -163,38 +157,75 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
   Widget _iconButtons() {
     bool isMobile = !kIsWeb;
-    return RowWithSpacing(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(
+        _circularIconButton(
           onPressed: () {
             Navigator.of(context).pushNamed(RoutePath.signUp);
           },
           icon: SvgPicture.asset(
             SvgAssets.iconApp,
-            width: 48,
-            height: 48,
+            width: 28,
+            height: 28,
           ),
         ),
-        if (isMobile)
-          IconButton(
+        if (isMobile) ...[
+          const SizedBox(width: 24),
+          _circularIconButton(
             onPressed: _onLoginGoogle,
             icon: SvgPicture.asset(
               SvgAssets.google,
-              width: 48,
-              height: 48,
+              width: 28,
+              height: 28,
             ),
           ),
-        if (isMobile)
-          IconButton(
+        ],
+        if (isMobile) ...[
+          const SizedBox(width: 24),
+          _circularIconButton(
             onPressed: _onLoginFacebook,
             icon: SvgPicture.asset(
               SvgAssets.facebook,
-              width: 56,
-              height: 56,
+              width: 28,
+              height: 28,
             ),
           ),
+        ],
       ],
+    );
+  }
+
+  Widget _circularIconButton({
+    required VoidCallback onPressed,
+    required Widget icon,
+  }) {
+    Color color = Theme.of(context).colorScheme.tertiaryFixed;
+    return Material(
+      elevation: 4,
+      shape: const CircleBorder(),
+      child: Container(
+        width: 56,
+        height: 56,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color,
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 12),
+            ),
+          ],
+        ),
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(28),
+          child: Center(
+            child: icon,
+          ),
+        ),
+      ),
     );
   }
 
@@ -206,7 +237,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           Navigator.pushReplacementNamed(context, RoutePath.home);
         },
         title: context.loc.guestAccess,
-        textDecoration: TextDecoration.underline,
+        color: Theme.of(context).colorScheme.onPrimary,
       ),
     );
   }

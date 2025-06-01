@@ -105,7 +105,7 @@ class _ReportFilterViewState extends State<ReportFilterView> {
         Expanded(
           child: FilledButton(
             style: FilledButton.styleFrom(
-                backgroundColor: ColorManager.grey1,
+                backgroundColor: ColorManager.greyLight,
                 padding:
                     const EdgeInsets.symmetric(vertical: 8, horizontal: 16)),
             onPressed: () => Navigator.of(context).pop(),

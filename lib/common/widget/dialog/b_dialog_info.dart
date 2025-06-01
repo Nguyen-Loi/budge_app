@@ -45,7 +45,6 @@ Future<void> showBDialog(BuildContext context,
   ).present(context);
 }
 
-
 extension Present<T> on BDialogInfo {
   Future<T?> present(BuildContext context,
       {String? textSubmit, VoidCallback? onSubmit}) {
@@ -117,7 +116,7 @@ extension Present<T> on BDialogInfo {
         bTextSubmit = textSubmit ?? context.loc.confirm;
         bColorButtonSubmit = ColorManager.red2;
         bTextClose = textClose ?? context.loc.close;
-        bColorButtonClose = ColorManager.grey1;
+        bColorButtonClose = ColorManager.greyLight;
       case BDialogInfoType.success:
         bIcon = icon ?? IconManager.success;
         bTitle = title ?? context.loc.successUp;
@@ -125,7 +124,7 @@ extension Present<T> on BDialogInfo {
         bTextSubmit = textSubmit ?? context.loc.continueText;
         bColorButtonSubmit = Theme.of(context).colorScheme.tertiary;
         bTextClose = textClose ?? context.loc.close;
-        bColorButtonClose = ColorManager.grey1;
+        bColorButtonClose = ColorManager.greyLight;
       case BDialogInfoType.warning:
         bIcon = icon ?? IconManager.warning;
         bTitle = title ?? context.loc.warning;
@@ -133,7 +132,7 @@ extension Present<T> on BDialogInfo {
         bTextSubmit = textSubmit ?? context.loc.confirm;
         bColorButtonSubmit = ColorManager.yellow;
         bTextClose = textClose ?? context.loc.close;
-        bColorButtonClose = ColorManager.grey1;
+        bColorButtonClose = ColorManager.greyLight;
     }
     return showDialog<T?>(
       context: context,

@@ -62,15 +62,15 @@ class _BDropdownState<T> extends State<BDropdown<T?>> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Theme.of(context).colorScheme.onSecondary,
-          border: Border.all(color: ColorManager.grey1, width: 0.4)),
+          border: Border.all(color: ColorManager.greyLight, width: 0.4)),
       child: DropdownButton<T>(
         value: _value,
         dropdownColor: Theme.of(context).colorScheme.onSecondary,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         underline: const SizedBox.shrink(),
         hint: widget.hint == null
-            ? BText('Empty', color: ColorManager.grey1)
-            : BText(widget.hint!, color: ColorManager.grey1),
+            ? BText('Empty', color: ColorManager.greyLight)
+            : BText(widget.hint!, color: ColorManager.greyLight),
         icon: Icon(
           IconManager.dropdown,
           color: ColorManager.black,

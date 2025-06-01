@@ -16,6 +16,7 @@ class BFormFieldText extends StatelessWidget {
   final bool disable;
   final TextInputType? textInputType;
   final void Function(String)? onChanged;
+  final IconData? prefixIcon;
   final _TypeField _typeField;
 
   const BFormFieldText(
@@ -28,22 +29,24 @@ class BFormFieldText extends StatelessWidget {
     this.hint,
     this.validator,
     this.textInputType,
+    this.prefixIcon,
   })  : _typeField = _TypeField.controller,
         onChanged = null,
         initialValue = null;
 
-  const BFormFieldText.init(
-      {super.key,
-      this.maxLines,
-      this.maxLength,
-      this.initialValue,
-      this.disable = false,
-      required this.label,
-      this.hint,
-      this.validator,
-      this.textInputType,
-      this.onChanged})
-      : _typeField = _TypeField.init,
+  const BFormFieldText.init({
+    super.key,
+    this.maxLines,
+    this.maxLength,
+    this.initialValue,
+    this.disable = false,
+    required this.label,
+    this.hint,
+    this.validator,
+    this.textInputType,
+    this.onChanged,
+    this.prefixIcon,
+  })  : _typeField = _TypeField.init,
         controller = null;
 
   @override
@@ -83,6 +86,8 @@ class BFormFieldText extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
         ),
+        prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
+        fillColor: disable ? Theme.of(context).disabledColor : null,
       ),
     );
   }
@@ -97,10 +102,12 @@ class BFormFieldText extends StatelessWidget {
       keyboardType: textInputType,
       onChanged: onChanged,
       decoration: InputDecoration(
+        prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
         hintText: hint ?? context.loc.textFieldHintDefault,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
         ),
+        fillColor: disable ? Theme.of(context).disabledColor : null,
       ),
     );
   }

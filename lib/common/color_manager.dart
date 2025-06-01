@@ -5,7 +5,7 @@ class ColorManager {
 
   static Color purple11 = HexColor.fromHex("#410080");
   static Color purple12 = HexColor.fromHex("#6001C0");
-  static Color purple13 = HexColor.fromHex("#7001E0");
+  static Color purple13 = HexColor.fromHex("#9333EA");
   static Color purple14 = HexColor.fromHex("#8000FF");
   static Color purple15 = HexColor.fromHex("#901FFF");
 
@@ -25,7 +25,8 @@ class ColorManager {
   static Color black = HexColor.fromHex("#000000");
   static Color orange = HexColor.fromHex("#FE7C2F");
 
-  static Color grey1 = HexColor.fromHex("#707070");
+  static Color greyLight = HexColor.fromHex("#6B7280");
+  static Color greyDark = HexColor.fromHex("#9CA3AF");
   static Color grey2 = Colors.grey.shade300;
 
   static Color error = HexColor.fromHex("#e61f34");

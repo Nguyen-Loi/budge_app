@@ -16,3 +16,5 @@ const gapH32 = SizedBox(height: 32);
 const gapH40 = SizedBox(height: 40);
 const gapH48 = SizedBox(height: 48);
 const gapH56 = SizedBox(height: 56);
+const gapH64 = SizedBox(height: 64);
+const gapH80 = SizedBox(height: 80);

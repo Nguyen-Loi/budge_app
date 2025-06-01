@@ -1,4 +1,6 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/constants/font_family_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/theme/app_colors.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/theme/asset_tile_style.dart';
@@ -14,7 +16,7 @@ class AppTheme {
   static AppColors get darkColors => const AppColors(
         brightness: Brightness.dark,
         primary: Color(0XFFBB86FC),
-        onPrimary: Color(0xFF000000),
+        onPrimary: Colors.white,
         secondary: Color(0XFF03DAC5),
         onSecondary: Color(0xFF000000),
         primaryContainer: Color(0xFF121212),
@@ -138,7 +140,7 @@ class AppTheme {
   static ButtonStyle get _buttonStyleBase {
     return ButtonStyle(
       padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(
-        vertical: 8,
+        vertical: 10,
         horizontal: 24,
       )),
       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -152,6 +154,7 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       /// COLOR
+      fontFamily: fontFamilyInter,
       brightness: Brightness.dark,
       disabledColor: darkColors.disabledSurface,
       snackBarTheme: SnackBarThemeData(
@@ -185,14 +188,20 @@ class AppTheme {
       iconTheme: IconThemeData(
         color: darkColors.defaultIcon,
       ),
+      dividerColor: ColorManager.greyDark,
 
       /// COMPONENT THEMES
+      actionIconTheme: ActionIconThemeData(backButtonIconBuilder: (_) {
+        return Icon(
+          IconManager.back,
+          color: ColorManager.white,
+        );
+      }),
       appBarTheme: AppBarTheme(
-        elevation: 1,
-        centerTitle: true,
-        backgroundColor: darkColors.surface,
-        foregroundColor: darkColors.secondary,
-      ),
+          elevation: 1,
+          centerTitle: true,
+          backgroundColor: darkColors.surface,
+          foregroundColor: lightColors.onPrimary),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: darkColors.primary,
@@ -233,9 +242,9 @@ class AppTheme {
         focusedErrorBorder: darkColors.error.getOutlineBorder,
         errorBorder: darkColors.error.getOutlineBorder,
         focusedBorder: ColorManager.primary.getOutlineBorder,
-        iconColor: darkColors.onSurfaceVariant,
+        iconColor: ColorManager.greyDark,
         enabledBorder: ColorManager.primary.getOutlineBorder,
-        disabledBorder: ColorManager.grey1.getOutlineBorder,
+        disabledBorder: ColorManager.greyLight.getOutlineBorder,
         errorMaxLines: 3,
       ),
       tabBarTheme: TabBarTheme(
@@ -273,6 +282,7 @@ class AppTheme {
     return ThemeData(
       /// COLOR
       brightness: Brightness.dark,
+      fontFamily: fontFamilyInter,
       disabledColor: lightColors.disabledSurface,
       snackBarTheme: SnackBarThemeData(
           actionTextColor: lightColors.onPrimary,
@@ -308,12 +318,20 @@ class AppTheme {
         color: lightColors.defaultIcon,
       ),
 
+      dividerColor: ColorManager.greyLight,
+
       /// COMPONENT THEMES
+      actionIconTheme: ActionIconThemeData(backButtonIconBuilder: (_) {
+        return Icon(
+          IconManager.back,
+          color: ColorManager.black,
+        );
+      }),
       appBarTheme: AppBarTheme(
         elevation: 1,
         centerTitle: true,
         backgroundColor: lightColors.primaryContainer,
-        foregroundColor: lightColors.secondary,
+        foregroundColor: lightColors.onPrimary,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -345,21 +363,21 @@ class AppTheme {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: lightColors.onSecondary,
-        errorStyle: AppTextTheme.bodySmall.copyWith(color: lightColors.error),
-        helperStyle: AppTextTheme.bodySmall
-            .copyWith(color: lightColors.onSurfaceVariant),
-        hintStyle: AppTextTheme.bodyMedium
-            .copyWith(color: lightColors.onSurfaceVariant),
-        focusedErrorBorder: lightColors.error.getOutlineBorder,
-        errorBorder: lightColors.error.getOutlineBorder,
-        focusedBorder: ColorManager.primary.getOutlineBorder,
-        iconColor: darkColors.onSurfaceVariant,
-        enabledBorder: ColorManager.grey1.getOutlineBorder,
-        disabledBorder: ColorManager.grey1.getOutlineBorder,
-        errorMaxLines: 3,
-      ),
+          filled: true,
+          fillColor: lightColors.onSecondary,
+          errorStyle: AppTextTheme.bodySmall.copyWith(color: lightColors.error),
+          helperStyle: AppTextTheme.bodySmall
+              .copyWith(color: lightColors.onSurfaceVariant),
+          hintStyle: AppTextTheme.bodyMedium
+              .copyWith(color: lightColors.onSurfaceVariant),
+          focusedErrorBorder: lightColors.error.getOutlineBorder,
+          errorBorder: lightColors.error.getOutlineBorder,
+          focusedBorder: ColorManager.purple11.getOutlineBorder,
+          iconColor: ColorManager.greyLight,
+          enabledBorder: ColorManager.greyLight.getEnabledBorder,
+          disabledBorder: ColorManager.greyLight.getOutlineBorder,
+          errorMaxLines: 3,
+          contentPadding: EdgeInsets.all(8)),
       tabBarTheme: TabBarTheme(
         dividerColor: Colors.transparent,
         labelStyle: AppTextTheme.bodyLarge,

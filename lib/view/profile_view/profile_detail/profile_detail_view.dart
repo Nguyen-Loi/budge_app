@@ -9,6 +9,7 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
@@ -81,6 +82,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                 BFormFieldText.init(
                     label: context.loc.email,
                     disable: true,
+                    prefixIcon: IconManager.email,
                     initialValue: user.email),
                 BFormFieldText.init(
                   label: context.loc.name,
@@ -90,16 +92,15 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                   onChanged: (v) {
                     _name = v;
                   },
+                  prefixIcon: IconManager.account,
                 ),
-                AbsorbPointer(
-                  absorbing: disable,
-                  child: BFormFieldPhoneNumber(
-                    initialValue: user.phoneNumber,
-                    validator: (v) => v.validatePhoneNumber(context),
-                    onInputChanged: (PhoneNumber value) {
-                      _phoneNumber = value;
-                    },
-                  ),
+                BFormFieldPhoneNumber(
+                  initialValue: user.phoneNumber,
+                  validator: (v) => v.validatePhoneNumber(context),
+                  onInputChanged: (PhoneNumber value) {
+                    _phoneNumber = value;
+                  },
+                  disable: disable,
                 ),
               ],
             ),
