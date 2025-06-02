@@ -10,7 +10,7 @@ class BAvatarProfile extends StatelessWidget {
     required this.url,
     required this.username,
     super.key,
-    this.size = 24,
+    this.size = 20,
   });
 
   final String? url;
@@ -27,15 +27,12 @@ class BAvatarProfile extends StatelessWidget {
   }
 
   Widget _defaultAvatar(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Center(
-        child: BText.h3(userNameAvatarInitials),
+    return CircleAvatar(
+      radius: size,
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      child: BText.h3(
+        userNameAvatarInitials,
+        color: Theme.of(context).colorScheme.surface,
       ),
     );
   }

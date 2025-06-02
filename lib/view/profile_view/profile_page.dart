@@ -1,4 +1,5 @@
 import 'package:budget_app/common/widget/b_avatar.dart';
+import 'package:budget_app/common/widget/b_avatar_profile.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
@@ -98,7 +99,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       final user = ref.watch(userBaseControllerProvider);
       return ListTile(
         title: BText.b1(user.name),
-        leading: BAvatar.network(user.profileUrl, size: 20),
+        leading:
+            BAvatarProfile(url: user.profileUrl, username: user.name, size: 20),
         subtitle: BText.caption(user.email),
       );
     });

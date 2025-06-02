@@ -266,5 +266,6 @@
   "totalRevenue": "Tổng Thu",
   "totalCost": "Tổng Chi",
   "pSpent": "Đã chi {value}%",
-  "noBudgetsAvailable": "Không có ngân sách nào khả dụng"
+  "noBudgetsAvailable": "Không có ngân sách nào khả dụng",
+  "noRecentTransactions": "Không có giao dịch gần đây nào"
 }

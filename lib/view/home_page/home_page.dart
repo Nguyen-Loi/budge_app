@@ -11,10 +11,9 @@ import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/budget_view/widget/budget_card.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
-import 'package:budget_app/view/home_page/home_transactions_recently.dart';
-import 'package:budget_app/view/home_page/widgets/home_chart/home_chart.dart';
 import 'package:budget_app/view/home_page/widgets/home_chart/income_expense_chart.dart';
 import 'package:budget_app/view/home_page/widgets/home_update_wallet_card.dart';
+import 'package:budget_app/view/transactions_view/widget/transaction_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -89,6 +88,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       final homeController = ref.watch(homeControllerProvider.notifier);
       final totalIncome = homeController.totalIncomeThisMonth;
       final totalExpense = homeController.totalExpenseThisMonth.abs();
+      bool isNoData = totalIncome == 0 && totalExpense == 0;
 
       return _buildSection(
           title: context.loc.incomeExpenseThisMonth,
@@ -158,11 +158,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                   ],
                 ),
-                gapH32,
-                IncomeExpenseChart(
-                  totalIncome: totalIncome,
-                  totalExpense: totalExpense,
-                ),
+                if (!isNoData) gapH32,
+                if (!isNoData)
+                  IncomeExpenseChart(
+                    totalIncome: totalIncome,
+                    totalExpense: totalExpense,
+                  )
               ],
             ),
           ));
@@ -170,7 +171,10 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Widget _buildSection(
-      {required String title, required Widget child, void Function()? onTap}) {
+      {required String title,
+      required Widget child,
+      void Function()? onTap,
+      bool viewAll = true}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -180,7 +184,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             BText.b1(
               title.toUpperCase(),
             ),
-            if (onTap != null)
+            if (onTap != null && viewAll)
               InkWell(
                 borderRadius: BorderRadius.circular(8),
                 onTap: onTap,
@@ -216,42 +220,60 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Widget _buildBudgetSection() {
-    return _buildSection(
-      title: context.loc.budget,
-      child: Consumer(builder: (_, ref, __) {
-        final budgets =
-            ref.watch(homeControllerProvider.notifier).budgetsPreview;
-        if (budgets.isEmpty) {
-          return Center(
-            child: BText(
-              context.loc.noBudgetsAvailable,
-              color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-            ),
-          );
-        }
-        return ColumnWithSpacing(
-          children: budgets
-              .map((budget) => BudgetCard(
-                    model: budget,
-                    isPreview: true,
-                  ))
-              .toList(),
-        );
-      }),
-      onTap: () {
-        Navigator.pushNamed(context, '/budget');
-      },
-    );
+    return Consumer(builder: (_, ref, __) {
+      final budgets = ref.watch(homeControllerProvider.notifier).budgetsPreview;
+      if (budgets.isEmpty) {
+        return _buildSection(
+            title: context.loc.budget,
+            viewAll: budgets.isNotEmpty,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 32),
+              child: Center(
+                child: BText(
+                  context.loc.noBudgetsAvailable,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+                ),
+              ),
+            ));
+      }
+      return ColumnWithSpacing(
+        children: budgets
+            .map((budget) => BudgetCard(
+                  model: budget,
+                  isPreview: true,
+                ))
+            .toList(),
+      );
+    });
   }
 
   Widget _buildRecentTransactionsSection() {
-    return _buildSection(
-      title: context.loc.recentTransactions,
-      child: HomeTransactionsRecently(),
-      onTap: () {
-        Navigator.pushNamed(context, '/transactions');
-      },
-    );
+    return Consumer(builder: (_, ref, __) {
+      final transactions =
+          ref.watch(homeControllerProvider.notifier).transactionsThisMonth;
+      if (transactions.isEmpty) {
+        return _buildSection(
+            title: context.loc.recentTransactions,
+            viewAll: transactions.isNotEmpty,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 32),
+              child: Center(
+                child: BText(
+                  context.loc.noRecentTransactions,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+                ),
+              ),
+            ));
+      }
+
+      return ColumnWithSpacing(
+        children: transactions
+            .map((e) => TransactionCard(
+                  model: e,
+                ))
+            .toList(),
+      );
+    });
   }
 
   Widget _buildFloatingActionButton() {

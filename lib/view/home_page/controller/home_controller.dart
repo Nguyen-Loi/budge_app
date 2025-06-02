@@ -41,7 +41,6 @@ class HomeController extends StateNotifier<void> {
         .fold(0.0, (sum, e) => sum + e.transaction.amount);
   }
 
-
   double get totalIncomeThisMonth {
     final now = DateTime.now();
     const incomeTypes = {
@@ -66,5 +65,10 @@ class HomeController extends StateNotifier<void> {
         .where((transaction) =>
             transaction.transaction.transactionDate.isSameMonth(month))
         .toList();
+  }
+
+  List<TransactionCardModel> get transactionsThisMonth {
+    final now = DateTime.now();
+    return _getTransactionsForMonth(now);
   }
 }

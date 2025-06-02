@@ -266,5 +266,6 @@
     "totalRevenue": "Total Revenue",
     "totalCost": "Total Cost",
     "pSpent": "Spent {value}%",
-    "noBudgetsAvailable": "No budgets available"
+    "noBudgetsAvailable": "No budgets available",
+    "noRecentTransactions": "No recent transactions"
 }
