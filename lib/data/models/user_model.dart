@@ -12,7 +12,7 @@ import 'package:budget_app/core/extension/extension_money.dart';
 class UserModel {
   final String id;
   final String email;
-  final String profileUrl;
+  final String? profileUrl;
   final String name;
   final String accountTypeValue;
   final String currencyTypeValue;
@@ -27,7 +27,7 @@ class UserModel {
   UserModel({
     required this.id,
     required this.email,
-    required this.profileUrl,
+    this.profileUrl,
     required this.name,
     required this.accountTypeValue,
     required this.currencyTypeValue,
@@ -87,7 +87,7 @@ class UserModel {
       id: '',
       email: 'guest@example.com"',
       profileUrl:
-          'https://icons.veryicon.com/png/o/miscellaneous/youyinzhibo/guest.png',
+          null,
       name: 'guest',
       accountTypeValue: AccountType.emailAndPassword.value,
       currencyTypeValue: CurrencyType.usd.value,
@@ -165,7 +165,7 @@ class UserModel {
     return UserModel(
       id: map['id'] as String,
       email: map['email'] as String,
-      profileUrl: map['profileUrl'] as String,
+      profileUrl: map['profileUrl'] as String?,
       name: map['name'] as String,
       accountTypeValue: map['accountTypeValue'] as String,
       currencyTypeValue: map['currencyTypeValue'] as String,

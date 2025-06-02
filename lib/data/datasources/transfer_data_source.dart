@@ -17,7 +17,7 @@ import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
-import 'package:budget_app/view/home_page/controller/uid_controller.dart';
+import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';

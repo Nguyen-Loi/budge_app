@@ -8,7 +8,7 @@ import 'package:budget_app/view/base_controller/chat_base_controller.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
-import 'package:budget_app/view/home_page/controller/uid_controller.dart';
+import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';

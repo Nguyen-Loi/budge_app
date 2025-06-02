@@ -15,8 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BudgetCard extends StatelessWidget {
-  const BudgetCard({super.key, required this.model});
+  const BudgetCard({super.key, required this.model, this.isPreview = false});
   final BudgetModel model;
+  final bool isPreview;
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +42,11 @@ class BudgetCard extends StatelessWidget {
                         child: BText(model.name, fontWeight: FontWeight.w700),
                       ),
                       gapW8,
-                      Icon(
-                        IconManager.arrowNext,
-                        color: ColorManager.black,
-                      )
+                      if (!isPreview)
+                        Icon(
+                          IconManager.arrowNext,
+                          color: ColorManager.black,
+                        )
                     ],
                   ),
                   gapH8,
@@ -121,19 +123,16 @@ class BudgetCard extends StatelessWidget {
       case StatusBudgetProgress.start:
       case StatusBudgetProgress.progress:
         return baseStatus(context,
-            textStatus: context.loc.left,
             iconColor: Theme.of(context).colorScheme.tertiary,
             textColor: ColorManager.black,
             iconData: IconManager.emojiSmile);
       case StatusBudgetProgress.almostDone:
         return baseStatus(context,
-            textStatus: context.loc.approaced,
             iconColor: ColorManager.orange,
             textColor: ColorManager.orange,
             iconData: IconManager.emojiSurprise);
       case StatusBudgetProgress.complete:
         return baseStatus(context,
-            textStatus: context.loc.exceeded,
             iconColor: ColorManager.red1,
             textColor: ColorManager.red1,
             iconData: IconManager.emojiFrown);
@@ -141,11 +140,11 @@ class BudgetCard extends StatelessWidget {
   }
 
   List<Widget> baseStatus(BuildContext context,
-      {required String textStatus,
-      required Color iconColor,
+      {required Color iconColor,
       required textColor,
       required IconData iconData}) {
     int left = model.budgetLimit + model.currentAmount;
+    String leftPercent = (left * 100 / model.budgetLimit).toInt().toString();
     return [
       Row(
         children: [
@@ -154,10 +153,10 @@ class BudgetCard extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                    text: model.currentAmount.abs().toMoneyStr(),
+                    text: model.currentAmount.abs().toMoneyNoSymbolStr(),
                     style: context.textTheme.bodySmall!),
                 TextSpan(
-                    text: '/${model.budgetLimit.toMoneyStr()}',
+                    text: '/ ${model.budgetLimit.toMoneyStr()}',
                     style: context.textTheme.bodySmall!),
               ],
             ),
@@ -165,18 +164,8 @@ class BudgetCard extends StatelessWidget {
           gapW16,
           Row(
             children: [
-              Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                        text: '$textStatus:',
-                        style: context.textTheme.labelLarge!),
-                    TextSpan(
-                        text: left.toMoneyStr(),
-                        style: context.textTheme.bodySmall!
-                            .copyWith(fontWeight: FontWeight.w700)),
-                  ],
-                ),
+              BText.caption(
+                context.loc.pSpent(leftPercent),
               ),
               gapW8,
               Icon(iconData, color: iconColor, size: 14)

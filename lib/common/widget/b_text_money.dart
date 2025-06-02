@@ -18,14 +18,12 @@ class BTextMoney extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BText.b1(
-      value.toMoneyStr(isPrefix: true),
-      color: value >= 0
-          ? Theme.of(context).colorScheme.tertiary
-          : Theme.of(context).colorScheme.error,
-          fontWeight: fontWeight,
-          fontStyle: fontStyle,
-         textAlign: textAlign,
-    );
+    return BText(value.toMoneyStr(isPrefix: true),
+        color: value >= 0
+            ? Theme.of(context).colorScheme.tertiary
+            : Theme.of(context).colorScheme.error,
+        fontWeight: fontWeight ?? FontWeight.w700,
+        fontStyle: fontStyle,
+        textAlign: textAlign);
   }
 }

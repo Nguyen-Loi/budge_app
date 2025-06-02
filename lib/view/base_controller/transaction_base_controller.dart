@@ -3,7 +3,7 @@ import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
-import 'package:budget_app/view/home_page/controller/uid_controller.dart';
+import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

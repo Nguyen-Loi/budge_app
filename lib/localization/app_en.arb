@@ -260,5 +260,11 @@
     "syncLocalToCloud": "Sync local data to cloud",
     "syncLocalToCloudLoading": "Syncing local data to cloud...",
     "syncLocalToCloudSuccess": "Sync local data to cloud success",
-    "syncLocalToCloudError": "Sync local data to cloud error. Please try again"
+    "syncLocalToCloudError": "Sync local data to cloud error. Please try again",
+    "totalBalance": "Total balance",
+    "incomeExpenseThisMonth": "INCOME - EXPENSE THIS MONTH",
+    "totalRevenue": "Total Revenue",
+    "totalCost": "Total Cost",
+    "pSpent": "Spent {value}%",
+    "noBudgetsAvailable": "No budgets available"
 }

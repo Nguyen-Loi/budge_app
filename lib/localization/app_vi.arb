@@ -260,5 +260,11 @@
   "syncLocalToCloud": "Lưu trữ dữ liệu cục bộ lên cloud",
   "syncLocalToCloudLoading": "Đang đồng bộ hóa dữ liệu cục bộ lên đám mây...",
   "syncLocalToCloudSuccess": "Đồng bộ hóa dữ liệu cục bộ lên đám mây thành công",
-  "syncLocalToCloudError": "Đã xảy ra lỗi khi đồng bộ hóa dữ liệu cục bộ lên đám mây. Vui lòng thử lại sau"
+  "syncLocalToCloudError": "Đã xảy ra lỗi khi đồng bộ hóa dữ liệu cục bộ lên đám mây. Vui lòng thử lại sau",
+  "totalBalance": "Tổng số dư",
+  "incomeExpenseThisMonth": "THU - CHI THÁNG NÀY",
+  "totalRevenue": "Tổng Thu",
+  "totalCost": "Tổng Chi",
+  "pSpent": "Đã chi {value}%",
+  "noBudgetsAvailable": "Không có ngân sách nào khả dụng"
 }

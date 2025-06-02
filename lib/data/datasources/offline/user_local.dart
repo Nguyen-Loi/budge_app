@@ -59,7 +59,7 @@ class UserLocal extends UserRepository {
     required File? file,
   }) async {
     try {
-      String profileUrl = user.profileUrl;
+      String? profileUrl = user.profileUrl;
 
       if (file != null) {
         final res = await _storageApi.uploadFile(

@@ -9,6 +9,10 @@ extension HandleDateTime on DateTime {
     return DateFormat(strFormat).format(this);
   }
 
+  bool isSameMonth(DateTime other) {
+    return year == other.year && month == other.month;
+  }
+
   String toYM() {
     return DateFormat.yMMMM().format(this);
   }

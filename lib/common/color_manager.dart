@@ -29,6 +29,9 @@ class ColorManager {
   static Color greyDark = HexColor.fromHex("#9CA3AF");
   static Color grey2 = Colors.grey.shade300;
 
+  static Color cardColorLight = HexColor.fromHex("#F9FAFB");
+  static Color cardColorDark = HexColor.fromHex("#1F2937");
+
   static Color error = HexColor.fromHex("#e61f34");
 
   static LinearGradient linearGreen1 = LinearGradient(colors: [

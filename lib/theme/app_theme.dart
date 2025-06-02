@@ -59,7 +59,7 @@ class AppTheme {
         onSurface: const Color(0xFF002E42),
         tertiaryFixed: const Color(0xFFF2F5F6),
         onSurfaceVariant: const Color(0xFF667C86),
-        success: const Color(0XFF017A47),
+        success: const Color(0XFF22C55E),
         onSuccess: ColorManager.white,
         error: Colors.red,
         onError: ColorManager.white,
@@ -171,7 +171,7 @@ class AppTheme {
           onError: darkColors.onError,
           primaryContainer: darkColors.primaryContainer,
           onPrimaryContainer: darkColors.onPrimaryContainer,
-          surface: darkColors.surface,
+          surface: ColorManager.cardColorDark,
           onSurface: darkColors.onSurface,
           tertiaryFixed: darkColors.tertiaryFixed,
           onSurfaceVariant: darkColors.onSurfaceVariant,
@@ -262,8 +262,8 @@ class AppTheme {
           ),
         ),
       ),
-      cardTheme: const CardTheme(
-        color: Color(0XFF1E1E1E),
+      cardTheme:  CardTheme(
+       color: ColorManager.cardColorDark,
         margin: EdgeInsets.zero,
         elevation: 2,
       ),
@@ -299,7 +299,7 @@ class AppTheme {
 
         primaryContainer: lightColors.primaryContainer,
         onPrimaryContainer: lightColors.onPrimaryContainer,
-        surface: lightColors.surface,
+        surface: ColorManager.cardColorLight,
         onSurface: lightColors.onSurface,
         tertiaryFixed: lightColors.tertiaryFixed,
         onSurfaceVariant: lightColors.onSurfaceVariant,
@@ -394,8 +394,8 @@ class AppTheme {
         ),
       ),
 
-      cardTheme: const CardTheme(
-        color: Color(0XFFFFFFFF),
+      cardTheme: CardTheme(
+        color: ColorManager.cardColorLight,
         margin: EdgeInsets.zero,
         elevation: 2,
       ),
