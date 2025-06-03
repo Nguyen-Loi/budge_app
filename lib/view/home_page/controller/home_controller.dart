@@ -67,8 +67,10 @@ class HomeController extends StateNotifier<void> {
         .toList();
   }
 
-  List<TransactionCardModel> get transactionsThisMonth {
-    final now = DateTime.now();
-    return _getTransactionsForMonth(now);
+  List<TransactionCardModel> get transactionsRecently {
+    final sortedTransactions = transactions.toList();
+    sortedTransactions.sort((a, b) =>
+        b.transaction.transactionDate.compareTo(a.transaction.transactionDate));
+    return sortedTransactions.take(6).toList();
   }
 }

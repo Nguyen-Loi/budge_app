@@ -1,4 +1,3 @@
-import 'package:budget_app/common/widget/b_avatar.dart';
 import 'package:budget_app/common/widget/b_avatar_profile.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';

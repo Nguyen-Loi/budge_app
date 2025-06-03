@@ -20,6 +20,8 @@ class ColorManager {
 
   static Color blue = HexColor.fromHex("#2D98FE");
   static Color yellow = HexColor.fromHex("#FC9736");
+  static Color red = Colors.red;
+  static Color green = Colors.green;
 
   static Color white = HexColor.fromHex("#FFFFFF");
   static Color black = HexColor.fromHex("#000000");

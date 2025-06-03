@@ -47,7 +47,7 @@ class TransactionsController extends StateNotifier<List<TransactionCardModel>> {
   int _sumIncome = 0;
   int _sumExpense = 0;
   int get sumIncome => _sumIncome;
-  int get sumExpense => _sumExpense;
+  int get sumExpense => _sumExpense.abs();
 
   void updateDate(DateTime date) {
     _dateTimePicker = date;

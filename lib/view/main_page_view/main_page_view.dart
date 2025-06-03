@@ -1,14 +1,10 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
-import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
-import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/budget_view/budget_page.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
@@ -29,7 +25,6 @@ class MainPageView extends ConsumerStatefulWidget {
 }
 
 List<BottomNavigationBarItem> _navBarItems(BuildContext context) {
-  bool isLargeScreen = !SizeConstants.isSmallScreen(context);
   return [
     BottomNavigationBarItem(
       icon: Icon(IconManager.homeBar),
@@ -44,15 +39,9 @@ List<BottomNavigationBarItem> _navBarItems(BuildContext context) {
       label: context.loc.budget,
     ),
     BottomNavigationBarItem(
-      icon: Icon(IconManager.profileBar),
-      label: context.loc.profile,
+      icon: Icon(IconManager.settingBar),
+      label: context.loc.settings,
     ),
-    if (isLargeScreen)
-      BottomNavigationBarItem(
-        icon: Icon(IconManager.add),
-        label: context.loc.newTransaction,
-        activeIcon: Icon(IconManager.add, color: ColorManager.primary),
-      ),
   ];
 }
 
@@ -65,7 +54,14 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
     _selectedIndex = 0;
     _pageController = PageController(initialPage: _selectedIndex);
     _screens = [
-      const HomePage(),
+      HomePage(
+        onNavigateToTransactions: () {
+          setState(() {
+            _selectedIndex = 1;
+            _pageController.jumpToPage(_selectedIndex);
+          });
+        },
+      ),
       const TransactionView(),
       const BudgetPage(),
       const ProfilePage(),
@@ -74,23 +70,6 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
     _listenNotification();
 
     super.initState();
-  }
-
-  void onNewTransaction() async {
-    if (ref.watch(budgetBaseControllerProvider).isEmpty) {
-      BDialogInfo(
-        message: context.loc.youMustCreateAtLeastOneBudget,
-        dialogInfoType: BDialogInfoType.warning,
-      ).presentAction(
-        context,
-        onSubmit: () {
-          Navigator.pushNamed(context, RoutePath.newBudget);
-        },
-        textSubmit: context.loc.navigateToIt,
-      );
-    } else {
-      Navigator.pushNamed(context, RoutePath.newTransaction);
-    }
   }
 
   void _listenNotification() {
@@ -142,19 +121,6 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
     final bool isSmallScreen = SizeConstants.isSmallScreen(context);
     final bool isMediumScreen = SizeConstants.isMediumScreen(context);
     return Scaffold(
-      floatingActionButton: isSmallScreen
-          ? FloatingActionButton(
-              onPressed: onNewTransaction,
-              heroTag: UniqueKey(),
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(100))),
-              child: Icon(
-                Icons.add,
-                color: ColorManager.white,
-              ),
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: isSmallScreen
           ? BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
@@ -175,10 +141,6 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
             NavigationRail(
               selectedIndex: _selectedIndex,
               onDestinationSelected: (int index) {
-                if (index == 4) {
-                  onNewTransaction();
-                  return;
-                }
                 setState(() {
                   _selectedIndex = index;
                   _pageController.jumpToPage(_selectedIndex);

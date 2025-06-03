@@ -17,6 +17,7 @@ class IconManager {
   static IconData signIn = Icons.login;
   static IconData back = Icons.arrow_back_ios_new_rounded;
   static IconData budget = FontAwesomeIcons.wallet;
+  static IconData filter = Icons.filter_list_rounded;
 
   // Field
   static IconData email = Icons.email_outlined;
@@ -40,9 +41,9 @@ class IconManager {
 
   //Bottombar
   static IconData homeBar = Icons.home_rounded;
-  static IconData profileBar = FontAwesomeIcons.user;
-  static IconData transactionBar = FontAwesomeIcons.receipt;
-  static IconData budgetBar = Icons.alternate_email_outlined;
+  static IconData settingBar = FontAwesomeIcons.gear;
+  static IconData transactionBar = FontAwesomeIcons.arrowRightArrowLeft;
+  static IconData budgetBar = FontAwesomeIcons.chartArea;
 
   //Dialog status
   static IconData warning = Icons.warning;

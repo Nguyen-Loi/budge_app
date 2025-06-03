@@ -1,7 +1,7 @@
+import 'package:budget_app/common/mixin/floating_action_transaction_mixin.dart';
 import 'package:budget_app/common/widget/b_avatar_profile.dart';
 import 'package:budget_app/common/widget/b_divider.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
@@ -18,23 +18,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+  final VoidCallback? onNavigateToTransactions;
+
+  const HomePage({super.key, this.onNavigateToTransactions});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> with FloatingActionMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          _buildHeader(),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
+      body: CustomScrollView(
+        slivers: [
+          _buildSliverHeader(),
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
                 HomeUpdateWalletCard(),
                 gapH24,
                 _buildIncomeExpenseSection(),
@@ -42,41 +44,53 @@ class _HomePageState extends ConsumerState<HomePage> {
                 _buildBudgetSection(),
                 gapH24,
                 _buildRecentTransactionsSection(),
-                const SizedBox(height: 100),
-              ],
+                const SizedBox(height: 80),
+              ]),
             ),
           ),
         ],
       ),
-      floatingActionButton: _buildFloatingActionButton(),
+      floatingActionButton: buildFloatingActionButton(),
     );
   }
 
-  Widget _buildHeader() {
-    return Consumer(builder: (_, ref, __) {
-      final UserModel user = ref.watch(userBaseControllerProvider);
-      return Container(
-        padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildSliverHeader() {
+    return SliverAppBar(
+      expandedHeight: 70,
+      floating: false,
+      pinned: false,
+      automaticallyImplyLeading: false,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Consumer(builder: (_, ref, __) {
+          final UserModel user = ref.watch(userBaseControllerProvider);
+          return Container(
+            padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                BText(
-                  context.loc.hello,
-                  color: Theme.of(context).dividerColor,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BText(
+                      context.loc.hello,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onPrimary
+                          .withAlpha(100),
+                    ),
+                    BText.h3(
+                      user.name,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ],
                 ),
-                BText.h3(
-                  user.name,
-                ),
+                BAvatarProfile(url: user.profileUrl, username: user.name),
               ],
             ),
-            BAvatarProfile(url: user.profileUrl, username: user.name),
-          ],
-        ),
-      );
-    });
+          );
+        }),
+      ),
+    );
   }
 
   Widget _buildIncomeExpenseSection() {
@@ -179,10 +193,12 @@ class _HomePageState extends ConsumerState<HomePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            BText.b1(
-              title.toUpperCase(),
+            Expanded(
+              child: BText.b1(
+                title.toUpperCase(),
+                fontWeight: FontWeight.w600,
+              ),
             ),
             if (onTap != null && viewAll)
               InkWell(
@@ -222,94 +238,61 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget _buildBudgetSection() {
     return Consumer(builder: (_, ref, __) {
       final budgets = ref.watch(homeControllerProvider.notifier).budgetsPreview;
-      if (budgets.isEmpty) {
-        return _buildSection(
-            title: context.loc.budget,
-            viewAll: budgets.isNotEmpty,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 32),
-              child: Center(
-                child: BText(
-                  context.loc.noBudgetsAvailable,
-                  color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-                ),
-              ),
-            ));
-      }
-      return ColumnWithSpacing(
-        children: budgets
-            .map((budget) => BudgetCard(
-                  model: budget,
-                  isPreview: true,
-                ))
-            .toList(),
-      );
+      return _buildSection(
+          title: context.loc.budget,
+          viewAll: budgets.isNotEmpty,
+          child: budgets.isNotEmpty
+              ? ColumnWithSpacing(
+                  children: budgets
+                      .map((budget) => BudgetCard(
+                            model: budget,
+                            isPreview: true,
+                          ))
+                      .toList(),
+                )
+              : Padding(
+                  padding: EdgeInsets.symmetric(vertical: 32),
+                  child: Center(
+                    child: BText(
+                      context.loc.noBudgetsAvailable,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withAlpha(150),
+                    ),
+                  ),
+                ));
     });
   }
 
   Widget _buildRecentTransactionsSection() {
     return Consumer(builder: (_, ref, __) {
       final transactions =
-          ref.watch(homeControllerProvider.notifier).transactionsThisMonth;
-      if (transactions.isEmpty) {
-        return _buildSection(
-            title: context.loc.recentTransactions,
-            viewAll: transactions.isNotEmpty,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 32),
-              child: Center(
-                child: BText(
-                  context.loc.noRecentTransactions,
-                  color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-                ),
-              ),
-            ));
-      }
-
-      return ColumnWithSpacing(
-        children: transactions
-            .map((e) => TransactionCard(
-                  model: e,
-                ))
-            .toList(),
-      );
+          ref.watch(homeControllerProvider.notifier).transactionsRecently;
+      return _buildSection(
+          title: context.loc.recentTransactions,
+          viewAll: transactions.isNotEmpty,
+          onTap: widget.onNavigateToTransactions,
+          child: transactions.isEmpty
+              ? Padding(
+                  padding: EdgeInsets.symmetric(vertical: 32),
+                  child: Center(
+                    child: BText(
+                      context.loc.noRecentTransactions,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withAlpha(150),
+                    ),
+                  ),
+                )
+              : ColumnWithSpacing(
+                  children: transactions
+                      .map((e) => TransactionCard(
+                            model: e,
+                          ))
+                      .toList(),
+                ));
     });
-  }
-
-  Widget _buildFloatingActionButton() {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(28),
-          onTap: () {
-            BDialogInfo(
-              message: context.loc.developingFreatures,
-              dialogInfoType: BDialogInfoType.warning,
-            ).present(context);
-          },
-          child: const Center(
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-              size: 24,
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

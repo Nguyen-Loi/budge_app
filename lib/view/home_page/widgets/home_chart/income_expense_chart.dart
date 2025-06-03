@@ -164,13 +164,11 @@ class _Indicator extends StatelessWidget {
     required this.color,
     required this.text,
     required this.isSquare,
-    this.textColor,
   });
 
   final Color color;
   final String text;
   final bool isSquare;
-  final Color? textColor;
 
   final double size = 16;
 

@@ -267,5 +267,8 @@
   "totalCost": "Tổng Chi",
   "pSpent": "Đã chi {value}%",
   "noBudgetsAvailable": "Không có ngân sách nào khả dụng",
-  "noRecentTransactions": "Không có giao dịch gần đây nào"
+  "noRecentTransactions": "Không có giao dịch gần đây nào",
+  "transactionHistory": "Lịch Sử Giao Dịch",
+  "monthlySummary": "Tóm Tắt Tháng",
+  "netBalance": "Số Dư"
 }

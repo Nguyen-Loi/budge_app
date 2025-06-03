@@ -267,5 +267,8 @@
     "totalCost": "Total Cost",
     "pSpent": "Spent {value}%",
     "noBudgetsAvailable": "No budgets available",
-    "noRecentTransactions": "No recent transactions"
+    "noRecentTransactions": "No recent transactions",
+    "transactionHistory": "Transaction History",
+    "monthlySummary": "Monthly Summary",
+    "netBalance": "Net Balance"
 }

@@ -50,7 +50,7 @@ class AppTheme {
   static AppColors get lightColors => AppColors(
         brightness: Brightness.dark,
         primary: ColorManager.purple13,
-        onPrimary: ColorManager.black,
+        onPrimary: ColorManager.white,
         secondary: ColorManager.purple23,
         onSecondary: ColorManager.white,
         primaryContainer: const Color(0xFFFFFFFF),
@@ -198,10 +198,10 @@ class AppTheme {
         );
       }),
       appBarTheme: AppBarTheme(
-          elevation: 1,
+          elevation: 0,
           centerTitle: true,
-          backgroundColor: darkColors.surface,
-          foregroundColor: lightColors.onPrimary),
+          backgroundColor: darkColors.primary,
+          foregroundColor: darkColors.onPrimary),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: darkColors.primary,
@@ -262,8 +262,8 @@ class AppTheme {
           ),
         ),
       ),
-      cardTheme:  CardTheme(
-       color: ColorManager.cardColorDark,
+      cardTheme: CardTheme(
+        color: ColorManager.cardColorDark,
         margin: EdgeInsets.zero,
         elevation: 2,
       ),
@@ -330,7 +330,7 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         elevation: 1,
         centerTitle: true,
-        backgroundColor: lightColors.primaryContainer,
+        backgroundColor: lightColors.primary,
         foregroundColor: lightColors.onPrimary,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(

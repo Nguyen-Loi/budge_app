@@ -47,12 +47,12 @@ class HomeUpdateWalletCard extends ConsumerWidget {
           children: [
             BText(
               context.loc.totalBalance,
-              color: Theme.of(context).colorScheme.surface.withAlpha(200),
+              color: Theme.of(context).colorScheme.onPrimary.withAlpha(200),
             ),
             gapH8,
             BText.h1(
               value.toMoneyStr(),
-              color: Theme.of(context).colorScheme.surface,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ],
         ),
