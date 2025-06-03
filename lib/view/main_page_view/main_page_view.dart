@@ -61,11 +61,16 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
             _pageController.jumpToPage(_selectedIndex);
           });
         },
+        onNavigateToBudgets: () {
+          setState(() {
+            _selectedIndex = 2;
+            _pageController.jumpToPage(_selectedIndex);
+          });
+        },
       ),
       const TransactionView(),
       const BudgetPage(),
       const ProfilePage(),
-      const NewTransactionView()
     ];
     _listenNotification();
 

@@ -19,8 +19,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   final VoidCallback? onNavigateToTransactions;
+  final VoidCallback? onNavigateToBudgets;
 
-  const HomePage({super.key, this.onNavigateToTransactions});
+  const HomePage({super.key, this.onNavigateToTransactions, this.onNavigateToBudgets});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
@@ -56,7 +57,7 @@ class _HomePageState extends ConsumerState<HomePage> with FloatingActionMixin {
 
   Widget _buildSliverHeader() {
     return SliverAppBar(
-      expandedHeight: 70,
+      expandedHeight: 100,
       floating: false,
       pinned: false,
       automaticallyImplyLeading: false,
@@ -241,6 +242,7 @@ class _HomePageState extends ConsumerState<HomePage> with FloatingActionMixin {
       return _buildSection(
           title: context.loc.budget,
           viewAll: budgets.isNotEmpty,
+          onTap: widget.onNavigateToBudgets,
           child: budgets.isNotEmpty
               ? ColumnWithSpacing(
                   children: budgets
