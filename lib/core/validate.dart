@@ -1,4 +1,4 @@
-import 'package:budget_app/core/utils.dart';
+import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
 

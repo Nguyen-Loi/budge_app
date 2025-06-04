@@ -28,7 +28,8 @@ class BFormFieldCustomAmount extends FormField<int> {
                 children: [
                   BText.h2(
                     label,
-                    color: ColorManager.purple12,
+                    color: Theme.of(field.context)
+                        .colorScheme.onPrimary,
                     fontWeight: FontWeight.w700,
                   ),
                   if (field.hasError)

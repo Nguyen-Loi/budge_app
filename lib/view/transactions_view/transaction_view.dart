@@ -3,6 +3,7 @@ import 'package:budget_app/common/mixin/floating_action_transaction_mixin.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month_dialog.dart';
+import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
@@ -73,7 +74,7 @@ class _TransactionViewState extends State<TransactionView>
           alignment: Alignment.center,
           children: [
             Center(
-              child: BText.b1(
+              child: BText.h3(
                 context.loc.transactionHistory,
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.w800,
@@ -275,8 +276,16 @@ class _TransactionViewState extends State<TransactionView>
       final state = ref.watch(transactionControllerProvider);
 
       if (state.transactions.isEmpty) {
-        return const SliverFillRemaining(
-          child: BStatus.empty(),
+        return SliverFillRemaining(
+          hasScrollBody: false,
+          child: Column(
+            children: [
+              BStatus.empty(
+                text: context.loc.noTransactionDescription,
+              ),
+              gapH80,
+            ],
+          ),
         );
       }
 

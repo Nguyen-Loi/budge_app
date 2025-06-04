@@ -1,9 +1,9 @@
+import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/route_path.dart';
-import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';

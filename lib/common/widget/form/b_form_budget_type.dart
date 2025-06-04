@@ -35,7 +35,8 @@ class BFormBudgetType extends FormField<BudgetTypeEnum> {
                                   ? Theme.of(field.context).colorScheme.primary
                                   : null,
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: ColorManager.primary)),
+                              border:
+                                  Border.all(color: ColorManager.primaryBlue)),
                           child: BText(
                             e.content(field.context),
                             color: isSelected ? ColorManager.white : null,

@@ -200,7 +200,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     required VoidCallback onPressed,
     required Widget icon,
   }) {
-    Color color = Theme.of(context).colorScheme.tertiaryFixed;
+    Color color = Theme.of(context).colorScheme.onPrimary.withAlpha(150);
     return Material(
       elevation: 4,
       shape: const CircleBorder(),
@@ -237,7 +237,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           Navigator.pushReplacementNamed(context, RoutePath.home);
         },
         title: context.loc.guestAccess,
-        color: Theme.of(context).colorScheme.onPrimary,
+        color: Theme.of(context).colorScheme.secondary,
       ),
     );
   }

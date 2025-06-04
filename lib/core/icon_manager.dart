@@ -41,7 +41,7 @@ class IconManager {
 
   //Bottombar
   static IconData homeBar = Icons.home_rounded;
-  static IconData settingBar = FontAwesomeIcons.gear;
+  static IconData reportBar = Icons.bar_chart_rounded;
   static IconData transactionBar = FontAwesomeIcons.arrowRightArrowLeft;
   static IconData budgetBar = FontAwesomeIcons.chartArea;
 

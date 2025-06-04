@@ -1,19 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ColorManager {
-  static Color primary = HexColor.fromHex("#7001E0");
-
-  static Color purple11 = HexColor.fromHex("#410080");
-  static Color purple12 = HexColor.fromHex("#6001C0");
-  static Color purple13 = HexColor.fromHex("#9333EA");
-  static Color purple14 = HexColor.fromHex("#8000FF");
-  static Color purple15 = HexColor.fromHex("#901FFF");
-
-  static Color purple21 = HexColor.fromHex("#A040FF");
-  static Color purple22 = HexColor.fromHex("#AF60FF");
-  static Color purple23 = HexColor.fromHex("#C080FF");
-  static Color purple24 = HexColor.fromHex("#D2AFF5");
-  static Color purple25 = HexColor.fromHex("#D2AFF5");
 
   static Color red1 = HexColor.fromHex("#E85962");
   static Color red2 = HexColor.fromHex("#DE4C5F");
@@ -30,6 +17,7 @@ class ColorManager {
   static Color greyLight = HexColor.fromHex("#6B7280");
   static Color greyDark = HexColor.fromHex("#9CA3AF");
   static Color grey2 = Colors.grey.shade300;
+  static Color grey = Colors.grey;
 
   static Color cardColorLight = HexColor.fromHex("#F9FAFB");
   static Color cardColorDark = HexColor.fromHex("#1F2937");
@@ -68,6 +56,28 @@ class ColorManager {
     HexColor.fromHex('#614385'),
     HexColor.fromHex('#516395'),
   ]);
+
+
+  static const Color primaryBlue = Color(0xFF0D47A1); 
+  static const Color secondaryBlue = Color(0xFF1976D2);
+  static const Color lightBlueBackground = Color(0xFFE3F2FD);
+  static const Color darkBlueText = Color(0xFF001E3C); 
+
+  // --- GRADIENT ---
+  static const Color gradientBlueStart = Color(0xFF0D47A1);
+  static const Color gradientBlueMid = Color(0xFF1976D2);
+  static const Color gradientBlueEnd = Color(0xFF2196F3); 
+  static const Color gradientBlueAlt1 = Color(0xFF1565C0);
+  static const Color gradientBlueAlt2 = Color(0xFF1E88E5);
+
+
+  static const Color greyText = Color(0xFF5A788A); 
+  static const Color successGreen = Color(0XFF22C55E);
+  static const Color errorRed = Color(0xFFD32F2F); 
+
+  static const Color disabledGrey = Color(0XFFB0BEC5); 
+  static const Color disabledSurfaceGrey = Color(0XFFECEFF1); 
+  static const Color onDisabledSurfaceText = Color(0XFF78909C); 
 }
 
 extension HexColor on Color {

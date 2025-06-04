@@ -3,6 +3,7 @@ import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button_icon.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
+import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/icon_manager.dart';
@@ -71,21 +72,21 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
       floating: true,
       pinned: false,
       automaticallyImplyLeading: false,
-      backgroundColor: ColorManager.primary,
+      backgroundColor: ColorManager.primaryBlue,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
           padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BText.h2(
+              BText.h3(
                 context.loc.budgetInUse,
                 color: Theme.of(context).colorScheme.onPrimary,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w800,
               ),
               const SizedBox(height: 8),
               BText(
-                "Manage and track your budgets",
+                context.loc.budgetPageDesc,
                 color: Theme.of(context).colorScheme.onPrimary.withAlpha(200),
               ),
               const Spacer(),
@@ -119,10 +120,10 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
         TabBar(
           controller: _tabController,
           tabs: _tabs(context),
-          indicatorColor: ColorManager.primary,
+          indicatorColor: ColorManager.primaryBlue,
           indicatorWeight: 3,
           indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
-          labelColor: ColorManager.primary,
+          labelColor: ColorManager.primaryBlue,
           unselectedLabelColor: ColorManager.greyLight,
           labelStyle: const TextStyle(
             fontSize: 16,
@@ -152,33 +153,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
                   BStatus.empty(
                     text: context.loc.budgetEmpty,
                   ),
-                  const SizedBox(height: 32),
-                  Container(
-                    width: double.infinity,
-                    constraints: const BoxConstraints(maxWidth: 300),
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pushNamed(context, RoutePath.newBudget);
-                      },
-                      icon: Icon(IconManager.add, size: 20),
-                      label: BText.b1(
-                        "Create Your First Budget",
-                        fontWeight: FontWeight.w600,
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorManager.primary,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 2,
-                      ),
-                    ),
-                  ),
+                  gapH40,
                 ],
               ),
             ),

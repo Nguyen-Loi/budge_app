@@ -89,7 +89,7 @@ class _ShowItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(8)),
-        border: Border.all(color: ColorManager.primary, width: 0.5),
+        border: Border.all(color: ColorManager.primaryBlue, width: 0.5),
       ),
       child: child,
     );
@@ -169,7 +169,9 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
         child: Ink(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isSelected ? ColorManager.purple13 : ColorManager.white,
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : ColorManager.white,
             borderRadius: const BorderRadius.all(
               Radius.circular(8),
             ),

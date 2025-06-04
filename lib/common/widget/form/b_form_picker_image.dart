@@ -67,18 +67,22 @@ class _BFormPickerImage extends FormFieldState<File> {
   @override
   void initState() {
     if (widget.initialUrl != null) {
-      super.setValue(File(''));
+      super.setValue(null);
     }
     super.initState();
   }
 
   Widget image() {
+    if (super.value == null) {
+      return widget.initialUrl != null
+          ? _showImageNetwork()
+          : _showImageEmpty();
+    }
+
     bool startFileEmpty = super.value!.path.isEmpty;
     return widget.initialUrl != null && startFileEmpty
         ? _showImageNetwork()
-        : super.value == null
-            ? _showImageEmpty()
-            : _showImageFile();
+        : _showImageFile();
   }
 
   Widget _showImageEmpty() {
@@ -100,6 +104,10 @@ class _BFormPickerImage extends FormFieldState<File> {
   }
 
   Widget _showImageFile() {
+    if (super.value == null) {
+      return _showImageEmpty();
+    }
+
     return CircleAvatar(
       radius: widget.size,
       child: Image.file(

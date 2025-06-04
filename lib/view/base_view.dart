@@ -42,7 +42,11 @@ class BaseView extends StatelessWidget {
   Widget _base(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: BText.h3(title),
+        title: BText.h3(
+          title,
+          fontWeight: FontWeight.w800,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
         actions: actions,
         bottom: bottom,
       ),

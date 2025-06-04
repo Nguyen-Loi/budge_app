@@ -29,7 +29,7 @@ class BAvatarProfile extends StatelessWidget {
   Widget _defaultAvatar(BuildContext context) {
     return CircleAvatar(
       radius: size,
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       child: BText.h3(
         userNameAvatarInitials,
         color: Theme.of(context).colorScheme.surface,

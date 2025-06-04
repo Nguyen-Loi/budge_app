@@ -46,14 +46,14 @@
   "newExpense": "Chi tiêu mới",
   "myAccount": "Tài khoản của tôi",
   "modify": "Sửa đổi",
-  "readOnly": "Chỉ đọc",
+  "readModeOnly": "View only",
+  "editModeActive": "Editing enabled",
   "name": "Tên",
   "save": "Lưu",
   "profile": "Hồ sơ",
   "settings": "Cài đặt",
   "contact": "Liên hệ",
   "signOut": "Đăng xuất",
-  "pUserJoinDescriptions": "Bạn đã tham gia SmartBudget vào ngày {dateTime}. Đã qua {numberMonth} tháng từ đó và sứ mệnh của chúng tôi vẫn là giúp bạn quản lý tiền của mình tốt hơn",
   "home": "Trang chủ",
   "appName": "SmartBudget",
   "left": "Còn lại",
@@ -270,5 +270,8 @@
   "noRecentTransactions": "Không có giao dịch gần đây nào",
   "transactionHistory": "Lịch Sử Giao Dịch",
   "monthlySummary": "Tóm Tắt Tháng",
-  "netBalance": "Số Dư"
+  "netBalance": "Số Dư",
+  "budgetPageDesc": "Quản lý và theo dõi ngân sách của bạn",
+  "errorValidateForm": "Hãy chỉnh sửa các lỗi có trong biểu mẫu.",
+  "protected": "Bảo vệ"
 }

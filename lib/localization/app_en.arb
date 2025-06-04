@@ -46,14 +46,14 @@
     "newExpense": "New expense",
     "myAccount": "My Account",
     "modify": "Modify",
-    "readOnly": "Read Only",
+    "readModeOnly": "View only",
+    "editModeActive": "Editing enabled",
     "name": "Name",
     "save": "Save",
     "profile": "Profile",
     "settings": "Settings",
     "contact": "Contact",
     "signOut": "Sign Out",
-    "pUserJoinDescriptions": "You joined SmartBudget on {dateTime}. It's been {numberMonth} month since then and our mission is still the same and help you better manage your money",
     "home": "Home",
     "appName": "Budget SS",
     "left": "Left",
@@ -270,5 +270,8 @@
     "noRecentTransactions": "No recent transactions",
     "transactionHistory": "Transaction History",
     "monthlySummary": "Monthly Summary",
-    "netBalance": "Net Balance"
+    "netBalance": "Net Balance",
+    "budgetPageDesc": "Manage and track your budgets",
+    "errorValidateForm": "Please fix the errors in the form.",
+    "protected": "Protected"
 }

@@ -27,7 +27,7 @@ class HomeUpdateWalletCard extends ConsumerWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [ColorManager.purple12, ColorManager.purple14],
+            colors: [ColorManager.gradientBlueAlt1, ColorManager.gradientBlueAlt2],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),

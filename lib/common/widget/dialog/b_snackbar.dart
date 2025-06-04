@@ -5,6 +5,17 @@ void showSnackBar(BuildContext context, String content) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: BText(content),
+      behavior: SnackBarBehavior.floating,
+    ),
+  );
+}
+
+void showSnackBarError(BuildContext context, String content) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: BText(content),
+      backgroundColor: Colors.red.shade600,
+      behavior: SnackBarBehavior.floating,
     ),
   );
 }

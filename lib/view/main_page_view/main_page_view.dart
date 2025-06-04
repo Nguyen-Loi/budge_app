@@ -6,12 +6,11 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/budget_view/budget_page.dart';
+import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
-import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
-import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
+import 'package:budget_app/view/report_page/report_page.dart';
 import 'package:budget_app/view/transactions_view/transaction_view.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
-import 'package:budget_app/view/profile_view/profile_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,8 +38,8 @@ List<BottomNavigationBarItem> _navBarItems(BuildContext context) {
       label: context.loc.budget,
     ),
     BottomNavigationBarItem(
-      icon: Icon(IconManager.settingBar),
-      label: context.loc.settings,
+      icon: Icon(IconManager.reportBar),
+      label: context.loc.report,
     ),
   ];
 }
@@ -70,7 +69,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
       ),
       const TransactionView(),
       const BudgetPage(),
-      const ProfilePage(),
+      const ReportPage(),
     ];
     _listenNotification();
 
@@ -112,7 +111,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
               SizedBox(height: 16),
               BButton(
                 onPressed: () {
-                  ref.read(profileController.notifier).signOut(context);
+                  ref.read(homeControllerProvider.notifier).signOut(context);
                 },
                 title: context.loc.signIn,
               )

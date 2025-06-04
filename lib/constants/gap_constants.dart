@@ -8,7 +8,7 @@ const gapW40 = SizedBox(width: 40);
 const gapW48 = SizedBox(width: 48);
 const gapW56 = SizedBox(width: 56);
 
-
+const gapH4 = SizedBox(height: 4);
 const gapH8 = SizedBox(height: 8);
 const gapH16 = SizedBox(height: 16);
 const gapH24 = SizedBox(height: 24);

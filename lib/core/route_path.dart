@@ -8,7 +8,7 @@ import 'package:budget_app/view/budget_view/budget_new_view/new_budget_view.dart
 import 'package:budget_app/view/chat_view/chat_view.dart';
 import 'package:budget_app/view/main_page_view/main_page_view.dart';
 import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
-import 'package:budget_app/view/profile_view/profile_detail/profile_detail_view.dart';
+import 'package:budget_app/view/profile_view/profile_view.dart';
 import 'package:budget_app/view/report_view/report_view.dart';
 import 'package:budget_app/view/settings_view/settings_view.dart';
 import 'package:budget_app/view/update_wallet_view/update_wallet_view.dart';
@@ -27,7 +27,7 @@ class RoutePath {
 
   static const String newTransaction = "/newTransaction";
 
-  static const String profileDetail = "/profileDetail";
+  static const String profile = "/profile";
   static const String updateWallet = "/updateWallet";
 
   //Base
@@ -62,8 +62,8 @@ class MainRouter {
       case RoutePath.newTransaction:
         return MaterialPageRoute(builder: (_) => const NewTransactionView());
 
-      case RoutePath.profileDetail:
-        return MaterialPageRoute(builder: (_) => const ProfileDetailView());
+      case RoutePath.profile:
+        return MaterialPageRoute(builder: (_) => const ProfileView());
       case RoutePath.updateWallet:
         return MaterialPageRoute(builder: (_) => const UpdateWalletView());
 

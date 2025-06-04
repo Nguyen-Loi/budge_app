@@ -11,6 +11,7 @@ import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/budget_view/widget/budget_card.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
+import 'package:budget_app/view/home_page/home_drawer.dart';
 import 'package:budget_app/view/home_page/widgets/home_chart/income_expense_chart.dart';
 import 'package:budget_app/view/home_page/widgets/home_update_wallet_card.dart';
 import 'package:budget_app/view/transactions_view/widget/transaction_card.dart';
@@ -21,16 +22,41 @@ class HomePage extends ConsumerStatefulWidget {
   final VoidCallback? onNavigateToTransactions;
   final VoidCallback? onNavigateToBudgets;
 
-  const HomePage({super.key, this.onNavigateToTransactions, this.onNavigateToBudgets});
+  const HomePage(
+      {super.key, this.onNavigateToTransactions, this.onNavigateToBudgets});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> with FloatingActionMixin {
+class _HomePageState extends ConsumerState<HomePage>
+    with FloatingActionMixin, TickerProviderStateMixin {
+  late AnimationController _drawerController;
+  late Animation<double> _drawerAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _drawerController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _drawerAnimation = CurvedAnimation(
+      parent: _drawerController,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _drawerController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: HomeDrawer(drawerAnimation: _drawerAnimation),
       body: CustomScrollView(
         slivers: [
           _buildSliverHeader(),
@@ -60,30 +86,50 @@ class _HomePageState extends ConsumerState<HomePage> with FloatingActionMixin {
       expandedHeight: 100,
       floating: false,
       pinned: false,
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: true,
+      leading: Builder(
+        builder: (context) => IconButton(
+          icon: AnimatedRotation(
+            duration: const Duration(milliseconds: 300),
+            turns: _drawerAnimation.value * 0.5,
+            child: Icon(
+              Icons.menu_rounded,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+            _drawerController.forward();
+          },
+        ),
+      ),
       flexibleSpace: FlexibleSpaceBar(
         background: Consumer(builder: (_, ref, __) {
           final UserModel user = ref.watch(userBaseControllerProvider);
           return Container(
-            padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
+            padding: const EdgeInsets.fromLTRB(72, 50, 16, 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BText(
-                      context.loc.hello,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onPrimary
-                          .withAlpha(100),
-                    ),
-                    BText.h3(
-                      user.name,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BText(
+                        context.loc.hello,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onPrimary
+                            .withAlpha(100),
+                      ),
+                      BText.h3(
+                        user.name,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ],
+                  ),
                 ),
                 BAvatarProfile(url: user.profileUrl, username: user.name),
               ],

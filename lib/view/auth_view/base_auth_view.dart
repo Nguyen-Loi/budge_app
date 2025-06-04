@@ -22,6 +22,7 @@ class BaseAuthView extends StatelessWidget {
               title: BText.h1(title, textAlign: TextAlign.center),
               centerTitle: true,
               floating: true,
+              backgroundColor: Theme.of(context).colorScheme.onPrimary,
               snap: true,
             ),
             SliverPadding(

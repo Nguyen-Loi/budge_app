@@ -46,40 +46,47 @@ class AppTheme {
           ],
         ),
       );
-
   static AppColors get lightColors => AppColors(
         brightness: Brightness.dark,
-        primary: ColorManager.purple13,
+        primary: ColorManager.primaryBlue,
         onPrimary: ColorManager.white,
-        secondary: ColorManager.purple23,
+        secondary: ColorManager.secondaryBlue,
         onSecondary: ColorManager.white,
-        primaryContainer: const Color(0xFFFFFFFF),
-        onPrimaryContainer: const Color(0xFF002E42),
-        surface: const Color(0xFFF2F5F6),
-        onSurface: const Color(0xFF002E42),
-        tertiaryFixed: const Color(0xFFF2F5F6),
-        onSurfaceVariant: const Color(0xFF667C86),
-        success: const Color(0XFF22C55E),
+
+        primaryContainer: ColorManager.white,
+        onPrimaryContainer: ColorManager.darkBlueText,
+
+        surface: ColorManager.white,
+        onSurface: ColorManager.darkBlueText,
+
+        tertiaryFixed: ColorManager.secondaryBlue,
+        onSurfaceVariant: ColorManager.greyText,
+
+        success: ColorManager.successGreen,
         onSuccess: ColorManager.white,
-        error: Colors.red,
+        error: ColorManager.errorRed,
         onError: ColorManager.white,
 
         /// Custom colors
-        tileBackgroundColor: const Color(0xFFF2F5F6),
-        defaultText: const Color(0XFF002E42),
-        lightText: const Color(0XFF667C86),
-        defaultIcon: ColorManager.purple22, //Hover icon button
-        disabledIcon: const Color(0XFF8097A0),
-        disabledSurface: const Color(0XFFD2DBDE),
-        onDisabledSurface: const Color(0XFFA0B1B8),
+        tileBackgroundColor: ColorManager.lightBlueBackground,
+        defaultText: ColorManager.darkBlueText,
+        lightText: ColorManager.greyText,
+
+        defaultIcon: ColorManager.secondaryBlue,
+        disabledIcon: ColorManager.disabledGrey,
+        disabledSurface: ColorManager.disabledSurfaceGrey,
+        onDisabledSurface: ColorManager.onDisabledSurfaceText,
+
         linearGradient: LinearGradient(
           colors: [
-            ColorManager.purple21,
-            ColorManager.purple22,
-            ColorManager.purple23,
-            ColorManager.purple24,
-            ColorManager.purple25,
+            ColorManager.gradientBlueStart,
+            ColorManager.gradientBlueAlt1,
+            ColorManager.gradientBlueMid,
+            ColorManager.gradientBlueAlt2,
+            ColorManager.gradientBlueEnd,
           ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
       );
 
@@ -194,7 +201,7 @@ class AppTheme {
       actionIconTheme: ActionIconThemeData(backButtonIconBuilder: (_) {
         return Icon(
           IconManager.back,
-          color: ColorManager.white,
+          color: darkColors.onPrimary,
         );
       }),
       appBarTheme: AppBarTheme(
@@ -212,7 +219,7 @@ class AppTheme {
       dialogTheme: DialogTheme(backgroundColor: darkColors.primaryContainer),
       filledButtonTheme: FilledButtonThemeData(style: _buttonStyleBase),
       floatingActionButtonTheme:
-          FloatingActionButtonThemeData(backgroundColor: ColorManager.purple13),
+          FloatingActionButtonThemeData(backgroundColor: darkColors.secondary),
 
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
@@ -241,9 +248,9 @@ class AppTheme {
             .copyWith(color: darkColors.onSurfaceVariant),
         focusedErrorBorder: darkColors.error.getOutlineBorder,
         errorBorder: darkColors.error.getOutlineBorder,
-        focusedBorder: ColorManager.primary.getOutlineBorder,
+        focusedBorder: darkColors.primary.getOutlineBorder,
         iconColor: ColorManager.greyDark,
-        enabledBorder: ColorManager.primary.getOutlineBorder,
+        enabledBorder: ColorManager.primaryBlue.getOutlineBorder,
         disabledBorder: ColorManager.greyLight.getOutlineBorder,
         errorMaxLines: 3,
       ),
@@ -299,12 +306,12 @@ class AppTheme {
 
         primaryContainer: lightColors.primaryContainer,
         onPrimaryContainer: lightColors.onPrimaryContainer,
-        surface: ColorManager.cardColorLight,
+        surface: lightColors.primaryContainer,
         onSurface: lightColors.onSurface,
         tertiaryFixed: lightColors.tertiaryFixed,
         onSurfaceVariant: lightColors.onSurfaceVariant,
         //custom
-        secondaryContainer: ColorManager.purple25,
+        secondaryContainer: ColorManager.primaryBlue,
 
         // Success
         tertiary: lightColors.success,
@@ -324,7 +331,7 @@ class AppTheme {
       actionIconTheme: ActionIconThemeData(backButtonIconBuilder: (_) {
         return Icon(
           IconManager.back,
-          color: ColorManager.black,
+          color: lightColors.onPrimary,
         );
       }),
       appBarTheme: AppBarTheme(
@@ -344,7 +351,7 @@ class AppTheme {
       filledButtonTheme: FilledButtonThemeData(style: _buttonStyleBase),
 
       floatingActionButtonTheme:
-          FloatingActionButtonThemeData(backgroundColor: ColorManager.purple13),
+          FloatingActionButtonThemeData(backgroundColor: lightColors.secondary),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           shape:
@@ -372,7 +379,7 @@ class AppTheme {
               .copyWith(color: lightColors.onSurfaceVariant),
           focusedErrorBorder: lightColors.error.getOutlineBorder,
           errorBorder: lightColors.error.getOutlineBorder,
-          focusedBorder: ColorManager.purple11.getOutlineBorder,
+          focusedBorder: lightColors.primary.getOutlineBorder,
           iconColor: ColorManager.greyLight,
           enabledBorder: ColorManager.greyLight.getEnabledBorder,
           disabledBorder: ColorManager.greyLight.getOutlineBorder,
