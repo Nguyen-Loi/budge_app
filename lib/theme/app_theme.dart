@@ -180,13 +180,11 @@ class AppTheme {
           onPrimaryContainer: darkColors.onPrimaryContainer,
           surface: ColorManager.cardColorDark,
           onSurface: darkColors.onSurface,
-          tertiaryFixed: darkColors.tertiaryFixed,
+          tertiaryFixed: Color(0XFF80DCC5),
           onSurfaceVariant: darkColors.onSurfaceVariant,
           //custom
           secondaryContainer: const Color.fromARGB(255, 7, 130, 118),
-
-          // Success
-          tertiary: darkColors.success),
+          tertiary: Color(0XFF00A884)),
 
       scaffoldBackgroundColor: darkColors.primaryContainer,
 
@@ -275,6 +273,13 @@ class AppTheme {
         elevation: 2,
       ),
 
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        borderRadius: BorderRadius.circular(8),
+        circularTrackColor: darkColors.secondary,
+        linearTrackColor: darkColors.onSecondary,
+        color: darkColors.primary.withAlpha(200),
+      ),
+
       ///Extensions
       extensions: <ThemeExtension>[
         darkColors,
@@ -303,18 +308,14 @@ class AppTheme {
         onSecondary: lightColors.onSecondary,
         error: lightColors.error,
         onError: lightColors.onError,
-
         primaryContainer: lightColors.primaryContainer,
         onPrimaryContainer: lightColors.onPrimaryContainer,
         surface: lightColors.primaryContainer,
         onSurface: lightColors.onSurface,
-        tertiaryFixed: lightColors.tertiaryFixed,
+        tertiaryFixed: Color(0XFF80DCC5),
         onSurfaceVariant: lightColors.onSurfaceVariant,
-        //custom
         secondaryContainer: ColorManager.primaryBlue,
-
-        // Success
-        tertiary: lightColors.success,
+        tertiary: Color(0XFF00B894),
       ),
 
       scaffoldBackgroundColor: lightColors.primaryContainer,
@@ -405,6 +406,13 @@ class AppTheme {
         color: ColorManager.cardColorLight,
         margin: EdgeInsets.zero,
         elevation: 2,
+      ),
+
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        borderRadius: BorderRadius.circular(8),
+        circularTrackColor: lightColors.secondary,
+        linearTrackColor: lightColors.onSecondary,
+        color: lightColors.primary.withAlpha(200),
       ),
 
       ///Extensions

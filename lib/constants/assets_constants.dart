@@ -25,7 +25,6 @@ class SvgAssets {
   static const String operatingTime = '$_svgsPath/operatingTime.svg';
   static const String money = '$_svgsPath/money.svg';
   static const String limit = '$_svgsPath/limit.svg';
-  static const String review = '$_svgsPath/review.svg';
   static const String iconApp = '$_svgsPath/icon.svg';
   static const String iconBotApp = '$_svgsPath/chatIcon.svg';
   static const String vi = '$_svgsPath/vi.svg';

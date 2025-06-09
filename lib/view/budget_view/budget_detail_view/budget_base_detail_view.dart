@@ -30,12 +30,19 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
     return BaseView(
       title: budget.name,
       actions: [
-        IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, RoutePath.budgetModify,
-                  arguments: budget);
-            },
-            icon: Icon(IconManager.modify, size: 16))
+        Container(
+          margin: const EdgeInsets.only(right: 8),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, RoutePath.budgetModify,
+                    arguments: budget);
+              },
+              icon: Icon(IconManager.modify, size: 18)),
+        )
       ],
       child: _body(context),
     );
@@ -53,14 +60,6 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
         isBold: true);
   }
 
-  Widget itemReview(BuildContext context) {
-    return itemRow(context,
-        svgAsset: SvgAssets.review,
-        label: context.loc.review,
-        value: budget.getReview(context, transactions: transactions),
-        isBold: false);
-  }
-
   Widget itemOperatingTime(BuildContext context) {
     final value =
         "${budget.startDate.toFormatDate(strFormat: 'dd/MM/yyyy')} - ${budget.endDate.toFormatDate(strFormat: 'dd/MM/yyyy')}";
@@ -76,47 +75,144 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
       required String value,
       Color? colorValue,
       bool isBold = true}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            SvgPicture.asset(
-              svgAsset,
-              width: 16,
-              height: 16,
-              colorFilter: ColorFilter.mode(
-                  Theme.of(context).textTheme.bodyMedium!.color!,
-                  BlendMode.srcIn),
-            ),
-            gapW8,
-            BText(label),
-          ],
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withAlpha(80),
         ),
-        gapW24,
-        Expanded(
-          child: BText(
-            value,
-            color: colorValue,
-            fontWeight: isBold ? FontWeight.w700 : null,
-            textAlign: TextAlign.end,
-            maxLines: null,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primaryContainer
+                      .withAlpha(120),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: SvgPicture.asset(
+                  svgAsset,
+                  width: 20,
+                  height: 20,
+                  colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.primary, BlendMode.srcIn),
+                ),
+              ),
+              gapW12,
+              BText(
+                label,
+              ),
+            ],
           ),
-        )
-      ],
+          gapW16,
+          Expanded(
+            child: BText.b3(
+              value,
+              color: colorValue ?? Theme.of(context).textTheme.bodyLarge?.color,
+              fontWeight: isBold ? FontWeight.w700 : FontWeight.w600,
+              textAlign: TextAlign.end,
+            ),
+          )
+        ],
+      ),
     );
   }
 
   Widget _body(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).colorScheme.surface,
+            Theme.of(context).colorScheme.surface.withAlpha(40),
+          ],
+        ),
+      ),
       child: ListView(
         children: [
-          _status(context),
+          _statusCard(context),
           gapH24,
-          BudgetDetailTransactions(transactions),
+          _transactionsCard(context),
         ],
+      ),
+    );
+  }
+
+  Widget _statusCard(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shadowColor: Theme.of(context).shadowColor.withAlpha(30),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(16))),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Theme.of(context).colorScheme.primaryContainer.withAlpha(30),
+              Theme.of(context).colorScheme.surface,
+            ],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: _status(context),
+        ),
+      ),
+    );
+  }
+
+  Widget _transactionsCard(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shadowColor: Theme.of(context).shadowColor.withAlpha(20),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16), topRight: Radius.circular(16))),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.receipt_long_outlined,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 24,
+                  ),
+                  gapW12,
+                  BText(
+                    context.loc.transactions,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ],
+              ),
+              gapH16,
+              BudgetDetailTransactions(transactions),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -125,7 +221,7 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
     return Consumer(builder: (_, ref, __) {
       BudgetModel model = ref.watch(budgetDetailControllerProvider(budget));
       return ColumnWithSpacing(
-          spacing: 16,
+          spacing: 12,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: header(context, model));
     });

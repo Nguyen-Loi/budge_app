@@ -23,9 +23,6 @@ class BudgetDetailTransactions extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        BText(context.loc.transactions,
-            fontWeight: FontWeight.bold, textAlign: TextAlign.left),
-        gapH16,
         listGroupTransactionByDay.isEmpty
             ? _transactionEmpty(context)
             : ColumnWithSpacing(

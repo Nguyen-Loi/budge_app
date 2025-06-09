@@ -125,14 +125,8 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
           indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
           labelColor: ColorManager.primaryBlue,
           unselectedLabelColor: ColorManager.greyLight,
-          labelStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-          unselectedLabelStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-          ),
+          labelStyle: Theme.of(context).textTheme.bodyLarge,
+          unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium,
           padding: const EdgeInsets.symmetric(horizontal: 16),
         ),
       ),

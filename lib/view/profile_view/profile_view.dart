@@ -11,6 +11,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
@@ -131,10 +132,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _buildProfileCard(
-      dynamic user, bool disable, bool isLoading, WidgetRef ref) {
-    _name = user.name;
-    _phoneNumber = user.phoneNumber;
-
+      UserModel user, bool disable, bool isLoading, WidgetRef ref) {
     return Card(
       elevation: 4,
       child: AbsorbPointer(
@@ -205,7 +203,7 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Widget _buildFormFields(dynamic user) {
+  Widget _buildFormFields(UserModel user) {
     return ColumnWithSpacing(
       spacing: 20,
       children: [
