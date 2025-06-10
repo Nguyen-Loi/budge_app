@@ -5,7 +5,7 @@ import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/core/extension/extension_query.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/providers.dart';
@@ -23,7 +23,6 @@ final transactionApiProvider = Provider(((ref) {
   final loc = ref.watch(appLocalizationsProvider);
   return TransactionApi(db: db, loc: loc);
 }));
-
 
 class TransactionApi extends TransactionRepository {
   final FirebaseFirestore _db;

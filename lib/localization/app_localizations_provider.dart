@@ -1,7 +1,7 @@
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 /// provider used to access the AppLocalizations object for the current locale
 final appLocalizationsProvider = Provider<AppLocalizations>((ref) {

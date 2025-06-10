@@ -12,7 +12,7 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 enum StatusBudgetProgress { start, progress, almostDone, complete }
 

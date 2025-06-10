@@ -22,6 +22,10 @@ fastlane add_plugin increment_version_code
     ```
     dart run build_runner watch -d
     ```
+- Rebuld text language
+    ```
+    dart run build_runner build
+    ```
 - Rebuild launch icon:
     ```
     flutter pub run flutter_launcher_icons

@@ -2,7 +2,7 @@ import 'package:budget_app/data/datasources/repositories/budget_repository.dart'
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 // This budgets filter on budget screen
 final budgetBaseControllerProvider =
@@ -17,7 +17,8 @@ final budgetsFutureProvider = FutureProvider((ref) {
 });
 
 class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
-  BudgetBaseController({required BudgetRepository budgetRepository, required String uid})
+  BudgetBaseController(
+      {required BudgetRepository budgetRepository, required String uid})
       : _budgetRepository = budgetRepository,
         _uid = uid,
         super([]);

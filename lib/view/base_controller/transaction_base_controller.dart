@@ -5,7 +5,7 @@ import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 final transactionsBaseControllerProvider = StateNotifierProvider<
     TransactionsBaseController, List<TransactionCardModel>>((ref) {

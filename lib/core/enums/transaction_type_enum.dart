@@ -1,7 +1,7 @@
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 enum TransactionTypeEnum {
   incomeBudget('INCOME_BUDGET', BudgetTypeEnum.income),

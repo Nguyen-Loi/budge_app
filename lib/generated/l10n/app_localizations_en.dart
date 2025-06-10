@@ -1,0 +1,675 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for English (`en`).
+class AppLocalizationsEn extends AppLocalizations {
+  AppLocalizationsEn([String locale = 'en']) : super(locale);
+
+  @override
+  String get hello => 'Hello';
+
+  @override
+  String get income => 'Income';
+
+  @override
+  String get expense => 'Expense';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
+  String get amountInvalid => 'Amount invalid';
+
+  @override
+  String get amountHint => '0';
+
+  @override
+  String get note => 'Note';
+
+  @override
+  String get noteHint => 'Money from salary';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get welecomeBack => 'Welecome back!';
+
+  @override
+  String get signInDescription => 'Hey you\'re back, fill in your details to get back in';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get orLoginWith => 'Or login with';
+
+  @override
+  String get signUp => 'Sign up';
+
+  @override
+  String get welecomeAppName => 'Welecome to SmartBudget!';
+
+  @override
+  String get signUpToStart => 'Complete then sign up to get started';
+
+  @override
+  String get pleaseEnableService => 'Please enable our terms of service';
+
+  @override
+  String nEableServiceDescription(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count errorText',
+      one: 'Terms of Service and Privay Policy',
+      zero: 'By the signing up, you agree to the  ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get emailHint => 'your.email@gmail.com';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get passwordHint => '*******';
+
+  @override
+  String get confirmPassword => 'Confirm password';
+
+  @override
+  String get create => 'Create';
+
+  @override
+  String get transactions => 'Transactions';
+
+  @override
+  String get noData => 'No Data';
+
+  @override
+  String get noTransactionDescription => 'You don\'t have any transactions yet';
+
+  @override
+  String get monthlyExpense => 'Monthly Expense';
+
+  @override
+  String get noTransactionThisBudget => 'You don\'t have any transactions with this budget.';
+
+  @override
+  String get youAlreadySpent => 'You\'ve already spent';
+
+  @override
+  String get modifyBudget => 'Modify Budget';
+
+  @override
+  String get budgetName => 'Budget name';
+
+  @override
+  String get errorChooseYourBudgetIcon => 'Please choose your budget icon';
+
+  @override
+  String get chooseYourBudget => 'Choose your budget';
+
+  @override
+  String get errorChooseYourBudget => 'Please choose your budget';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get newBudget => 'New Budget';
+
+  @override
+  String get budgetNameHint => 'Water';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get limit => 'Limit';
+
+  @override
+  String get target => 'Target';
+
+  @override
+  String get thereAreNoTransactions => 'There are no transactions';
+
+  @override
+  String get yourAvailableBalanceIs => 'Your available balance is';
+
+  @override
+  String get newExpense => 'New expense';
+
+  @override
+  String get myAccount => 'My Account';
+
+  @override
+  String get modify => 'Modify';
+
+  @override
+  String get readModeOnly => 'View only';
+
+  @override
+  String get editModeActive => 'Editing enabled';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get contact => 'Contact';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get appName => 'Budget SS';
+
+  @override
+  String get left => 'Left';
+
+  @override
+  String get approaced => 'Approaced';
+
+  @override
+  String get exceeded => 'Exceeded';
+
+  @override
+  String get anErrorUnexpectedOccur => 'An error unexpected occur, please try again';
+
+  @override
+  String get errorUploadFiles => 'Error when upload files';
+
+  @override
+  String get errorUploadFile => '\'An error occur when upload image\'';
+
+  @override
+  String deleteTitle(Object obj) {
+    return 'Delete $obj';
+  }
+
+  @override
+  String deleteMessage(Object obj) {
+    return 'Are you sure you want to delete this $obj?';
+  }
+
+  @override
+  String get deleteUp => 'DELETE';
+
+  @override
+  String get cancelUp => 'CANCEL';
+
+  @override
+  String get errorUp => 'ERRROR';
+
+  @override
+  String get successUp => 'SUCCESS';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get continueText => 'Continue';
+
+  @override
+  String get invalid => 'Invalid';
+
+  @override
+  String get noBudget => 'No budget available';
+
+  @override
+  String get textFieldHintDefault => 'Enter your text';
+
+  @override
+  String get chooseIcon => 'Choose icon';
+
+  @override
+  String get noImage => 'No Image';
+
+  @override
+  String get emailInvalid => 'Email Invalid';
+
+  @override
+  String get dataEmpty => 'Data Empty';
+
+  @override
+  String get phoneNumberInvalid => 'Phone number invalid';
+
+  @override
+  String get nameInvalid => 'Name invalid';
+
+  @override
+  String get passwordMininum6 => 'Password minimum is 6 characters';
+
+  @override
+  String get confirmPasswordInvalid => 'Confirm password invalid';
+
+  @override
+  String get accountCreatePleaseLogin => 'Account created! Please login';
+
+  @override
+  String get forgetPassword => 'Forgot password?';
+
+  @override
+  String pBudgetNameExits(String budgetName) {
+    return 'Budget $budgetName already exist. Please change budget name and try again';
+  }
+
+  @override
+  String get budgetEmpty => 'You don\'t have any budget yet.';
+
+  @override
+  String pExpensesExceedIncome(String money) {
+    return 'Expenses exceed income ($money). Increase your income and try again';
+  }
+
+  @override
+  String get darkMode => 'Dark mode';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get passwordTooWeak => 'The password provided is too weak.';
+
+  @override
+  String get emailAlreadyExits => 'The account already exists for that email.';
+
+  @override
+  String get errorSignInGoogle => 'Error occurred using Google Sign-In. Try again.';
+
+  @override
+  String get errorSignInFacebook => 'Error occurred using Facebook Sign-In. Try again.';
+
+  @override
+  String get accountAlreadyExits => 'The account already exists with a different credential.';
+
+  @override
+  String get errorCredentials => 'Error occurred while accessing credentials. Try again.';
+
+  @override
+  String get invalidEmailOrPassword => 'Invalid email or password. Please try again.';
+
+  @override
+  String get walletInvalidMatches => 'The value matches the value currently';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get dateRange => 'Date range';
+
+  @override
+  String get deposit => 'Deposit';
+
+  @override
+  String get withdrawal => 'Withdrawal';
+
+  @override
+  String get budgetInUse => 'Budget in use';
+
+  @override
+  String get budgetExpired => 'Budget expired';
+
+  @override
+  String get budgetUtilized => 'Budget utilized';
+
+  @override
+  String get recentTransactions => 'Recent transactions';
+
+  @override
+  String get budget => 'Budget';
+
+  @override
+  String get transactionDate => 'Transaction date';
+
+  @override
+  String get updateBalance => 'Update balance';
+
+  @override
+  String get myWallet => 'My wallet';
+
+  @override
+  String get cash => 'Cash';
+
+  @override
+  String get createdDate => 'Created date';
+
+  @override
+  String get updatedDate => 'Updated date';
+
+  @override
+  String get balanceAdjustment => 'Balance adjustment';
+
+  @override
+  String pThisWeek(String dateStart, String dateEnd) {
+    return 'This week ($dateStart - $dateEnd)';
+  }
+
+  @override
+  String pThisMonth(String dateStart, String dateEnd) {
+    return 'This month ($dateStart - $dateEnd)';
+  }
+
+  @override
+  String pThisYear(String dateStart, String dateEnd) {
+    return 'This year ($dateStart - $dateEnd)';
+  }
+
+  @override
+  String pThisDayTimeCustom(String dateStart, String dateEnd) {
+    return 'Custom ($dateStart - $dateEnd)';
+  }
+
+  @override
+  String get custom => 'Custom';
+
+  @override
+  String get operatingTime => 'Time';
+
+  @override
+  String get newTransaction => 'New transaction';
+
+  @override
+  String get developingFreatures => 'Developing Features';
+
+  @override
+  String get exportExcel => 'Export Excel';
+
+  @override
+  String get warning => 'Warning';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get budgetSummary => 'Budget summary';
+
+  @override
+  String get currentValue => 'Current value';
+
+  @override
+  String get budgets => 'Budgets';
+
+  @override
+  String pBudgetInformationFromDateToEndDate(Object endDate, Object fromDate) {
+    return 'Budget information from date $fromDate to $endDate';
+  }
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get thisMonth => 'This month';
+
+  @override
+  String get viewAll => 'View all';
+
+  @override
+  String get youMustCreateAtLeastOneBudget => 'You must create at least one budget to use this feature';
+
+  @override
+  String get navigateToIt => 'Navigate';
+
+  @override
+  String get reportExportedSuccessfully => 'Report exported successfully';
+
+  @override
+  String get report => 'Report';
+
+  @override
+  String get value => 'Value';
+
+  @override
+  String get debit => 'Debit';
+
+  @override
+  String get budgetTypeIsNotEmpty => 'Budget type is not empty';
+
+  @override
+  String get select => 'Select';
+
+  @override
+  String get startDate => 'Start date';
+
+  @override
+  String get endDate => 'endDate date';
+
+  @override
+  String get incomeWallet => 'Wallet for Income';
+
+  @override
+  String get expenseWallet => 'Wallet for Expenses';
+
+  @override
+  String get incomeBudget => 'Budget for Income';
+
+  @override
+  String get expenseBudget => 'Budget for Expenses';
+
+  @override
+  String get chooseBudgets => 'Choose budgets';
+
+  @override
+  String get chooseMonth => 'Choose month';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get accept => 'Accept';
+
+  @override
+  String get reasonChartNotVisible => 'The chart is not displayed because the filter is showing income and expense';
+
+  @override
+  String get transactionNotScopeBudget => 'The transaction date is not within the budget time range';
+
+  @override
+  String get totalIncome => 'Total Income';
+
+  @override
+  String get totalExpense => 'Total Expense';
+
+  @override
+  String get newVersionDescription => 'Please update to the latest version of the app.';
+
+  @override
+  String get newVersionTitle => 'New version available';
+
+  @override
+  String get openFile => 'Open file';
+
+  @override
+  String get currentIncome => 'Current Income';
+
+  @override
+  String get currentExpense => 'Current Expense';
+
+  @override
+  String get startIncome => 'Start tracking your income to meet your goals.';
+
+  @override
+  String get processIncome => 'Your income is steady. Keep it up!';
+
+  @override
+  String get almostDoneIncome => 'You\'re close to your goal. Stay focused!';
+
+  @override
+  String get completeIncome => 'Great! You\'ve met your goal.';
+
+  @override
+  String get startExpense => 'Start tracking your expenses to stay on budget.';
+
+  @override
+  String get processExpense => 'Expenses are under control. Keep it up!';
+
+  @override
+  String get almostDoneExpense => 'Almost there! Stay within your limit.';
+
+  @override
+  String get completeExpense => 'Budget limit reached. Watch out!';
+
+  @override
+  String get send => 'Send';
+
+  @override
+  String get chatHint => 'Message ViBot';
+
+  @override
+  String get chatWithViBot => 'Chat with ViBot';
+
+  @override
+  String get viBotHello => 'Hello, I am ViBot, the virtual assistant of Vi Nho app.\nHow can I help you?';
+
+  @override
+  String pAppVersion(Object version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get coming => 'Coming soon';
+
+  @override
+  String get expired => 'Expired';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get review => 'Review';
+
+  @override
+  String reviewExpense(Object date, Object money) {
+    return 'You need to make your last transaction on $date to have more $money in coins. Continue';
+  }
+
+  @override
+  String get featureMaintain => 'This feature is under maintenance, please try again later';
+
+  @override
+  String get errorContactSupport => 'An error occurred, please contact support';
+
+  @override
+  String get errorInternet => 'No internet connection';
+
+  @override
+  String get allTime => 'All time';
+
+  @override
+  String get invalidDateRange => 'The new date range must fully include the current date range.';
+
+  @override
+  String get emailNotFound => 'Email not found';
+
+  @override
+  String get weAreSendEmailPassword => 'We\'ve sent you an email to reset your password. Please check your inbox.';
+
+  @override
+  String get resetPassword => 'Reset password';
+
+  @override
+  String get resetPasswordTitle => 'Forgot your password?';
+
+  @override
+  String get resetPasswordDescription => 'Enter your email address and we\'ll send you a link to reset your password.';
+
+  @override
+  String get invalidPhoneNumber => 'Invalid phone number';
+
+  @override
+  String get dailyTransactionReminder => 'Daily Transaction Reminder';
+
+  @override
+  String get guestAccess => 'Guest Access';
+
+  @override
+  String get loginToUse => 'You need to login to use this feature';
+
+  @override
+  String pAccountAlreadyHasExistingData(Object accountName) {
+    return 'The account $accountName already has existing data. If you proceed with this login, all current data will be deleted.\nAre you sure you want to continue?';
+  }
+
+  @override
+  String get loginCancelledByUser => 'Login cancelled by user';
+
+  @override
+  String get syncLocalToCloud => 'Sync local data to cloud';
+
+  @override
+  String get syncLocalToCloudLoading => 'Syncing local data to cloud...';
+
+  @override
+  String get syncLocalToCloudSuccess => 'Sync local data to cloud success';
+
+  @override
+  String get syncLocalToCloudError => 'Sync local data to cloud error. Please try again';
+
+  @override
+  String get totalBalance => 'Total balance';
+
+  @override
+  String get incomeExpenseThisMonth => 'INCOME - EXPENSE THIS MONTH';
+
+  @override
+  String get totalRevenue => 'Total Revenue';
+
+  @override
+  String get totalCost => 'Total Cost';
+
+  @override
+  String pSpent(Object value) {
+    return 'Spent $value%';
+  }
+
+  @override
+  String get noBudgetsAvailable => 'No budgets available';
+
+  @override
+  String get noRecentTransactions => 'No recent transactions';
+
+  @override
+  String get transactionHistory => 'Transaction History';
+
+  @override
+  String get monthlySummary => 'Monthly Summary';
+
+  @override
+  String get netBalance => 'Net Balance';
+
+  @override
+  String get budgetPageDesc => 'Manage and track your budgets';
+
+  @override
+  String get errorValidateForm => 'Please fix the errors in the form.';
+
+  @override
+  String get protected => 'Protected';
+}
