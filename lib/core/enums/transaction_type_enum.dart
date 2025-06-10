@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 enum TransactionTypeEnum {
-  incomeBudget('INCOME_BUDGET', BudgetTypeEnum.income),
-  incomeWallet('INCOME_WALLET', BudgetTypeEnum.income),
-  expenseBudget('EXPENSE_BUDGET', BudgetTypeEnum.expense),
-  expenseWallet('EXPENSE_WALLET', BudgetTypeEnum.expense),
+  income('INCOME', BudgetTypeEnum.income),
+  expense('EXPENSE', BudgetTypeEnum.expense),
   ;
 
   factory TransactionTypeEnum.fromValue(String value) {
@@ -19,9 +17,9 @@ enum TransactionTypeEnum {
       throw Exception('Not supported for this amount: $amount');
     }
     if (amount.sign == 1) {
-      return TransactionTypeEnum.incomeWallet;
+      return TransactionTypeEnum.income;
     }
-    return TransactionTypeEnum.expenseWallet;
+    return TransactionTypeEnum.expense;
   }
 
   final String value;
@@ -32,27 +30,19 @@ enum TransactionTypeEnum {
 extension BudgetTypeValue on TransactionTypeEnum {
   String content(BuildContext context) {
     switch (this) {
-      case TransactionTypeEnum.incomeWallet:
-        return context.loc.incomeWallet;
-      case TransactionTypeEnum.incomeBudget:
-        return context.loc.incomeBudget;
-      case TransactionTypeEnum.expenseBudget:
-        return context.loc.expenseBudget;
-      case TransactionTypeEnum.expenseWallet:
-        return context.loc.expenseWallet;
+      case TransactionTypeEnum.income:
+        return context.loc.income;
+      case TransactionTypeEnum.expense:
+        return context.loc.expense;
     }
   }
 
   String contentLoc(AppLocalizations loc) {
     switch (this) {
-      case TransactionTypeEnum.incomeWallet:
-        return loc.incomeWallet;
-      case TransactionTypeEnum.incomeBudget:
-        return loc.incomeBudget;
-      case TransactionTypeEnum.expenseBudget:
-        return loc.expenseBudget;
-      case TransactionTypeEnum.expenseWallet:
-        return loc.expenseWallet;
+      case TransactionTypeEnum.income:
+        return loc.income;
+      case TransactionTypeEnum.expense:
+        return loc.expense;
     }
   }
 }

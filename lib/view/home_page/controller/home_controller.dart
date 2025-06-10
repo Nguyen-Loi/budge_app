@@ -16,7 +16,7 @@ final homeControllerProvider =
     StateNotifierProvider<HomeController, void>((ref) {
   final transactions = ref.watch(transactionsBaseControllerProvider);
   final budgets = ref.watch(budgetBaseControllerProvider);
- final authApi = ref.watch(authApiProvider);
+  final authApi = ref.watch(authApiProvider);
   final uidController = ref.watch(uidControllerProvider.notifier);
   return HomeController(
     null,
@@ -34,15 +34,14 @@ class HomeController extends StateNotifier<void> {
     required this.budgets,
     required AuthAPI authAPI,
     required UidController uidController,
-  }): _authApi = authAPI,
+  })  : _authApi = authAPI,
         _uidController = uidController;
 
-   final List<TransactionCardModel> transactions;
+  final List<TransactionCardModel> transactions;
   final List<BudgetModel> budgets;
-    final AuthAPI _authApi;
+  final AuthAPI _authApi;
   final UidController _uidController;
 
-  
   Future<void> signOut(BuildContext context) async {
     final res = await _authApi.signOut();
     res.fold((l) {
@@ -54,13 +53,10 @@ class HomeController extends StateNotifier<void> {
     });
   }
 
- 
-
   double get totalExpenseThisMonth {
     final now = DateTime.now();
     const expenseTypes = {
-      TransactionTypeEnum.expenseBudget,
-      TransactionTypeEnum.expenseWallet,
+      TransactionTypeEnum.expense,
     };
 
     return _getTransactionsForMonth(now)
@@ -71,8 +67,7 @@ class HomeController extends StateNotifier<void> {
   double get totalIncomeThisMonth {
     final now = DateTime.now();
     const incomeTypes = {
-      TransactionTypeEnum.incomeBudget,
-      TransactionTypeEnum.incomeWallet,
+      TransactionTypeEnum.income,
     };
 
     return _getTransactionsForMonth(now)

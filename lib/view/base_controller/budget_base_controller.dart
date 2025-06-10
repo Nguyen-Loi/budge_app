@@ -2,7 +2,6 @@ import 'package:budget_app/data/datasources/repositories/budget_repository.dart'
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 // This budgets filter on budget screen
 final budgetBaseControllerProvider =
@@ -33,11 +32,6 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
     return state
         .where((e) => e.budgetStatusTime == BudgetStatusTime.active)
         .toList();
-  }
-
-  // Add wallet model follow budget
-  List<BudgetModel> budgetsWithWallet(AppLocalizations loc) {
-    return _allBudgets.toList().withBudgetWallet(loc);
   }
 
   Future<List<BudgetModel>> fetch() async {

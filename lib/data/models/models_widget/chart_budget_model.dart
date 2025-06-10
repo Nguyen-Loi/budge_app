@@ -8,13 +8,27 @@ class ChartBudgetModel {
   final double value;
   final int iconId;
   final int total;
+  final int? incomeAmount; // Add income tracking
+  final int? expenseAmount; // Add expense tracking
+
   ChartBudgetModel({
     required this.budgetId,
     required this.budgetName,
     required this.value,
     required this.iconId,
     required this.total,
+    this.incomeAmount,
+    this.expenseAmount,
   });
+
+  // Convenience getters
+  bool get hasIncome => (incomeAmount ?? 0) > 0;
+  bool get hasExpense => (expenseAmount ?? 0) > 0;
+  bool get isIncomeOnly => hasIncome && !hasExpense;
+  bool get isExpenseOnly => !hasIncome && hasExpense;
+  bool get isMixed => hasIncome && hasExpense;
+
+  int get netAmount => (incomeAmount ?? 0) - (expenseAmount ?? 0);
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -23,6 +37,8 @@ class ChartBudgetModel {
       'value': value,
       'iconId': iconId,
       'total': total,
+      'incomeAmount': incomeAmount,
+      'expenseAmount': expenseAmount,
     };
   }
 
@@ -38,32 +54,58 @@ class ChartBudgetModel {
     final groupBudgetId = listInChart.groupBy((e) => e.transaction.budgetId);
     for (var e in groupBudgetId.entries) {
       TransactionCardModel representItem = e.value.first;
+
+      // Calculate income and expense separately
+      int incomeAmount = e.value
+          .where((element) =>
+              element.transactionType == TransactionTypeEnum.income)
+          .fold(0, (sum, element) => sum + element.transaction.amount);
+
+      int expenseAmount = e.value
+          .where((element) =>
+              element.transactionType == TransactionTypeEnum.expense)
+          .fold(0, (sum, element) => sum + element.transaction.amount.abs());
+
+      // Calculate total based on transaction types requested
+      int totalAmount;
+      if (transactionTypes.contains(TransactionTypeEnum.income) &&
+          transactionTypes.contains(TransactionTypeEnum.expense)) {
+        // For mixed types, use net amount but show absolute for visualization
+        totalAmount = incomeAmount - expenseAmount;
+      } else if (transactionTypes.contains(TransactionTypeEnum.income)) {
+        totalAmount = incomeAmount;
+      } else {
+        totalAmount = -expenseAmount; // Negative to indicate expense
+      }
+
       final model = ChartBudgetModel(
-          budgetId: representItem.transaction.budgetId,
-          budgetName: representItem.transactionName,
-          value: 0,
-          iconId: representItem.iconId,
-          total: e.value
-              .fold(0, (old, element) => old + element.transaction.amount));
+        budgetId: representItem.transaction.budgetId,
+        budgetName: representItem.transactionName,
+        value: 0,
+        iconId: representItem.iconId,
+        total: totalAmount,
+        incomeAmount: incomeAmount > 0 ? incomeAmount : null,
+        expenseAmount: expenseAmount > 0 ? expenseAmount : null,
+      );
       list.add(model);
     }
 
-    // Calculate the sum
-    int totalSum = list.fold(0, (sum, item) => sum + (item.total).abs());
+    // Calculate the sum using absolute values for percentage calculation
+    int totalSum = list.fold(0, (sum, item) => sum + item.total.abs());
 
     // Update each item's `value` based on its percentage of the total sum
-    int index = 0;
+    List<ChartBudgetModel> updatedList = [];
     for (ChartBudgetModel item in list) {
       if (totalSum > 0) {
-        final avgItem = ((item.total / totalSum) * 100).abs();
-        list[index] = item.copyWith(value: avgItem);
-      } else {
-        list.removeAt(index);
+        final avgItem = ((item.total.abs() / totalSum) * 100);
+        updatedList.add(item.copyWith(value: avgItem));
       }
-      index++;
     }
 
-    return list;
+    // Sort by value for better visualization
+    updatedList.sort((a, b) => b.value.compareTo(a.value));
+
+    return updatedList;
   }
 
   @override
@@ -77,6 +119,8 @@ class ChartBudgetModel {
     double? value,
     int? iconId,
     int? total,
+    int? incomeAmount,
+    int? expenseAmount,
   }) {
     return ChartBudgetModel(
       budgetId: budgetId ?? this.budgetId,
@@ -84,6 +128,8 @@ class ChartBudgetModel {
       value: value ?? this.value,
       iconId: iconId ?? this.iconId,
       total: total ?? this.total,
+      incomeAmount: incomeAmount ?? this.incomeAmount,
+      expenseAmount: expenseAmount ?? this.expenseAmount,
     );
   }
 
@@ -95,7 +141,9 @@ class ChartBudgetModel {
         other.budgetName == budgetName &&
         other.value == value &&
         other.iconId == iconId &&
-        other.total == total;
+        other.total == total &&
+        other.incomeAmount == incomeAmount &&
+        other.expenseAmount == expenseAmount;
   }
 
   @override
@@ -104,6 +152,8 @@ class ChartBudgetModel {
         budgetName.hashCode ^
         value.hashCode ^
         iconId.hashCode ^
-        total.hashCode;
+        total.hashCode ^
+        incomeAmount.hashCode ^
+        expenseAmount.hashCode;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_status.dart';
+import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
+import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/src/b_notification.dart';
@@ -14,6 +16,7 @@ import 'package:budget_app/view/home_page/home_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 
 class MainPageView extends ConsumerStatefulWidget {
   const MainPageView({super.key});
@@ -117,8 +120,32 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
               )
             ],
           )),
-          loading: () => const Scaffold(body: Center(child: BStatus.loading())),
+          loading: () => _loadingWidget(),
         );
+  }
+
+  Widget _loadingWidget() {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              SvgAssets.iconApp,
+              width: 80,
+              height: 80,
+            ),
+            const SizedBox(height: 24),
+            const CircularProgressIndicator(),
+            const SizedBox(height: 16),
+            BText.b1(
+              context.loc.initializingTheApplication,
+              fontWeight: FontWeight.w700,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget body() {

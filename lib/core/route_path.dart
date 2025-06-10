@@ -9,9 +9,9 @@ import 'package:budget_app/view/chat_view/chat_view.dart';
 import 'package:budget_app/view/main_page_view/main_page_view.dart';
 import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
 import 'package:budget_app/view/profile_view/profile_view.dart';
-import 'package:budget_app/view/report_view/report_view.dart';
 import 'package:budget_app/view/settings_view/settings_view.dart';
 import 'package:budget_app/view/update_wallet_view/update_wallet_view.dart';
+import 'package:budget_app/view/report_page/chart_demo_page.dart';
 import 'package:flutter/material.dart';
 
 class RoutePath {
@@ -26,6 +26,7 @@ class RoutePath {
   static const String budgetModify = "/budgetModify";
 
   static const String newTransaction = "/newTransaction";
+  static const String chartDemo = "/chartDemo";
 
   static const String profile = "/profile";
   static const String updateWallet = "/updateWallet";
@@ -61,6 +62,8 @@ class MainRouter {
 
       case RoutePath.newTransaction:
         return MaterialPageRoute(builder: (_) => const NewTransactionView());
+      case RoutePath.chartDemo:
+        return MaterialPageRoute(builder: (_) => const ChartDemoPage());
 
       case RoutePath.profile:
         return MaterialPageRoute(builder: (_) => const ProfileView());
@@ -69,8 +72,6 @@ class MainRouter {
 
       case RoutePath.settings:
         return MaterialPageRoute(builder: (_) => const SettingsView());
-      case RoutePath.report:
-        return MaterialPageRoute(builder: (_) => const ReportView());
       case RoutePath.chat:
         return MaterialPageRoute(builder: (_) => const ChatView());
 

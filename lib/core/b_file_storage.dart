@@ -6,6 +6,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 class BFileStorage {
   BFileStorage._();
@@ -81,10 +82,19 @@ class BFileStorage {
     return file.writeAsBytes(bytes);
   }
 
-  static openFile(String filePath) async {
+  static openFile(AppLocalizations loc, String filePath) async {
     final result = await OpenFile.open(filePath);
     if (result.type != ResultType.done) {
       String strError = "Failed to open file: ${result.message}";
+      if (result.type == ResultType.noAppToOpen) {
+        strError = loc.noAppToOpen;
+      }
+      if (result.type == ResultType.fileNotFound) {
+        strError = loc.pFileNotFound(filePath);
+      }
+      if (result.type == ResultType.permissionDenied) {
+        strError = loc.permissionDenied;
+      }
       return left(Failure(message: strError, error: strError));
     }
     return right(null);

@@ -109,12 +109,10 @@ class TransactionCard extends StatelessWidget {
       required TransactionTypeEnum transactionType}) {
     Color color;
     switch (transactionType) {
-      case TransactionTypeEnum.incomeBudget:
-      case TransactionTypeEnum.incomeWallet:
+      case TransactionTypeEnum.income:
         color = Theme.of(context).colorScheme.tertiary;
         break;
-      case TransactionTypeEnum.expenseBudget:
-      case TransactionTypeEnum.expenseWallet:
+      case TransactionTypeEnum.expense:
         color = Theme.of(context).colorScheme.error;
         break;
     }

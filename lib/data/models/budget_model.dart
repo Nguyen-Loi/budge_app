@@ -4,15 +4,14 @@ import 'dart:convert';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
+import 'package:budget_app/data/models/models_widget/icon_model.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 enum StatusBudgetProgress { start, progress, almostDone, complete }
 
@@ -65,6 +64,10 @@ class BudgetModel {
     } else {
       return StatusBudgetProgress.complete;
     }
+  }
+
+  IconModel get iconModel {
+    return IconManagerData.getIconModel(iconId);
   }
 
   BudgetStatusTime get budgetStatusTime {
@@ -262,70 +265,6 @@ extension StatusBudgetTimeType on BudgetStatusTime {
 }
 
 extension BudgetWallet on List<BudgetModel> {
-  List<BudgetModel> updateValueWallet(
-      {required int income, required int expense}) {
-    BudgetModel bIncome =
-        firstWhere((e) => e.id == TransactionTypeEnum.incomeWallet.value)
-            .copyWith(currentAmount: income);
-    BudgetModel bExpense =
-        firstWhere((e) => e.id == TransactionTypeEnum.expenseWallet.value)
-            .copyWith(currentAmount: expense);
-    int bIncomeIndex =
-        indexWhere((e) => e.id == TransactionTypeEnum.incomeWallet.value);
-    int bExpenseIndex =
-        indexWhere((e) => e.id == TransactionTypeEnum.expenseWallet.value);
-    this[bIncomeIndex] = bIncome;
-    this[bExpenseIndex] = bExpense;
-    return this;
-  }
-
-  List<BudgetModel> withBudgetWallet(
-    AppLocalizations loc,
-  ) {
-    final budgetWalletExist = any((e) =>
-        e.id == TransactionTypeEnum.incomeWallet.value ||
-        e.id == TransactionTypeEnum.expenseWallet.value);
-
-    if (budgetWalletExist) {
-      return this;
-    }
-    final now = DateTime.now();
-    final currentRangeMonth = now.getRangeMonth;
-    String incomeValue = TransactionTypeEnum.incomeWallet.value;
-    String expenseValue = TransactionTypeEnum.expenseWallet.value;
-
-    BudgetModel budgetBase = BudgetModel(
-        id: '0',
-        userId: '0',
-        name: 'Budget Base',
-        iconId: IconManagerData.idMoneyIn,
-        currentAmount: 0,
-        budgetLimit: 0,
-        budgetTypeValue: BudgetTypeEnum.income.value,
-        rangeDateTimeTypeValue: RangeDateTimeEnum.month.value,
-        startDate: currentRangeMonth.start,
-        endDate: currentRangeMonth.end,
-        createdDate: now,
-        updatedDate: now);
-
-    BudgetModel incomeWallet = budgetBase.copyWith(
-        id: incomeValue,
-        name: TransactionTypeEnum.incomeWallet.contentLoc(loc),
-        budgetTypeValue: BudgetTypeEnum.income.value,
-        iconId: IconManagerData.idMoneyIn,
-        currentAmount: 0);
-    BudgetModel expenseWallet = budgetBase.copyWith(
-        id: expenseValue,
-        name: TransactionTypeEnum.expenseWallet.contentLoc(loc),
-        budgetTypeValue: BudgetTypeEnum.expense.value,
-        iconId: IconManagerData.idMoneyOut,
-        currentAmount: 0);
-    add(incomeWallet);
-    add(expenseWallet);
-
-    return this;
-  }
-
   String toChatData() {
     final budgetList = map((e) {
       return {

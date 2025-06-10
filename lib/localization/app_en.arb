@@ -114,8 +114,6 @@
     "walletInvalidMatches": "The value matches the value currently",
     "cancel": "Cancel",
     "dateRange": "Date range",
-    "deposit": "Deposit",
-    "withdrawal": "Withdrawal",
     "budgetInUse": "Budget in use",
     "budgetExpired": "Budget expired",
     "budgetUtilized": "Budget utilized",
@@ -205,10 +203,6 @@
     "select": "Select",
     "startDate": "Start date",
     "endDate": "endDate date",
-    "incomeWallet": "Wallet for Income",
-    "expenseWallet": "Wallet for Expenses",
-    "incomeBudget": "Budget for Income",
-    "expenseBudget": "Budget for Expenses",
     "chooseBudgets": "Choose budgets",
     "chooseMonth": "Choose month",
     "filter": "Filter",
@@ -273,5 +267,12 @@
     "netBalance": "Net Balance",
     "budgetPageDesc": "Manage and track your budgets",
     "errorValidateForm": "Please fix the errors in the form.",
-    "protected": "Protected"
+    "protected": "Protected",
+    "initializingTheApplication": "Initializing the application...",
+    "selectAll": "Select All",
+    "removeAll": "Remove All",
+    "noAppToOpen": "No app available to open this file",
+    "pFileNotFound": "File `{file}` not found",
+    "permissionDenied": "Permission denied",
+    "transaction": "Transaction"
 }

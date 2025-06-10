@@ -114,8 +114,6 @@
   "walletInvalidMatches": "Giá trị hiện tại của ví đang trùng",
   "cancel": "Hủy",
   "dateRange": "Khoảng thời gian",
-  "deposit": "Tiền chuyển đến",
-  "withdrawal": "Tiền chuyển đi",
   "budgetInUse": "Ngân sách đang áp dụng",
   "budgetExpired": "Ngân sách đã hết hạn",
   "budgetUtilized": "Ngân sách chưa sử dụng",
@@ -205,10 +203,6 @@
   "select": "Chọn",
   "startDate": "Ngày bắt đầu",
   "endDate": "Ngày kết thúc",
-  "incomeWallet": "Ví thu nhập",
-  "expenseWallet": "Ví chi tiêu",
-  "incomeBudget": "Ngân sách thu nhập",
-  "expenseBudget": "Ngân sách chi tiêu",
   "chooseBudgets": "Chọn các ngân sách",
   "chooseMonth": "Chọn tháng",
   "filter": "Bộ lọc",
@@ -273,5 +267,12 @@
   "netBalance": "Số Dư",
   "budgetPageDesc": "Quản lý và theo dõi ngân sách của bạn",
   "errorValidateForm": "Hãy chỉnh sửa các lỗi có trong biểu mẫu.",
-  "protected": "Bảo vệ"
+  "protected": "Bảo vệ",
+  "initializingTheApplication": "Đang khởi tạo ứng dụng...",
+  "selectAll": "Chọn tất cả",
+  "removeAll": "Xóa tất cả",
+  "noAppToOpen": "Không tìm thấy ứng dụng nào để mở tập tin này.",
+  "pFileNotFound": "Tệp không được tìm thấy: {file}",
+  "permissionDenied": "Quyền truy cập bị từ chối",
+  "transaction": "Giao dịch"
 }

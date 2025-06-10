@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:async';
 
 final mainPageControllerProvider = Provider((ref) {
   return MainPageController(ref: ref);
@@ -22,7 +23,7 @@ final mainPageControllerProvider = Provider((ref) {
 final mainPageFutureProvider =
     FutureProvider.family<void, BuildContext>((ref, context) {
   final controller = ref.watch(mainPageControllerProvider);
-  return controller.loadBaseData(context);
+  return controller.loadBaseDataOptimized(context);
 });
 
 class MainPageController extends StateNotifier<void> {
@@ -32,51 +33,134 @@ class MainPageController extends StateNotifier<void> {
       : _ref = ref,
         super(null);
 
-  Future<void> loadBaseData(BuildContext context) async {
+  Future<void> loadBaseDataOptimized(BuildContext context) async {
     final uid = _ref.watch(uidControllerProvider);
-    bool isLogin = uid.isNotEmpty;
+    final isLogin = uid.isNotEmpty;
 
     if (!kIsWeb) {
-      logInfo('Loading infomation database....');
+      logInfo('Loading information database....');
       await _ref.read(sqlHelperProvider.notifier).initDatabase();
     }
 
-    // Base data
-    logInfo('Loading infomation user....');
+    logInfo('Loading critical user data...');
     await _ref.read(userBaseControllerProvider.notifier).fetchUserInfo();
 
-    // Package info
-    final refPackage = _ref.read(packageInfoBaseControllerProvider.notifier);
-    logInfo('Loading package info app...');
-    await refPackage.init().then((e) {
-      if (!context.mounted || kIsWeb) return;
-      logInfo('Check version update ...');
-      _ref
-          .read(remoteConfigBaseControllerProvider.notifier)
-          .initialize(context, packageInfo: e);
-    });
+    logInfo('Loading budget and transaction data with lazy loading...');
 
-    // ads
-    if (!kIsWeb) {
-      logInfo('Initialize Google Mobile Ads SDK');
-      await _initGoogleMobileAds();
+    final budgetFuture = Future.microtask(
+        () => _ref.read(budgetBaseControllerProvider.notifier).fetch());
+
+    final transactionFuture = Future.microtask(
+        () => _ref.read(transactionsBaseControllerProvider.notifier).fetch());
+
+    await Future.wait([budgetFuture, transactionFuture]);
+
+    if (context.mounted) {
+      logInfo('Loading background tasks with optimization...');
+      unawaited(_loadBackgroundTasksOptimized(context, uid, isLogin));
     }
 
-    // assets svg
-    _loadSvgAssets();
+    logInfo('Essential data loading completed with optimization');
+  }
 
-    logInfo('Loading infomation budget...');
-    await _ref.read(budgetBaseControllerProvider.notifier).fetch();
-    logInfo('Loading infomation transactions...');
-    await _ref.read(transactionsBaseControllerProvider.notifier).fetch();
+  Future<void> loadDataLazy({
+    bool loadBudgets = false,
+    bool loadTransactions = false,
+    bool loadBackgroundTasks = false,
+    BuildContext? context,
+  }) async {
+    final uid = _ref.read(uidControllerProvider);
 
-    if (isLogin) {
-      // Write current device
-      await _ref.read(deviceAPIProvider).writeDeviceInfo(uid);
-
-      logInfo('Loading infomation chat...');
-      await _ref.watch(chatBaseControllerProvider.notifier).init();
+    if (loadBudgets) {
+      logInfo('Lazy loading: Budget data');
+      await _ref.read(budgetBaseControllerProvider.notifier).fetch();
     }
+
+    if (loadTransactions) {
+      logInfo('Lazy loading: Transaction data');
+      await _ref.read(transactionsBaseControllerProvider.notifier).fetch();
+    }
+
+    if (loadBackgroundTasks && context?.mounted == true) {
+      logInfo('Lazy loading: Background tasks');
+      unawaited(_loadBackgroundTasksOptimized(context, uid, uid.isNotEmpty));
+    }
+  }
+
+  Future<void> _loadBackgroundTasksOptimized(
+      [BuildContext? context, String? uid, bool? isLogin]) async {
+    final currentUid = uid ?? _ref.read(uidControllerProvider);
+    final currentIsLogin = isLogin ?? (currentUid?.isNotEmpty ?? false);
+
+    final backgroundTasks = <String, Future Function()>{
+      'package_info': () => context != null
+          ? _loadPackageInfoAndRemoteConfig(context)
+          : Future.value(),
+      'ads_init': () => !kIsWeb ? _initGoogleMobileAds() : Future.value(),
+      'svg_assets': () => _loadSvgAssets(),
+      'user_specific': () =>
+          (currentIsLogin && (currentUid?.isNotEmpty ?? false))
+              ? _loadUserSpecificData(currentUid!)
+              : Future.value(),
+    };
+
+    // Schedule each task in a separate microtask to distribute load
+    final futures = backgroundTasks.entries.map((entry) {
+      return Future.microtask(() async {
+        try {
+          logInfo('Starting background task: ${entry.key}');
+          await entry.value();
+          logInfo('Completed background task: ${entry.key}');
+        } catch (e) {
+          logInfo('Background task ${entry.key} failed: $e');
+        }
+      });
+    }).toList();
+
+    // Execute all background tasks with timeout protection
+    try {
+      await Future.wait(futures, eagerError: false)
+          .timeout(const Duration(seconds: 30));
+      logInfo('All background tasks completed');
+    } catch (e) {
+      logInfo('Background tasks completed with some failures: $e');
+    }
+  }
+
+  Future<void> _loadPackageInfoAndRemoteConfig(BuildContext context) async {
+    try {
+      final refPackage = _ref.read(packageInfoBaseControllerProvider.notifier);
+      logInfo('Loading package info app...');
+      final packageInfo = await refPackage.init();
+
+      if (context.mounted && !kIsWeb) {
+        logInfo('Check version update ...');
+        _ref
+            .read(remoteConfigBaseControllerProvider.notifier)
+            .initialize(context, packageInfo: packageInfo);
+      }
+    } catch (e) {
+      logInfo('Package info/remote config loading failed: $e');
+    }
+  }
+
+  /// Loads user-specific data in background
+  Future<void> _loadUserSpecificData(String uid) async {
+    final userTasks = <Future>[];
+
+    // Device info writing
+    userTasks
+        .add(_ref.read(deviceAPIProvider).writeDeviceInfo(uid).catchError((e) {
+      logInfo('Device info writing failed: $e');
+    }));
+
+    // Chat initialization
+    userTasks.add(
+        _ref.read(chatBaseControllerProvider.notifier).init().catchError((e) {
+      logInfo('Chat initialization failed: $e');
+    }));
+
+    await Future.wait(userTasks);
   }
 
   Future<InitializationStatus> _initGoogleMobileAds() {

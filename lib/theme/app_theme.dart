@@ -280,6 +280,15 @@ class AppTheme {
         color: darkColors.primary.withAlpha(200),
       ),
 
+      chipTheme: ChipThemeData(
+        backgroundColor: darkColors.secondary.withAlpha(50),
+        selectedColor: darkColors.secondary,
+        disabledColor: darkColors.disabledSurface,
+        labelStyle: AppTextTheme.bodyMedium.copyWith(
+          color: darkColors.onPrimary,
+        ),
+      ),
+
       ///Extensions
       extensions: <ThemeExtension>[
         darkColors,
@@ -413,6 +422,15 @@ class AppTheme {
         circularTrackColor: lightColors.secondary,
         linearTrackColor: lightColors.onSecondary,
         color: lightColors.primary.withAlpha(200),
+      ),
+
+      chipTheme: ChipThemeData(
+        backgroundColor: lightColors.secondary.withAlpha(50),
+        selectedColor: lightColors.secondary,
+        disabledColor: lightColors.disabledSurface,
+        labelStyle: AppTextTheme.bodyMedium.copyWith(
+          color: lightColors.onPrimary,
+        ),
       ),
 
       ///Extensions

@@ -59,8 +59,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
                                     ? context.loc.noData
                                     : e.note)),
                             gapW16,
-                            _itemStatusTransaction(context,
-                                type: e.transactionType)
+                            BText.caption(e.transactionType.content(context))
                           ],
                         ),
                         gapH16,
@@ -91,29 +90,15 @@ class BudgetDetailTransactions extends ConsumerWidget {
     return BStatus.empty(text: context.loc.noTransactionDescription);
   }
 
-  Widget _itemStatusTransaction(BuildContext context,
-      {required TransactionTypeEnum type}) {
-    switch (type) {
-      case TransactionTypeEnum.incomeBudget:
-      case TransactionTypeEnum.incomeWallet:
-        return BText.caption(context.loc.income);
-      case TransactionTypeEnum.expenseBudget:
-      case TransactionTypeEnum.expenseWallet:
-        return BText.caption(context.loc.expense);
-    }
-  }
-
   Widget _itemMoneyTransaction(BuildContext context,
       {required TransactionTypeEnum type, required int amount}) {
     String amountMoney = amount.toMoneyStr();
     switch (type) {
-      case TransactionTypeEnum.incomeBudget:
-      case TransactionTypeEnum.incomeWallet:
+      case TransactionTypeEnum.income:
         return BText('+$amountMoney',
             color: Theme.of(context).colorScheme.tertiary,
             fontWeight: FontWeight.w700);
-      case TransactionTypeEnum.expenseBudget:
-      case TransactionTypeEnum.expenseWallet:
+      case TransactionTypeEnum.expense:
         return BText('-$amountMoney',
             color: ColorManager.red1, fontWeight: FontWeight.w700);
     }

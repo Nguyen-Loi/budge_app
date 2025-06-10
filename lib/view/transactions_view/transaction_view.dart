@@ -382,12 +382,10 @@ class TransactionsController extends StateNotifier<TransactionState> {
     int newExpense = 0;
     for (var e in transactions) {
       switch (e.transaction.transactionType) {
-        case TransactionTypeEnum.incomeWallet:
-        case TransactionTypeEnum.incomeBudget:
+        case TransactionTypeEnum.income:
           newIncome += e.transaction.amount;
           break;
-        case TransactionTypeEnum.expenseWallet:
-        case TransactionTypeEnum.expenseBudget:
+        case TransactionTypeEnum.expense:
           newExpense += e.transaction.amount;
           break;
       }

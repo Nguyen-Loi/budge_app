@@ -1,11 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
-import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 
@@ -36,35 +33,11 @@ class TransactionModel {
 
   TransactionCardModel toTransactionCard(AppLocalizations loc,
       {required List<BudgetModel> budgets}) {
-    final budgetOfTransaction =
-        budgets.firstWhereOrNull((e) => e.id == budgetId);
-    if (budgetOfTransaction != null) {
-      return TransactionCardModel(
-          transaction: this,
-          transactionName: budgetOfTransaction.name,
-          iconId: budgetOfTransaction.iconId,
-          transactionType: transactionType);
-    }
-    // Handle transaction of wallet
-    String transactionName = '';
-    int iconId = 1;
-    switch (transactionType) {
-      case TransactionTypeEnum.incomeWallet:
-        transactionName = loc.deposit;
-        iconId = IconManagerData.idMoneyIn;
-        break;
-      case TransactionTypeEnum.expenseWallet:
-        transactionName = loc.withdrawal;
-        iconId = IconManagerData.idMoneyOut;
-        break;
-      case TransactionTypeEnum.incomeBudget:
-      case TransactionTypeEnum.expenseBudget:
-        break;
-    }
+    final budgetOfTransaction = budgets.firstWhere((e) => e.id == budgetId);
     return TransactionCardModel(
         transaction: this,
-        transactionName: transactionName,
-        iconId: iconId,
+        transactionName: budgetOfTransaction.name,
+        iconId: budgetOfTransaction.iconId,
         transactionType: transactionType);
   }
 

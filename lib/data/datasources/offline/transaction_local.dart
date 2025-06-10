@@ -127,11 +127,11 @@ class TransactionLocal extends TransactionRepository {
 
       switch (budgetModel.budgetType) {
         case BudgetTypeEnum.income:
-          transactionType = TransactionTypeEnum.incomeBudget;
+          transactionType = TransactionTypeEnum.income;
           break;
         case BudgetTypeEnum.expense:
           adjustedAmount = -amount;
-          transactionType = TransactionTypeEnum.expenseBudget;
+          transactionType = TransactionTypeEnum.expense;
           break;
       }
 

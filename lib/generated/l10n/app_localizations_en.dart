@@ -320,12 +320,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dateRange => 'Date range';
 
   @override
-  String get deposit => 'Deposit';
-
-  @override
-  String get withdrawal => 'Withdrawal';
-
-  @override
   String get budgetInUse => 'Budget in use';
 
   @override
@@ -457,18 +451,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get endDate => 'endDate date';
-
-  @override
-  String get incomeWallet => 'Wallet for Income';
-
-  @override
-  String get expenseWallet => 'Wallet for Expenses';
-
-  @override
-  String get incomeBudget => 'Budget for Income';
-
-  @override
-  String get expenseBudget => 'Budget for Expenses';
 
   @override
   String get chooseBudgets => 'Choose budgets';
@@ -672,4 +654,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get protected => 'Protected';
+
+  @override
+  String get initializingTheApplication => 'Initializing the application...';
+
+  @override
+  String get selectAll => 'Select All';
+
+  @override
+  String get removeAll => 'Remove All';
+
+  @override
+  String get noAppToOpen => 'No app available to open this file';
+
+  @override
+  String pFileNotFound(Object file) {
+    return 'File `$file` not found';
+  }
+
+  @override
+  String get permissionDenied => 'Permission denied';
+
+  @override
+  String get transaction => 'Transaction';
 }

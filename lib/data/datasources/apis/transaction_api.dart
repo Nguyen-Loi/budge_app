@@ -106,11 +106,11 @@ class TransactionApi extends TransactionRepository {
       TransactionTypeEnum transactionType;
       switch (budgetModel.budgetType) {
         case BudgetTypeEnum.income:
-          transactionType = TransactionTypeEnum.incomeBudget;
+          transactionType = TransactionTypeEnum.income;
           break;
         case BudgetTypeEnum.expense:
           amount *= -1;
-          transactionType = TransactionTypeEnum.expenseBudget;
+          transactionType = TransactionTypeEnum.expense;
           break;
       }
 

@@ -320,12 +320,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get dateRange => 'Khoảng thời gian';
 
   @override
-  String get deposit => 'Tiền chuyển đến';
-
-  @override
-  String get withdrawal => 'Tiền chuyển đi';
-
-  @override
   String get budgetInUse => 'Ngân sách đang áp dụng';
 
   @override
@@ -457,18 +451,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get endDate => 'Ngày kết thúc';
-
-  @override
-  String get incomeWallet => 'Ví thu nhập';
-
-  @override
-  String get expenseWallet => 'Ví chi tiêu';
-
-  @override
-  String get incomeBudget => 'Ngân sách thu nhập';
-
-  @override
-  String get expenseBudget => 'Ngân sách chi tiêu';
 
   @override
   String get chooseBudgets => 'Chọn các ngân sách';
@@ -672,4 +654,27 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get protected => 'Bảo vệ';
+
+  @override
+  String get initializingTheApplication => 'Đang khởi tạo ứng dụng...';
+
+  @override
+  String get selectAll => 'Chọn tất cả';
+
+  @override
+  String get removeAll => 'Xóa tất cả';
+
+  @override
+  String get noAppToOpen => 'Không tìm thấy ứng dụng nào để mở tập tin này.';
+
+  @override
+  String pFileNotFound(Object file) {
+    return 'Tệp không được tìm thấy: $file';
+  }
+
+  @override
+  String get permissionDenied => 'Quyền truy cập bị từ chối';
+
+  @override
+  String get transaction => 'Giao dịch';
 }

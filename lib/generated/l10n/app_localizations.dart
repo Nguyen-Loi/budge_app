@@ -683,18 +683,6 @@ abstract class AppLocalizations {
   /// **'Date range'**
   String get dateRange;
 
-  /// No description provided for @deposit.
-  ///
-  /// In en, this message translates to:
-  /// **'Deposit'**
-  String get deposit;
-
-  /// No description provided for @withdrawal.
-  ///
-  /// In en, this message translates to:
-  /// **'Withdrawal'**
-  String get withdrawal;
-
   /// No description provided for @budgetInUse.
   ///
   /// In en, this message translates to:
@@ -940,30 +928,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'endDate date'**
   String get endDate;
-
-  /// No description provided for @incomeWallet.
-  ///
-  /// In en, this message translates to:
-  /// **'Wallet for Income'**
-  String get incomeWallet;
-
-  /// No description provided for @expenseWallet.
-  ///
-  /// In en, this message translates to:
-  /// **'Wallet for Expenses'**
-  String get expenseWallet;
-
-  /// No description provided for @incomeBudget.
-  ///
-  /// In en, this message translates to:
-  /// **'Budget for Income'**
-  String get incomeBudget;
-
-  /// No description provided for @expenseBudget.
-  ///
-  /// In en, this message translates to:
-  /// **'Budget for Expenses'**
-  String get expenseBudget;
 
   /// No description provided for @chooseBudgets.
   ///
@@ -1354,6 +1318,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Protected'**
   String get protected;
+
+  /// No description provided for @initializingTheApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'Initializing the application...'**
+  String get initializingTheApplication;
+
+  /// No description provided for @selectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select All'**
+  String get selectAll;
+
+  /// No description provided for @removeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove All'**
+  String get removeAll;
+
+  /// No description provided for @noAppToOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'No app available to open this file'**
+  String get noAppToOpen;
+
+  /// No description provided for @pFileNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'File `{file}` not found'**
+  String pFileNotFound(Object file);
+
+  /// No description provided for @permissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission denied'**
+  String get permissionDenied;
+
+  /// No description provided for @transaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction'**
+  String get transaction;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

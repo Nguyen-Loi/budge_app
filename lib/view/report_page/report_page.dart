@@ -1,17 +1,328 @@
-
+import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/with_spacing.dart';
+import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/view/report_page/controller/report_page_controller.dart';
+import 'package:budget_app/view/report_page/widgets/report_filter_dialog.dart';
+import 'package:budget_app/view/report_page/widgets/report_statistics_card.dart';
+import 'package:budget_app/view/report_page/widgets/smart_budget_chart.dart';
+import 'package:budget_app/view/report_page/widgets/budget_transaction_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-class ReportPage extends StatefulWidget {
+class ReportPage extends ConsumerStatefulWidget {
   const ReportPage({super.key});
 
   @override
-  State<ReportPage> createState() => _ReportPageState();
+  ConsumerState<ReportPage> createState() => _ReportPageState();
 }
 
-class _ReportPageState extends State<ReportPage> {
+class _ReportPageState extends ConsumerState<ReportPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final reportState = ref.watch(reportPageControllerProvider);
+    final controller = ref.read(reportPageControllerProvider.notifier);
+
+    return Scaffold(
+      body: _buildBody(context, reportState, controller),
+    );
+  }
+
+  Widget _buildBody(BuildContext context, ReportFilterState state,
+      ReportPageController controller) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Future.delayed(const Duration(milliseconds: 500));
+      },
+      child: CustomScrollView(
+        slivers: [
+          _buildSliverHeader(context, state, controller),
+
+          // Export Button Section
+          SliverToBoxAdapter(
+            child: _buildExportButtonSection(context, state, controller),
+          ),
+
+          // Statistics Cards
+          SliverToBoxAdapter(
+            child: _buildStatisticsSection(context, controller),
+          ),
+
+          // Chart Section
+          SliverToBoxAdapter(
+            child: _buildChartSection(context, state),
+          ),
+
+          // Budget Transactions List
+          SliverToBoxAdapter(
+            child: _buildTransactionsSection(context, state),
+          ),
+
+          // Bottom padding
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 100),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSliverHeader(BuildContext context, ReportFilterState state,
+      ReportPageController controller) {
+    return SliverAppBar(
+      expandedHeight: 70,
+      title: Stack(
+        alignment: Alignment.center,
+        children: [
+          Center(
+            child: BText.h3(
+              context.loc.report,
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          Positioned(
+            right: 0,
+            child: Row(
+              children: [
+                IconButton(
+                  icon: Icon(IconManager.filter),
+                  onPressed: () =>
+                      _showFilterDialog(context, state, controller),
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+      floating: false,
+      pinned: false,
+      automaticallyImplyLeading: false,
+    );
+  }
+
+  Widget _buildExportButtonSection(BuildContext context,
+      ReportFilterState state, ReportPageController controller) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: _buildExportButton(context, state, controller),
+    );
+  }
+
+  Widget _buildExportButton(BuildContext context, ReportFilterState state,
+      ReportPageController controller) {
+    final hasData = state.budgetTransactionsList.isNotEmpty;
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final disabledColor = Theme.of(context).colorScheme.onSurface;
+    final textColor = hasData
+        ? Theme.of(context).colorScheme.onPrimary
+        : Theme.of(context).disabledColor;
+    return GestureDetector(
+      onTap: hasData && !state.isLoading
+          ? () => controller.exportExcel(context)
+          : null,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: hasData
+                ? primaryColor.withAlpha(100)
+                : disabledColor.withAlpha(60),
+          ),
+          color: hasData
+              ? primaryColor.withAlpha(200)
+              : disabledColor.withAlpha(120),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (state.isLoading)
+              const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            else
+              Icon(
+                IconManager.excel,
+                color: textColor,
+                size: 20,
+              ),
+            gapH4,
+            BText(
+              context.loc.exportExcel,
+              color: textColor,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatisticsSection(
+      BuildContext context, ReportPageController controller) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: ReportStatisticsCard(
+        statistics: controller.getStatistics(),
+      ),
+    );
+  }
+
+  Widget _buildChartSection(BuildContext context, ReportFilterState state) {
+    if (state.chartData.isEmpty) {
+      return Container(
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              IconManager.reportBar,
+              size: 48,
+              color: Theme.of(context).disabledColor,
+            ),
+            gapH16,
+            BText(
+              context.loc.noData,
+              color: Theme.of(context).disabledColor,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      margin: const EdgeInsets.all(16),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    IconManager.reportBar,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  gapW8,
+                  BText.b1(
+                    context.loc.report,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ],
+              ),
+              gapH16,
+              SmartBudgetChart(
+                chartData: state.chartData,
+                showIncomeExpenseBreakdown: true,
+                period: _formatDateRange(state.dateTimeRange),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTransactionsSection(
+      BuildContext context, ReportFilterState state) {
+    if (state.budgetTransactionsList.isEmpty) {
+      return Container(
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              IconManager.transactionBar,
+              size: 48,
+              color: Theme.of(context).disabledColor,
+            ),
+            gapH16,
+            BText(
+              context.loc.noTransactionDescription,
+              color: Theme.of(context).disabledColor,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              children: [
+                Icon(
+                  IconManager.budgetBar,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                gapW8,
+                BText.b1(
+                  context.loc.budgets,
+                  fontWeight: FontWeight.bold,
+                ),
+              ],
+            ),
+          ),
+          ColumnWithSpacing(
+            spacing: 12,
+            children: state.budgetTransactionsList
+                .map((budgetTransaction) => BudgetTransactionCard(
+                      budgetTransaction: budgetTransaction,
+                    ))
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDateRange(DateTimeRange range) {
+    final start = "${range.start.day}/${range.start.month}/${range.start.year}";
+    final end = "${range.end.day}/${range.end.month}/${range.end.year}";
+    return "$start - $end";
+  }
+
+  void _showFilterDialog(BuildContext context, ReportFilterState state,
+      ReportPageController controller) {
+    showDialog(
+      context: context,
+      builder: (context) => ReportFilterDialog(
+        currentState: state,
+        availableBudgets: controller.availableBudgets,
+        availableTransactionTypes: controller.availableTransactionTypes,
+        dateRangeOptions: controller.dateRangeOptions,
+        firstDate: controller.firstTransactionDate,
+        lastDate: controller.lastTransactionDate,
+        onFiltersChanged: (dateRange, transactionTypes, budgetIds) {
+          controller.setFilters(
+            dateTimeRange: dateRange,
+            transactionTypes: transactionTypes,
+            selectedBudgetIds: budgetIds,
+          );
+        },
+      ),
+    );
   }
 }
