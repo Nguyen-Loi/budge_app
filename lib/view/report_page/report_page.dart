@@ -5,7 +5,6 @@ import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/report_page/controller/report_page_controller.dart';
 import 'package:budget_app/view/report_page/widgets/report_filter_dialog.dart';
-import 'package:budget_app/view/report_page/widgets/report_statistics_card.dart';
 import 'package:budget_app/view/report_page/widgets/smart_budget_chart.dart';
 import 'package:budget_app/view/report_page/widgets/budget_transaction_card.dart';
 import 'package:flutter/material.dart';
@@ -44,14 +43,10 @@ class _ReportPageState extends ConsumerState<ReportPage> {
             child: _buildExportButtonSection(context, state, controller),
           ),
 
-          // Statistics Cards
+          // Merged Statistics and Chart Section
           SliverToBoxAdapter(
-            child: _buildStatisticsSection(context, controller),
-          ),
-
-          // Chart Section
-          SliverToBoxAdapter(
-            child: _buildChartSection(context, state),
+            child:
+                _buildMergedStatisticsChartSection(context, state, controller),
           ),
 
           // Budget Transactions List
@@ -163,42 +158,8 @@ class _ReportPageState extends ConsumerState<ReportPage> {
     );
   }
 
-  Widget _buildStatisticsSection(
-      BuildContext context, ReportPageController controller) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      child: ReportStatisticsCard(
-        statistics: controller.getStatistics(),
-      ),
-    );
-  }
-
-  Widget _buildChartSection(BuildContext context, ReportFilterState state) {
-    if (state.chartData.isEmpty) {
-      return Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.all(32),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              IconManager.reportBar,
-              size: 48,
-              color: Theme.of(context).disabledColor,
-            ),
-            gapH16,
-            BText(
-              context.loc.noData,
-              color: Theme.of(context).disabledColor,
-            ),
-          ],
-        ),
-      );
-    }
-
+  Widget _buildMergedStatisticsChartSection(BuildContext context,
+      ReportFilterState state, ReportPageController controller) {
     return Container(
       margin: const EdgeInsets.all(16),
       child: Card(
@@ -225,14 +186,44 @@ class _ReportPageState extends ConsumerState<ReportPage> {
                 ],
               ),
               gapH16,
-              SmartBudgetChart(
-                chartData: state.chartData,
-                showIncomeExpenseBreakdown: true,
-                period: _formatDateRange(state.dateTimeRange),
-              ),
+
+              // Chart Section (removed separate statistics)
+              if (state.chartData.isEmpty)
+                _buildEmptyChartState(context)
+              else
+                SmartBudgetChart(
+                  chartData: state.chartData,
+                  chartType: ChartType.auto,
+                  showIncomeExpenseBreakdown: true,
+                  period: _formatDateRange(state.dateTimeRange),
+                  transactionTypes: state.transactionTypes,
+                  transactionCount:
+                      controller.getStatistics()['transactionCount'] as int,
+                ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyChartState(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Icon(
+            IconManager.reportBar,
+            size: 48,
+            color: Theme.of(context).disabledColor,
+          ),
+          gapH16,
+          BText(
+            context.loc.noData,
+            color: Theme.of(context).disabledColor,
+          ),
+        ],
       ),
     );
   }
@@ -315,6 +306,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
         dateRangeOptions: controller.dateRangeOptions,
         firstDate: controller.firstTransactionDate,
         lastDate: controller.lastTransactionDate,
+        getRelevantBudgets: controller.getRelevantBudgets,
         onFiltersChanged: (dateRange, transactionTypes, budgetIds) {
           controller.setFilters(
             dateTimeRange: dateRange,

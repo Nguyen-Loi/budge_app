@@ -284,4 +284,32 @@ class ReportPageController extends StateNotifier<ReportFilterState> {
   List<BudgetModel> get availableBudgets => _budgets;
   List<TransactionTypeEnum> get availableTransactionTypes =>
       TransactionTypeEnum.values;
+
+  // Helper method to get budgets that have transactions for specific transaction types
+  List<BudgetModel> getRelevantBudgets(
+      List<TransactionTypeEnum> transactionTypes) {
+    if (transactionTypes.isEmpty) {
+      return [];
+    }
+
+    // Get all transactions within the current date range
+    final allTransactionsInRange = _transactionsCard.where((e) {
+      return e.transaction.transactionDate
+          .isBetweenDateTimeRange(state.dateTimeRange);
+    }).toList();
+
+    // Get budget IDs that have transactions of the selected types
+    final relevantBudgetIds = <String>{};
+
+    for (final transactionCard in allTransactionsInRange) {
+      if (transactionTypes.contains(transactionCard.transactionType)) {
+        relevantBudgetIds.add(transactionCard.transaction.budgetId);
+      }
+    }
+
+    // Return budgets that have transactions of the selected types
+    return _budgets
+        .where((budget) => relevantBudgetIds.contains(budget.id))
+        .toList();
+  }
 }

@@ -82,7 +82,7 @@ class _IncomeExpenseChartState extends State<IncomeExpenseChart> {
             ),
           ),
         ),
-        const SizedBox(width: 40),
+        const SizedBox(width: 24),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -146,13 +146,14 @@ class _IncomeExpenseChartState extends State<IncomeExpenseChart> {
     return [
       _Indicator(
         color: Theme.of(context).colorScheme.tertiary,
-        text: 'Income (${incomePercentage.toStringAsFixed(1)}%)',
+        text: '${context.loc.income} (${incomePercentage.toStringAsFixed(1)}%)',
         isSquare: true,
       ),
       const SizedBox(height: 4),
       _Indicator(
         color: Theme.of(context).colorScheme.error,
-        text: 'Expense (${expensePercentage.toStringAsFixed(1)}%)',
+        text:
+            '${context.loc.expense} (${expensePercentage.toStringAsFixed(1)}%)',
         isSquare: true,
       ),
     ];

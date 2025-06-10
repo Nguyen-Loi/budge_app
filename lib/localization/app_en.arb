@@ -274,5 +274,14 @@
     "noAppToOpen": "No app available to open this file",
     "pFileNotFound": "File `{file}` not found",
     "permissionDenied": "Permission denied",
-    "transaction": "Transaction"
+    "transaction": "Transaction",
+    "budgetDistribution": "Budget Distribution",
+    "noBudgetsSelectedTransaction": "No budgets available for selected transaction types",
+    "incomeVsExpense": "Income vs Expense",
+    "incomeAnalysis": "Income Analysis",
+    "expenseAnalysis": "Expense Analysis",
+    "budgetBreakdown": "Budget Breakdown",
+    "incomeBudgetDistribution": "Income Budget Distribution",
+    "expenseBudgetDistribution": "Expense Budget Distribution"
+
 }

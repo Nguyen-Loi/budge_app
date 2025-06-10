@@ -18,6 +18,7 @@ class ReportFilterDialog extends StatefulWidget {
   final DateTime? lastDate;
   final Function(DateTimeRange?, List<TransactionTypeEnum>?, List<String>?)
       onFiltersChanged;
+  final Function(List<TransactionTypeEnum>) getRelevantBudgets;
 
   const ReportFilterDialog({
     super.key,
@@ -28,6 +29,7 @@ class ReportFilterDialog extends StatefulWidget {
     this.firstDate,
     this.lastDate,
     required this.onFiltersChanged,
+    required this.getRelevantBudgets,
   });
 
   @override
@@ -47,10 +49,14 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
     _selectedBudgetIds = List.from(widget.currentState.selectedBudgetIds);
   }
 
+  List<BudgetModel> get _availableBudgetsForSelectedTypes {
+    return widget.getRelevantBudgets(_selectedTransactionTypes);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: BText.h2(
+      title: BText.h3(
         context.loc.filter,
         fontWeight: FontWeight.bold,
       ),
@@ -84,7 +90,10 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
             );
             Navigator.of(context).pop();
           },
-          child: BText(context.loc.confirm),
+          child: BText(
+            context.loc.confirm,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
       ],
     );
@@ -147,6 +156,14 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
                   } else {
                     _selectedTransactionTypes.remove(type);
                   }
+
+                  // Update selected budgets to only include relevant ones
+                  final relevantBudgets = _availableBudgetsForSelectedTypes;
+                  final relevantBudgetIds =
+                      relevantBudgets.map((b) => b.id).toSet();
+                  _selectedBudgetIds = _selectedBudgetIds
+                      .where((id) => relevantBudgetIds.contains(id))
+                      .toList();
                 });
               },
             );
@@ -157,8 +174,49 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
   }
 
   Widget _buildBudgetsSection() {
-    bool hasSelectedBudgets =
-        _selectedBudgetIds.length == widget.availableBudgets.length;
+    final availableBudgets = _availableBudgetsForSelectedTypes;
+    final hasSelectedBudgets =
+        _selectedBudgetIds.length == availableBudgets.length;
+
+    if (availableBudgets.isEmpty) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          BText(
+            context.loc.budgets,
+            fontWeight: FontWeight.bold,
+          ),
+          gapH8,
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context)
+                  .colorScheme
+                  .surfaceContainerHighest
+                  .withAlpha(100),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  size: 20,
+                ),
+                gapW8,
+                Expanded(
+                  child: BText.b3(
+                    context.loc.noBudgetsSelectedTransaction,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -172,12 +230,11 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
             TextButton(
               onPressed: () {
                 setState(() {
-                  if (_selectedBudgetIds.length ==
-                      widget.availableBudgets.length) {
+                  if (_selectedBudgetIds.length == availableBudgets.length) {
                     _selectedBudgetIds.clear();
                   } else {
                     _selectedBudgetIds =
-                        widget.availableBudgets.map((b) => b.id).toList();
+                        availableBudgets.map((b) => b.id).toList();
                   }
                 });
               },
@@ -194,10 +251,25 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
           ],
         ),
         gapH8,
+        if (_selectedTransactionTypes.isNotEmpty) ...[
+          // Show transaction type indicator
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary.withAlpha(50),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: BText.caption(
+              'Showing budgets for: ${_selectedTransactionTypes.map((t) => t.content(context)).join(', ')}',
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          gapH8,
+        ],
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: widget.availableBudgets.map((budget) {
+          children: availableBudgets.map((budget) {
             final isSelected = _selectedBudgetIds.contains(budget.id);
             IconModel iconModel = budget.iconModel;
             return BFilterChip(
@@ -221,11 +293,19 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
   }
 
   void _showDateRangePicker() async {
+    final firstDate = widget.firstDate;
+    final lastDate = widget.lastDate;
+    if (firstDate != null || lastDate != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.loc.noData)),
+      );
+      return;
+    }
     final now = DateTime.now();
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
-      firstDate: widget.firstDate ?? DateTime(now.year - 1),
-      lastDate: widget.lastDate ?? DateTime(now.year),
+      firstDate: firstDate ?? DateTime(now.year - 1),
+      lastDate: lastDate ?? DateTime(now.year + 1),
       initialDateRange: _selectedDateRange,
     );
 

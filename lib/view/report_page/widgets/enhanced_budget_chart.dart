@@ -1,22 +1,29 @@
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/with_spacing.dart';
-import 'package:budget_app/constants/assets_constants.dart';
+import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/models_widget/chart_budget_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class EnhancedBudgetChart extends StatefulWidget {
   final List<ChartBudgetModel> chartData;
-  final bool showIncomeExpenseBreakdown;
+  final int transactionCount;
+  final List<TransactionTypeEnum> transactionTypes;
+  final String period;
 
   const EnhancedBudgetChart({
     super.key,
     required this.chartData,
-    this.showIncomeExpenseBreakdown = false,
+    this.transactionCount = 0,
+    this.transactionTypes = const [
+      TransactionTypeEnum.income,
+      TransactionTypeEnum.expense
+    ],
+    this.period = '',
   });
 
   @override
@@ -97,52 +104,13 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
           opacity: _fadeAnimation,
           child: ScaleTransition(
             scale: _scaleAnimation,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Theme.of(context).colorScheme.surface,
-                    Theme.of(context)
-                        .colorScheme
-                        .surface
-                        .withValues(alpha: 0.8),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color:
-                        Theme.of(context).shadowColor.withValues(alpha: 0.08),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                    spreadRadius: 0,
-                  ),
-                  BoxShadow(
-                    color:
-                        Theme.of(context).shadowColor.withValues(alpha: 0.04),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                    spreadRadius: 0,
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildHeader(context, list),
-                    const SizedBox(height: 24),
-                    _buildChart(context, list),
-                    if (widget.showIncomeExpenseBreakdown) ...[
-                      const SizedBox(height: 20),
-                      _buildIncomeExpenseBreakdown(context, list),
-                    ],
-                  ],
-                ),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(context, list),
+                const SizedBox(height: 24),
+                _buildChart(context, list),
+              ],
             ),
           ),
         );
@@ -153,26 +121,18 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
   Widget _buildEmptyState(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
-        ),
-      ),
+      alignment: Alignment.center,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Lottie.asset(
-            LottieAssets.emptyChart,
-            width: 120,
-            height: 120,
+          Icon(
+            IconManager.reportBar,
+            size: 48,
+            color: Theme.of(context).disabledColor,
           ),
-          const SizedBox(height: 16),
+          gapH16,
           BText(
             context.loc.noData,
-            fontWeight: FontWeight.w500,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            color: Theme.of(context).disabledColor,
           ),
         ],
       ),
@@ -210,13 +170,29 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
   }
 
   Widget _buildHeader(BuildContext context, List<ChartBudgetModel> list) {
+    final loc = context.loc;
     final totalAmount = list.fold(0, (sum, item) => sum + item.total);
     final incomeAmount = list
-        .where((item) => item.total > 0)
+        .where((item) => item.hasIncome)
         .fold(0, (sum, item) => sum + item.total);
     final expenseAmount = list
-        .where((item) => item.total < 0)
+        .where((item) => item.hasExpense)
         .fold(0, (sum, item) => sum + item.total.abs());
+
+    // Get the transaction type labels
+    final hasIncomeType =
+        widget.transactionTypes.contains(TransactionTypeEnum.income);
+    final hasExpenseType =
+        widget.transactionTypes.contains(TransactionTypeEnum.expense);
+
+    String chartTitle;
+    if (hasIncomeType && hasExpenseType) {
+      chartTitle = loc.budgetDistribution;
+    } else if (hasIncomeType) {
+      chartTitle = loc.incomeBudgetDistribution;
+    } else {
+      chartTitle = loc.expenseBudgetDistribution;
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,31 +225,38 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   BText(
-                    "Budget Overview",
+                    chartTitle,
                     fontWeight: FontWeight.w600,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
+                  if (widget.period.isNotEmpty)
+                    BText(
+                      widget.period,
+                    ),
                   const SizedBox(height: 4),
-                  BText(
-                    totalAmount.toMoneyStr(),
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).colorScheme.primary,
+                  Row(
+                    children: [
+                      BText(
+                        totalAmount.toMoneyStr(),
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
           ],
         ),
-        if (widget.showIncomeExpenseBreakdown &&
-            (incomeAmount > 0 || expenseAmount > 0)) ...[
+        if ((incomeAmount > 0 || expenseAmount > 0)) ...[
           const SizedBox(height: 16),
           Row(
             children: [
               if (incomeAmount > 0) ...[
                 _buildQuickStat(
                   context,
-                  "Income",
-                  incomeAmount.toMoneyStr(),
+                  loc.income,
+                  incomeAmount.toMoneyStrTruncated(),
                   Icons.trending_up_rounded,
                   Theme.of(context).colorScheme.tertiary,
                 ),
@@ -282,8 +265,8 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
               if (expenseAmount > 0)
                 _buildQuickStat(
                   context,
-                  "Expense",
-                  expenseAmount.toMoneyStr(),
+                  loc.expense,
+                  expenseAmount.toMoneyStrTruncated(),
                   Icons.trending_down_rounded,
                   Theme.of(context).colorScheme.error,
                 ),
@@ -334,12 +317,11 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
   }
 
   Widget _buildChart(BuildContext context, List<ChartBudgetModel> list) {
-    return AspectRatio(
-      aspectRatio: 1.3,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 3,
+    return Column(
+      children: [
+        Center(
+          child: SizedBox(
+            height: 200,
             child: AspectRatio(
               aspectRatio: 1,
               child: PieChart(
@@ -366,107 +348,25 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
               ),
             ),
           ),
-          const SizedBox(width: 24),
-          Expanded(
-            flex: 2,
-            child: SingleChildScrollView(
-              child: ColumnWithSpacing(
-                spacing: 12,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: _buildLegend(list),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildIncomeExpenseBreakdown(
-      BuildContext context, List<ChartBudgetModel> list) {
-    final incomeItems = list.where((item) => item.total > 0).toList();
-    final expenseItems = list.where((item) => item.total < 0).toList();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        BText(
-          "Income vs Expense Breakdown",
-          fontWeight: FontWeight.w600,
-          color: Theme.of(context).colorScheme.onSurface,
         ),
-        const SizedBox(height: 12),
-        Row(
+        const SizedBox(height: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (incomeItems.isNotEmpty)
-              Expanded(
-                child: _buildBreakdownCard(
-                  context,
-                  "Income",
-                  incomeItems,
-                  Theme.of(context).colorScheme.tertiary,
-                  Icons.add_circle_outline,
-                ),
-              ),
-            if (incomeItems.isNotEmpty && expenseItems.isNotEmpty)
-              const SizedBox(width: 12),
-            if (expenseItems.isNotEmpty)
-              Expanded(
-                child: _buildBreakdownCard(
-                  context,
-                  "Expenses",
-                  expenseItems,
-                  Theme.of(context).colorScheme.error,
-                  Icons.remove_circle_outline,
-                ),
-              ),
+            BText(
+              context.loc.budgetBreakdown,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            gapH8,
+            Wrap(
+              spacing: 12, // khoảng cách giữa các item ngang
+              runSpacing: 12, // khoảng cách giữa các dòng
+              children: _buildHorizontalLegend(list),
+            ),
           ],
         ),
       ],
-    );
-  }
-
-  Widget _buildBreakdownCard(BuildContext context, String title,
-      List<ChartBudgetModel> items, Color color, IconData icon) {
-    final total = items.fold(0, (sum, item) => sum + item.total.abs());
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: color.withValues(alpha: 0.1),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: color, size: 16),
-              const SizedBox(width: 8),
-              BText(
-                title,
-                fontWeight: FontWeight.w600,
-                color: color,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          BText(
-            total.toMoneyStr(),
-            fontWeight: FontWeight.w700,
-            color: color,
-          ),
-          const SizedBox(height: 8),
-          BText(
-            "${items.length} categories",
-            fontWeight: FontWeight.w400,
-            color: color.withValues(alpha: 0.7),
-          ),
-        ],
-      ),
     );
   }
 
@@ -518,73 +418,74 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
     }).toList();
   }
 
-  List<Widget> _buildLegend(List<ChartBudgetModel> list) {
+  List<Widget> _buildHorizontalLegend(List<ChartBudgetModel> list) {
     return list.asMap().entries.map((entry) {
       final index = entry.key;
       final item = entry.value;
       final color = modernColors[index];
-      final isIncome = item.total > 0;
+
+      // Determine if item is income or expense based on transaction types and actual data
+      final hasIncomeType =
+          widget.transactionTypes.contains(TransactionTypeEnum.income);
+      final hasExpenseType =
+          widget.transactionTypes.contains(TransactionTypeEnum.expense);
+
+      bool isIncome;
+      if (hasIncomeType && hasExpenseType) {
+        isIncome = item.total > 0;
+      } else if (hasIncomeType) {
+        isIncome = true;
+      } else {
+        isIncome = false;
+      }
 
       return Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.05),
+          color: color.withAlpha(70),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: color.withValues(alpha: 0.1),
+            color: color.withAlpha(120),
           ),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 12,
-              height: 12,
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(3),
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                BText(
+                  item.budgetName,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(width: 6),
+                Icon(
+                  isIncome ? Icons.trending_up : Icons.trending_down,
+                  size: 14,
+                  color: isIncome
+                      ? Theme.of(context).colorScheme.tertiary
+                      : Theme.of(context).colorScheme.error,
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: BText(
-                          item.budgetName,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                      Icon(
-                        isIncome ? Icons.trending_up : Icons.trending_down,
-                        size: 14,
-                        color: isIncome
-                            ? Theme.of(context).colorScheme.tertiary
-                            : Theme.of(context).colorScheme.error,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      BText(
-                        '${item.value.toStringAsFixed(1)}%',
-                        fontWeight: FontWeight.w600,
-                        color: color,
-                      ),
-                      BText(
-                        item.total.abs().toMoneyStr(),
-                        fontWeight: FontWeight.w500,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            const SizedBox(height: 8),
+            BText(
+              item.total.abs().toMoneyStrTruncated(),
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
           ],
         ),

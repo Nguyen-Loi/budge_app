@@ -1,4 +1,3 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_progress_bar.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 class BudgetExpenseStatus extends StatelessWidget {
   const BudgetExpenseStatus({super.key, required this.budget});
   final BudgetModel budget;
+
   int get progress {
     final currentAmount = budget.currentAmount.abs();
     final limit = budget.budgetLimit;
@@ -18,6 +18,19 @@ class BudgetExpenseStatus extends StatelessWidget {
     }
   }
 
+  // Get status based on progress percentage
+  StatusBudgetProgress get dynamicStatus {
+    if (progress <= 25) {
+      return StatusBudgetProgress.start;
+    } else if (progress <= 50) {
+      return StatusBudgetProgress.progress;
+    } else if (progress < 100) {
+      return StatusBudgetProgress.almostDone;
+    } else {
+      return StatusBudgetProgress.complete;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BProgressBar(
@@ -27,15 +40,35 @@ class BudgetExpenseStatus extends StatelessWidget {
   }
 
   LinearGradient _gradient() {
-    switch (budget.status) {
+    switch (dynamicStatus) {
       case StatusBudgetProgress.start:
-        return ColorManager.linearGrey;
+        // 0-25%: Cool blue gradient
+        return const LinearGradient(
+          colors: [Color(0xFF4FC3F7), Color(0xFF29B6F6)],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        );
       case StatusBudgetProgress.progress:
-        return ColorManager.linearGreen1;
+        // 26-50%: Green gradient
+        return const LinearGradient(
+          colors: [Color(0xFF66BB6A), Color(0xFF4CAF50)],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        );
       case StatusBudgetProgress.almostDone:
-        return ColorManager.linearWarning;
+        // 51-99%: Orange/amber gradient
+        return const LinearGradient(
+          colors: [Color(0xFFFFB74D), Color(0xFFFF9800)],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        );
       case StatusBudgetProgress.complete:
-        return ColorManager.linearDanger;
+        // 100%+: Red gradient
+        return const LinearGradient(
+          colors: [Color(0xFFEF5350), Color(0xFFE53935)],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        );
     }
   }
 }

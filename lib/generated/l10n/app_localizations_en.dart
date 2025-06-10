@@ -677,4 +677,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transaction => 'Transaction';
+
+  @override
+  String get budgetDistribution => 'Budget Distribution';
+
+  @override
+  String get noBudgetsSelectedTransaction => 'No budgets available for selected transaction types';
+
+  @override
+  String get incomeVsExpense => 'Income vs Expense';
+
+  @override
+  String get incomeAnalysis => 'Income Analysis';
+
+  @override
+  String get expenseAnalysis => 'Expense Analysis';
+
+  @override
+  String get budgetBreakdown => 'Budget Breakdown';
+
+  @override
+  String get incomeBudgetDistribution => 'Income Budget Distribution';
+
+  @override
+  String get expenseBudgetDistribution => 'Expense Budget Distribution';
 }

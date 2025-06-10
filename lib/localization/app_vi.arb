@@ -274,5 +274,13 @@
   "noAppToOpen": "Không tìm thấy ứng dụng nào để mở tập tin này.",
   "pFileNotFound": "Tệp không được tìm thấy: {file}",
   "permissionDenied": "Quyền truy cập bị từ chối",
-  "transaction": "Giao dịch"
+  "transaction": "Giao dịch",
+  "budgetDistribution": "Phân bổ ngân sách",
+  "noBudgetsSelectedTransaction": "Chưa có ngân sách cho loại giao dịch này",
+  "incomeVsExpense": "Thu nhập và Chi tiêu",
+  "incomeAnalysis": "Phân tích thu nhập",
+  "expenseAnalysis": "Phân tích chi tiêu",
+  "budgetBreakdown": "Chi tiết ngân sách",
+  "incomeBudgetDistribution": "Phân bổ ngân sách thu nhập",
+  "expenseBudgetDistribution": "Phân bổ ngân sách chi tiêu"
 }

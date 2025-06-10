@@ -75,19 +75,33 @@ class ChartBudgetModel {
       } else if (transactionTypes.contains(TransactionTypeEnum.income)) {
         totalAmount = incomeAmount;
       } else {
-        totalAmount = -expenseAmount; // Negative to indicate expense
+        // For expense-only, use positive value to ensure it's included in chart
+        totalAmount = expenseAmount;
       }
 
-      final model = ChartBudgetModel(
-        budgetId: representItem.transaction.budgetId,
-        budgetName: representItem.transactionName,
-        value: 0,
-        iconId: representItem.iconId,
-        total: totalAmount,
-        incomeAmount: incomeAmount > 0 ? incomeAmount : null,
-        expenseAmount: expenseAmount > 0 ? expenseAmount : null,
-      );
-      list.add(model);
+      // Only add items that have transactions for the selected types
+      bool hasRelevantTransactions = false;
+      if (transactionTypes.contains(TransactionTypeEnum.income) &&
+          incomeAmount > 0) {
+        hasRelevantTransactions = true;
+      }
+      if (transactionTypes.contains(TransactionTypeEnum.expense) &&
+          expenseAmount > 0) {
+        hasRelevantTransactions = true;
+      }
+
+      if (hasRelevantTransactions && totalAmount != 0) {
+        final model = ChartBudgetModel(
+          budgetId: representItem.transaction.budgetId,
+          budgetName: representItem.transactionName,
+          value: 0,
+          iconId: representItem.iconId,
+          total: totalAmount,
+          incomeAmount: incomeAmount > 0 ? incomeAmount : null,
+          expenseAmount: expenseAmount > 0 ? expenseAmount : null,
+        );
+        list.add(model);
+      }
     }
 
     // Calculate the sum using absolute values for percentage calculation

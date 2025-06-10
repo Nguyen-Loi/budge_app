@@ -677,4 +677,28 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get transaction => 'Giao dịch';
+
+  @override
+  String get budgetDistribution => 'Phân bổ ngân sách';
+
+  @override
+  String get noBudgetsSelectedTransaction => 'Chưa có ngân sách cho loại giao dịch này';
+
+  @override
+  String get incomeVsExpense => 'Thu nhập và Chi tiêu';
+
+  @override
+  String get incomeAnalysis => 'Phân tích thu nhập';
+
+  @override
+  String get expenseAnalysis => 'Phân tích chi tiêu';
+
+  @override
+  String get budgetBreakdown => 'Chi tiết ngân sách';
+
+  @override
+  String get incomeBudgetDistribution => 'Phân bổ ngân sách thu nhập';
+
+  @override
+  String get expenseBudgetDistribution => 'Phân bổ ngân sách chi tiêu';
 }

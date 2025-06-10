@@ -18,7 +18,6 @@ class AnimatedBudgetChart extends StatelessWidget {
       height: showIncomeExpenseBreakdown ? 400 : 300,
       child: EnhancedBudgetChart(
         chartData: chartData,
-        showIncomeExpenseBreakdown: showIncomeExpenseBreakdown,
       ),
     );
   }

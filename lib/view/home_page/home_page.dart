@@ -183,7 +183,7 @@ class _HomePageState extends ConsumerState<HomePage>
                           ),
                           const SizedBox(height: 4),
                           BText.h3(
-                            totalIncome.toMoneyStr(),
+                            totalIncome.toMoneyStrTruncated(),
                             color: sucessColor,
                             fontWeight: FontWeight.bold,
                           ),
@@ -210,7 +210,7 @@ class _HomePageState extends ConsumerState<HomePage>
                           ),
                           const SizedBox(height: 4),
                           BText.h3(
-                            totalExpense.toMoneyStr(),
+                            totalExpense.toMoneyStrTruncated(),
                             color: errorColor,
                             fontWeight: FontWeight.bold,
                           ),

@@ -1360,6 +1360,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Transaction'**
   String get transaction;
+
+  /// No description provided for @budgetDistribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget Distribution'**
+  String get budgetDistribution;
+
+  /// No description provided for @noBudgetsSelectedTransaction.
+  ///
+  /// In en, this message translates to:
+  /// **'No budgets available for selected transaction types'**
+  String get noBudgetsSelectedTransaction;
+
+  /// No description provided for @incomeVsExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Income vs Expense'**
+  String get incomeVsExpense;
+
+  /// No description provided for @incomeAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Income Analysis'**
+  String get incomeAnalysis;
+
+  /// No description provided for @expenseAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense Analysis'**
+  String get expenseAnalysis;
+
+  /// No description provided for @budgetBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget Breakdown'**
+  String get budgetBreakdown;
+
+  /// No description provided for @incomeBudgetDistribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Income Budget Distribution'**
+  String get incomeBudgetDistribution;
+
+  /// No description provided for @expenseBudgetDistribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense Budget Distribution'**
+  String get expenseBudgetDistribution;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

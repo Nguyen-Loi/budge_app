@@ -119,23 +119,58 @@ class BudgetCard extends StatelessWidget {
   }
 
   List<Widget> _itemExpense(BuildContext context) {
-    switch (model.status) {
+    double spentPercent = model.budgetLimit > 0
+        ? (model.currentAmount.abs() * 100 / model.budgetLimit)
+        : 0;
+
+    final dynamicStatus = _getDynamicStatus(spentPercent);
+    final colors = _getStatusColors(context, dynamicStatus);
+
+    return baseStatus(context,
+        iconColor: colors['iconColor']!,
+        textColor: colors['textColor']!,
+        iconData: colors['iconData']!);
+  }
+
+  StatusBudgetProgress _getDynamicStatus(double spentPercent) {
+    if (spentPercent <= 25) {
+      return StatusBudgetProgress.start;
+    } else if (spentPercent <= 50) {
+      return StatusBudgetProgress.progress;
+    } else if (spentPercent < 100) {
+      return StatusBudgetProgress.almostDone;
+    } else {
+      return StatusBudgetProgress.complete;
+    }
+  }
+
+  Map<String, dynamic> _getStatusColors(
+      BuildContext context, StatusBudgetProgress status) {
+    switch (status) {
       case StatusBudgetProgress.start:
+        return {
+          'iconColor': const Color(0xFF29B6F6), // Light blue
+          'textColor': const Color(0xFF1976D2), // Dark blue
+          'iconData': IconManager.emojiSmile,
+        };
       case StatusBudgetProgress.progress:
-        return baseStatus(context,
-            iconColor: Theme.of(context).colorScheme.tertiary,
-            textColor: ColorManager.black,
-            iconData: IconManager.emojiSmile);
+        return {
+          'iconColor': const Color(0xFF4CAF50), // Green
+          'textColor': const Color(0xFF2E7D32), // Dark green
+          'iconData': IconManager.emojiSmile,
+        };
       case StatusBudgetProgress.almostDone:
-        return baseStatus(context,
-            iconColor: ColorManager.orange,
-            textColor: ColorManager.orange,
-            iconData: IconManager.emojiSurprise);
+        return {
+          'iconColor': const Color(0xFFFF9800), // Orange
+          'textColor': const Color(0xFFE65100), // Dark orange
+          'iconData': IconManager.emojiSurprise,
+        };
       case StatusBudgetProgress.complete:
-        return baseStatus(context,
-            iconColor: ColorManager.red1,
-            textColor: ColorManager.red1,
-            iconData: IconManager.emojiFrown);
+        return {
+          'iconColor': const Color(0xFFE53935), // Red
+          'textColor': const Color(0xFFB71C1C), // Dark red
+          'iconData': IconManager.emojiFrown,
+        };
     }
   }
 
@@ -143,8 +178,10 @@ class BudgetCard extends StatelessWidget {
       {required Color iconColor,
       required textColor,
       required IconData iconData}) {
-    int left = model.budgetLimit + model.currentAmount;
-    String leftPercent = (left * 100 / model.budgetLimit).toInt().toString();
+    double spentPercent = model.budgetLimit > 0
+        ? (model.currentAmount.abs() * 100 / model.budgetLimit)
+        : 0;
+    String leftPercent = spentPercent.toInt().toString();
     return [
       Row(
         children: [

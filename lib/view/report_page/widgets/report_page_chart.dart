@@ -1,24 +1,23 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
-import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/models_widget/chart_budget_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 
-class ChartReport extends StatefulWidget {
-  const ChartReport({super.key, required this.list});
+class ReportPageChart extends StatefulWidget {
+  const ReportPageChart({super.key, required this.list});
   final List<ChartBudgetModel> list;
 
   @override
-  State<ChartReport> createState() => _ChartReportState();
+  State<ReportPageChart> createState() => _ReportPageChartState();
 }
 
-class _ChartReportState extends State<ChartReport>
+class _ReportPageChartState extends State<ReportPageChart>
     with TickerProviderStateMixin {
   int touchedIndex = -1;
   late AnimationController _animationController;
@@ -70,12 +69,23 @@ class _ChartReportState extends State<ChartReport>
       return const SizedBox.shrink();
     }
     if (list.isEmpty) {
-      return Column(
-        children: [
-          Lottie.asset(LottieAssets.emptyChart, width: 160, height: 160),
-          gapH16,
-          BText(context.loc.noData)
-        ],
+      return Container(
+        padding: const EdgeInsets.all(32),
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            Icon(
+              IconManager.reportBar,
+              size: 48,
+              color: Theme.of(context).disabledColor,
+            ),
+            gapH16,
+            BText(
+              context.loc.noData,
+              color: Theme.of(context).disabledColor,
+            ),
+          ],
+        ),
       );
     }
 
@@ -129,7 +139,7 @@ class _ChartReportState extends State<ChartReport>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BText(
-                "Budget Distribution",
+                context.loc.budgetDistribution,
                 fontWeight: FontWeight.w600,
               ),
               const SizedBox(height: 4),
