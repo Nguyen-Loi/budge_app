@@ -283,5 +283,7 @@
   "budgetBreakdown": "Chi tiết ngân sách",
   "incomeBudgetDistribution": "Phân bổ ngân sách thu nhập",
   "expenseBudgetDistribution": "Phân bổ ngân sách chi tiêu",
-  "progress": "Tiến trình"
+  "progress": "Tiến trình",
+  "incomeProgress": "Tiến trình thu nhập",
+  "spendingProgress": "Tiến trình chi tiêu"
 }

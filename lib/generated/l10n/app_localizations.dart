@@ -1414,6 +1414,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Progress'**
   String get progress;
+
+  /// No description provided for @incomeProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Income Progress'**
+  String get incomeProgress;
+
+  /// No description provided for @spendingProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Spending Progress'**
+  String get spendingProgress;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

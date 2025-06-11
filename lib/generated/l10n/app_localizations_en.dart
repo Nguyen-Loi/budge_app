@@ -704,4 +704,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get progress => 'Progress';
+
+  @override
+  String get incomeProgress => 'Income Progress';
+
+  @override
+  String get spendingProgress => 'Spending Progress';
 }

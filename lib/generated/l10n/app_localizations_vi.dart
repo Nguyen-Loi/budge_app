@@ -704,4 +704,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get progress => 'Tiến trình';
+
+  @override
+  String get incomeProgress => 'Tiến trình thu nhập';
+
+  @override
+  String get spendingProgress => 'Tiến trình chi tiêu';
 }

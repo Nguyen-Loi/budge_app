@@ -90,7 +90,7 @@ class BudgetDetailIncomeView extends BudgetBaseDetailView {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BText(
-                    'Income Progress',
+                    context.loc.incomeProgress,
                   ),
                   BText.b1(
                     '${((budget.currentAmount.abs() / budget.budgetLimit * 100).clamp(0, 100)).toStringAsFixed(1)}%',

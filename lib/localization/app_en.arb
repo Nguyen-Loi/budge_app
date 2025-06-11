@@ -283,6 +283,7 @@
     "budgetBreakdown": "Budget Breakdown",
     "incomeBudgetDistribution": "Income Budget Distribution",
     "expenseBudgetDistribution": "Expense Budget Distribution",
-    "progress": "Progress"
-
+    "progress": "Progress",
+    "incomeProgress": "Income Progress",
+    "spendingProgress": "Spending Progress"
 }

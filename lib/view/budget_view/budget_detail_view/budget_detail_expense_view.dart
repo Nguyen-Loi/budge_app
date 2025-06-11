@@ -39,7 +39,7 @@ class BudgetDetailExpenseView extends BudgetBaseDetailView {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BText(
-                    'Spending Progress',
+                    context.loc.spendingProgress,
                   ),
                   BText.b1(
                     '${(progressClamped * 100).toStringAsFixed(1)}%',
