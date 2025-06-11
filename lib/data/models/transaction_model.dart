@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/data/models/budget_model.dart';
@@ -31,7 +30,7 @@ class TransactionModel {
   TransactionTypeEnum get transactionType =>
       TransactionTypeEnum.fromValue(transactionTypeValue);
 
-  TransactionCardModel toTransactionCard(AppLocalizations loc,
+  TransactionCardModel toTransactionCard(
       {required List<BudgetModel> budgets}) {
     final budgetOfTransaction = budgets.firstWhere((e) => e.id == budgetId);
     return TransactionCardModel(

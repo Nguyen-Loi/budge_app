@@ -7,6 +7,7 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
+import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
@@ -17,21 +18,22 @@ import 'package:budget_app/view/budget_view/budget_new_view/controller/new_budge
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewBudgetView extends ConsumerStatefulWidget {
+class NewBudgetView extends StatefulWidget {
   const NewBudgetView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _BudgetNewViewState();
+  State<NewBudgetView> createState() => _BudgetNewViewState();
 }
 
-class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
+class _BudgetNewViewState extends State<NewBudgetView> {
   late TextEditingController _budgetNameController;
 
   late int _iconId;
   late int _limit;
-  late DatetimeRangeModel _rangeDatetimeModel;
+  late DatetimeRangeModel? _rangeDatetimeModel;
   late BudgetTypeEnum _budgetType;
   late List<BudgetTypeEnum> _valuesBudgetPicker;
+  late bool _showLimitField;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -41,14 +43,28 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
     _limit = 0;
     _valuesBudgetPicker = [BudgetTypeEnum.income, BudgetTypeEnum.expense];
     _budgetType = BudgetTypeEnum.income;
+    _rangeDatetimeModel = null;
+    _showLimitField = false;
     super.initState();
   }
 
-  void _addNewBudget() {
+  void _updateLimitFieldVisibility() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _showLimitField =
+            _rangeDatetimeModel?.rangeDateTimeType != RangeDateTimeEnum.allTime;
+        if (!_showLimitField) {
+          _limit = 0;
+        }
+      });
+    });
+  }
+
+  void _addNewBudget(WidgetRef ref) {
     if (_formKey.currentState!.validate()) {
       ref.read(newBudgetControllerProvider).addBudget(context,
           budgetName: _budgetNameController.text,
-          rangeDatetimeModel: _rangeDatetimeModel,
+          rangeDatetimeModel: _rangeDatetimeModel!,
           iconId: _iconId,
           limit: _limit,
           budgetType: _budgetType);
@@ -114,7 +130,14 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
             },
           ),
           gapH24,
-          if (_budgetType == BudgetTypeEnum.expense)
+          BBottomsheetRangeDatetime(
+              initialValue: null,
+              onChanged: (e) {
+                _rangeDatetimeModel = e;
+                _updateLimitFieldVisibility();
+              }),
+          gapH16,
+          if (_showLimitField)
             BFormFieldAmount(
               label: context.loc.limit,
               onChanged: (e) {
@@ -123,16 +146,14 @@ class _BudgetNewViewState extends ConsumerState<NewBudgetView> {
                 }
               },
             ),
-          gapH16,
-          BBottomsheetRangeDatetime(
-              initialValue: null,
-              onChanged: (e) {
-                _rangeDatetimeModel = e;
-              }),
           const SizedBox(height: 64),
-          FilledButton(
-              onPressed: _addNewBudget,
-              child: BText(context.loc.add, color: ColorManager.white))
+          Consumer(
+            builder: (context, ref, child) {
+              return FilledButton(
+                  onPressed: () => _addNewBudget(ref),
+                  child: BText(context.loc.add, color: ColorManager.white));
+            },
+          )
         ],
       ),
     );

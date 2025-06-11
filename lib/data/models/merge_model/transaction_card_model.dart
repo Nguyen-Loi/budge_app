@@ -1,7 +1,6 @@
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
-import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 class TransactionCardModel {
   final TransactionModel transaction;
@@ -16,7 +15,7 @@ class TransactionCardModel {
   });
 
   static Future<List<TransactionCardModel>> transactionCard(
-    AppLocalizations loc, {
+     {
     required List<TransactionModel> transactions,
     required List<BudgetModel> budgets,
   }) async {
@@ -24,17 +23,17 @@ class TransactionCardModel {
       return [];
     }
 
-    final list = TransactionCardModel._mapData(loc,
+    final list = TransactionCardModel._mapData(
         budgets: budgets, transactions: transactions);
     return list;
   }
 
-  static List<TransactionCardModel> _mapData(AppLocalizations loc,
+  static List<TransactionCardModel> _mapData(
       {required List<BudgetModel> budgets,
       required List<TransactionModel> transactions}) {
     List<TransactionCardModel> list = [];
     for (var transaction in transactions) {
-      list.add(transaction.toTransactionCard(loc, budgets: budgets));
+      list.add(transaction.toTransactionCard(budgets: budgets));
     }
 
     return list;

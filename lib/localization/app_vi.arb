@@ -282,5 +282,6 @@
   "expenseAnalysis": "Phân tích chi tiêu",
   "budgetBreakdown": "Chi tiết ngân sách",
   "incomeBudgetDistribution": "Phân bổ ngân sách thu nhập",
-  "expenseBudgetDistribution": "Phân bổ ngân sách chi tiêu"
+  "expenseBudgetDistribution": "Phân bổ ngân sách chi tiêu",
+  "progress": "Tiến trình"
 }

@@ -76,10 +76,13 @@ class HomeController extends StateNotifier<void> {
   }
 
   List<BudgetModel> get budgetsPreview {
-    return budgets
+    final expenseBudgets = budgets
         .where((budget) => budget.budgetType == BudgetTypeEnum.expense)
-        .take(3)
         .toList();
+
+    expenseBudgets.sort((a, b) => b.updatedDate.compareTo(a.updatedDate));
+
+    return expenseBudgets.take(3).toList();
   }
 
   List<TransactionCardModel> _getTransactionsForMonth(DateTime month) {

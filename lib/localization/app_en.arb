@@ -282,6 +282,7 @@
     "expenseAnalysis": "Expense Analysis",
     "budgetBreakdown": "Budget Breakdown",
     "incomeBudgetDistribution": "Income Budget Distribution",
-    "expenseBudgetDistribution": "Expense Budget Distribution"
+    "expenseBudgetDistribution": "Expense Budget Distribution",
+    "progress": "Progress"
 
 }

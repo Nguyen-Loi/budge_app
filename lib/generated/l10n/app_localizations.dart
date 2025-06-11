@@ -1408,6 +1408,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Expense Budget Distribution'**
   String get expenseBudgetDistribution;
+
+  /// No description provided for @progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progress;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -701,4 +701,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get expenseBudgetDistribution => 'Phân bổ ngân sách chi tiêu';
+
+  @override
+  String get progress => 'Tiến trình';
 }

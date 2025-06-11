@@ -701,4 +701,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get expenseBudgetDistribution => 'Expense Budget Distribution';
+
+  @override
+  String get progress => 'Progress';
 }

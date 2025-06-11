@@ -52,6 +52,9 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
 
   Widget itemStatus(BuildContext context) {
     final status = budget.budgetStatusTime;
+    if (status == BudgetStatusTime.active) {
+      return SizedBox.shrink();
+    }
     return itemRow(context,
         svgAsset: SvgAssets.status,
         label: context.loc.status,
