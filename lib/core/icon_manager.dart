@@ -34,6 +34,9 @@ class IconManager {
   static IconData modify = FontAwesomeIcons.pen;
   static IconData excel = FontAwesomeIcons.fileExcel;
   static IconData sync = Icons.sync;
+  static IconData note = Icons.note_outlined;
+  static IconData transactionDate = Icons.calendar_today_outlined;
+  static IconData createdDate = Icons.schedule_outlined;
 
   static IconData account = FontAwesomeIcons.user;
   static IconData setting = Icons.settings_outlined;

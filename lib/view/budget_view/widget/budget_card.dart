@@ -194,14 +194,14 @@ class BudgetCard extends StatelessWidget {
               TextSpan(
                 children: [
                   TextSpan(
-                    text: model.currentAmount.abs().toMoneyNoSymbolStr(),
+                    text: model.currentAmount.abs().toMoneyStrTruncated(),
                     style: context.textTheme.bodyMedium!.copyWith(
                       fontWeight: FontWeight.w700,
                       color: _getExpenseStatusColor(context, spentPercent),
                     ),
                   ),
                   TextSpan(
-                    text: '/${model.budgetLimit.toMoneyNoSymbolStr()}',
+                    text: '/${model.budgetLimit.toMoneyStrTruncated()}',
                     style: context.textTheme.bodySmall!.copyWith(
                       color: Theme.of(context)
                           .colorScheme
