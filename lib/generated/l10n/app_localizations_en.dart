@@ -710,4 +710,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spendingProgress => 'Spending Progress';
+
+  @override
+  String get defaultBudgetHousing => 'Housing';
+
+  @override
+  String get defaultBudgetFood => 'Food & Dining';
+
+  @override
+  String get defaultBudgetTransportation => 'Transportation';
+
+  @override
+  String get defaultBudgetUtilities => 'Utilities';
+
+  @override
+  String get defaultBudgetEntertainment => 'Entertainment';
+
+  @override
+  String get defaultBudgetHealthcare => 'Healthcare';
+
+  @override
+  String get defaultBudgetShopping => 'Shopping';
+
+  @override
+  String get defaultBudgetSalary => 'Salary';
+
+  @override
+  String get defaultBudgetFreelance => 'Freelance';
+
+  @override
+  String get defaultBudgetInvestments => 'Investments';
 }

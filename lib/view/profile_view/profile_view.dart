@@ -29,10 +29,18 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  late String _name;
+  String? _name;
   File? _file;
   PhoneNumber? _phoneNumber;
   final _keyState = GlobalKey<FormState>();
+
+  bool _hasChanges(UserModel user) {
+    final nameChanged = _name != null && _name != user.name;
+    final phoneChanged = _phoneNumber != user.phoneNumber;
+    final imageChanged = _file != null;
+
+    return nameChanged || phoneChanged || imageChanged;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -241,14 +249,18 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Widget _buildActionButtons(WidgetRef ref, dynamic user, bool isLoading) {
+  Widget _buildActionButtons(WidgetRef ref, UserModel user, bool isLoading) {
+    final hasChanges = _hasChanges(user);
+
     return Column(
       children: [
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           width: double.infinity,
           child: FilledButton.icon(
-            onPressed: isLoading ? null : () => _handleSave(ref, user),
+            onPressed: (isLoading || !hasChanges)
+                ? null
+                : () => _handleSave(ref, user),
             icon: isLoading
                 ? const SizedBox(
                     width: 16,
@@ -261,10 +273,14 @@ class _ProfileViewState extends State<ProfileView> {
                 : const Icon(Icons.save),
             label: BText(
               isLoading ? "Saving..." : context.loc.save,
-              color: ColorManager.white,
+              color: (isLoading || !hasChanges)
+                  ? ColorManager.grey
+                  : ColorManager.white,
             ),
             style: FilledButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
+              backgroundColor:
+                  (isLoading || !hasChanges) ? ColorManager.grey : null,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -297,8 +313,9 @@ class _ProfileViewState extends State<ProfileView> {
             context,
             file: _file,
             user: user,
-            name: _name,
-            phoneNumber: _phoneNumber!,
+            name: _name ?? user.name,
+            phoneNumber:
+                _phoneNumber ?? PhoneNumber(phoneNumber: user.phoneNumber),
           );
     } else {
       showSnackBarError(context, context.loc.errorValidateForm);
@@ -309,5 +326,10 @@ class _ProfileViewState extends State<ProfileView> {
     FocusScope.of(context).unfocus();
     ref.read(profileControllerProvider.notifier).updateDisable(true);
     _keyState.currentState?.reset();
+
+    // Reset tracking variables
+    _name = null;
+    _file = null;
+    _phoneNumber = null;
   }
 }

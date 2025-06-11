@@ -30,8 +30,8 @@ class HomeDrawer extends ConsumerWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Theme.of(context).colorScheme.onPrimary.withAlpha(200),
-                  Theme.of(context).colorScheme.onPrimary,
+                  Theme.of(context).colorScheme.secondary.withAlpha(100),
+                  Theme.of(context).colorScheme.secondary.withAlpha(30),
                 ],
               ),
             ),

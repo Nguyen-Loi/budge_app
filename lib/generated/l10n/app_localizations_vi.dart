@@ -710,4 +710,34 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get spendingProgress => 'Tiến trình chi tiêu';
+
+  @override
+  String get defaultBudgetHousing => 'Nhà ở';
+
+  @override
+  String get defaultBudgetFood => 'Ăn uống';
+
+  @override
+  String get defaultBudgetTransportation => 'Đi lại';
+
+  @override
+  String get defaultBudgetUtilities => 'Tiện ích';
+
+  @override
+  String get defaultBudgetEntertainment => 'Giải trí';
+
+  @override
+  String get defaultBudgetHealthcare => 'Y tế';
+
+  @override
+  String get defaultBudgetShopping => 'Mua sắm';
+
+  @override
+  String get defaultBudgetSalary => 'Lương';
+
+  @override
+  String get defaultBudgetFreelance => 'Freelance';
+
+  @override
+  String get defaultBudgetInvestments => 'Đầu tư';
 }

@@ -55,36 +55,13 @@ class MainPageController extends StateNotifier<void> {
 
     await Future.wait([budgetFuture, transactionFuture]);
 
+    // Check if context is still mounted before proceeding with background tasks
     if (context.mounted) {
       logInfo('Loading background tasks with optimization...');
       unawaited(_loadBackgroundTasksOptimized(context, uid, isLogin));
     }
 
     logInfo('Essential data loading completed with optimization');
-  }
-
-  Future<void> loadDataLazy({
-    bool loadBudgets = false,
-    bool loadTransactions = false,
-    bool loadBackgroundTasks = false,
-    BuildContext? context,
-  }) async {
-    final uid = _ref.read(uidControllerProvider);
-
-    if (loadBudgets) {
-      logInfo('Lazy loading: Budget data');
-      await _ref.read(budgetBaseControllerProvider.notifier).fetch();
-    }
-
-    if (loadTransactions) {
-      logInfo('Lazy loading: Transaction data');
-      await _ref.read(transactionsBaseControllerProvider.notifier).fetch();
-    }
-
-    if (loadBackgroundTasks && context?.mounted == true) {
-      logInfo('Lazy loading: Background tasks');
-      unawaited(_loadBackgroundTasksOptimized(context, uid, uid.isNotEmpty));
-    }
   }
 
   Future<void> _loadBackgroundTasksOptimized(

@@ -1426,6 +1426,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Spending Progress'**
   String get spendingProgress;
+
+  /// No description provided for @defaultBudgetHousing.
+  ///
+  /// In en, this message translates to:
+  /// **'Housing'**
+  String get defaultBudgetHousing;
+
+  /// No description provided for @defaultBudgetFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Food & Dining'**
+  String get defaultBudgetFood;
+
+  /// No description provided for @defaultBudgetTransportation.
+  ///
+  /// In en, this message translates to:
+  /// **'Transportation'**
+  String get defaultBudgetTransportation;
+
+  /// No description provided for @defaultBudgetUtilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Utilities'**
+  String get defaultBudgetUtilities;
+
+  /// No description provided for @defaultBudgetEntertainment.
+  ///
+  /// In en, this message translates to:
+  /// **'Entertainment'**
+  String get defaultBudgetEntertainment;
+
+  /// No description provided for @defaultBudgetHealthcare.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthcare'**
+  String get defaultBudgetHealthcare;
+
+  /// No description provided for @defaultBudgetShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get defaultBudgetShopping;
+
+  /// No description provided for @defaultBudgetSalary.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary'**
+  String get defaultBudgetSalary;
+
+  /// No description provided for @defaultBudgetFreelance.
+  ///
+  /// In en, this message translates to:
+  /// **'Freelance'**
+  String get defaultBudgetFreelance;
+
+  /// No description provided for @defaultBudgetInvestments.
+  ///
+  /// In en, this message translates to:
+  /// **'Investments'**
+  String get defaultBudgetInvestments;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -285,5 +285,15 @@
     "expenseBudgetDistribution": "Expense Budget Distribution",
     "progress": "Progress",
     "incomeProgress": "Income Progress",
-    "spendingProgress": "Spending Progress"
+    "spendingProgress": "Spending Progress",
+    "defaultBudgetHousing": "Housing",
+    "defaultBudgetFood": "Food & Dining",
+    "defaultBudgetTransportation": "Transportation",
+    "defaultBudgetUtilities": "Utilities",
+    "defaultBudgetEntertainment": "Entertainment",
+    "defaultBudgetHealthcare": "Healthcare",
+    "defaultBudgetShopping": "Shopping",
+    "defaultBudgetSalary": "Salary",
+    "defaultBudgetFreelance": "Freelance",
+    "defaultBudgetInvestments": "Investments"
 }

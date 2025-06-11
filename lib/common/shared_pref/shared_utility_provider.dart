@@ -15,6 +15,7 @@ final sharedUtilityProvider = Provider<SharedUtility>((ref) {
 
 const String _darkModeKey = 'darkMode';
 const String _languageCodeKey = 'language_code';
+const String _defaultBudgetsCreatedKey = 'default_budgets_created';
 
 class SharedUtility {
   SharedUtility({
@@ -41,5 +42,17 @@ class SharedUtility {
 
   void setLanguageCode({required String code}) {
     sharedPreferences.setString(_languageCodeKey, code);
+  }
+
+  bool areDefaultBudgetsCreated() {
+    return sharedPreferences.getBool(_defaultBudgetsCreatedKey) ?? false;
+  }
+
+  void markDefaultBudgetsAsCreated() {
+    sharedPreferences.setBool(_defaultBudgetsCreatedKey, true);
+  }
+
+  void resetDefaultBudgetsFlag() {
+    sharedPreferences.remove(_defaultBudgetsCreatedKey);
   }
 }

@@ -285,5 +285,15 @@
   "expenseBudgetDistribution": "Phân bổ ngân sách chi tiêu",
   "progress": "Tiến trình",
   "incomeProgress": "Tiến trình thu nhập",
-  "spendingProgress": "Tiến trình chi tiêu"
+  "spendingProgress": "Tiến trình chi tiêu",
+  "defaultBudgetHousing": "Nhà ở",
+  "defaultBudgetFood": "Ăn uống",
+  "defaultBudgetTransportation": "Đi lại",
+  "defaultBudgetUtilities": "Tiện ích",
+  "defaultBudgetEntertainment": "Giải trí",
+  "defaultBudgetHealthcare": "Y tế",
+  "defaultBudgetShopping": "Mua sắm",
+  "defaultBudgetSalary": "Lương",
+  "defaultBudgetFreelance": "Freelance",
+  "defaultBudgetInvestments": "Đầu tư"
 }
