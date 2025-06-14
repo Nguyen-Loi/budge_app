@@ -234,9 +234,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
       alignment: Alignment.center,
       child: BButton.text(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, RoutePath.home);
+          Navigator.pop(context);
         },
-        title: context.loc.guestAccess,
+        title: context.loc.skip,
         color: Theme.of(context).colorScheme.secondary,
       ),
     );

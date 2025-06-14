@@ -740,4 +740,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get defaultBudgetInvestments => 'Đầu tư';
+
+  @override
+  String get skip => 'Bỏ qua';
 }

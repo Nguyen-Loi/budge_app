@@ -1,4 +1,5 @@
 import 'package:budget_app/common/log.dart';
+import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
@@ -10,7 +11,6 @@ import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/offline/database_helper.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/data/models/user_model.dart';
-import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -21,7 +21,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 final authApiProvider = Provider((ref) {
   final auth = ref.watch(authProvider);
   final db = ref.watch(dbProvider);
-  return AuthAPI(auth: auth, db: db, ref: ref);
+  final sharedPref = ref.watch(sharedUtilityProvider);
+  return AuthAPI(auth: auth, db: db, ref: ref, sharedPref: sharedPref);
 });
 
 abstract class IAuthApi {
@@ -46,13 +47,16 @@ class AuthAPI implements IAuthApi {
   final FirebaseAuth _auth;
   final FirebaseFirestore _db;
   final Ref<Object?> _ref;
+  final SharedUtility _sharedPref;
   AuthAPI({
     required FirebaseAuth auth,
     required FirebaseFirestore db,
     required Ref<Object?> ref,
+    required SharedUtility sharedPref,
   })  : _auth = auth,
         _ref = ref,
-        _db = db;
+        _db = db,
+        _sharedPref = sharedPref;
   String get uid => _auth.currentUser?.uid ?? '';
 
   User _currentUserAccount() {
@@ -119,11 +123,28 @@ class AuthAPI implements IAuthApi {
   @override
   FutureEitherVoid signOut() async {
     try {
-      _ref.invalidate(packageInfoBaseControllerProvider);
-      FacebookAuth.instance.logOut();
-      GoogleSignIn().signOut();
+      final user = _auth.currentUser;
+      if (user == null) {
+        return right(null);
+      }
+
+      final providerId = user.providerData.isNotEmpty
+          ? user.providerData.first.providerId
+          : null;
+
+      if (providerId == 'google.com') {
+        final googleSignIn = GoogleSignIn();
+        if (await googleSignIn.isSignedIn()) {
+          await googleSignIn.signOut();
+        }
+      } else if (providerId == 'facebook.com') {
+        await FacebookAuth.instance.logOut();
+      }
+
       await _ref.read(sqlHelperProvider.notifier).clearDb();
       await _auth.signOut();
+      await _sharedPref.reset();
+
       return right(null);
     } catch (e) {
       logError('Error signing out: $e');

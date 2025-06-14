@@ -26,11 +26,7 @@ class TransactionsBaseController
   })  : _transactionRepository = transactionRepository,
         _uid = uid,
         _budgetController = budgetController,
-        super([]) {
-    if (uid.isNotEmpty) {
-      fetch();
-    }
-  }
+        super([]);
   final TransactionRepository _transactionRepository;
   final BudgetBaseController _budgetController;
   final String _uid;

@@ -90,8 +90,7 @@ class AuthController extends StateNotifier<void> {
       return;
     }
     closeLoading();
-    Navigator.pushNamedAndRemoveUntil(
-        context, RoutePath.home, (route) => false);
+    Navigator.pop(context);
     initBaseUid();
   }
 

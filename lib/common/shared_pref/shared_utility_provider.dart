@@ -34,8 +34,9 @@ class SharedUtility {
 
   String languageCode() {
     final defaultLanguage = Platform.localeName.split('_')[0];
-    LanguageEnum languageEnumDefault =
-        defaultLanguage == 'vi' ? LanguageEnum.vietnamese : LanguageEnum.english;
+    LanguageEnum languageEnumDefault = defaultLanguage == 'vi'
+        ? LanguageEnum.vietnamese
+        : LanguageEnum.english;
     return sharedPreferences.getString(_languageCodeKey) ??
         languageEnumDefault.code;
   }
@@ -52,7 +53,11 @@ class SharedUtility {
     sharedPreferences.setBool(_defaultBudgetsCreatedKey, true);
   }
 
-  void resetDefaultBudgetsFlag() {
-    sharedPreferences.remove(_defaultBudgetsCreatedKey);
+  Future<void> resetDefaultBudgetsFlag() async {
+    await sharedPreferences.remove(_defaultBudgetsCreatedKey);
+  }
+
+  Future<void> reset() async {
+    await sharedPreferences.clear();
   }
 }

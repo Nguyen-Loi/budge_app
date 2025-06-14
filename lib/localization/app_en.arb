@@ -295,5 +295,6 @@
     "defaultBudgetShopping": "Shopping",
     "defaultBudgetSalary": "Salary",
     "defaultBudgetFreelance": "Freelance",
-    "defaultBudgetInvestments": "Investments"
+    "defaultBudgetInvestments": "Investments",
+    "skip": "Skip"
 }

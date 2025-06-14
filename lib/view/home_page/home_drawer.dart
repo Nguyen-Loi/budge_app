@@ -285,7 +285,7 @@ class HomeDrawer extends ConsumerWidget {
   }
 
   void _navigateToLogin(BuildContext context) {
-    Navigator.pushReplacementNamed(context, RoutePath.login);
+    Navigator.pushNamed(context, RoutePath.login);
   }
 
   bool _validateLogin(BuildContext context, {required bool isLogin}) {

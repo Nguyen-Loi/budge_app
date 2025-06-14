@@ -1,8 +1,6 @@
-import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
-import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
@@ -43,14 +41,8 @@ class HomeController extends StateNotifier<void> {
   final UidController _uidController;
 
   Future<void> signOut(BuildContext context) async {
-    final res = await _authApi.signOut();
-    res.fold((l) {
-      showSnackBar(context, l.message);
-    }, (_) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, RoutePath.login, (route) => false);
-      _uidController.clear();
-    });
+    _uidController.clear();
+    await _authApi.signOut();
   }
 
   double get totalExpenseThisMonth {
