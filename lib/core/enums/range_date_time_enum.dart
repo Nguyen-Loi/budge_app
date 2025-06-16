@@ -1,10 +1,11 @@
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/models_widget/datetime_range_model.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 
 enum RangeDateTimeEnum {
-  allTime('UNKNOWN'),
+  allTime('ALL_TIME'),
   week('WEEK'),
   month('MONTH'),
   year('YEAR'),
@@ -13,7 +14,7 @@ enum RangeDateTimeEnum {
 
   factory RangeDateTimeEnum.fromValue(String value) {
     return RangeDateTimeEnum.values
-        .firstWhere((element) => element.value == value);
+        .firstWhereOrNull((element) => element.value==value.toUpperCase())??RangeDateTimeEnum.allTime;
   }
 
   String content(BuildContext context,

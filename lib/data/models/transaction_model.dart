@@ -37,7 +37,7 @@ class TransactionModel {
     return TransactionCardModel(
         transaction: this,
         transactionName: budgetOfTransaction.name,
-        iconId: budgetOfTransaction.iconId,
+        iconName: budgetOfTransaction.iconName,
         transactionType: transactionType);
   }
 
@@ -132,5 +132,11 @@ class TransactionModel {
         createdDate.hashCode ^
         transactionDate.hashCode ^
         updatedDate.hashCode;
+  }
+}
+
+extension TransactionList on List<TransactionModel> {
+  String toChatData() {
+    return "";
   }
 }

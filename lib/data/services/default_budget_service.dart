@@ -3,6 +3,7 @@ import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/data/models/budget_model.dart';
+import 'package:budget_app/data/models/models_widget/icon_model.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 
 class DefaultBudgetService {
@@ -22,43 +23,43 @@ class DefaultBudgetService {
     final expenseBudgets = [
       _createBudgetData(
         name: localizations.defaultBudgetHousing,
-        iconId: 0, // Home icon
+        icon: AppIcons.home,
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'housing',
       ),
       _createBudgetData(
         name: localizations.defaultBudgetFood,
-        iconId: 1, // Food/utensils icon
+        icon: AppIcons.food,
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'food',
       ),
       _createBudgetData(
         name: localizations.defaultBudgetTransportation,
-        iconId: 3, // Transportation icon
+        icon: AppIcons.transport, 
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'transportation',
       ),
       _createBudgetData(
         name: localizations.defaultBudgetUtilities,
-        iconId: 7, // Water icon
+        icon: AppIcons.water, 
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'utilities',
       ),
       _createBudgetData(
         name: localizations.defaultBudgetEntertainment,
-        iconId: 4, // Entertainment icon
+        icon: AppIcons.gamepad,
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'entertainment',
       ),
       _createBudgetData(
         name: localizations.defaultBudgetHealthcare,
-        iconId: 21, // Heart/medical icon
+        icon: AppIcons.heart, 
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'healthcare',
       ),
       _createBudgetData(
         name: localizations.defaultBudgetShopping,
-        iconId: 2, // Shopping cart icon
+        icon: AppIcons.shopping, 
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'shopping',
       ),
@@ -68,19 +69,19 @@ class DefaultBudgetService {
     final incomeBudgets = [
       _createBudgetData(
         name: localizations.defaultBudgetSalary,
-        iconId: 16, // Laptop/work icon
+        icon: AppIcons.briefcase, // Use static constant
         budgetType: BudgetTypeEnum.income,
         localizationKey: 'salary',
       ),
       _createBudgetData(
         name: localizations.defaultBudgetFreelance,
-        iconId: 17, // Code icon
+        icon: AppIcons.code, // Use static constant
         budgetType: BudgetTypeEnum.income,
         localizationKey: 'freelance',
       ),
       _createBudgetData(
         name: localizations.defaultBudgetInvestments,
-        iconId: 32, // Star icon
+        icon: AppIcons.calculator, // Use static constant
         budgetType: BudgetTypeEnum.income,
         localizationKey: 'investments',
       ),
@@ -93,7 +94,7 @@ class DefaultBudgetService {
           id: GenId.budget(),
           userId: userId,
           name: budgetData['name'] as String,
-          iconId: budgetData['iconId'] as int,
+          iconName: budgetData['iconName'] as String,
           currentAmount: 0,
           budgetLimit: 0, // All budgets start with 0 limit as specified
           budgetTypeValue: (budgetData['budgetType'] as BudgetTypeEnum).value,
@@ -111,13 +112,13 @@ class DefaultBudgetService {
 
   static Map<String, dynamic> _createBudgetData({
     required String name,
-    required int iconId,
+    required AppIcons icon,
     required BudgetTypeEnum budgetType,
     required String localizationKey,
   }) {
     return {
       'name': name,
-      'iconId': iconId,
+      'iconName': icon.name,
       'budgetType': budgetType,
       'localizationKey': localizationKey,
     };

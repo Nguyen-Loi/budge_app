@@ -62,7 +62,7 @@ class BudgetCard extends StatelessWidget {
                 Theme.of(context).colorScheme.primaryContainer.withAlpha(100),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: BIcon(id: model.iconId, size: 20),
+          child: BIcon(name: model.iconName, size: 20),
         ),
         gapW12,
         Expanded(

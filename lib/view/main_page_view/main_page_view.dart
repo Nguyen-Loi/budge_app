@@ -116,7 +116,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
                 onPressed: () {
                   ref.read(homeControllerProvider.notifier).signOut(context);
                 },
-                title: context.loc.signIn,
+                title: context.loc.refresh,
               )
             ],
           )),

@@ -121,7 +121,7 @@ class _CategoryBudget extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(8))),
         child: Column(
           children: [
-            BIcon(id: model.iconId),
+            BIcon(name: model.iconName),
             gapH16,
             BText(
               model.name,

@@ -3,13 +3,13 @@ import 'package:budget_app/data/models/models_widget/icon_model.dart';
 import 'package:flutter/material.dart';
 
 class BIcon extends StatelessWidget {
-  final int id;
+  final String name;
   final double? size;
-  const BIcon({super.key, required this.id, this.size});
+  const BIcon({super.key, required this.name, this.size});
 
-  IconModel get icon => IconManagerData.getIconModel(id);
+  IconModel get icon => IconManagerData.getIconModel(name);
   @override
   Widget build(BuildContext context) {
-    return Icon(icon.iconData, color: icon.color, size: size);
+    return Icon(icon.data, color: icon.color, size: size);
   }
 }

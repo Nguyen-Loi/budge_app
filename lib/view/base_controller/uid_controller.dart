@@ -18,4 +18,8 @@ class UidController extends StateNotifier<String> {
   void clear() {
     state = '';
   }
+
+  void refresh (){
+    state = state; 
+  }
 }

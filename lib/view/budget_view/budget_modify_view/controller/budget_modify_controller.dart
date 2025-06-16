@@ -34,12 +34,12 @@ class BudgetModifyController extends StateNotifier<void> {
 
   void updateBudget(BuildContext context,
       {required BudgetModel budget,
-      required int iconId,
+      required String iconName,
       required int limit,
       required DatetimeRangeModel dateTimeRange}) async {
     final now = DateTime.now();
     final budgetModify = budget.copyWith(
-        iconId: iconId,
+        iconName: iconName,
         budgetLimit: limit,
         updatedDate: now,
         startDate: dateTimeRange.startDate,

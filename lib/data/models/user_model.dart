@@ -86,8 +86,7 @@ class UserModel {
     return UserModel(
       id: '',
       email: 'guest@example.com"',
-      profileUrl:
-          null,
+      profileUrl: null,
       name: 'guest',
       accountTypeValue: AccountType.emailAndPassword.value,
       currencyTypeValue: CurrencyType.usd.value,
@@ -238,5 +237,18 @@ extension PhoneUserModel on PhoneNumber? {
       "dialCode": phone.dialCode ?? "",
       "isoCode": phone.isoCode ?? "",
     };
+  }
+}
+
+extension UserModelExtension on UserModel {
+  String get toChatData {
+    return """
+- Name: $name
+- Balance: $balanceMoney
+- Currency: ${currencyType.name}
+- Email: $email
+- Phone: ${phoneNumber?.phoneNumber.toString() ?? "Not provided"}
+- User Role: ${role.name}
+""";
   }
 }

@@ -50,7 +50,7 @@ class _TransactionCardState extends State<TransactionCard>
 
   @override
   Widget build(BuildContext context) {
-    Color iconColor = IconManagerData.getIconModel(widget.model.iconId).color;
+    Color iconColor = IconManagerData.getIconModel(widget.model.iconName).color;
     return AnimatedBuilder(
       animation: _scaleAnimation,
       builder: (context, child) {
@@ -77,7 +77,7 @@ class _TransactionCardState extends State<TransactionCard>
                     child: CircleAvatar(
                       radius: 24,
                       backgroundColor: iconColor.withAlpha(50),
-                      child: BIcon(id: widget.model.iconId),
+                      child: BIcon(name: widget.model.iconName),
                     ),
                   ),
                   title: BText(widget.model.transactionName,
@@ -173,7 +173,7 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
 
   @override
   Widget build(BuildContext context) {
-    Color iconColor = IconManagerData.getIconModel(widget.model.iconId).color;
+    Color iconColor = IconManagerData.getIconModel(widget.model.iconName).color;
 
     return Center(
       child: Container(
@@ -226,7 +226,7 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
                             ),
                           ],
                         ),
-                        child: BIcon(id: widget.model.iconId, size: 40),
+                        child: BIcon(name: widget.model.iconName, size: 40),
                       ),
                     ),
                     gapH16,

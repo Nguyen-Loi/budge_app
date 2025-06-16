@@ -19,7 +19,6 @@ class FieldConstants {
   static const String endDate = 'endDate';
   static const String userId = 'userId';
   static const String limit = 'limit';
-  static const String iconId = 'iconId';
 
   // category
   static const String icon = 'icon';

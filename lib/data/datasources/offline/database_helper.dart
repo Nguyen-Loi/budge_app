@@ -76,7 +76,7 @@ class DatabaseHelper extends StateNotifier<Database?> {
       id TEXT PRIMARY KEY,
       userId TEXT,
       name TEXT,
-      iconId INTEGER,
+      iconName TEXT,
       currentAmount INTEGER,
       budgetLimit INTEGER,
       budgetTypeValue TEXT,

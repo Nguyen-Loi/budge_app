@@ -5,12 +5,12 @@ import 'package:budget_app/data/models/transaction_model.dart';
 class TransactionCardModel {
   final TransactionModel transaction;
   final String transactionName;
-  final int iconId;
+  final String iconName;
   final TransactionTypeEnum transactionType;
   TransactionCardModel({
     required this.transaction,
     required this.transactionName,
-    required this.iconId,
+    required this.iconName,
     required this.transactionType,
   });
 
@@ -42,18 +42,18 @@ class TransactionCardModel {
   TransactionCardModel copyWith({
     TransactionModel? transaction,
     String? transactionName,
-    int? iconId,
+    String? iconName,
     TransactionTypeEnum? transactionType,
   }) {
     return TransactionCardModel(
       transaction: transaction ?? this.transaction,
       transactionName: transactionName ?? this.transactionName,
-      iconId: iconId ?? this.iconId,
+      iconName: iconName ?? this.iconName,
       transactionType: transactionType ?? this.transactionType,
     );
   }
 
   @override
   String toString() =>
-      'TransactionCardModel(transaction: $transaction, transactionName: $transactionName, iconId: $iconId)';
+      'TransactionCardModel(transaction: $transaction, transactionName: $transactionName, iconName: $iconName)';
 }

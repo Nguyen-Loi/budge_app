@@ -28,7 +28,7 @@ class NewBudgetView extends StatefulWidget {
 class _BudgetNewViewState extends State<NewBudgetView> {
   late TextEditingController _budgetNameController;
 
-  late int _iconId;
+  late String _iconName;
   late int _limit;
   late DatetimeRangeModel? _rangeDatetimeModel;
   late BudgetTypeEnum _budgetType;
@@ -65,7 +65,7 @@ class _BudgetNewViewState extends State<NewBudgetView> {
       ref.read(newBudgetControllerProvider).addBudget(context,
           budgetName: _budgetNameController.text,
           rangeDatetimeModel: _rangeDatetimeModel!,
-          iconId: _iconId,
+          iconName: _iconName,
           limit: _limit,
           budgetType: _budgetType);
     }
@@ -103,7 +103,7 @@ class _BudgetNewViewState extends State<NewBudgetView> {
             items: IconManagerData.listIconSelect(),
             onChanged: (value) {
               if (value != null) {
-                _iconId = value;
+                _iconName = value;
               }
             },
             validator: (p0) {

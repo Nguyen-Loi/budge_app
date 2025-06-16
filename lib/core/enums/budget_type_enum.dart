@@ -7,7 +7,7 @@ enum BudgetTypeEnum {
   ;
 
   factory BudgetTypeEnum.fromValue(String value) {
-    return BudgetTypeEnum.values.firstWhere((e) => e.value == value);
+    return BudgetTypeEnum.values.firstWhere((e) => e.value == value.toUpperCase());
   }
 
 

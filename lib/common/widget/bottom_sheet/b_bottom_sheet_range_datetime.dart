@@ -33,7 +33,7 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
   DatetimeRangeModel get getAllTime {
     return DatetimeRangeModel(
         startDate: DateTime(now.year, now.month, now.day),
-        endDate: DateTime(9999, 01, 01),
+        endDate: DateTime(9999, 12, 31),
         rangeDateTimeType: RangeDateTimeEnum.allTime);
   }
 

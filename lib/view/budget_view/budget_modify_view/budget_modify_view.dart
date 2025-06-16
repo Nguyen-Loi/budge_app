@@ -24,7 +24,7 @@ class BudgetModifyView extends StatefulWidget {
 }
 
 class _ModifyBudgetViewState extends State<BudgetModifyView> {
-  late int _iconId;
+  late String _iconName;
   late int _limit;
   late DatetimeRangeModel _dateTimeRangeModel;
   final _formKey = GlobalKey<FormState>();
@@ -34,7 +34,7 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
   @override
   void initState() {
     _budget = widget.budgetModel;
-    _iconId = _budget.iconId;
+    _iconName = _budget.iconName;
     _limit = _budget.budgetLimit;
     _dateTimeRangeModel = DatetimeRangeModel(
         startDate: _budget.startDate,
@@ -64,7 +64,7 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
           )
           .updateBudget(context,
               budget: _budget,
-              iconId: _iconId,
+              iconName: _iconName,
               limit: _limit,
               dateTimeRange: _dateTimeRangeModel);
     }
@@ -95,11 +95,11 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
               disable: true),
           gapH16,
           BFormPickerIcon(
-            initialValue: IconManagerData.getIconModel(_budget.iconId),
+            initialValue: IconManagerData.getIconModel(_budget.iconName),
             items: IconManagerData.listIconSelect(),
             onChanged: (value) {
               if (value != null) {
-                _iconId = value;
+                _iconName = value;
               }
             },
             validator: (p0) {

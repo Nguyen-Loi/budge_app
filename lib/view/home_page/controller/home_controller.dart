@@ -45,6 +45,10 @@ class HomeController extends StateNotifier<void> {
     await _authApi.signOut();
   }
 
+  void refresh() {
+    _uidController.refresh();
+  }
+
   double get totalExpenseThisMonth {
     final now = DateTime.now();
     const expenseTypes = {

@@ -1,4 +1,3 @@
-
 import 'package:fpdart/fpdart.dart';
 
 class Failure {
@@ -9,15 +8,12 @@ class Failure {
     _message = message;
   }
 
-  String get error =>
-      _error ?? 'An error unexpected occur';
-  String get message =>
-      _message ?? 'An error unexpected occur';
+  String get error => _error ?? 'An error unexpected occur';
+  String get message => _message ?? 'An error unexpected occur';
 }
 
 typedef FutureEither<T> = Future<Either<Failure, T>>;
 typedef FutureEitherVoid = FutureEither<void>;
-
 
 extension EitherHelpers<L, R> on Either<L, R> {
   R? unwrapRight() {
@@ -32,6 +28,14 @@ extension FutureEitherHelpers<T> on Either<Failure, T> {
       (l) => l,
       (r) => Failure(error: defaultError),
     );
+  }
 
+  getLeft() {
+    return fold(
+      (l) => l,
+      (r) => throw Exception(
+        'Expected left value, but got right value: $r',
+      ),
+    );
   }
 }

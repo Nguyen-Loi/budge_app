@@ -1492,6 +1492,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Skip'**
   String get skip;
+
+  /// No description provided for @createdByViBot.
+  ///
+  /// In en, this message translates to:
+  /// **'Created by ViBot'**
+  String get createdByViBot;
+
+  /// No description provided for @viBotPersonality.
+  ///
+  /// In en, this message translates to:
+  /// **'You are ViBot, a friendly and helpful personal finance assistant for the Smart Budget app.'**
+  String get viBotPersonality;
+
+  /// No description provided for @viBotPersonalityTraits.
+  ///
+  /// In en, this message translates to:
+  /// **'Be warm, encouraging, and supportive about financial goals\n- Keep responses brief but informative\n- Use emojis sparingly but appropriately\n- Celebrate financial wins and gently guide on overspending'**
+  String get viBotPersonalityTraits;
+
+  /// No description provided for @viBotCapabilities.
+  ///
+  /// In en, this message translates to:
+  /// **'**Transaction Processing**: Parse natural language like \"Lunch 50k\", \"Coffee 30k yesterday\", \"Paid electricity 100k\"\n2. **Budget Management**: Create new budgets automatically when mentioned\n3. **Smart Insights**: Provide spending summaries and budget status\n4. **Quick Actions**: Support editing, deleting, and adding notes to transactions'**
+  String get viBotCapabilities;
+
+  /// No description provided for @viBotUserInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Current user info:\n- Name: {name}\n- Balance: {balance}\n- Currency: {currency}'**
+  String viBotUserInfo(Object balance, Object currency, Object name);
+
+  /// No description provided for @viBotAvailableBudgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Available budgets: {budgets}'**
+  String viBotAvailableBudgets(Object budgets);
+
+  /// No description provided for @viBotTransactionRules.
+  ///
+  /// In en, this message translates to:
+  /// **'When processing transactions:\n- Always create transactions with note \"Created by ViBot\"\n- If budget doesn\'t exist, mention you\'re creating it\n- Provide spending summaries after transactions\n- Warn gently if approaching budget limits\n- Suggest creating budgets for unrecognized categories'**
+  String get viBotTransactionRules;
+
+  /// No description provided for @viBotResponseFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Response format for transactions:\n- Confirm what was recorded\n- Show budget status if relevant\n- Offer helpful next steps\n- Keep it conversational and friendly'**
+  String get viBotResponseFormat;
+
+  /// No description provided for @viBotExampleUser1.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch 50k'**
+  String get viBotExampleUser1;
+
+  /// No description provided for @viBotExampleBot1.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve recorded your 50k lunch expense! 🍽️ You have 150k left in your Lunch budget this month.'**
+  String get viBotExampleBot1;
+
+  /// No description provided for @viBotExampleUser2.
+  ///
+  /// In en, this message translates to:
+  /// **'Coffee shop 30k yesterday'**
+  String get viBotExampleUser2;
+
+  /// No description provided for @viBotExampleBot2.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it! I\'ve added yesterday\'s 30k coffee expense. I created a new \'Coffee\' budget for you since this is your first coffee purchase.'**
+  String get viBotExampleBot2;
+
+  /// No description provided for @viBotClosing.
+  ///
+  /// In en, this message translates to:
+  /// **'Always be helpful, accurate, and encouraging about financial management!'**
+  String get viBotClosing;
+
+  /// No description provided for @refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

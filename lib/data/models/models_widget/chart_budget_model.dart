@@ -6,7 +6,7 @@ class ChartBudgetModel {
   final String? budgetId;
   final String budgetName;
   final double value;
-  final int iconId;
+  final String iconName;
   final int total;
   final int? incomeAmount; // Add income tracking
   final int? expenseAmount; // Add expense tracking
@@ -15,7 +15,7 @@ class ChartBudgetModel {
     required this.budgetId,
     required this.budgetName,
     required this.value,
-    required this.iconId,
+    required this.iconName,
     required this.total,
     this.incomeAmount,
     this.expenseAmount,
@@ -35,7 +35,7 @@ class ChartBudgetModel {
       'budgetId': budgetId,
       'budgetName': budgetName,
       'value': value,
-      'iconId': iconId,
+      'iconName': iconName,
       'total': total,
       'incomeAmount': incomeAmount,
       'expenseAmount': expenseAmount,
@@ -95,7 +95,7 @@ class ChartBudgetModel {
           budgetId: representItem.transaction.budgetId,
           budgetName: representItem.transactionName,
           value: 0,
-          iconId: representItem.iconId,
+          iconName: representItem.iconName,
           total: totalAmount,
           incomeAmount: incomeAmount > 0 ? incomeAmount : null,
           expenseAmount: expenseAmount > 0 ? expenseAmount : null,
@@ -124,14 +124,14 @@ class ChartBudgetModel {
 
   @override
   String toString() {
-    return 'ChartBudgetModel(budgetId: $budgetId, budgetName: $budgetName, value: $value, iconId: $iconId, total: $total)';
+    return 'ChartBudgetModel(budgetId: $budgetId, budgetName: $budgetName, value: $value, iconName: $iconName, total: $total)';
   }
 
   ChartBudgetModel copyWith({
     String? budgetId,
     String? budgetName,
     double? value,
-    int? iconId,
+    String? iconName,
     int? total,
     int? incomeAmount,
     int? expenseAmount,
@@ -140,7 +140,7 @@ class ChartBudgetModel {
       budgetId: budgetId ?? this.budgetId,
       budgetName: budgetName ?? this.budgetName,
       value: value ?? this.value,
-      iconId: iconId ?? this.iconId,
+      iconName: iconName ?? this.iconName,
       total: total ?? this.total,
       incomeAmount: incomeAmount ?? this.incomeAmount,
       expenseAmount: expenseAmount ?? this.expenseAmount,
@@ -154,7 +154,7 @@ class ChartBudgetModel {
     return other.budgetId == budgetId &&
         other.budgetName == budgetName &&
         other.value == value &&
-        other.iconId == iconId &&
+        other.iconName == iconName &&
         other.total == total &&
         other.incomeAmount == incomeAmount &&
         other.expenseAmount == expenseAmount;
@@ -165,7 +165,7 @@ class ChartBudgetModel {
     return budgetId.hashCode ^
         budgetName.hashCode ^
         value.hashCode ^
-        iconId.hashCode ^
+        iconName.hashCode ^
         total.hashCode ^
         incomeAmount.hashCode ^
         expenseAmount.hashCode;

@@ -48,7 +48,7 @@ class NewBudgetController extends StateNotifier<bool> {
 
   void addBudget(BuildContext context,
       {required String budgetName,
-      required int iconId,
+      required String iconName,
       required int limit,
       required DatetimeRangeModel rangeDatetimeModel,
       required BudgetTypeEnum budgetType}) async {
@@ -63,7 +63,7 @@ class NewBudgetController extends StateNotifier<bool> {
       id: GenId.budget(),
       userId: _uid,
       name: budgetName,
-      iconId: iconId,
+      iconName: iconName,
       currentAmount: 0,
       budgetLimit: limit,
       createdDate: now,

@@ -9,7 +9,7 @@ const double _sizeIconMain = 40;
 const double _sizeIconItem = 32;
 
 class BFormPickerIcon extends FormField<IconModel> {
-  final void Function(int? iconId) onChanged;
+  final void Function(String? iconName) onChanged;
   BFormPickerIcon({
     super.key,
     required List<IconModel> items,
@@ -47,7 +47,7 @@ class BFormPickerIcon extends FormField<IconModel> {
                           });
                       if (icon != null) {
                         field.didChange(icon);
-                        onChanged(icon.id);
+                        onChanged(icon.name);
                       }
                     },
                     child: Ink(
@@ -68,7 +68,7 @@ class BFormPickerIcon extends FormField<IconModel> {
                             )
                           : _ShowItem(
                               child: Icon(
-                              field.value!.iconData,
+                              field.value!.data,
                               size: _sizeIconMain,
                               color: field.value!.color,
                             )),
@@ -154,7 +154,7 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
   }
 
   Widget _icon(IconModel icon) {
-    bool isSelected = _selectedIcon != null && icon.id == _selectedIcon!.id;
+    bool isSelected = _selectedIcon != null && icon.name == _selectedIcon!.name;
     return Card(
       child: InkWell(
         onTap: () {
@@ -177,7 +177,7 @@ class _PickerIconDialogState extends State<_PickerIconDialog> {
             ),
           ),
           child: Icon(
-            icon.iconData,
+            icon.data,
             color: icon.color,
             size: _sizeIconItem,
           ),

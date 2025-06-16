@@ -25,7 +25,7 @@ class BudgetModel {
   final String id;
   final String userId;
   final String name;
-  final int iconId;
+  final String iconName;
   final int currentAmount;
   final int budgetLimit;
   final String budgetTypeValue;
@@ -38,7 +38,7 @@ class BudgetModel {
     required this.id,
     required this.userId,
     required this.name,
-    required this.iconId,
+    required this.iconName,
     required this.currentAmount,
     required this.budgetLimit,
     required this.budgetTypeValue,
@@ -67,7 +67,7 @@ class BudgetModel {
   }
 
   IconModel get iconModel {
-    return IconManagerData.getIconModel(iconId);
+    return IconManagerData.getIconModel(iconName);
   }
 
   BudgetStatusTime get budgetStatusTime {
@@ -84,7 +84,7 @@ class BudgetModel {
     String? id,
     String? userId,
     String? name,
-    int? iconId,
+    String? iconName,
     int? currentAmount,
     int? budgetLimit,
     String? budgetTypeValue,
@@ -98,7 +98,7 @@ class BudgetModel {
       id: id ?? this.id,
       userId: userId ?? this.userId,
       name: name ?? this.name,
-      iconId: iconId ?? this.iconId,
+      iconName: iconName ?? this.iconName,
       currentAmount: currentAmount ?? this.currentAmount,
       budgetLimit: budgetLimit ?? this.budgetLimit,
       budgetTypeValue: budgetTypeValue ?? this.budgetTypeValue,
@@ -116,7 +116,7 @@ class BudgetModel {
       'id': id,
       'userId': userId,
       'name': name,
-      'iconId': iconId,
+      'iconName': iconName,
       'currentAmount': currentAmount,
       'budgetLimit': budgetLimit,
       'budgetTypeValue': budgetTypeValue,
@@ -133,7 +133,7 @@ class BudgetModel {
       id: map['id'] as String,
       userId: map['userId'] as String,
       name: map['name'] as String,
-      iconId: map['iconId'] as int,
+      iconName: map['iconName'] as String,
       currentAmount: map['currentAmount'] as int,
       budgetLimit: map['budgetLimit'] as int,
       budgetTypeValue: map['budgetTypeValue'] as String,
@@ -154,7 +154,7 @@ class BudgetModel {
 
   @override
   String toString() {
-    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconId: $iconId, currentAmount: $currentAmount, budgetLimit: $budgetLimit, budgetTypeValue: $budgetTypeValue, rangeDateTimeTypeValue: $rangeDateTimeTypeValue, startDate: $startDate, endDate: $endDate, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'BudgetModel(id: $id, userId: $userId, name: $name, iconName: $iconName, currentAmount: $currentAmount, budgetLimit: $budgetLimit, budgetTypeValue: $budgetTypeValue, rangeDateTimeTypeValue: $rangeDateTimeTypeValue, startDate: $startDate, endDate: $endDate, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -164,7 +164,7 @@ class BudgetModel {
     return other.id == id &&
         other.userId == userId &&
         other.name == name &&
-        other.iconId == iconId &&
+        other.iconName == iconName &&
         other.currentAmount == currentAmount &&
         other.budgetLimit == budgetLimit &&
         other.budgetTypeValue == budgetTypeValue &&
@@ -180,7 +180,7 @@ class BudgetModel {
     return id.hashCode ^
         userId.hashCode ^
         name.hashCode ^
-        iconId.hashCode ^
+        iconName.hashCode ^
         currentAmount.hashCode ^
         budgetLimit.hashCode ^
         budgetTypeValue.hashCode ^
@@ -266,17 +266,8 @@ extension StatusBudgetTimeType on BudgetStatusTime {
 
 extension BudgetWallet on List<BudgetModel> {
   String toChatData() {
-    final budgetList = map((e) {
-      return {
-        'name': e.name,
-        'currentAmount': e.currentAmount,
-        'budgetLimit': e.budgetLimit,
-        'budgetTypeValue': e.budgetTypeValue,
-        'rangeDateTimeTypeValue': e.rangeDateTimeTypeValue,
-        'startDate': e.startDate.toFormatDate(),
-        'endDate': e.endDate.toFormatDate(),
-      };
-    }).toList();
-    return jsonEncode(budgetList);
+    return map((b) =>
+            "${b.name} (${b.budgetType.name}): ${b.currentAmount.toMoneyStr()}/${b.budgetLimit.toMoneyStr()}")
+        .join(", ");
   }
 }

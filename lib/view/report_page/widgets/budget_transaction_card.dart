@@ -82,13 +82,13 @@ class _BudgetTransactionCardState extends State<BudgetTransactionCard>
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: IconManagerData.getIconModel(budget.iconId)
+                      color: IconManagerData.getIconModel(budget.iconName)
                           .color
                           .withAlpha(40),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: BIcon(
-                      id: budget.iconId,
+                      name: budget.iconName,
                       size: 24,
                     ),
                   ),

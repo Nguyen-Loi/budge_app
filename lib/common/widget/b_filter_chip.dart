@@ -28,7 +28,7 @@ class BFilterChip extends StatelessWidget {
           ? null
           : CircleAvatar(
               child: Icon(
-                iconModel!.iconData,
+                iconModel!.data,
                 color: iconModel!.color,
               ),
             ),
