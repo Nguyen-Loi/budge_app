@@ -114,7 +114,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
               SizedBox(height: 16),
               BButton(
                 onPressed: () {
-                  ref.read(homeControllerProvider.notifier).signOut(context);
+                  ref.read(homeControllerProvider.notifier).refresh();
                 },
                 title: context.loc.refresh,
               )

@@ -22,6 +22,7 @@ final homeControllerProvider =
     budgets: budgets,
     authAPI: authApi,
     uidController: uidController,
+    ref: ref,
   );
 });
 
@@ -32,13 +33,16 @@ class HomeController extends StateNotifier<void> {
     required this.budgets,
     required AuthAPI authAPI,
     required UidController uidController,
+    required Ref ref,
   })  : _authApi = authAPI,
-        _uidController = uidController;
+        _uidController = uidController,
+        _ref = ref;
 
   final List<TransactionCardModel> transactions;
   final List<BudgetModel> budgets;
   final AuthAPI _authApi;
   final UidController _uidController;
+  final Ref _ref;
 
   Future<void> signOut(BuildContext context) async {
     _uidController.clear();

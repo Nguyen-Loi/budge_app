@@ -1,12 +1,10 @@
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
-import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/models_widget/icon_model.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:budget_app/data/models/user_model.dart';
-import 'package:flutter/material.dart';
 
 class ViBotService {
   static const Map<String, List<String>> _categoryKeywords = {

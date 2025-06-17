@@ -170,8 +170,8 @@ class ChatController extends StateNotifier<ChatState> {
         return;
       }
 
-      // Use the new 2-step workflow
-      final botChat = await _chatApi.sendMessageWithTwoStepFlow(context,
+      // Use the new 3-step AI-driven workflow
+      final botChat = await _chatApi.sendMessageWithThreeStepFlow(context,
           history: _recentChats);
 
       state = state.copyWith(
@@ -307,7 +307,7 @@ You're doing great with your finances! Let me know if you'd like details about a
   void _updateSuggestionsBasedOnContext(
       String lastMessage, BuildContext context) {
     final user = _userController.state;
-    final locale = user.languageCode ?? 'en';
+    final locale = user.languageCode;
     List<String> newSuggestions = [];
 
     // If they just added a transaction, suggest related actions

@@ -20,6 +20,6 @@ class UidController extends StateNotifier<String> {
   }
 
   void refresh (){
-    state = state; 
+    state = '';
   }
 }
