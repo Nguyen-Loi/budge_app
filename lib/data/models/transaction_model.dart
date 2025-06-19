@@ -137,6 +137,13 @@ class TransactionModel {
 
 extension TransactionList on List<TransactionModel> {
   String toChatData() {
-    return "";
+    return map((e) {
+      return {
+        "amount": e.amount,
+        "note": e.note,
+        "transactionType": e.transactionType.name,
+        "transactionDate": e.transactionDate.toIso8601String(),
+      };
+    }).toList().toString();
   }
 }

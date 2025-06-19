@@ -19,7 +19,7 @@ class BaseAuthView extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              title: BText.h1(title,
+              title: BText.h3(title,
                   color: Theme.of(context).colorScheme.onPrimary),
               centerTitle: true,
               floating: true,

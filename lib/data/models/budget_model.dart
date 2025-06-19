@@ -265,7 +265,7 @@ extension StatusBudgetTimeType on BudgetStatusTime {
 }
 
 extension BudgetWallet on List<BudgetModel> {
-  String toChatData() {
+  String get toChatData {
     return map((b) =>
             "${b.name} (${b.budgetType.name}): ${b.currentAmount.toMoneyStr()}/${b.budgetLimit.toMoneyStr()}")
         .join(", ");

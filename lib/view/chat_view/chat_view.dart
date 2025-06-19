@@ -1,4 +1,3 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/size_constants.dart';
@@ -28,7 +27,6 @@ class _ChatViewState extends ConsumerState<ChatView>
   late ScrollController _scrollController;
   late AnimationController _sendButtonController;
   late Animation<double> _sendButtonScaleAnimation;
-  late Animation<Color?> _sendButtonColorAnimation;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -47,11 +45,6 @@ class _ChatViewState extends ConsumerState<ChatView>
       parent: _sendButtonController,
       curve: Curves.easeInOut,
     ));
-
-    _sendButtonColorAnimation = ColorTween(
-      begin: Colors.grey,
-      end: ColorManager.primaryBlue,
-    ).animate(_sendButtonController);
 
     _textEditingController.addListener(_onTextChanged);
     super.initState();
@@ -251,8 +244,7 @@ class _ChatViewState extends ConsumerState<ChatView>
   Widget _listChat() {
     List<ChatModel> list = ref.watch(chatBaseControllerProvider).toList();
     list.sort((a, b) => b.createdDate.compareTo(a.createdDate));
-    bool isTyping =
-        ref.watch(chatControllerProvider.select((state) => state.isTyping));
+    bool isTyping = ref.watch(chatControllerProvider);
 
     return Container(
       decoration: BoxDecoration(

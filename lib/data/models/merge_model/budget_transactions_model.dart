@@ -40,3 +40,21 @@ class BudgetTransactionsModel {
     return list;
   }
 }
+
+extension BudgetTransactionsModelExtension on List<BudgetTransactionsModel> {
+  String get toChatData {
+    return map((e) {
+      final budget = e.budget;
+      final transactions = e.transactions;
+      return {
+        "budgetName": budget.name,
+        "currentAmount": budget.currentAmount,
+        "budgetLimit": budget.budgetLimit,
+        "startDate": budget.startDate.toIso8601String(),
+        "endDate": budget.endDate.toIso8601String(),
+        "budgetType": budget.budgetType.name,
+        "transactions": transactions.toChatData()
+      };
+    }).toList().toString();
+  }
+}

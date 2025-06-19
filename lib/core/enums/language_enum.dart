@@ -1,11 +1,12 @@
 import 'package:budget_app/constants/assets_constants.dart';
 
 enum LanguageEnum {
-  english(SvgAssets.en, 'English', 'en', '+1', 'EN'),
+  english(SvgAssets.en, 'English', 'en', '+1', 'US'),
   vietnamese(SvgAssets.vi, 'Việt nam', 'vi', '+84', 'VN'),
   ;
 
-  const LanguageEnum(this.svgAsset, this.name, this.code, this.dialCode, this.isoCode);
+  const LanguageEnum(
+      this.svgAsset, this.name, this.code, this.dialCode, this.isoCode);
 
   factory LanguageEnum.fromCode(String code) {
     return LanguageEnum.values.firstWhere((e) => e.code == code);

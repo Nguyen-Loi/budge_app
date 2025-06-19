@@ -59,9 +59,7 @@ class BFormFieldPhoneNumber extends ConsumerWidget {
               disabledBorder:
                   Theme.of(context).inputDecorationTheme.disabledBorder,
               // label: Text('sss'),
-              label: BText.caption(
-                "xxx-xxx-xxxx"
-              ),
+              label: BText.caption("xxx-xxx-xxxx"),
               floatingLabelBehavior: FloatingLabelBehavior.never),
         ),
       ],

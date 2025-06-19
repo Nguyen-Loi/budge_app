@@ -113,7 +113,7 @@ enum AppIcons {
   guitar(FontAwesomeIcons.guitar, IconCategory.entertainment),
   palette(FontAwesomeIcons.palette, IconCategory.entertainment),
   gamepad(FontAwesomeIcons.gamepad, IconCategory.entertainment),
-  theater(FontAwesomeIcons.theaterMasks, IconCategory.entertainment),
+  theater(FontAwesomeIcons.masksTheater, IconCategory.entertainment),
 
   // Food (8 icons)
   coffee(FontAwesomeIcons.mugSaucer, IconCategory.food),
@@ -318,7 +318,7 @@ class IconModel {
       case 'gamepad':
         return FontAwesomeIcons.gamepad;
       case 'theater':
-        return FontAwesomeIcons.theaterMasks;
+        return FontAwesomeIcons.masksTheater;
 
       // Food icons
       case 'coffee':
