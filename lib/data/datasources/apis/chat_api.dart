@@ -133,6 +133,7 @@ class ChatApi implements IBotApi {
         .collection(FirestorePath.chats(uid: _uid))
         .mapModel<ChatModel>(
             modelFrom: ChatModel.fromMap, modelTo: (model) => model.toMap())
+        .where('deletedDate', isNull: true)
         .orderBy('createdDate')
         .get()
         .then((value) => value.docs.map((e) => e.data()).toList());
@@ -151,6 +152,25 @@ class ChatApi implements IBotApi {
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  FutureEitherVoid removeSession() async {
+    try {
+      final batch = db.batch();
+      final querySnapshot = await db
+          .collection(FirestorePath.chats(uid: _uid))
+          .where('deletedDate', isNull: true)
+          .get();
+
+      for (final doc in querySnapshot.docs) {
+        batch.update(doc.reference, {'deletedDate': DateTime.now()});
+      }
+      await batch.commit();
+      return right(null);
+    } catch (e) {
+      String error = 'Failed to remove session: $e';
+      return left(Failure(message: error, error: error));
     }
   }
 }

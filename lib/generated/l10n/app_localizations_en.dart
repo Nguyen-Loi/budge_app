@@ -789,4 +789,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get refresh => 'Refresh';
+
+  @override
+  String get removeChatTitle => 'Delete chat';
+
+  @override
+  String get removeChatMessage => 'Are you sure you want to delete this chat?';
 }

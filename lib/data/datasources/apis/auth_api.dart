@@ -9,10 +9,12 @@ import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/offline/database_helper.dart';
+import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/data/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -36,7 +38,7 @@ abstract class IAuthApi {
   });
   FutureEitherVoid loginWithFacebook();
   FutureEitherVoid loginWithGoogle();
-  FutureEitherVoid signOut();
+  FutureEitherVoid signOut(BuildContext context);
   FutureEitherVoid resetPassword({
     required String email,
   });
@@ -121,12 +123,13 @@ class AuthAPI implements IAuthApi {
   }
 
   @override
-  FutureEitherVoid signOut() async {
+  FutureEitherVoid signOut(BuildContext context) async {
     try {
       final user = _auth.currentUser;
       if (user == null) {
         return right(null);
       }
+      await TransferData.asyncData(_ref, context, currenUid: user.uid);
 
       final providerId = user.providerData.isNotEmpty
           ? user.providerData.first.providerId
@@ -141,7 +144,7 @@ class AuthAPI implements IAuthApi {
         await FacebookAuth.instance.logOut();
       }
 
-      await _ref.read(sqlHelperProvider.notifier).clearDb();
+      await _ref.read(sqlHelperProvider.notifier).clearAndResetDb();
       await _auth.signOut();
       await _sharedPref.reset();
 

@@ -13,7 +13,7 @@ class ChatRowTypingItem extends StatelessWidget {
     return ChatModel(
         id: GenId.chat,
         userId: '',
-        message: 'Loading',
+        message: 'Loading...',
         roleTypeValue: RoleChatEnum.assistant.value,
         createdDate: now,
         updatedDate: now);

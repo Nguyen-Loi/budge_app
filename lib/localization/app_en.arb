@@ -310,5 +310,7 @@
     "viBotExampleUser2": "Coffee shop 30k yesterday",
     "viBotExampleBot2": "Got it! I've added yesterday's 30k coffee expense. I created a new 'Coffee' budget for you since this is your first coffee purchase.",
     "viBotClosing": "Always be helpful, accurate, and encouraging about financial management!",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "removeChatTitle": "Delete chat",
+    "removeChatMessage": "Are you sure you want to delete this chat?"
 }

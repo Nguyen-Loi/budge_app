@@ -18,6 +18,7 @@ class IconManager {
   static IconData back = Icons.arrow_back_ios_new_rounded;
   static IconData budget = FontAwesomeIcons.wallet;
   static IconData filter = Icons.filter_list_rounded;
+  static IconData removeChat = Icons.delete_outline_rounded;
 
   // Field
   static IconData email = Icons.email_outlined;

@@ -1,3 +1,5 @@
+import 'package:budget_app/common/widget/dialog/b_loading.dart';
+import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
@@ -22,7 +24,6 @@ final homeControllerProvider =
     budgets: budgets,
     authAPI: authApi,
     uidController: uidController,
-    ref: ref,
   );
 });
 
@@ -33,24 +34,32 @@ class HomeController extends StateNotifier<void> {
     required this.budgets,
     required AuthAPI authAPI,
     required UidController uidController,
-    required Ref ref,
   })  : _authApi = authAPI,
-        _uidController = uidController,
-        _ref = ref;
+        _uidController = uidController;
 
   final List<TransactionCardModel> transactions;
   final List<BudgetModel> budgets;
   final AuthAPI _authApi;
   final UidController _uidController;
-  final Ref _ref;
 
   Future<void> signOut(BuildContext context) async {
-    _uidController.clear();
-    await _authApi.signOut();
+    final closeLoading = showLoading(context: context);
+    try {
+      await _authApi.signOut(context);
+      _uidController.clear();
+      if (context.mounted) {
+        closeLoading();
+      }
+    } catch (e) {
+      if (context.mounted) {
+        closeLoading();
+        showSnackBarError(context, e.toString());
+      }
+    }
   }
 
   void refresh() {
-    _uidController.refresh();
+    _uidController.clear();
   }
 
   double get totalExpenseThisMonth {

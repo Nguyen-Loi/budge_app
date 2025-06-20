@@ -46,7 +46,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
       BudgetTypeEnum.values.map((type) {
         final l = list.where((e) => e.budgetType == type).toList()
           ..sort((a, b) => b.createdDate.compareTo(a.createdDate));
-        return _itemView(list: l);
+        return _KeepAliveTabView(child: _itemView(list: l));
       }).toList();
 
   @override
@@ -175,6 +175,27 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
                   return BudgetCard(model: list[index]);
                 },
               );
+  }
+}
+
+class _KeepAliveTabView extends StatefulWidget {
+  final Widget child;
+
+  const _KeepAliveTabView({required this.child});
+
+  @override
+  State<_KeepAliveTabView> createState() => _KeepAliveTabViewState();
+}
+
+class _KeepAliveTabViewState extends State<_KeepAliveTabView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return widget.child;
   }
 }
 

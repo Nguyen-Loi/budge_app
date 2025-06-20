@@ -30,12 +30,12 @@ extension FutureEitherHelpers<T> on Either<Failure, T> {
     );
   }
 
-  getLeft() {
+  String get getLeftMessage {
     return fold(
       (l) => l,
       (r) => throw Exception(
         'Expected left value, but got right value: $r',
       ),
-    );
+    ).message;
   }
 }

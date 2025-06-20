@@ -53,7 +53,7 @@ class DatabaseHelper extends StateNotifier<Database?> {
     return database;
   }
 
-  Future<void> clearDb() async {
+  Future<void> clearAndResetDb() async {
     Database? currentDb = state;
     if (currentDb != null) {
       logInfo('Closing database for clearDb. Path: ${currentDb.path}');

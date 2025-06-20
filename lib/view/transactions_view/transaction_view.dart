@@ -74,7 +74,7 @@ class _TransactionViewState extends State<TransactionView>
           alignment: Alignment.center,
           children: [
             Center(
-              child: BText.h1(
+              child: BText.h3(
                 context.loc.transactionHistory,
                 color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.w800,

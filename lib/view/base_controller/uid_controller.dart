@@ -14,12 +14,9 @@ class UidController extends StateNotifier<String> {
     state = uid;
   }
 
-  /// Clear all provider watch this uid
   void clear() {
     state = '';
   }
 
-  void refresh (){
-    state = '';
-  }
+  String get uid => state;
 }

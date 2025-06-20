@@ -3,6 +3,8 @@ import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/providers.dart';
+import 'package:budget_app/data/datasources/apis/user_api.dart';
+import 'package:budget_app/data/datasources/offline/user_local.dart';
 import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
 import 'package:budget_app/data/datasources/repositories/user_repository.dart';
 import 'package:budget_app/data/datasources/transfer_data_source.dart';
@@ -19,7 +21,8 @@ final userBaseControllerProvider =
   return UserBaseController(
       uid: ref.watch(uidControllerProvider),
       ref: ref,
-      userRepository: ref.watch(userRepositoryProvider));
+      userRepository: ref.watch(userRepositoryProvider),
+      userApi: ref.watch(userApiProvider));
 });
 
 final userFutureProvider = FutureProvider((ref) {
@@ -29,16 +32,19 @@ final userFutureProvider = FutureProvider((ref) {
 
 class UserBaseController extends StateNotifier<UserModel> {
   final UserRepository _userRepository;
+  final UserApi _userApi;
   final String _uid;
   final Ref _ref;
 
   UserBaseController(
       {required UserRepository userRepository,
       required Ref ref,
-      required String uid})
+      required String uid,
+      required UserApi userApi})
       : _userRepository = userRepository,
         _ref = ref,
         _uid = uid,
+        _userApi = userApi,
         super(UserModel.defaultData());
 
   Future<UserModel> fetchUserInfo() async {
@@ -61,8 +67,11 @@ class UserBaseController extends StateNotifier<UserModel> {
     state = user;
   }
 
-  Future<void> updateUser(UserModel user) async {
+  Future<void> updateUser(UserModel user, {bool withDb = false}) async {
     await _userRepository.updateUser(user: user, file: null);
+    if (withDb) {
+      _updaterInDb(user);
+    }
     reload(user);
   }
 
@@ -131,6 +140,13 @@ class UserBaseController extends StateNotifier<UserModel> {
     }, (r) {
       reload(r);
     });
+    _updaterInDb(newUser);
+  }
+
+  void _updaterInDb(UserModel user) {
+    if (_userRepository is UserLocal) {
+      _userApi.updateUser(user: user, file: null);
+    }
   }
 
   void transferData(BuildContext context) async {

@@ -9,6 +9,7 @@ class ChatModel {
   final String roleTypeValue;
   final DateTime createdDate;
   final DateTime updatedDate;
+  final DateTime? deletedDate;
   ChatModel({
     required this.id,
     required this.userId,
@@ -16,6 +17,7 @@ class ChatModel {
     required this.roleTypeValue,
     required this.createdDate,
     required this.updatedDate,
+    this.deletedDate,
   });
 
 
@@ -31,6 +33,7 @@ class ChatModel {
     String? roleTypeValue,
     DateTime? createdDate,
     DateTime? updatedDate,
+    DateTime? deletedDate,
   }) {
     return ChatModel(
       id: id ?? this.id,
@@ -39,6 +42,7 @@ class ChatModel {
       roleTypeValue: roleTypeValue ?? this.roleTypeValue,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
+      deletedDate: deletedDate ?? this.deletedDate,
     );
   }
 
@@ -50,6 +54,7 @@ class ChatModel {
       'roleTypeValue': roleTypeValue,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
+      'deletedDate': deletedDate?.millisecondsSinceEpoch,
     };
   }
 
@@ -61,6 +66,9 @@ class ChatModel {
       roleTypeValue: map['roleTypeValue'] as String,
       createdDate: DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       updatedDate: DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
+      deletedDate: map['deletedDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['deletedDate'] as int)
+          : null,
     );
   }
 
@@ -70,7 +78,7 @@ class ChatModel {
 
   @override
   String toString() {
-    return 'ChatModel(id: $id, userId: $userId, message: $message, roleTypeValue: $roleTypeValue, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'ChatModel(id: $id, userId: $userId, message: $message, roleTypeValue: $roleTypeValue, createdDate: $createdDate, updatedDate: $updatedDate, deletedDate: $deletedDate)';
   }
 
   @override
@@ -83,7 +91,8 @@ class ChatModel {
       other.message == message &&
       other.roleTypeValue == roleTypeValue &&
       other.createdDate == createdDate &&
-      other.updatedDate == updatedDate;
+      other.updatedDate == updatedDate &&
+      other.deletedDate == deletedDate;
   }
 
   @override
@@ -93,6 +102,7 @@ class ChatModel {
       message.hashCode ^
       roleTypeValue.hashCode ^
       createdDate.hashCode ^
-      updatedDate.hashCode;
+      updatedDate.hashCode ^
+      deletedDate.hashCode;
   }
 }

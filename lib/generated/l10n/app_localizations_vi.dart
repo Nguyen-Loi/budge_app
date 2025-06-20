@@ -789,4 +789,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get refresh => 'Làm mới';
+
+  @override
+  String get removeChatTitle => 'Xóa cuộc trò chuyện';
+
+  @override
+  String get removeChatMessage => 'Bạn có chắc chắn muốn xóa cuộc trò chuyện này không?';
 }

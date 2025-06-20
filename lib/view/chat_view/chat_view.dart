@@ -1,4 +1,5 @@
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
@@ -86,8 +87,6 @@ class _ChatViewState extends ConsumerState<ChatView>
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      foregroundColor: Theme.of(context).colorScheme.onSurface,
       title: Row(
         children: [
           Container(
@@ -118,14 +117,14 @@ class _ChatViewState extends ConsumerState<ChatView>
             children: [
               BText.b1(
                 'ViBot',
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
               Consumer(builder: (context, ref, child) {
                 final user = ref.watch(userBaseControllerProvider);
                 return BText.caption(
                   "${context.loc.hello}, ${user.name}!",
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onSecondary,
                 );
               }),
             ],
@@ -134,8 +133,21 @@ class _ChatViewState extends ConsumerState<ChatView>
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.help_outline),
-          onPressed: _showHelpDialog,
+          icon: Icon(IconManager.removeChat),
+          onPressed: () {
+            BDialogInfo(
+                    dialogInfoType: BDialogInfoType.warning,
+                    title: context.loc.removeChatTitle,
+                    message: context.loc.removeChatMessage)
+                .presentAction(
+              context,
+              onSubmit: () {
+                ref
+                    .read(chatControllerProvider.notifier)
+                    .removeSession(context);
+              },
+            );
+          },
         ),
       ],
     );
@@ -147,7 +159,7 @@ class _ChatViewState extends ConsumerState<ChatView>
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(30),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -163,8 +175,7 @@ class _ChatViewState extends ConsumerState<ChatView>
                   color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color:
-                        Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                    color: Theme.of(context).colorScheme.outline.withAlpha(150),
                   ),
                 ),
                 child: TextField(
@@ -175,7 +186,7 @@ class _ChatViewState extends ConsumerState<ChatView>
                       color: Theme.of(context)
                           .colorScheme
                           .onSurface
-                          .withOpacity(0.5),
+                          .withAlpha(150),
                     ),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
@@ -215,7 +226,7 @@ class _ChatViewState extends ConsumerState<ChatView>
                                 color: Theme.of(context)
                                     .colorScheme
                                     .primary
-                                    .withOpacity(0.3),
+                                    .withAlpha(100),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -253,7 +264,7 @@ class _ChatViewState extends ConsumerState<ChatView>
           end: Alignment.bottomCenter,
           colors: [
             Theme.of(context).colorScheme.surface,
-            Theme.of(context).colorScheme.surface.withOpacity(0.95),
+            Theme.of(context).colorScheme.surface.withAlpha(200),
           ],
         ),
       ),
@@ -314,58 +325,58 @@ class _ChatViewState extends ConsumerState<ChatView>
         .sendMessage(context, message: content);
   }
 
-  void _showHelpDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            Icon(
-              Icons.help_outline,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            gapW8,
-            BText.b1("Chat Help"),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BText("Try these examples:", fontWeight: FontWeight.bold),
-            gapH12,
-            _buildHelpExample("💰", "Lunch 50k"),
-            _buildHelpExample("📝", "Add note: bought sandwich"),
-            _buildHelpExample("✏️", "Edit amount to 40k"),
-            _buildHelpExample("🗑️", "Delete last transaction"),
-            _buildHelpExample("📊", "Show my budget summary"),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: BText("Got it!"),
-          ),
-        ],
-      ),
-    );
-  }
+  // void _showHelpDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: Row(
+  //         children: [
+  //           Icon(
+  //             Icons.help_outline,
+  //             color: Theme.of(context).colorScheme.primary,
+  //           ),
+  //           gapW8,
+  //           BText.b1("Chat Help"),
+  //         ],
+  //       ),
+  //       content: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           BText("Try these examples:", fontWeight: FontWeight.bold),
+  //           gapH12,
+  //           _buildHelpExample("💰", "Lunch 50k"),
+  //           _buildHelpExample("📝", "Add note: bought sandwich"),
+  //           _buildHelpExample("✏️", "Edit amount to 40k"),
+  //           _buildHelpExample("🗑️", "Delete last transaction"),
+  //           _buildHelpExample("📊", "Show my budget summary"),
+  //         ],
+  //       ),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.of(context).pop(),
+  //           child: BText("Got it!"),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget _buildHelpExample(String emoji, String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          BText(emoji),
-          gapW8,
-          Expanded(
-            child: BText.caption(
-              text,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildHelpExample(String emoji, String text) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 4),
+  //     child: Row(
+  //       children: [
+  //         BText(emoji),
+  //         gapW8,
+  //         Expanded(
+  //           child: BText.caption(
+  //             text,
+  //             color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

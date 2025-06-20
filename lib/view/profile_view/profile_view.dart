@@ -21,14 +21,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
-class ProfileView extends StatefulWidget {
+class ProfileView extends ConsumerStatefulWidget {
   const ProfileView({super.key});
 
   @override
-  State<ProfileView> createState() => _ProfileViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> {
+class _ProfileViewState extends ConsumerState<ProfileView> {
   String? _name;
   File? _file;
   PhoneNumber? _phoneNumber;
@@ -40,6 +40,14 @@ class _ProfileViewState extends State<ProfileView> {
     final imageChanged = _file != null;
 
     return nameChanged || phoneChanged || imageChanged;
+  }
+
+  @override
+  void initState() {
+    UserModel user = ref.read(userBaseControllerProvider);
+    _phoneNumber = user.phoneNumber;
+    _name = user.name;
+    super.initState();
   }
 
   @override
@@ -119,7 +127,7 @@ class _ProfileViewState extends State<ProfileView> {
           : OutlinedButton.icon(
               key: ValueKey(disable),
               onPressed: () {
-                FocusScope.of(context).unfocus();
+                FocusScope.of(context).requestFocus(FocusNode());
                 ref
                     .read(profileControllerProvider.notifier)
                     .updateDisable(!disable);
@@ -171,7 +179,9 @@ class _ProfileViewState extends State<ProfileView> {
               initialUrl: user.profileUrl,
               disable: disable || kIsWeb,
               onChanged: (f) {
-                _file = f;
+                setState(() {
+                  _file = f;
+                });
               },
             ),
             if (!disable && !kIsWeb)
@@ -218,20 +228,24 @@ class _ProfileViewState extends State<ProfileView> {
         _buildFormField(
           child: BFormFieldText.init(
             label: context.loc.name,
-            initialValue: user.name,
+            initialValue: _name,
             validator: (v) => v.validateName(context),
             onChanged: (v) {
-              _name = v;
+              setState(() {
+                _name = v;
+              });
             },
             prefixIcon: IconManager.account,
           ),
         ),
         _buildFormField(
           child: BFormFieldPhoneNumber(
-            initialValue: user.phoneNumber,
+            initialValue: _phoneNumber,
             validator: (v) => v.validatePhoneNumber(context),
             onInputChanged: (PhoneNumber value) {
-              _phoneNumber = value;
+              setState(() {
+                _phoneNumber = value;
+              });
             },
           ),
         ),
@@ -260,7 +274,11 @@ class _ProfileViewState extends State<ProfileView> {
           child: FilledButton.icon(
             onPressed: (isLoading || !hasChanges)
                 ? null
-                : () => _handleSave(ref, user),
+                : () {
+                    // Unfocus immediately when button is pressed
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    _handleSave(ref, user);
+                  },
             icon: isLoading
                 ? const SizedBox(
                     width: 16,
@@ -307,7 +325,8 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   void _handleSave(WidgetRef ref, dynamic user) {
-    FocusScope.of(context).unfocus();
+    FocusScope.of(context).requestFocus(FocusNode());
+
     if (_keyState.currentState!.validate()) {
       ref.read(profileControllerProvider.notifier).update(
             context,
@@ -323,13 +342,16 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   void _handleCancel(WidgetRef ref) {
-    FocusScope.of(context).unfocus();
+    FocusScope.of(context).requestFocus(FocusNode());
     ref.read(profileControllerProvider.notifier).updateDisable(true);
     _keyState.currentState?.reset();
 
-    // Reset tracking variables
-    _name = null;
-    _file = null;
-    _phoneNumber = null;
+    // Reset tracking variables and trigger rebuild
+    setState(() {
+      final user = ref.read(userBaseControllerProvider);
+      _name = user.name;
+      _file = null;
+      _phoneNumber = user.phoneNumber;
+    });
   }
 }

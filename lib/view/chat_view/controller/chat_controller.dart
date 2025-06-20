@@ -1,3 +1,5 @@
+import 'package:budget_app/common/widget/dialog/b_loading.dart';
+import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/apis/chat_api.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/core/enums/role_chat_enum.dart';
@@ -65,5 +67,17 @@ class ChatController extends StateNotifier<bool> {
       (l) => showBDialogInfoError(context, message: l.message),
       (r) => _chatBaseController.addChat(r),
     );
+  }
+
+  Future<void> removeSession(BuildContext context) async {
+    final closeDialog = showLoading(context: context);
+    final res = await _chatApi.removeSession();
+    if (res.isLeft() && context.mounted) {
+      closeDialog();
+      showBDialogInfoError(context, message: res.getLeftMessage);
+      return;
+    }
+    await _chatBaseController.init();
+    closeDialog();
   }
 }

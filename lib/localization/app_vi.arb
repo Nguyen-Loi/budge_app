@@ -310,5 +310,7 @@
   "viBotExampleUser2": "Quán cà phê 30k hôm qua",
   "viBotExampleBot2": "Đã ghi! Tôi đã thêm khoản chi 30k cà phê hôm qua. Tôi đã tạo ngân sách 'Cà phê' mới cho bạn vì đây là lần đầu bạn mua cà phê.",
   "viBotClosing": "Luôn hữu ích, chính xác và khuyến khích về quản lý tài chính!",
-  "refresh": "Làm mới"
+  "refresh": "Làm mới",
+  "removeChatTitle": "Xóa cuộc trò chuyện",
+  "removeChatMessage": "Bạn có chắc chắn muốn xóa cuộc trò chuyện này không?"
 }

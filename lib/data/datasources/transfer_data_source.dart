@@ -36,7 +36,7 @@ class TransferData {
   ///     2. No => Cancel
   /// 4. No Sqlite, Api => Move to Sqlite
   static FutureEitherVoid asyncData(Ref ref, BuildContext context,
-      {bool showDialogConflig = false}) async {
+      {bool showDialogConflig = false, String? currenUid}) async {
     try {
       if (kIsWeb) {
         return right(null);
@@ -46,7 +46,7 @@ class TransferData {
         return left(Failure(message: 'User is null'));
       }
       String userIdApi = user.uid;
-      String userIdLocal = ref.read(uidControllerProvider);
+      String userIdLocal = currenUid ?? ref.read(uidControllerProvider);
 
       UserModel userLocal =
           await ref.read(userLocalProvider).getUserById(userIdLocal);
@@ -71,9 +71,7 @@ class TransferData {
           budgetsLocal.isNotEmpty ||
           transactionsLocal.isNotEmpty;
 
-      bool isApiDataChange = userApi.balance != 0 ||
-          budgetsApi.isNotEmpty ||
-          transactionsApi.isNotEmpty;
+      bool isApiDataChange = userApi.balance != 0 || transactionsApi.isNotEmpty;
 
       final data = {
         'userModelLocal': userLocal,
@@ -86,11 +84,13 @@ class TransferData {
 
       // Case 1: No Sqlite, No Api => Load current
       if (!isLocalDataChange && !isApiDataChange) {
+        logInfo("Transfer from api to sqlite");
         return await _apiToSqlite(ref, data: data);
       }
 
       // Case 2: Sqlite, No Api => Move to Api
       if (isLocalDataChange && !isApiDataChange) {
+        logInfo("Transfer from sqlite to api");
         return _sqliteToApi(ref, data: data);
       }
 
@@ -116,11 +116,13 @@ class TransferData {
             },
             onSubmit: () async {
               // Return the result so it can be awaited outside
+              logInfo("Transfer from api to sqlite");
               result = await _apiToSqlite(ref, data: data);
             },
           );
           return result;
         } else {
+          logInfo("Transfer from sqlite to api");
           return _sqliteToApi(ref, data: data);
         }
       }
@@ -151,13 +153,6 @@ class TransferData {
 
       userModel = userModel.copyWith(
         id: userId,
-        email: userModelApi.email,
-        profileUrl: userModelApi.profileUrl,
-        name: userModelApi.name,
-        accountTypeValue: userModelApi.accountTypeValue,
-        token: userModelApi.token,
-        role: userModelApi.role,
-        isRemindTransactionEveryDate: userModelApi.isRemindTransactionEveryDate,
       );
 
       budgets =

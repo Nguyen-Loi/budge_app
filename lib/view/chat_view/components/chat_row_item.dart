@@ -115,7 +115,7 @@ class _ChatRowItemState extends ConsumerState<ChatRowItem>
                                   .surfaceContainerHighest,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.08),
+                              color: Colors.black.withAlpha(30),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),
@@ -161,7 +161,7 @@ class _ChatRowItemState extends ConsumerState<ChatRowItem>
         ),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primary.withAlpha(30),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -183,7 +183,7 @@ class _ChatRowItemState extends ConsumerState<ChatRowItem>
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withAlpha(30),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -205,7 +205,7 @@ class _ChatRowItemState extends ConsumerState<ChatRowItem>
       ),
       child: BText.caption(
         _formatTime(widget.chatModel.createdDate),
-        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+        color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
       ),
     );
   }

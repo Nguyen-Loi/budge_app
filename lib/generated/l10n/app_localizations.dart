@@ -1576,6 +1576,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Refresh'**
   String get refresh;
+
+  /// No description provided for @removeChatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete chat'**
+  String get removeChatTitle;
+
+  /// No description provided for @removeChatMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this chat?'**
+  String get removeChatMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
