@@ -129,7 +129,7 @@ class AuthAPI implements IAuthApi {
       if (user == null) {
         return right(null);
       }
-      await TransferData.asyncData(_ref, context, currenUid: user.uid);
+      await TransferData.asyncData(_ref, context, currenUidLogout: user.uid);
 
       final providerId = user.providerData.isNotEmpty
           ? user.providerData.first.providerId

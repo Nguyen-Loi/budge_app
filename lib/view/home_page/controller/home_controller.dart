@@ -1,5 +1,3 @@
-import 'package:budget_app/common/widget/dialog/b_loading.dart';
-import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
@@ -43,19 +41,8 @@ class HomeController extends StateNotifier<void> {
   final UidController _uidController;
 
   Future<void> signOut(BuildContext context) async {
-    final closeLoading = showLoading(context: context);
-    try {
-      await _authApi.signOut(context);
+     await _authApi.signOut(context);
       _uidController.clear();
-      if (context.mounted) {
-        closeLoading();
-      }
-    } catch (e) {
-      if (context.mounted) {
-        closeLoading();
-        showSnackBarError(context, e.toString());
-      }
-    }
   }
 
   void refresh() {

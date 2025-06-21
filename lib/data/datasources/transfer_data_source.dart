@@ -15,6 +15,7 @@ import 'package:budget_app/data/datasources/table_name.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:budget_app/data/models/user_model.dart';
+import 'package:budget_app/data/services/default_budget_service.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
@@ -36,7 +37,7 @@ class TransferData {
   ///     2. No => Cancel
   /// 4. No Sqlite, Api => Move to Sqlite
   static FutureEitherVoid asyncData(Ref ref, BuildContext context,
-      {bool showDialogConflig = false, String? currenUid}) async {
+      {bool showDialogConflig = false, String? currenUidLogout}) async {
     try {
       if (kIsWeb) {
         return right(null);
@@ -46,7 +47,7 @@ class TransferData {
         return left(Failure(message: 'User is null'));
       }
       String userIdApi = user.uid;
-      String userIdLocal = currenUid ?? ref.read(uidControllerProvider);
+      String userIdLocal = currenUidLogout ?? ref.read(uidControllerProvider);
 
       UserModel userLocal =
           await ref.read(userLocalProvider).getUserById(userIdLocal);
@@ -67,9 +68,8 @@ class TransferData {
       List<TransactionModel> transactionsApi =
           await ref.read(transactionApiProvider).fetchTransaction(userIdApi);
 
-      bool isLocalDataChange = userLocal.balance != 0 ||
-          budgetsLocal.isNotEmpty ||
-          transactionsLocal.isNotEmpty;
+      bool isLocalDataChange =
+          userLocal.balance != 0 || transactionsLocal.isNotEmpty;
 
       bool isApiDataChange = userApi.balance != 0 || transactionsApi.isNotEmpty;
 
@@ -80,6 +80,7 @@ class TransferData {
         'budgetsModelApi': budgetsApi,
         'transactionsModelLocal': transactionsLocal,
         'transactionsModelApi': transactionsApi,
+        'currentUidLogout': currenUidLogout,
       };
 
       // Case 1: No Sqlite, No Api => Load current
@@ -196,11 +197,16 @@ class TransferData {
       }
 
       await batch.commit();
-
-      data['userModelApi'] = userModel;
-      data['budgetsModelApi'] = budgets;
-      data['transactionsModelApi'] = transactions;
-      return _apiToSqlite(ref, data: data);
+      
+      // Logout will not trandfer data to Firebase
+      if (data['currentUidLogout'] == null) {
+        data['userModelApi'] = userModel;
+        data['budgetsModelApi'] = budgets;
+        data['transactionsModelApi'] = transactions;
+        return _apiToSqlite(ref, data: data);
+      } else {
+        return right(null);
+      }
     } catch (e) {
       return left(Failure(message: 'Error transferring data to Firebase: $e'));
     }
@@ -212,6 +218,16 @@ class TransferData {
       UserModel userModel = data['userModelApi'];
       List<BudgetModel> budgets = data['budgetsModelApi'];
       List<TransactionModel> transactions = data['transactionsModelApi'];
+
+      List<BudgetModel> budgetsLocal = data['budgetsModelLocal'];
+      if (budgetsLocal.isEmpty) {
+        List<BudgetModel> defaultBudgets =
+            DefaultBudgetService.createDefaultBudgets(
+          userId: userModel.id,
+          localizations: ref.read(appLocalizationsProvider),
+        );
+        budgets.addAll(defaultBudgets);
+      }
 
       final db = ref.read(sqlProvider);
 
@@ -226,7 +242,7 @@ class TransferData {
       // Add user to SQLite
       batch.insert(
         TableName.user,
-        userModel.toMap(),
+        userModel.toMap(isSqliteFomat: true),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
 

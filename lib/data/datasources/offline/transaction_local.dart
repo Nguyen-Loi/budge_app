@@ -25,7 +25,7 @@ final transactionLocalProvider = Provider(((ref) {
 
 class TransactionLocal extends TransactionRepository {
   final AppLocalizations _loc;
-  final Database _db;
+  final Database? _db;
 
   TransactionLocal({required AppLocalizations loc, required Database db})
       : _loc = loc,
@@ -52,7 +52,7 @@ class TransactionLocal extends TransactionRepository {
       transactionDate: transactionDate ?? now,
       updatedDate: now,
     );
-    await _db.insert(
+    await _db?.insert(
       TableName.transaction,
       transaction.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,

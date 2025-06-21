@@ -144,7 +144,7 @@ class UserBaseController extends StateNotifier<UserModel> {
   }
 
   void _updaterInDb(UserModel user) {
-    if (_userRepository is UserLocal) {
+    if (_userRepository is UserLocal && user.id.isNotEmpty) {
       _userApi.updateUser(user: user, file: null);
     }
   }
