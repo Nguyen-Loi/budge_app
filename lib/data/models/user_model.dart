@@ -3,11 +3,12 @@ import 'dart:convert';
 
 import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
+import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
-import 'package:budget_app/core/extension/extension_money.dart';
 
 class UserModel {
   final String id;
@@ -43,8 +44,7 @@ class UserModel {
 
   bool get roleAds => role == UserRole.normal;
   AccountType get accountType => AccountType.fromValue(accountTypeValue);
-  CurrencyType get currencyType => CurrencyType.fromValue(currencyTypeValue);
-  String get balanceMoney => balance.toMoneyStr(currencyType: currencyType);
+  CurrencyType get currency => CurrencyType.fromValue(currencyTypeValue);
 
   UserModel copyWith({
     String? id,
@@ -89,7 +89,7 @@ class UserModel {
       profileUrl: null,
       name: 'guest',
       accountTypeValue: AccountType.emailAndPassword.value,
-      currencyTypeValue: CurrencyType.usd.value,
+      currencyTypeValue: CurrencyType.usd.code,
       balance: 0,
       phoneNumber: null,
       token: null,
@@ -241,11 +241,11 @@ extension PhoneUserModel on PhoneNumber? {
 }
 
 extension UserModelExtension on UserModel {
-  String get toChatData {
+  String toChatData(BuildContext context) {
     return """
-- Name: $name
-- Balance: $balanceMoney
-- Currency: ${currencyType.name}
+- UserName: $name
+- Balance: ${balance.toMoneyStrContext(context)}
+- Currency: ${currency.name}
 - Email: $email
 - Phone: ${phoneNumber?.phoneNumber.toString() ?? "Not provided"}
 - User Role: ${role.name}

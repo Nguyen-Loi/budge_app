@@ -13,6 +13,7 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BudgetCard extends StatefulWidget {
@@ -276,7 +277,11 @@ class _BudgetCardState extends State<BudgetCard> with TickerProviderStateMixin {
         ),
         gapW8,
         // Amount section
-        _buildAmountDisplay(context),
+        Consumer(
+          builder: (_, ref, __) {
+            return _buildAmountDisplay(context, ref: ref);
+          }
+        ),
         if (!widget.isPreview) ...[
           gapW8,
           Icon(
@@ -349,7 +354,7 @@ class _BudgetCardState extends State<BudgetCard> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildAmountDisplay(BuildContext context) {
+  Widget _buildAmountDisplay(BuildContext context,{required WidgetRef ref}) {
     bool isAllTime =
         widget.model.rangeDateTimeType == RangeDateTimeEnum.allTime;
 
@@ -362,7 +367,7 @@ class _BudgetCardState extends State<BudgetCard> with TickerProviderStateMixin {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               BText.b1(
-                value.toMoneyStrTruncated(isPrefix: true),
+                value.toMoneyStr(ref, isPrefix: true),
                 color: Theme.of(context).colorScheme.tertiary,
                 fontWeight: FontWeight.w700,
               ),
@@ -391,7 +396,7 @@ class _BudgetCardState extends State<BudgetCard> with TickerProviderStateMixin {
                   Tween(begin: 0.0, end: widget.model.currentAmount.toDouble()),
               builder: (context, value, child) {
                 return BText.b1(
-                  value.toMoneyStrTruncated(isPrefix: true),
+                  value.toMoneyStr(ref, isPrefix: true),
                   color: _getExpenseStatusColor(context, spentPercent),
                   fontWeight: FontWeight.w700,
                 );
@@ -413,15 +418,14 @@ class _BudgetCardState extends State<BudgetCard> with TickerProviderStateMixin {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: currentValue.toMoneyStrTruncated(),
+                        text: currentValue.toMoneyStr(ref),
                         style: context.textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w700,
                           color: _getExpenseStatusColor(context, spentPercent),
                         ),
                       ),
                       TextSpan(
-                        text:
-                            '/${widget.model.budgetLimit.toMoneyStrTruncated()}',
+                        text: '/${widget.model.budgetLimit.toMoneyStr(ref)}',
                         style: context.textTheme.bodySmall!.copyWith(
                           color: Theme.of(context)
                               .colorScheme

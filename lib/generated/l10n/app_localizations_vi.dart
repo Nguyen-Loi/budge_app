@@ -183,7 +183,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get home => 'Trang chủ';
 
   @override
-  String get appName => 'SmartBudget';
+  String get appName => 'Ví chi tiêu';
 
   @override
   String get left => 'Còn lại';
@@ -795,4 +795,25 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get removeChatMessage => 'Bạn có chắc chắn muốn xóa cuộc trò chuyện này không?';
+
+  @override
+  String get signingOutLoading => 'Đang đăng xuất...';
+
+  @override
+  String get currency => 'Tiền tệ';
+
+  @override
+  String get usdCurrencyName => 'Đô la Mỹ';
+
+  @override
+  String get eurCurrencyName => 'Euro';
+
+  @override
+  String get jpyCurrencyName => 'Yên Nhật';
+
+  @override
+  String get vndCurrencyName => 'Đồng Việt Nam';
+
+  @override
+  String get cadCurrencyName => 'Đô la Canada';
 }

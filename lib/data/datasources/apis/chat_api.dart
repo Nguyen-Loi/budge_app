@@ -8,6 +8,7 @@ import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/models/chat_content_model.dart';
 import 'package:budget_app/data/models/merge_model/budget_transactions_model.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
@@ -43,7 +44,7 @@ class ChatApi implements IBotApi {
   })  : _uid = uid,
         _ref = ref;
 
-  List<ChatContentModel> get basePrompt {
+  List<ChatContentModel> basePrompt (BuildContext context) {
     PackageInfo packageInfo = _ref.read(packageInfoBaseControllerProvider);
     final userModel = _ref.read(userBaseControllerProvider);
     final allBudgets = _ref.read(budgetBaseControllerProvider);
@@ -60,7 +61,7 @@ class ChatApi implements IBotApi {
               "You are a helpful assistant. You are designed to assist users with their queries and provide accurate information."
               "Your responses should be concise, informative, and relevant to the user's request."
               "Information about the app smart budget:  ${packageInfo.toString()}, "
-              "Info current user: ${userModel.toString()}, "
+              "Info current user: ${userModel.toChatData(context)}, "
               "Budgets and transaction information: ${budgetAndTransactionModel.toChatData}"),
     ];
     return baseContents;
@@ -86,7 +87,7 @@ class ChatApi implements IBotApi {
             ))
         .toList();
 
-    messages.insertAll(messages.length - 1, basePrompt);
+    messages.insertAll(messages.length - 1, basePrompt(context));
 
     final body = jsonEncode({
       "model": remoteConfig.assistantModel,

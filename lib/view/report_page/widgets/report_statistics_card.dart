@@ -64,21 +64,21 @@ class ReportStatisticsCard extends StatelessWidget {
         _buildStatisticItem(
           context,
           title: context.loc.totalIncome,
-          value: income.toMoneyStrTruncated(),
+          value: income.toMoneyStrContext(context),
           icon: Icons.trending_up,
           color: Theme.of(context).colorScheme.tertiary,
         ),
         _buildStatisticItem(
           context,
           title: context.loc.totalExpense,
-          value: expense.toMoneyStrTruncated(),
+          value: expense.toMoneyStrContext(context),
           icon: Icons.trending_down,
           color: Theme.of(context).colorScheme.error,
         ),
         _buildStatisticItem(
           context,
           title: context.loc.netBalance,
-          value: balance.toMoneyStrTruncated(),
+          value: balance.toMoneyStrContext(context),
           icon: balance >= 0 ? Icons.account_balance_wallet : Icons.warning,
           color: balance >= 0
               ? Theme.of(context).colorScheme.tertiary

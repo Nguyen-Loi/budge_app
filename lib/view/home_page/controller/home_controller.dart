@@ -1,3 +1,5 @@
+import 'package:budget_app/common/widget/dialog/b_loading.dart';
+import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
@@ -7,6 +9,7 @@ import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,8 +44,24 @@ class HomeController extends StateNotifier<void> {
   final UidController _uidController;
 
   Future<void> signOut(BuildContext context) async {
-     await _authApi.signOut(context);
+    final navigator = Navigator.of(context);
+    showLoading(
+      context: context,
+      text: context.loc.signingOutLoading,
+    );
+
+    try {
+      await _authApi.signOut(context);
       _uidController.clear();
+    } catch (e) {
+      if (context.mounted) {
+        showSnackBar(context, 'Error signing out. Please try again.');
+      }
+    } finally {
+      if (navigator.canPop()) {
+        navigator.pop();
+      }
+    }
   }
 
   void refresh() {

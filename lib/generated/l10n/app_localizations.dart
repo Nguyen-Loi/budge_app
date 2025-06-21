@@ -428,7 +428,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:
-  /// **'Budget SS'**
+  /// **'SmartBudget'**
   String get appName;
 
   /// No description provided for @left.
@@ -1588,6 +1588,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to delete this chat?'**
   String get removeChatMessage;
+
+  /// No description provided for @signingOutLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing out...'**
+  String get signingOutLoading;
+
+  /// No description provided for @currency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get currency;
+
+  /// No description provided for @usdCurrencyName.
+  ///
+  /// In en, this message translates to:
+  /// **'US Dollar'**
+  String get usdCurrencyName;
+
+  /// No description provided for @eurCurrencyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Euro'**
+  String get eurCurrencyName;
+
+  /// No description provided for @jpyCurrencyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Japanese Yen'**
+  String get jpyCurrencyName;
+
+  /// No description provided for @vndCurrencyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Vietnamese Dong'**
+  String get vndCurrencyName;
+
+  /// No description provided for @cadCurrencyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Canadian Dollar'**
+  String get cadCurrencyName;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

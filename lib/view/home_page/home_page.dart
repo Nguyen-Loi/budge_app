@@ -13,7 +13,7 @@ import 'package:budget_app/view/budget_view/widget/budget_card.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/home_page/home_drawer.dart';
 import 'package:budget_app/view/home_page/widgets/home_chart/income_expense_chart.dart';
-import 'package:budget_app/view/home_page/widgets/home_update_wallet_card.dart';
+import 'package:budget_app/view/home_page/widgets/home_wallet_card.dart';
 import 'package:budget_app/view/transactions_view/widget/transaction_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,7 +64,7 @@ class _HomePageState extends ConsumerState<HomePage>
             padding: const EdgeInsets.all(16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                HomeUpdateWalletCard(),
+                HomeWalletCard(),
                 gapH24,
                 _buildIncomeExpenseSection(),
                 gapH24,
@@ -183,7 +183,7 @@ class _HomePageState extends ConsumerState<HomePage>
                           ),
                           const SizedBox(height: 4),
                           BText.h3(
-                            totalIncome.toMoneyStrTruncated(),
+                            totalIncome.toMoneyStr(ref),
                             color: sucessColor,
                             fontWeight: FontWeight.bold,
                           ),
@@ -210,7 +210,7 @@ class _HomePageState extends ConsumerState<HomePage>
                           ),
                           const SizedBox(height: 4),
                           BText.h3(
-                            totalExpense.toMoneyStrTruncated(),
+                            totalExpense.toMoneyStr(ref),
                             color: errorColor,
                             fontWeight: FontWeight.bold,
                           ),

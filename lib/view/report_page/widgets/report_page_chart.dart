@@ -144,7 +144,7 @@ class _ReportPageChartState extends State<ReportPageChart>
               ),
               const SizedBox(height: 4),
               BText(
-                totalAmount.toMoneyStr(),
+                totalAmount.toMoneyStrContext(context),
                 fontWeight: FontWeight.w700,
                 color: Theme.of(context).colorScheme.primary,
               ),

@@ -225,7 +225,7 @@ class _ModernIncomeExpenseChartState extends State<ModernIncomeExpenseChart>
                 children: [
                   if (hasIncomeType && hasExpenseType) ...[
                     BText(
-                      balance.toMoneyStr(),
+                      balance.toMoneyStrContext(context),
                       fontWeight: FontWeight.w700,
                       color: isPositive
                           ? Theme.of(context).colorScheme.tertiary
@@ -314,7 +314,7 @@ class _ModernIncomeExpenseChartState extends State<ModernIncomeExpenseChart>
               child: _buildSummaryItem(
                 context,
                 context.loc.totalIncome,
-                widget.totalIncome.toMoneyStrTruncated(),
+                widget.totalIncome.toMoneyStrContext(context),
                 hasIncomeType && hasExpenseType
                     ? "${incomePercentage.toStringAsFixed(1)}%"
                     : "100%",
@@ -339,7 +339,7 @@ class _ModernIncomeExpenseChartState extends State<ModernIncomeExpenseChart>
               child: _buildSummaryItem(
                 context,
                 context.loc.totalExpense,
-                widget.totalExpense.toMoneyStrTruncated(),
+                widget.totalExpense.toMoneyStrContext(context),
                 hasIncomeType && hasExpenseType
                     ? "${expensePercentage.toStringAsFixed(1)}%"
                     : "100%",
@@ -491,7 +491,7 @@ class _ModernIncomeExpenseChartState extends State<ModernIncomeExpenseChart>
                   child: _buildSummaryItem(
                     context,
                     context.loc.totalIncome,
-                    widget.totalIncome.toMoneyStr(),
+                    widget.totalIncome.toMoneyStrContext(context),
                     "100%",
                     Theme.of(context).colorScheme.tertiary,
                     Icons.trending_up_rounded,
@@ -503,7 +503,7 @@ class _ModernIncomeExpenseChartState extends State<ModernIncomeExpenseChart>
                   child: _buildSummaryItem(
                     context,
                     context.loc.totalExpense,
-                    widget.totalExpense.toMoneyStr(),
+                    widget.totalExpense.toMoneyStrContext(context),
                     "100%",
                     Theme.of(context).colorScheme.error,
                     Icons.trending_down_rounded,
@@ -597,7 +597,7 @@ class _ModernIncomeExpenseChartState extends State<ModernIncomeExpenseChart>
                       color: color,
                     ),
                     BText(
-                      item.total.abs().toMoneyStr(),
+                      item.total.abs().toMoneyStrContext(context),
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),

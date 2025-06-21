@@ -48,7 +48,7 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
     );
   }
 
-  List<Widget> header(BuildContext context, BudgetModel budget);
+  List<Widget> header(BuildContext context, BudgetModel budget, WidgetRef ref);
 
   Widget itemStatus(BuildContext context) {
     final status = budget.budgetStatusTime;
@@ -223,10 +223,14 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
   Widget _status(BuildContext context) {
     return Consumer(builder: (_, ref, __) {
       BudgetModel model = ref.watch(budgetDetailControllerProvider(budget));
-      return ColumnWithSpacing(
-          spacing: 12,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: header(context, model));
+      return Consumer(
+        builder: (_, ref, __) {
+          return ColumnWithSpacing(
+              spacing: 12,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: header(context, model, ref));
+        }
+      );
     });
   }
 }

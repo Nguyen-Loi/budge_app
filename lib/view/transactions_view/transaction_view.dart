@@ -210,7 +210,7 @@ class _TransactionViewState extends State<TransactionView>
           ),
           const SizedBox(height: 4),
           BText(
-            value.toMoneyStrTruncated(),
+            value.toMoneyStrContext(context),
             color: color,
             fontWeight: FontWeight.bold,
             textAlign: TextAlign.center,
@@ -261,7 +261,7 @@ class _TransactionViewState extends State<TransactionView>
                 fontWeight: FontWeight.w500,
               ),
               BText.h3(
-                netIncome.toMoneyStr(),
+                netIncome.toMoneyStrContext(context),
                 color: color,
               ),
             ],

@@ -28,7 +28,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
             : ColumnWithSpacing(
                 spacing: 24,
                 children: listGroupTransactionByDay
-                    .map((e) => _groupDateTransactionsCard(context, e))
+                    .map((e) => _groupDateTransactionsCard(context, e, ref: ref))
                     .toList(),
               )
       ],
@@ -36,7 +36,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
   }
 
   Widget _groupDateTransactionsCard(BuildContext context,
-      _GroupDateTransactionModel groupDateTransactionModel) {
+      _GroupDateTransactionModel groupDateTransactionModel,{required WidgetRef ref}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -72,7 +72,7 @@ class BudgetDetailTransactions extends ConsumerWidget {
                             ),
                             gapW16,
                             _itemMoneyTransaction(context,
-                                type: e.transactionType, amount: e.amount.abs())
+                                type: e.transactionType, amount: e.amount.abs(), ref: ref),
                           ],
                         ),
                       ],
@@ -91,8 +91,8 @@ class BudgetDetailTransactions extends ConsumerWidget {
   }
 
   Widget _itemMoneyTransaction(BuildContext context,
-      {required TransactionTypeEnum type, required int amount}) {
-    String amountMoney = amount.toMoneyStr();
+      {required TransactionTypeEnum type, required int amount, required WidgetRef ref}) {
+    String amountMoney = amount.toMoneyStr(ref);
     switch (type) {
       case TransactionTypeEnum.income:
         return BText('+$amountMoney',

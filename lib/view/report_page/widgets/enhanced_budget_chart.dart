@@ -237,7 +237,7 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
                   Row(
                     children: [
                       BText(
-                        totalAmount.toMoneyStr(),
+                        totalAmount.toMoneyStrContext(context),
                         fontWeight: FontWeight.w700,
                         color: Theme.of(context).colorScheme.primary,
                       ),
@@ -256,7 +256,7 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
                 _buildQuickStat(
                   context,
                   loc.income,
-                  incomeAmount.toMoneyStrTruncated(),
+                  incomeAmount.toMoneyStrContext(context),
                   Icons.trending_up_rounded,
                   Theme.of(context).colorScheme.tertiary,
                 ),
@@ -266,7 +266,7 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
                 _buildQuickStat(
                   context,
                   loc.expense,
-                  expenseAmount.toMoneyStrTruncated(),
+                  expenseAmount.toMoneyStrContext(context),
                   Icons.trending_down_rounded,
                   Theme.of(context).colorScheme.error,
                 ),
@@ -404,7 +404,7 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
                   ],
                 ),
                 child: Text(
-                  item.total.abs().toMoneyStr(),
+                  item.total.abs().toMoneyStrContext(context),
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
@@ -483,7 +483,7 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
             ),
             const SizedBox(height: 8),
             BText(
-              item.total.abs().toMoneyStrTruncated(),
+              item.total.abs().toMoneyStrContext(context),
               fontWeight: FontWeight.w500,
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),

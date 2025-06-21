@@ -19,15 +19,15 @@ import 'package:sqflite/sqflite.dart';
 
 final transactionLocalProvider = Provider(((ref) {
   final loc = ref.watch(appLocalizationsProvider);
-  final db = ref.watch(sqlProvider);
+  final db = ref.watch(sqlHelperProvider);
   return TransactionLocal(loc: loc, db: db);
 }));
 
 class TransactionLocal extends TransactionRepository {
   final AppLocalizations _loc;
-  final Database _db;
+  final Database? _db;
 
-  TransactionLocal({required AppLocalizations loc, required Database db})
+  TransactionLocal({required AppLocalizations loc, required Database? db})
       : _loc = loc,
         _db = db;
 
@@ -52,7 +52,7 @@ class TransactionLocal extends TransactionRepository {
       transactionDate: transactionDate ?? now,
       updatedDate: now,
     );
-    await _db.insert(
+    await _db?.insert(
       TableName.transaction,
       transaction.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -76,7 +76,7 @@ class TransactionLocal extends TransactionRepository {
         updatedDate: now,
       );
 
-      await _db.update(
+      await _db?.update(
         TableName.user,
         updatedUser.toMap(),
         where: 'id = ?',
@@ -152,14 +152,14 @@ class TransactionLocal extends TransactionRepository {
         balance: user.balance + adjustedAmount,
       );
 
-      await _db.update(
+      await _db?.update(
         TableName.user,
         updatedUser.toMap(),
         where: 'id = ?',
         whereArgs: [updatedUser.id],
       );
 
-      await _db.update(
+      await _db?.update(
         TableName.budget,
         newBudget.toMap(),
         where: 'id = ?',
@@ -175,6 +175,9 @@ class TransactionLocal extends TransactionRepository {
 
   @override
   Future<List<TransactionModel>> fetchTransaction(String uid) async {
+    if (_db == null) {
+      return [];
+    }
     try {
       final result = await _db.query(
         TableName.transaction,
@@ -194,6 +197,9 @@ class TransactionLocal extends TransactionRepository {
     required String uid,
     required String budgetId,
   }) async {
+    if (_db == null) {
+      return [];
+    }
     try {
       final result = await _db.query(
         TableName.transaction,
@@ -213,6 +219,9 @@ class TransactionLocal extends TransactionRepository {
     required String uid,
     required DateTime dateTime,
   }) async {
+    if (_db == null) {
+      return [];
+    }
     try {
       final startOfMonth = DateTime(dateTime.year, dateTime.month, 1);
       final endOfMonth = DateTime(dateTime.year, dateTime.month + 1, 0);

@@ -115,7 +115,7 @@ class _BudgetTransactionCardState extends State<BudgetTransactionCard>
                     children: [
                       gapH4,
                       BText(
-                        totalAmount.toMoneyStrTruncated(),
+                        totalAmount.toMoneyStrContext(context),
                         fontWeight: FontWeight.bold,
                         color: totalAmount >= 0
                             ? Theme.of(context).colorScheme.tertiary
@@ -196,7 +196,7 @@ class _BudgetTransactionCardState extends State<BudgetTransactionCard>
               // Transaction Note
               // Transaction Amount
               BText(
-                transaction.amount.toMoneyStrTruncated(),
+                transaction.amount.toMoneyStrContext(context),
                 fontWeight: FontWeight.w600,
                 color: transaction.amount >= 0
                     ? Theme.of(context).colorScheme.tertiary

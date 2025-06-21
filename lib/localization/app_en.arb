@@ -55,7 +55,7 @@
     "contact": "Contact",
     "signOut": "Sign Out",
     "home": "Home",
-    "appName": "Budget SS",
+    "appName": "SmartBudget",
     "left": "Left",
     "approaced": "Approaced",
     "exceeded": "Exceeded",
@@ -312,5 +312,12 @@
     "viBotClosing": "Always be helpful, accurate, and encouraging about financial management!",
     "refresh": "Refresh",
     "removeChatTitle": "Delete chat",
-    "removeChatMessage": "Are you sure you want to delete this chat?"
+    "removeChatMessage": "Are you sure you want to delete this chat?",
+    "signingOutLoading": "Signing out...",
+    "currency": "Currency",
+    "usdCurrencyName": "US Dollar",
+    "eurCurrencyName": "Euro",
+    "jpyCurrencyName": "Japanese Yen",
+    "vndCurrencyName": "Vietnamese Dong",
+    "cadCurrencyName": "Canadian Dollar"
 }

@@ -6,13 +6,14 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/budget_base_detail_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BudgetDetailIncomeView extends BudgetBaseDetailView {
   const BudgetDetailIncomeView(
       {super.key, required super.budget, required super.transactions});
 
   @override
-  List<Widget> header(BuildContext context, BudgetModel budget) {
+  List<Widget> header(BuildContext context, BudgetModel budget, WidgetRef ref) {
     bool isAllTime = budget.rangeDateTimeType == RangeDateTimeEnum.allTime;
 
     return [
@@ -61,7 +62,7 @@ class BudgetDetailIncomeView extends BudgetBaseDetailView {
                   ),
                   const SizedBox(height: 4),
                   BText(
-                    budget.currentAmount.toMoneyStr(),
+                    budget.currentAmount.toMoneyStr(ref),
                     fontWeight: FontWeight.w700,
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
@@ -118,7 +119,7 @@ class BudgetDetailIncomeView extends BudgetBaseDetailView {
           svgAsset: SvgAssets.money,
           label:
               isAllTime ? context.loc.totalIncome : context.loc.currentIncome,
-          value: budget.currentAmount.toMoneyStrTruncated(),
+          value: budget.currentAmount.toMoneyStr(ref),
           colorValue: Theme.of(context).colorScheme.tertiary),
       // Only show limit for time-limited budgets
       if (!isAllTime && budget.budgetLimit > 0)
@@ -126,7 +127,7 @@ class BudgetDetailIncomeView extends BudgetBaseDetailView {
           context,
           svgAsset: SvgAssets.limit,
           label: context.loc.limit,
-          value: budget.budgetLimit.toMoneyStrTruncated(),
+          value: budget.budgetLimit.toMoneyStr(ref),
         ),
       itemOperatingTime(context)
     ];

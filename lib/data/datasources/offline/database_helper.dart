@@ -4,15 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-final sqlProvider = Provider<Database>((ref) {
-  final databaseState = ref.watch(sqlHelperProvider);
-
-  if (databaseState == null) {
-    throw Exception(
-        'Database is not available. Ensure it is initialized and not currently being cleared/reinitialized.');
-  }
-  return databaseState;
-});
 
 final sqlHelperProvider = StateNotifierProvider<DatabaseHelper, Database?>((_) {
   return DatabaseHelper(null);

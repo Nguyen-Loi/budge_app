@@ -3,6 +3,7 @@ import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/providers.dart';
+import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/offline/user_local.dart';
 import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
@@ -73,6 +74,32 @@ class UserBaseController extends StateNotifier<UserModel> {
       _updaterInDb(user);
     }
     reload(user);
+  }
+
+  /// Update user currency preference
+  void updateCurrency(BuildContext context,
+      {required CurrencyType newCurrency}) async {
+    final currentUser = state;
+    if (newCurrency == currentUser.currency) {
+      return;
+    }
+
+    final updatedUser = currentUser.copyWith(
+      currencyTypeValue: newCurrency.code,
+      updatedDate: DateTime.now(),
+    );
+
+    // Update in database
+    final res = await _userRepository.updateUser(user: updatedUser, file: null);
+    res.fold(
+      (failure) {
+        showSnackBarError(context, failure.message);
+      },
+      (user) {
+        reload(user);
+        _updaterInDb(user);
+      },
+    );
   }
 
   void updateWallet(BuildContext context, {required int newValue}) async {

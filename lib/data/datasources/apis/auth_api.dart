@@ -88,7 +88,7 @@ class AuthAPI implements IAuthApi {
           'https://cdn-icons-png.flaticon.com/512/1144/1144760.png',
       name: user.displayName ?? email.split('@')[0],
       accountTypeValue: accountType.value,
-      currencyTypeValue: CurrencyType.vnd.value,
+      currencyTypeValue: CurrencyType.vnd.code,
       role: UserRole.normal,
       languageCode: _ref.read(languageControllerProvider).code,
       isRemindTransactionEveryDate: true,

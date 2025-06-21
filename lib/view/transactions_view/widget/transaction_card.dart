@@ -12,6 +12,7 @@ import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TransactionCard extends StatefulWidget {
   const TransactionCard({super.key, required this.model});
@@ -392,10 +393,14 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 gapH4,
-                BText.b1(
-                  widget.model.transaction.amount.toMoneyStrTruncated(),
-                  color: color,
-                  fontWeight: FontWeight.bold,
+                Consumer(
+                  builder: (_, ref, __) {
+                    return BText.b1(
+                      widget.model.transaction.amount.toMoneyStr(ref),
+                      color: color,
+                      fontWeight: FontWeight.bold,
+                    );
+                  }
                 ),
               ],
             ),

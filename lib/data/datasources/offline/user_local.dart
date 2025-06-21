@@ -13,22 +13,25 @@ import 'package:fpdart/fpdart.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 final userLocalProvider = Provider((ref) {
-  final db = ref.watch(sqlProvider);
+  final db = ref.watch(sqlHelperProvider);
   final storageApi = ref.watch(storageAPIProvider);
   return UserLocal(db: db, storageApi: storageApi);
 });
 
 class UserLocal extends UserRepository {
-  final Database _db;
+  final Database? _db;
   final StorageApi _storageApi;
   UserLocal({
-    required Database db,
+    required Database? db,
     required StorageApi storageApi,
   })  : _db = db,
         _storageApi = storageApi;
 
   @override
   Future<UserModel> getUserById(String uid) async {
+    if (_db == null) {
+     return UserModel.defaultData();
+    }
     try {
       final result = await _db.query(
         TableName.user,
@@ -73,7 +76,7 @@ class UserLocal extends UserRepository {
       }
 
       final updatedUser = user.copyWith(profileUrl: profileUrl);
-      await _db.update(
+      await _db?.update(
         TableName.user,
         updatedUser.toMap(isSqliteFomat: true),
         where: 'id = ?',
@@ -89,7 +92,7 @@ class UserLocal extends UserRepository {
   @override
   FutureEitherVoid add({required UserModel user}) async {
     try {
-      await _db.insert(
+      await _db?.insert(
         TableName.user,
         user.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,

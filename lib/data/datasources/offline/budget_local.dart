@@ -8,16 +8,19 @@ import 'package:fpdart/fpdart.dart';
 import 'package:sqflite/sqflite.dart';
 
 final budgetLocalProvider = Provider((ref) {
-  final db = ref.watch(sqlProvider);
+  final db = ref.watch(sqlHelperProvider);
   return BudgetLocal(db: db);
 });
 
 class BudgetLocal implements BudgetRepository {
-  BudgetLocal({required Database db}) : _db = db;
-  final Database _db;
+  BudgetLocal({required Database? db}) : _db = db;
+  final Database? _db;
 
   @override
   Future<List<BudgetModel>> fetch(String uid) async {
+    if (_db == null) {
+      return [];
+    }
     final result = await _db.query(
       TableName.budget,
     );
@@ -27,7 +30,7 @@ class BudgetLocal implements BudgetRepository {
   @override
   FutureEitherVoid addBudget({required BudgetModel model}) async {
     try {
-      await _db.insert(
+      await _db?.insert(
         TableName.budget,
         model.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
@@ -41,7 +44,7 @@ class BudgetLocal implements BudgetRepository {
   @override
   FutureEitherVoid updateBudget({required BudgetModel model}) async {
     try {
-      await _db.update(
+      await _db?.update(
         TableName.budget,
         model.toMap(),
         where: 'id = ?',

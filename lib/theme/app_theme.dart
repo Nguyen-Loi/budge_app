@@ -15,15 +15,15 @@ class AppTheme {
   /// colors and styles
   static AppColors get darkColors => const AppColors(
         brightness: Brightness.dark,
-        primary: Color(0XFFBB86FC),
+        primary: Color(0xFF1976D2),
         onPrimary: Colors.white,
-        secondary: Color(0XFF03DAC5),
+        secondary: Color(0xFF42A5F5),
         onSecondary: Color(0xFF000000),
-        primaryContainer: Color(0xFF121212),
+        primaryContainer: Color(0xFF0D253F),
         onPrimaryContainer: Color(0xFFFFFFFF),
         surface: Color(0xFF121212),
         onSurface: Color(0xFFFFFFFF),
-        tertiaryFixed: Color(0xFF406271),
+        tertiaryFixed: Color(0xFF42A5F5),
         onSurfaceVariant: Color(0xFFBFCBD0),
         success: Color(0XFF6ABC2C),
         onSuccess: Color(0xFFFFFFFF),
@@ -31,21 +31,24 @@ class AppTheme {
         onError: Color(0xFFFFFFFF),
 
         /// Custom colors
-        tileBackgroundColor: Color(0XFF002E42),
+        tileBackgroundColor: Color(0xFF102840),
         defaultText: Color(0XFFFFFFFF),
         lightText: Color(0XFFBFCBD0),
-        defaultIcon: Color(0XFFBFCBD0),
+        defaultIcon: Color(0XFF90CAF9),
         disabledIcon: Color(0XFF8097A0),
-        disabledSurface: Color(0XFF8097A0),
+        disabledSurface: Color(0XFF1A2A3A),
         onDisabledSurface: Color(0XFFBFCBD0),
         linearGradient: LinearGradient(
           colors: [
-            Color(0xFF27BA62),
-            Color(0xFF137A61),
-            Color(0xFF0B6060),
+            Color(0xFF1976D2),
+            Color(0xFF42A5F5),
+            Color(0xFF0D253F),
           ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
       );
+
   static AppColors get lightColors => AppColors(
         brightness: Brightness.dark,
         primary: ColorManager.primaryBlue,

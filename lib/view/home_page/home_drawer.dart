@@ -280,8 +280,8 @@ class HomeDrawer extends ConsumerWidget {
     ).present(context);
   }
 
-  void _signOut({required BuildContext context, required WidgetRef ref}) {
-    ref.read(homeControllerProvider.notifier).signOut(context);
+  void _signOut({required BuildContext context, required WidgetRef ref}) async {
+    await ref.read(homeControllerProvider.notifier).signOut(context);
   }
 
   void _navigateToLogin(BuildContext context) {

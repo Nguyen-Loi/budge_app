@@ -6,6 +6,8 @@ import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/language_enum.dart';
+import 'package:budget_app/core/enums/currency_type_enum.dart';
+import 'package:budget_app/view/base_controller/currency_base_controller.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
@@ -27,6 +29,7 @@ class SettingsView extends StatelessWidget {
             children: [
               _themeSwitch(context, ref),
               _languageDropdown(context, ref),
+              _currencyDropdown(context, ref),
               _dailyTransactionReminderSwitch(context, ref),
               _asyncDb(context, ref),
             ],
@@ -88,9 +91,56 @@ class SettingsView extends StatelessWidget {
     );
   }
 
+  Widget _currencyDropdown(BuildContext context, WidgetRef ref) {
+    final currencyManager = ref.watch(currencyManagerProvider);
+    final currentCurrency =
+        ref.watch(userBaseControllerProvider.select((value) => value.currency));
+    final supportedCurrencies = currencyManager.getSupportedCurrencies();
+
+    return ListTile(
+      title: BText(context.loc.currency),
+      trailing: DropdownButton<CurrencyType>(
+        value: currentCurrency,
+        items: supportedCurrencies.map((currency) {
+          return DropdownMenuItem<CurrencyType>(
+            value: currency,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 30,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color:
+                        Theme.of(context).colorScheme.onPrimary.withAlpha(50),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: BText.b3(currency.symbol,
+                      textAlign: TextAlign.center, fontWeight: FontWeight.w600),
+                ),
+                gapW8,
+                BText(
+                  currency.code,
+                  fontWeight: FontWeight.w600,
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+        onChanged: (CurrencyType? newCurrency) {
+          if (newCurrency != null) {
+            ref
+                .read(userBaseControllerProvider.notifier)
+                .updateCurrency(context, newCurrency: newCurrency);
+          }
+        },
+      ),
+    );
+  }
+
   Widget _asyncDb(BuildContext context, WidgetRef ref) {
     final user = ref.read(userBaseControllerProvider.notifier);
-    if (!user.isLogin&&!kIsWeb) {
+    if (!user.isLogin && !kIsWeb) {
       return const SizedBox();
     }
     return ListTile(

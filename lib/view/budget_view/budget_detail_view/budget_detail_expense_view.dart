@@ -6,13 +6,14 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/budget_base_detail_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BudgetDetailExpenseView extends BudgetBaseDetailView {
   const BudgetDetailExpenseView(
       {super.key, required super.budget, required super.transactions});
 
   @override
-  List<Widget> header(BuildContext context, BudgetModel budget) {
+  List<Widget> header(BuildContext context, BudgetModel budget, WidgetRef ref) {
     bool isAllTime = budget.rangeDateTimeType == RangeDateTimeEnum.allTime;
     final progress = budget.budgetLimit > 0
         ? (budget.currentAmount / budget.budgetLimit).abs()
@@ -113,7 +114,7 @@ class BudgetDetailExpenseView extends BudgetBaseDetailView {
                     ),
                     const SizedBox(height: 4),
                     BText(
-                      budget.currentAmount.abs().toMoneyStr(),
+                      budget.currentAmount.abs().toMoneyStr(ref),
                       fontWeight: FontWeight.w700,
                       color: Theme.of(context).colorScheme.error,
                     ),
@@ -128,7 +129,7 @@ class BudgetDetailExpenseView extends BudgetBaseDetailView {
           svgAsset: SvgAssets.money,
           label:
               isAllTime ? context.loc.totalExpense : context.loc.currentExpense,
-          value: budget.currentAmount.toMoneyStrTruncated(),
+          value: budget.currentAmount.toMoneyStr(ref),
           colorValue: Theme.of(context).colorScheme.error),
       // Only show limit for time-limited budgets
       if (!isAllTime && budget.budgetLimit > 0)
@@ -136,7 +137,7 @@ class BudgetDetailExpenseView extends BudgetBaseDetailView {
           context,
           svgAsset: SvgAssets.limit,
           label: context.loc.limit,
-          value: budget.budgetLimit.toMoneyStrTruncated(),
+          value: budget.budgetLimit.toMoneyStr(ref),
         ),
       itemOperatingTime(context)
     ];

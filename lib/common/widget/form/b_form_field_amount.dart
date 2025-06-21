@@ -1,48 +1,78 @@
-import 'package:budget_app/common/type_def.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
-import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
+import 'package:budget_app/view/base_controller/currency_base_controller.dart';
+import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
-class BFormFieldAmount extends StatefulWidget {
-  final String label;
-  final String? hint;
-  final int? initialValue;
-  final OnChangeNumber onChanged;
-  final String? Function(String?)? validator;
-
+class BFormFieldAmount extends ConsumerStatefulWidget {
   const BFormFieldAmount({
     super.key,
     required this.label,
-    this.validator,
     this.hint,
+    this.onChanged,
+    this.validator,
     this.initialValue,
-    required this.onChanged,
   });
 
+  final String label;
+  final String? hint;
+  final Function(int?)? onChanged;
+  final String? Function(String?)? validator;
+  final int? initialValue;
+
   @override
-  State<BFormFieldAmount> createState() => _BFormFieldAmountState();
+  ConsumerState<BFormFieldAmount> createState() => _BFormFieldAmountState();
 }
 
-class _BFormFieldAmountState extends State<BFormFieldAmount> {
+class _BFormFieldAmountState extends ConsumerState<BFormFieldAmount> {
   void _reload(String str) {
-    String strFormat = str.replaceAll(',', '');
-    try {
-      strFormat =
-          NumberFormat.decimalPattern('en').format(int.parse(strFormat));
-    } catch (e) {
-      strFormat = str;
-    }
-    _controller.value = TextEditingValue(
-      text: strFormat,
-      selection: TextSelection.collapsed(offset: strFormat.length),
-    );
+    final currencyManager = ref.read(currencyManagerProvider);
+    final currentCurrency =
+        ref.read(userBaseControllerProvider.select((value) => value.currency));
 
-    widget.onChanged(value);
+    // Clean the input string
+    String strFormat =
+        str.replaceAll(',', '').replaceAll(RegExp(r'[^\d.]'), '');
+
+    // Parse the amount
+    final parsedAmount =
+        currencyManager.parseAmount(strFormat, currentCurrency);
+
+    if (parsedAmount != null) {
+      // Convert to integer for storage (handle decimal currencies properly)
+      int intValue;
+      if (currentCurrency.hasDecimals) {
+        // For currencies with decimals, store as cents/minor units
+        intValue = (parsedAmount * 100).round();
+      } else {
+        // For currencies without decimals, store as-is
+        intValue = parsedAmount.round();
+      }
+
+      // Format for display
+      try {
+        final formatter = currencyManager.getCurrencyFormatter(currentCurrency);
+        strFormat = formatter.format(parsedAmount);
+      } catch (e) {
+        strFormat = str;
+      }
+
+      _controller.value = TextEditingValue(
+        text: strFormat,
+        selection: TextSelection.collapsed(offset: strFormat.length),
+      );
+
+      // Store the integer value
+      value = intValue;
+      widget.onChanged?.call(value);
+    } else {
+      value = null;
+      widget.onChanged?.call(null);
+    }
   }
 
   late TextEditingController _controller;
@@ -53,10 +83,25 @@ class _BFormFieldAmountState extends State<BFormFieldAmount> {
     _controller = TextEditingController();
     value = widget.initialValue;
     if (widget.initialValue != null) {
-      _reload(widget.initialValue.toString());
+      // Convert stored integer back to display format
+      final currentCurrency =
+          CurrencyType.usd; // Default, will be updated in build
+      double displayValue;
+      if (currentCurrency.hasDecimals) {
+        displayValue = widget.initialValue! / 100.0;
+      } else {
+        displayValue = widget.initialValue!.toDouble();
+      }
+      _reload(displayValue.toString());
     }
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -70,26 +115,36 @@ class _BFormFieldAmountState extends State<BFormFieldAmount> {
         ),
         gapH8,
         Consumer(builder: (context, ref, _) {
-          String userCurrency = ref.watch(userBaseControllerProvider
-              .select((value) => value.currencyType.code));
-          String currency =
-              NumberFormat.compactSimpleCurrency(locale: userCurrency)
-                  .currencySymbol;
+          final currentCurrency = ref.watch(
+              userBaseControllerProvider.select((value) => value.currency));
+          final currencyManager = ref.watch(currencyManagerProvider);
+
+          String currencySymbol =
+              currencyManager.getCurrencySymbol(currentCurrency);
+
           return TextFormField(
             textInputAction: TextInputAction.done,
             controller: _controller,
             validator: widget.validator ?? (_) => value.validateAmount(context),
             maxLength: 16,
-            keyboardType: TextInputType.number,
+            keyboardType: currentCurrency.hasDecimals
+                ? const TextInputType.numberWithOptions(decimal: true)
+                : TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(currentCurrency.hasDecimals
+                  ? RegExp(r'[0-9.,]')
+                  : RegExp(r'[0-9,]')),
+            ],
             decoration: InputDecoration(
-              prefixText: currency,
-              hintText: widget.hint ?? context.loc.amountHint,
+              prefixText: '$currencySymbol ',
+              hintText:
+                  widget.hint ?? (currentCurrency.hasDecimals ? '0.00' : '0'),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
+              counterText: '', // Hide character counter
             ),
             onChanged: (string) {
-              value = int.tryParse(string.replaceAll(',', '')) ?? 0;
               _reload(string);
             },
           );

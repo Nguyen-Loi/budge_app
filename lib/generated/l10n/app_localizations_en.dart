@@ -183,7 +183,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
-  String get appName => 'Budget SS';
+  String get appName => 'SmartBudget';
 
   @override
   String get left => 'Left';
@@ -795,4 +795,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get removeChatMessage => 'Are you sure you want to delete this chat?';
+
+  @override
+  String get signingOutLoading => 'Signing out...';
+
+  @override
+  String get currency => 'Currency';
+
+  @override
+  String get usdCurrencyName => 'US Dollar';
+
+  @override
+  String get eurCurrencyName => 'Euro';
+
+  @override
+  String get jpyCurrencyName => 'Japanese Yen';
+
+  @override
+  String get vndCurrencyName => 'Vietnamese Dong';
+
+  @override
+  String get cadCurrencyName => 'Canadian Dollar';
 }

@@ -217,7 +217,7 @@ extension BudgetFormatModel on BudgetModel {
     } else {
       expenseContent = context.loc.reviewExpense(
           lastestTransaction.transactionDate.toFormatDate(),
-          lastestTransaction.amount.toMoneyStr());
+          lastestTransaction.amount.toMoneyStrContext(context));
     }
 
     switch (budgetType) {
@@ -261,13 +261,5 @@ extension StatusBudgetTimeType on BudgetStatusTime {
       case BudgetStatusTime.coming:
         return SvgAssets.coming;
     }
-  }
-}
-
-extension BudgetWallet on List<BudgetModel> {
-  String get toChatData {
-    return map((b) =>
-            "${b.name} (${b.budgetType.name}): ${b.currentAmount.toMoneyStr()}/${b.budgetLimit.toMoneyStr()}")
-        .join(", ");
   }
 }

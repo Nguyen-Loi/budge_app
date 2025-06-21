@@ -18,7 +18,7 @@ class BTextMoney extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BText(value.toMoneyStr(isPrefix: true),
+    return BText(value.toMoneyStrContext(context,isPrefix: true),
         color: value >= 0
             ? Theme.of(context).colorScheme.tertiary
             : Theme.of(context).colorScheme.error,

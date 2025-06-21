@@ -1,3 +1,4 @@
+import 'package:budget_app/common/widget/b_animated_text.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -16,7 +17,7 @@ CloseLoading showLoading({
       children: [
         Lottie.asset(LottieAssets.loading2),
         gapH16,
-        BText(text),
+        BAnimatedText(text),
       ],
     ),
   );
@@ -26,5 +27,9 @@ CloseLoading showLoading({
     builder: (_) => dialog,
   );
 
-  return () => Navigator.of(context).pop();
+  return () {
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+  };
 }

@@ -101,27 +101,29 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
 
   @override
   Widget build(BuildContext context) {
-    return ref.watch(mainPageFutureProvider(context)).when(
-          data: (_) => body(),
-          error: (_, __) => Scaffold(
-              body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                  child: BStatus.error(
-                text: context.loc.anErrorUnexpectedOccur,
+    return PopScope(
+        canPop: false,
+        child: ref.watch(mainPageFutureProvider(context)).when(
+              data: (_) => body(),
+              error: (_, __) => Scaffold(
+                  body: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                      child: BStatus.error(
+                    text: context.loc.anErrorUnexpectedOccur,
+                  )),
+                  SizedBox(height: 16),
+                  BButton(
+                    onPressed: () {
+                      ref.read(homeControllerProvider.notifier).refresh();
+                    },
+                    title: context.loc.refresh,
+                  )
+                ],
               )),
-              SizedBox(height: 16),
-              BButton(
-                onPressed: () {
-                  ref.read(homeControllerProvider.notifier).refresh();
-                },
-                title: context.loc.refresh,
-              )
-            ],
-          )),
-          loading: () => _loadingWidget(),
-        );
+              loading: () => _loadingWidget(),
+            ));
   }
 
   Widget _loadingWidget() {

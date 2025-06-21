@@ -197,7 +197,7 @@ class TransferData {
       }
 
       await batch.commit();
-      
+
       // Logout will not trandfer data to Firebase
       if (data['currentUidLogout'] == null) {
         data['userModelApi'] = userModel;
@@ -229,8 +229,10 @@ class TransferData {
         budgets.addAll(defaultBudgets);
       }
 
-      final db = ref.read(sqlProvider);
-
+      final db = ref.read(sqlHelperProvider);
+      if (db == null) {
+        return left(Failure(message: 'Database is not initialized'));
+      }
       // Start SQLite batch operation
       final Batch batch = db.batch();
 

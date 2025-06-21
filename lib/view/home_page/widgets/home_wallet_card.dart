@@ -7,8 +7,8 @@ import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeUpdateWalletCard extends ConsumerWidget {
-  const HomeUpdateWalletCard({super.key});
+class HomeWalletCard extends ConsumerWidget {
+  const HomeWalletCard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,10 +16,12 @@ class HomeUpdateWalletCard extends ConsumerWidget {
     return _item(
       context,
       value: balance,
+      ref: ref,
     );
   }
 
-  Widget _item(BuildContext context, {required int value}) {
+  Widget _item(BuildContext context,
+      {required int value, required WidgetRef ref}) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -51,7 +53,7 @@ class HomeUpdateWalletCard extends ConsumerWidget {
           ),
           gapH8,
           BText.h1(
-            value.toMoneyStr(),
+            value.toMoneyStr(ref, compact: false),
             color: Theme.of(context).colorScheme.onPrimary,
           ),
         ],

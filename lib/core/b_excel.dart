@@ -75,10 +75,10 @@ class BExcel {
           ..setText(budget.name);
         sheet.getRangeByIndex(rowIndex, budgetAmountColIndex)
           ..cellStyle = valueItemStyle
-          ..setText(budget.currentAmount.toMoneyStr());
+          ..setText(budget.currentAmount.toMoneyStrContext(context));
         sheet.getRangeByIndex(rowIndex, budgetLimitColIndex)
           ..cellStyle = valueItemStyle
-          ..setText(budget.budgetLimit.toMoneyStr().toString());
+          ..setText(budget.budgetLimit.toMoneyStrContext(context).toString());
         sheet.getRangeByIndex(rowIndex, budgetDurationColIndex)
           ..cellStyle = valueItemStyle
           ..setText(
@@ -128,7 +128,7 @@ class BExcel {
             ..setText(budget.name);
           sheet.getRangeByIndex(rowIndex, tranAmountColIndex)
             ..cellStyle = valueItemStyle
-            ..setText(transaction.amount.toMoneyStr());
+            ..setText(transaction.amount.toMoneyStrContext(context));
           sheet.getRangeByIndex(rowIndex, tranDateColIndex)
             ..cellStyle = valueItemStyle
             ..setText(transaction.transactionDate.toFormatDate());
@@ -157,7 +157,7 @@ class BExcel {
         ..setText(context.loc.totalIncome)
         ..cellStyle.bold = true;
       sheet.getRangeByIndex(rowIndex, summaryValueColIndex)
-        ..setText(totalIncome.toMoneyStr())
+        ..setText(totalIncome.toMoneyStrContext(context))
         ..cellStyle.bold = true
         ..cellStyle.fontColor = '#28a745';
 
@@ -167,7 +167,7 @@ class BExcel {
         ..setText(context.loc.totalExpense)
         ..cellStyle.bold = true;
       sheet.getRangeByIndex(rowIndex, summaryValueColIndex)
-        ..setText(totalExpense.abs().toMoneyStr())
+        ..setText(totalExpense.abs().toMoneyStrContext(context))
         ..cellStyle.bold = true
         ..cellStyle.fontColor = '#dc3545';
 
