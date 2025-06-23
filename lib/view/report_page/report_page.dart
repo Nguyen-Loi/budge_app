@@ -1,14 +1,17 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/ad_helper.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/report_page/controller/report_page_controller.dart';
 import 'package:budget_app/view/report_page/widgets/report_filter_dialog.dart';
 import 'package:budget_app/view/report_page/widgets/smart_budget_chart.dart';
 import 'package:budget_app/view/report_page/widgets/budget_transaction_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class ReportPage extends ConsumerStatefulWidget {
   const ReportPage({super.key});
@@ -18,13 +21,96 @@ class ReportPage extends ConsumerStatefulWidget {
 }
 
 class _ReportPageState extends ConsumerState<ReportPage> {
+  BannerAd? _bannerAd;
+  bool _isBannerAdReady = false;
+  InterstitialAd? _interstitialAd;
+  bool _isInterstitialAdReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    bool isPermissionAds =
+        ref.read(remoteConfigBaseControllerProvider.notifier).isUserAds;
+    if (isPermissionAds) {
+      _loadBannerAd();
+      _loadInterstitialAd();
+    }
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    _interstitialAd?.dispose();
+    super.dispose();
+  }
+
+  void _loadBannerAd() {
+    _bannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          setState(() {
+            _isBannerAdReady = false;
+          });
+          ad.dispose();
+        },
+      ),
+    );
+    _bannerAd!.load();
+  }
+
+  void _loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          _interstitialAd = ad;
+          _isInterstitialAdReady = true;
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          _isInterstitialAdReady = false;
+        },
+      ),
+    );
+  }
+
+  void _showInterstitialAd() {
+    if (_isInterstitialAdReady && _interstitialAd != null) {
+      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+        onAdDismissedFullScreenContent: (InterstitialAd ad) {
+          ad.dispose();
+          _loadInterstitialAd(); // Load a new ad for next time
+        },
+        onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+          ad.dispose();
+          _loadInterstitialAd(); // Load a new ad for next time
+        },
+      );
+      _interstitialAd!.show();
+      _isInterstitialAdReady = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final reportState = ref.watch(reportPageControllerProvider);
     final controller = ref.read(reportPageControllerProvider.notifier);
 
     return Scaffold(
-      body: _buildBody(context, reportState, controller),
+      body: Stack(
+        children: [
+          _buildBody(context, reportState, controller),
+          _buildPinnedBannerAd(),
+        ],
+      ),
     );
   }
 
@@ -54,9 +140,9 @@ class _ReportPageState extends ConsumerState<ReportPage> {
             child: _buildTransactionsSection(context, state),
           ),
 
-          // Bottom padding
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 100),
+          // Bottom padding (increased to account for pinned banner ad)
+          SliverToBoxAdapter(
+            child: SizedBox(height: _isBannerAdReady ? 70 : 20),
           ),
         ],
       ),
@@ -116,7 +202,10 @@ class _ReportPageState extends ConsumerState<ReportPage> {
         : Theme.of(context).disabledColor;
     return GestureDetector(
       onTap: hasData && !state.isLoading
-          ? () => controller.exportExcel(context)
+          ? () {
+              _showInterstitialAd();
+              controller.exportExcel(context);
+            }
           : null,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
@@ -287,6 +376,28 @@ class _ReportPageState extends ConsumerState<ReportPage> {
         ],
       ),
     );
+  }
+
+  Widget _buildPinnedBannerAd() {
+    if (_isBannerAdReady && _bannerAd != null) {
+      return Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Container(
+          alignment: Alignment.center,
+          color: Theme.of(context).scaffoldBackgroundColor,
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: SizedBox(
+            width: _bannerAd!.size.width.toDouble(),
+            height: _bannerAd!.size.height.toDouble(),
+            child: AdWidget(ad: _bannerAd!),
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
   String _formatDateRange(DateTimeRange range) {

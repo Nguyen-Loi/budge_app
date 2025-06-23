@@ -1,6 +1,8 @@
 // main.dart
 import 'dart:developer' as developer;
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 // Blue text
 void logInfo(String msg) {
   developer.log('\x1B[34m$msg\x1B[0m');
@@ -17,6 +19,9 @@ void logWarning(String msg) {
 }
 
 // Red text
-void logError(String msg) {
+void logError(String msg, {bool toCrashlytics = true}) {
   developer.log('\x1B[31m$msg\x1B[0m');
+  if (toCrashlytics) {
+    FirebaseCrashlytics.instance.recordError(msg, null);
+  }
 }
