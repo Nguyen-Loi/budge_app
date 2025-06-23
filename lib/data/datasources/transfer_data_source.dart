@@ -152,9 +152,7 @@ class TransferData {
       List<BudgetModel> budgets = data['budgetsModelLocal'];
       List<TransactionModel> transactions = data['transactionsModelLocal'];
 
-      userModel = userModel.copyWith(
-        id: userId,
-      );
+      userModel = userModel.copyWith(id: userId, email: userModelApi.email);
 
       budgets =
           budgets.map((budget) => budget.copyWith(userId: userId)).toList();
@@ -220,7 +218,7 @@ class TransferData {
       List<TransactionModel> transactions = data['transactionsModelApi'];
 
       List<BudgetModel> budgetsLocal = data['budgetsModelLocal'];
-      if (budgetsLocal.isEmpty) {
+      if (budgetsLocal.isEmpty || budgets.isEmpty) {
         List<BudgetModel> defaultBudgets =
             DefaultBudgetService.createDefaultBudgets(
           userId: userModel.id,

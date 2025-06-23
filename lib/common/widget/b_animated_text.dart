@@ -17,6 +17,7 @@ class _BAnimatedTextState extends State<BAnimatedText>
   int _repeatCount = 0;
   static const int maxRepeats = 4;
   late AnimationController _cursorController;
+  bool _isDisposed = false;
 
   @override
   void initState() {
@@ -47,14 +48,17 @@ class _BAnimatedTextState extends State<BAnimatedText>
   }
 
   void _startAnimation() async {
-    while (_repeatCount < maxRepeats && mounted) {
+    while (_repeatCount < maxRepeats && mounted && !_isDisposed) {
+      if (!mounted || _isDisposed) return;
       await _controller.forward();
+      if (!mounted || _isDisposed) return;
       await Future.delayed(const Duration(milliseconds: 500));
+      if (!mounted || _isDisposed) return;
       _controller.reset();
       _repeatCount++;
     }
     // Keep the full text displayed after animation completes
-    if (mounted) {
+    if (mounted && !_isDisposed) {
       _controller.forward();
     }
   }
@@ -65,6 +69,7 @@ class _BAnimatedTextState extends State<BAnimatedText>
 
   @override
   void dispose() {
+    _isDisposed = true;
     _controller.dispose();
     _cursorController.dispose();
     super.dispose();

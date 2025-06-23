@@ -7,6 +7,7 @@ void showSnackBar(BuildContext context, String content) {
       content: BText(
         content,
         color: Theme.of(context).colorScheme.onPrimary,
+        fontWeight: FontWeight.w600,
       ),
       behavior: SnackBarBehavior.floating,
     ),

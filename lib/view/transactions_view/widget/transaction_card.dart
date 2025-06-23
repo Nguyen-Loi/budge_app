@@ -85,7 +85,10 @@ class _TransactionCardState extends State<TransactionCard>
                       fontWeight: FontWeight.bold),
                   subtitle: BText.b3(
                       widget.model.transaction.transactionDate.toFormatDate()),
-                  trailing: BTextMoney(widget.model.transaction.amount),
+                  trailing: Consumer(builder: (_, ref, __) {
+                    return BTextMoney(widget.model.transaction.amount,
+                        ref: ref);
+                  }),
                 ),
               ),
             ),
@@ -393,15 +396,13 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
                 gapH4,
-                Consumer(
-                  builder: (_, ref, __) {
-                    return BText.b1(
-                      widget.model.transaction.amount.toMoneyStr(ref),
-                      color: color,
-                      fontWeight: FontWeight.bold,
-                    );
-                  }
-                ),
+                Consumer(builder: (_, ref, __) {
+                  return BText.b1(
+                    widget.model.transaction.amount.toMoneyStr(ref),
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                  );
+                }),
               ],
             ),
           ),

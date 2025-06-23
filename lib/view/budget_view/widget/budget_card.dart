@@ -1,6 +1,7 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/b_text_money.dart';
 import 'package:budget_app/common/widget/custom/budget_expense_status.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
@@ -277,11 +278,9 @@ class _BudgetCardState extends State<BudgetCard> with TickerProviderStateMixin {
         ),
         gapW8,
         // Amount section
-        Consumer(
-          builder: (_, ref, __) {
-            return _buildAmountDisplay(context, ref: ref);
-          }
-        ),
+        Consumer(builder: (_, ref, __) {
+          return _buildAmountDisplay(context, ref: ref);
+        }),
         if (!widget.isPreview) ...[
           gapW8,
           Icon(
@@ -354,7 +353,7 @@ class _BudgetCardState extends State<BudgetCard> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildAmountDisplay(BuildContext context,{required WidgetRef ref}) {
+  Widget _buildAmountDisplay(BuildContext context, {required WidgetRef ref}) {
     bool isAllTime =
         widget.model.rangeDateTimeType == RangeDateTimeEnum.allTime;
 
@@ -394,11 +393,10 @@ class _BudgetCardState extends State<BudgetCard> with TickerProviderStateMixin {
               duration: const Duration(milliseconds: 800),
               tween:
                   Tween(begin: 0.0, end: widget.model.currentAmount.toDouble()),
-              builder: (context, value, child) {
-                return BText.b1(
-                  value.toMoneyStr(ref, isPrefix: true),
-                  color: _getExpenseStatusColor(context, spentPercent),
-                  fontWeight: FontWeight.w700,
+              builder: (context, value, __) {
+                return BTextMoney(
+                  value.toInt(),
+                  fontSize: 18,
                 );
               },
             ),

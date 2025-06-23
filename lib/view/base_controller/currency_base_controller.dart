@@ -146,7 +146,3 @@ class CurrencyManager {
 final currencyManagerProvider = Provider<CurrencyManager>((ref) {
   return CurrencyManager();
 });
-
-final currentCurrencyProvider = StateProvider<CurrencyType>((ref) {
-  return CurrencyType.usd;
-});
