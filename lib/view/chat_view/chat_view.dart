@@ -124,7 +124,7 @@ class _ChatViewState extends ConsumerState<ChatView>
                 final user = ref.watch(userBaseControllerProvider);
                 return BText.caption(
                   "${context.loc.hello}, ${user.name}!",
-                  color: Theme.of(context).colorScheme.onSecondary,
+                  color: Theme.of(context).colorScheme.onPrimary.withAlpha(200),
                 );
               }),
             ],
