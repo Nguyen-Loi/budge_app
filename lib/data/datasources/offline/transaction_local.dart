@@ -169,7 +169,7 @@ class TransactionLocal extends TransactionRepository {
       return right((newTransaction, newBudget, updatedUser));
     } catch (e) {
       logError(e.toString());
-      return left(Failure(error: e.toString()));
+      return left(Failure(error: e.toString(), message: e.toString()));
     }
   }
 

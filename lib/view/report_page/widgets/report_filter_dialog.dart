@@ -92,6 +92,7 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
           },
           child: BText(
             context.loc.confirm,
+            fontWeight: FontWeight.bold,
             color: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
@@ -295,18 +296,54 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
   void _showDateRangePicker() async {
     final firstDate = widget.firstDate;
     final lastDate = widget.lastDate;
-    if (firstDate != null || lastDate != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.loc.noData)),
-      );
-      return;
-    }
+
     final now = DateTime.now();
+    final minDate = firstDate ?? DateTime(now.year - 1);
+    final maxDate = lastDate ?? DateTime(now.year + 1);
+
+    DateTimeRange initialRange = _selectedDateRange;
+
+    if (initialRange.start.isBefore(minDate)) {
+      final duration = initialRange.duration;
+      DateTime newStart = minDate;
+      DateTime newEnd = newStart.add(duration);
+
+      if (newEnd.isAfter(maxDate)) {
+        newEnd = maxDate;
+        if (newEnd.difference(newStart).inDays < 1) {
+          newStart = maxDate.subtract(const Duration(days: 30));
+          if (newStart.isBefore(minDate)) {
+            newStart = minDate;
+          }
+        }
+      }
+
+      initialRange = DateTimeRange(start: newStart, end: newEnd);
+    }
+
+    if (initialRange.end.isAfter(maxDate)) {
+      final duration = initialRange.duration;
+      DateTime newEnd = maxDate;
+      DateTime newStart = newEnd.subtract(duration);
+
+      if (newStart.isBefore(minDate)) {
+        newStart = minDate;
+        if (newEnd.difference(newStart).inDays < 1) {
+          newEnd = minDate.add(const Duration(days: 30));
+          if (newEnd.isAfter(maxDate)) {
+            newEnd = maxDate;
+          }
+        }
+      }
+
+      initialRange = DateTimeRange(start: newStart, end: newEnd);
+    }
+
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
-      firstDate: firstDate ?? DateTime(now.year - 1),
-      lastDate: lastDate ?? DateTime(now.year + 1),
-      initialDateRange: _selectedDateRange,
+      firstDate: minDate,
+      lastDate: maxDate,
+      initialDateRange: initialRange,
     );
 
     if (picked != null) {
