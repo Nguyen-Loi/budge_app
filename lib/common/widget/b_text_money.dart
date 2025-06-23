@@ -30,9 +30,11 @@ class BTextMoney extends StatelessWidget {
       currencySymbol,
       textAlign: textAlign,
       style: context.textTheme.bodyMedium?.copyWith(
-        color: value >= 0
-            ? Theme.of(context).colorScheme.tertiary
-            : Theme.of(context).colorScheme.error,
+        color: value == 0
+            ? Theme.of(context).colorScheme.onSurfaceVariant
+            : value >= 0
+                ? Theme.of(context).colorScheme.tertiary
+                : Theme.of(context).colorScheme.error,
         fontWeight: fontWeight ?? FontWeight.w700,
         fontStyle: fontStyle,
         fontSize: fontSize,
