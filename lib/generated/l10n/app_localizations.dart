@@ -1148,7 +1148,7 @@ abstract class AppLocalizations {
   /// No description provided for @invalidDateRange.
   ///
   /// In en, this message translates to:
-  /// **'The new date range must fully include the current date range.'**
+  /// **'The new time frame must cover the entire current time frame.'**
   String get invalidDateRange;
 
   /// No description provided for @emailNotFound.
@@ -1630,6 +1630,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Canadian Dollar'**
   String get cadCurrencyName;
+
+  /// No description provided for @feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get feedback;
+
+  /// No description provided for @contactUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get contactUs;
+
+  /// No description provided for @contactUsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re here to help and answer any questions you might have.'**
+  String get contactUsDesc;
+
+  /// No description provided for @sendEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Email'**
+  String get sendEmail;
+
+  /// No description provided for @emailSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Support'**
+  String get emailSupport;
+
+  /// No description provided for @emailSupportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Get help with your account and billing'**
+  String get emailSupportDesc;
+
+  /// No description provided for @phoneSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Support'**
+  String get phoneSupport;
+
+  /// No description provided for @phoneSupportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Mon-Fri, 9AM-6PM EST'**
+  String get phoneSupportDesc;
+
+  /// No description provided for @followUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow Us'**
+  String get followUs;
+
+  /// No description provided for @getInTouch.
+  ///
+  /// In en, this message translates to:
+  /// **'Get in Touch'**
+  String get getInTouch;
+
+  /// No description provided for @copyEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Email'**
+  String get copyEmail;
+
+  /// No description provided for @copyPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Phone'**
+  String get copyPhone;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get quickActions;
+
+  /// No description provided for @pSubjectContactUsEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'{appName} App Support'**
+  String pSubjectContactUsEmail(Object appName);
+
+  /// No description provided for @pBodyContactUsEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello {appName} Team,\n\nI need assistance with the following:\n\n'**
+  String pBodyContactUsEmail(Object appName);
+
+  /// No description provided for @pCopyToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard: {value}'**
+  String pCopyToClipboard(Object value);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

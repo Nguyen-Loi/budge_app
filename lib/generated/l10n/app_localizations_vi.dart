@@ -565,7 +565,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get allTime => 'Không giới hạn';
 
   @override
-  String get invalidDateRange => 'Khoảng thời gian mới phải bao gồm toàn bộ khoảng thời gian hiện tại.';
+  String get invalidDateRange => 'Khoảng thời gian mới cần phải bao trùm toàn bộ khoảng thời gian hiện tại.';
 
   @override
   String get emailNotFound => 'Email không tồn tại';
@@ -816,4 +816,58 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get cadCurrencyName => 'Đô la Canada';
+
+  @override
+  String get feedback => 'Phản hồi';
+
+  @override
+  String get contactUs => 'Liên hệ';
+
+  @override
+  String get contactUsDesc => 'Chúng tôi sẵn sàng hỗ trợ và giải đáp mọi thắc mắc của bạn.';
+
+  @override
+  String get sendEmail => 'Gửi email';
+
+  @override
+  String get emailSupport => 'Hỗ trợ email';
+
+  @override
+  String get emailSupportDesc => 'Trợ giúp về tài khoản và thanh toán';
+
+  @override
+  String get phoneSupport => 'Hỗ trợ điện thoại';
+
+  @override
+  String get phoneSupportDesc => 'Có mặt Thứ 2 - Thứ 6, 9:00 - 18:00 giờ EST';
+
+  @override
+  String get followUs => 'Theo dõi chúng tôi';
+
+  @override
+  String get getInTouch => 'Kết nối với chúng tôi';
+
+  @override
+  String get copyEmail => 'Sao chép email';
+
+  @override
+  String get copyPhone => 'Sao chép số điện thoại';
+
+  @override
+  String get quickActions => 'Thao tác nhanh';
+
+  @override
+  String pSubjectContactUsEmail(Object appName) {
+    return 'Hỗ trợ ứng dụng $appName';
+  }
+
+  @override
+  String pBodyContactUsEmail(Object appName) {
+    return 'Xin chào đội ngũ $appName,\n\nTôi cần trợ giúp về vấn đề sau:\n\n';
+  }
+
+  @override
+  String pCopyToClipboard(Object value) {
+    return 'Đã sao chép: $value';
+  }
 }

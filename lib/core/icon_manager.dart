@@ -42,6 +42,11 @@ class IconManager {
   static IconData account = FontAwesomeIcons.user;
   static IconData setting = Icons.settings_outlined;
   static IconData contact = Icons.phone_outlined;
+  static IconData feedback = FontAwesomeIcons.commentDots;
+
+  // Social Media
+  static IconData facebook = FontAwesomeIcons.facebook;
+  static IconData instagram = FontAwesomeIcons.instagram;
 
   //Bottombar
   static IconData homeBar = Icons.home_rounded;

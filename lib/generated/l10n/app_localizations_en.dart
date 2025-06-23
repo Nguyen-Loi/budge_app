@@ -565,7 +565,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allTime => 'All time';
 
   @override
-  String get invalidDateRange => 'The new date range must fully include the current date range.';
+  String get invalidDateRange => 'The new time frame must cover the entire current time frame.';
 
   @override
   String get emailNotFound => 'Email not found';
@@ -816,4 +816,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cadCurrencyName => 'Canadian Dollar';
+
+  @override
+  String get feedback => 'Feedback';
+
+  @override
+  String get contactUs => 'Contact Us';
+
+  @override
+  String get contactUsDesc => 'We\'re here to help and answer any questions you might have.';
+
+  @override
+  String get sendEmail => 'Send Email';
+
+  @override
+  String get emailSupport => 'Email Support';
+
+  @override
+  String get emailSupportDesc => 'Get help with your account and billing';
+
+  @override
+  String get phoneSupport => 'Phone Support';
+
+  @override
+  String get phoneSupportDesc => 'Available Mon-Fri, 9AM-6PM EST';
+
+  @override
+  String get followUs => 'Follow Us';
+
+  @override
+  String get getInTouch => 'Get in Touch';
+
+  @override
+  String get copyEmail => 'Copy Email';
+
+  @override
+  String get copyPhone => 'Copy Phone';
+
+  @override
+  String get quickActions => 'Quick Actions';
+
+  @override
+  String pSubjectContactUsEmail(Object appName) {
+    return '$appName App Support';
+  }
+
+  @override
+  String pBodyContactUsEmail(Object appName) {
+    return 'Hello $appName Team,\n\nI need assistance with the following:\n\n';
+  }
+
+  @override
+  String pCopyToClipboard(Object value) {
+    return 'Copied to clipboard: $value';
+  }
 }

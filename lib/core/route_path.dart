@@ -6,6 +6,7 @@ import 'package:budget_app/view/budget_view/budget_detail_view/budget_detail_vie
 import 'package:budget_app/view/budget_view/budget_modify_view/budget_modify_view.dart';
 import 'package:budget_app/view/budget_view/budget_new_view/new_budget_view.dart';
 import 'package:budget_app/view/chat_view/chat_view.dart';
+import 'package:budget_app/view/contact_view/contact_view.dart';
 import 'package:budget_app/view/main_page_view/main_page_view.dart';
 import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
 import 'package:budget_app/view/profile_view/profile_view.dart';
@@ -31,6 +32,7 @@ class RoutePath {
   static const String settings = "/settings";
   static const String report = "/report";
   static const String chat = "/chat";
+  static const String contact = "/contact";
 }
 
 class MainRouter {
@@ -66,6 +68,8 @@ class MainRouter {
         return MaterialPageRoute(builder: (_) => const SettingsView());
       case RoutePath.chat:
         return MaterialPageRoute(builder: (_) => const ChatView());
+      case RoutePath.contact:
+        return MaterialPageRoute(builder: (_) => const ContactView());
 
       default:
         return MaterialPageRoute(

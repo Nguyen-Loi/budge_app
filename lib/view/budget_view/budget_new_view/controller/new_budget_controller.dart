@@ -38,7 +38,7 @@ class NewBudgetController extends StateNotifier<bool> {
         super(false);
 
   String? _errorValidate(BuildContext context, {required String budgetName}) {
-    List<BudgetModel> list = _budgetBaseController.budgetAvailable;
+    List<BudgetModel> list = _budgetBaseController.getAll;
     final budgetExits = list.firstWhereOrNull((e) => e.id == budgetName);
     if (budgetExits != null) {
       return context.loc.pBudgetNameExits(budgetName);

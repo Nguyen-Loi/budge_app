@@ -1,3 +1,4 @@
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_avatar_profile.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
@@ -10,6 +11,7 @@ import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class HomeDrawer extends ConsumerWidget {
   const HomeDrawer({
@@ -128,9 +130,13 @@ class HomeDrawer extends ConsumerWidget {
           onTap: () => _navigateToSettings(context),
         ),
         _DrawerMenuItem(
-          icon: IconManager.contact,
-          title: context.loc.contact,
-          onTap: () => _showContactDialog(context),
+            icon: IconManager.contact,
+            title: context.loc.contact,
+            onTap: () => Navigator.pushNamed(context, RoutePath.contact)),
+        _DrawerMenuItem(
+          icon: IconManager.feedback,
+          title: context.loc.feedback,
+          onTap: () => _requestAppReview(context),
         ),
         if (isLogin)
           _DrawerMenuItem(
@@ -273,10 +279,29 @@ class HomeDrawer extends ConsumerWidget {
     Navigator.pushNamed(context, RoutePath.settings);
   }
 
-  void _showContactDialog(BuildContext context) {
+  void _requestAppReview(BuildContext context) async {
+    try {
+      final InAppReview inAppReview = InAppReview.instance;
+      if (await inAppReview.isAvailable()) {
+        await inAppReview.requestReview();
+      } else {
+        if (context.mounted) {
+          _showThankYouDialog(context);
+        }
+      }
+    } catch (e) {
+      logError('Error requesting app review: $e');
+      if (context.mounted) {
+        _showThankYouDialog(context);
+      }
+    }
+  }
+
+  void _showThankYouDialog(BuildContext context) {
     BDialogInfo(
-      message: context.loc.developingFreatures,
-      dialogInfoType: BDialogInfoType.warning,
+      message:
+          "Thank you for your interest in reviewing our app! Your feedback is valuable to us.",
+      dialogInfoType: BDialogInfoType.success,
     ).present(context);
   }
 
