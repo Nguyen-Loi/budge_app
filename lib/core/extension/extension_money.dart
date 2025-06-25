@@ -50,6 +50,9 @@ extension NumExtensions on num {
       return _toMoneyStrTruncated(currency: currency, isPrefix: isPrefix);
     }
 
+    // Convert storage amount to display amount first
+    final displayAmount = currency.hasDecimals ? this / 100.0 : toDouble();
+
     String formattedNumber;
     NumberFormat formatter;
 
@@ -92,7 +95,7 @@ extension NumExtensions on num {
         break;
     }
 
-    formattedNumber = formatter.format(this);
+    formattedNumber = formatter.format(displayAmount);
 
     if (!isPrefix || this == 0) {
       return formattedNumber;
@@ -105,19 +108,22 @@ extension NumExtensions on num {
     bool isPrefix = false,
     int maxLength = 10,
   }) {
+    // Convert storage amount to display amount first
+    final displayAmount = currency.hasDecimals ? this / 100.0 : toDouble();
+
     // Handle large numbers with abbreviations
-    double absValue = abs().toDouble();
+    double absValue = displayAmount.abs();
     String abbreviatedValue;
     String suffix = '';
 
     if (absValue >= 1000000000) {
-      abbreviatedValue = (this / 1000000000).toStringAsFixed(1);
+      abbreviatedValue = (displayAmount / 1000000000).toStringAsFixed(1);
       suffix = 'B';
     } else if (absValue >= 1000000) {
-      abbreviatedValue = (this / 1000000).toStringAsFixed(1);
+      abbreviatedValue = (displayAmount / 1000000).toStringAsFixed(1);
       suffix = 'M';
     } else if (absValue >= 1000) {
-      abbreviatedValue = (this / 1000).toStringAsFixed(1);
+      abbreviatedValue = (displayAmount / 1000).toStringAsFixed(1);
       suffix = 'K';
     } else {
       String regular = _toMoney(
@@ -129,8 +135,8 @@ extension NumExtensions on num {
         return isPrefix && this > 0 ? '+$regular' : regular;
       }
       abbreviatedValue = currency.hasDecimals
-          ? toStringAsFixed(currency.decimalPlaces)
-          : toStringAsFixed(0);
+          ? displayAmount.toStringAsFixed(currency.decimalPlaces)
+          : displayAmount.toStringAsFixed(0);
     }
 
     // Remove trailing .0 for cleaner display
@@ -169,8 +175,10 @@ extension NumExtensions on num {
 
   /// Formats money with proper separators (no currency symbol)
   String toFormattedNumber({CurrencyType currencyType = CurrencyType.vnd}) {
+    // Convert storage amount to display amount first
+    final displayAmount = currencyType.hasDecimals ? this / 100.0 : toDouble();
     final formatter = NumberFormat.decimalPattern(currencyType.locale);
-    return formatter.format(this);
+    return formatter.format(displayAmount);
   }
 
   /// Get currency symbol only
@@ -188,6 +196,9 @@ extension NumExtensions on num {
     // In a real app, you'd fetch live exchange rates
     if (from == to) return toDouble();
 
+    // Convert storage amount to display amount first
+    final displayAmount = from.hasDecimals ? this / 100.0 : toDouble();
+
     // Default rates (these should come from an API)
     final defaultRates = {
       'USD_EUR': 0.85,
@@ -203,6 +214,6 @@ extension NumExtensions on num {
     final rateKey = '${from.code}_${to.code}';
     final rate = exchangeRates?[rateKey] ?? defaultRates[rateKey] ?? 1.0;
 
-    return toDouble() * rate;
+    return displayAmount * rate;
   }
 }

@@ -22,7 +22,7 @@ class NewTransactionView extends ConsumerStatefulWidget {
 
 class _ExpenseViewState extends ConsumerState<NewTransactionView> {
   late TextEditingController _noteController;
-  late int _amount;
+  int? _amount; // Make nullable to handle validation properly
   late String _budgetId;
   late DateTime _transactionDate;
 
@@ -35,10 +35,10 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
   }
 
   void _addTransaction() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && _amount != null) {
       ref.read(userBaseControllerProvider.notifier).addTransaction(context,
           budgetId: _budgetId,
-          amount: _amount,
+          amount: _amount!,
           note: _noteController.text,
           transactionDate: _transactionDate);
     }
@@ -81,9 +81,7 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
     return BFormFieldAmount(
       label: context.loc.amount,
       onChanged: (v) {
-        if (v != null) {
-          _amount = v;
-        }
+        _amount = v;
       },
     );
   }
