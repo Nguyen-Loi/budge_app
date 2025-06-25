@@ -1792,6 +1792,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose your currency'**
   String get chooseYourCurrency;
+
+  /// No description provided for @pShowingBudgetsFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing budgets for: {data}'**
+  String pShowingBudgetsFor(Object data);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -903,4 +903,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get chooseYourCurrency => 'Chọn loại tiền tệ của bạn';
+
+  @override
+  String pShowingBudgetsFor(Object data) {
+    return 'Hiển thị ngân sách cho $data';
+  }
 }

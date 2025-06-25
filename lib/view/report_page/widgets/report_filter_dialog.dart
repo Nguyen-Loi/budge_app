@@ -1,5 +1,6 @@
 import 'package:budget_app/common/widget/b_filter_chip.dart';
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
@@ -77,11 +78,13 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
         ),
       ),
       actions: [
-        TextButton(
+        BButton.outlined(
           onPressed: () => Navigator.of(context).pop(),
-          child: BText(context.loc.cancel),
+          title: context.loc.cancel,
+          maxWidth: 120,
         ),
-        FilledButton(
+        BButton(
+          maxWidth: 120,
           onPressed: () {
             widget.onFiltersChanged(
               _selectedDateRange,
@@ -90,12 +93,8 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
             );
             Navigator.of(context).pop();
           },
-          child: BText(
-            context.loc.confirm,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-        ),
+          title: context.loc.confirm,
+        )
       ],
     );
   }
@@ -261,7 +260,9 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
               borderRadius: BorderRadius.circular(6),
             ),
             child: BText.caption(
-              'Showing budgets for: ${_selectedTransactionTypes.map((t) => t.content(context)).join(', ')}',
+              context.loc.pShowingBudgetsFor(_selectedTransactionTypes
+                  .map((t) => t.content(context))
+                  .join(', ')),
               color: Theme.of(context).colorScheme.primary,
             ),
           ),

@@ -417,16 +417,16 @@ class _ContactViewState extends State<ContactView>
           children: [
             Expanded(
               child: BButton(
-                onPressed: () => _copyToClipboard(_email),
-                title: loc.copyEmail,
-              ),
+                  onPressed: () => _copyToClipboard(_email),
+                  title: loc.copyEmail,
+                  size: ButtonSize.small),
             ),
             gapW16,
             Expanded(
               child: BButton(
-                onPressed: () => _copyToClipboard(_phone),
-                title: loc.copyPhone,
-              ),
+                  onPressed: () => _copyToClipboard(_phone),
+                  title: loc.copyPhone,
+                  size: ButtonSize.small),
             ),
           ],
         ),

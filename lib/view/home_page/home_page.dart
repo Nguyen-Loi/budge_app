@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/icon_manager.dart';
+import 'package:budget_app/demo/button_demo_page.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
@@ -131,7 +132,13 @@ class _HomePageState extends ConsumerState<HomePage>
                     ],
                   ),
                 ),
-                BAvatarProfile(url: user.profileUrl, username: user.name),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ButtonDemoPage()));
+                    },
+                    child: BAvatarProfile(
+                        url: user.profileUrl, username: user.name)),
               ],
             ),
           );

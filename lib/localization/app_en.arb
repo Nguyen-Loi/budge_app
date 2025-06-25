@@ -346,5 +346,6 @@
     "detailedReports": "Detailed Reports",
     "next": "Next",
     "takeControlOfYourFinances": "Take control of your finances with smart budgeting and expense tracking",
-    "chooseYourCurrency": "Choose your currency"
+    "chooseYourCurrency": "Choose your currency",
+    "pShowingBudgetsFor": "Showing budgets for: {data}"
 }

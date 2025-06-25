@@ -903,4 +903,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chooseYourCurrency => 'Choose your currency';
+
+  @override
+  String pShowingBudgetsFor(Object data) {
+    return 'Showing budgets for: $data';
+  }
 }

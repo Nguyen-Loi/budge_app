@@ -1,6 +1,6 @@
-import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/b_text.dart';
+
 import 'package:budget_app/common/widget/bottom_sheet/b_bottom_sheet_range_datetime.dart';
+import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_budget_type.dart';
 import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
@@ -149,9 +149,10 @@ class _BudgetNewViewState extends State<NewBudgetView> {
           const SizedBox(height: 64),
           Consumer(
             builder: (context, ref, child) {
-              return FilledButton(
-                  onPressed: () => _addNewBudget(ref),
-                  child: BText(context.loc.add, color: ColorManager.white));
+              return BButton(
+                title: context.loc.add,
+                onPressed: () => _addNewBudget(ref),
+              );
             },
           )
         ],

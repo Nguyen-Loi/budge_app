@@ -5,6 +5,7 @@ class SizeConstants {
 
   static const double maxWidthBase = 700;
   static const double buttonMaxWidth = 200;
+  static const double buttonMinHeight = 48;
   static const double tablet = 700;
   static const double desktop = 1200;
   static const double gridSize = 1000;
