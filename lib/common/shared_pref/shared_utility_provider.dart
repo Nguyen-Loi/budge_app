@@ -16,6 +16,7 @@ final sharedUtilityProvider = Provider<SharedUtility>((ref) {
 const String _darkModeKey = 'darkMode';
 const String _languageCodeKey = 'language_code';
 const String _defaultBudgetsCreatedKey = 'default_budgets_created';
+const String _dataFirstTime = 'data_first_time';
 
 class SharedUtility {
   SharedUtility({
@@ -59,5 +60,13 @@ class SharedUtility {
 
   Future<void> reset() async {
     await sharedPreferences.clear();
+  }
+
+  bool isDataFirstTime() {
+    return sharedPreferences.getBool(_dataFirstTime) ?? true;
+  }
+
+  void setDataFirstTimeIsFalse() {
+    sharedPreferences.setBool(_dataFirstTime, false);
   }
 }

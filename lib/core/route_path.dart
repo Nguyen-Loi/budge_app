@@ -7,6 +7,7 @@ import 'package:budget_app/view/budget_view/budget_modify_view/budget_modify_vie
 import 'package:budget_app/view/budget_view/budget_new_view/new_budget_view.dart';
 import 'package:budget_app/view/chat_view/chat_view.dart';
 import 'package:budget_app/view/contact_view/contact_view.dart';
+import 'package:budget_app/view/onboaring_view/onboarding_screen.dart';
 import 'package:budget_app/view/main_page_view/main_page_view.dart';
 import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
 import 'package:budget_app/view/profile_view/profile_view.dart';
@@ -19,6 +20,7 @@ class RoutePath {
   static const String signUp = "/signUp";
   static const String forgotPassword = "/forgotPassword";
   static const String home = "/home";
+  static const String onboarding = "/onboarding";
 
   static const String newBudget = "/newBudget";
   static const String budgetDetail = "/budgetDetail";
@@ -46,6 +48,8 @@ class MainRouter {
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       case RoutePath.home:
         return MaterialPageRoute(builder: (_) => const MainPageView());
+      case RoutePath.onboarding:
+        return MaterialPageRoute(builder: (_) => const OnboardingScreen());
 
       case RoutePath.newBudget:
         return MaterialPageRoute(builder: (_) => const NewBudgetView());

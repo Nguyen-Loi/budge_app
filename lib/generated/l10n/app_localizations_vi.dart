@@ -870,4 +870,37 @@ class AppLocalizationsVi extends AppLocalizations {
   String pCopyToClipboard(Object value) {
     return 'Đã sao chép: $value';
   }
+
+  @override
+  String get userNameDefault => 'Khách';
+
+  @override
+  String get agreeToTerms => 'Bằng việc tiếp tục, bạn đồng ý với Điều khoản & Chính sách Bảo mật của chúng tôi';
+
+  @override
+  String get selectCurrencyDesc => 'Chọn loại tiền tệ ưa thích của bạn cho giao dịch';
+
+  @override
+  String get tellUsYourNameToGetStarted => 'Hãy cho chúng tôi biết tên của bạn để bắt đầu';
+
+  @override
+  String get letPersonalizeYourExperience => 'Hãy cá nhân hóa trải nghiệm của bạn';
+
+  @override
+  String get smartBudgetPlanning => 'Lập Kế hoạch Ngân sách Thông minh';
+
+  @override
+  String get easyExpenseTracking => 'Theo dõi Chi tiêu Dễ dàng';
+
+  @override
+  String get detailedReports => 'Báo cáo Chi tiết';
+
+  @override
+  String get next => 'Tiếp theo';
+
+  @override
+  String get takeControlOfYourFinances => 'Kiểm soát tài chính của bạn với việc lập ngân sách thông minh và theo dõi chi tiêu';
+
+  @override
+  String get chooseYourCurrency => 'Chọn loại tiền tệ của bạn';
 }

@@ -335,5 +335,16 @@
     "quickActions": "Quick Actions",
     "pSubjectContactUsEmail": "{appName} App Support",
     "pBodyContactUsEmail": "Hello {appName} Team,\n\nI need assistance with the following:\n\n",
-    "pCopyToClipboard": "Copied to clipboard: {value}"
+    "pCopyToClipboard": "Copied to clipboard: {value}",
+    "userNameDefault": "Guest",
+    "agreeToTerms": "By continuing, you agree to our Terms & Privacy Policy",
+    "selectCurrencyDesc": "Select your preferred currency for transactions",
+    "tellUsYourNameToGetStarted": "Tell us your name to get started",
+    "letPersonalizeYourExperience": "Let\\'s personalize your experience",
+    "smartBudgetPlanning": "Smart Budget Planning",
+    "easyExpenseTracking": "Easy Expense Tracking",
+    "detailedReports": "Detailed Reports",
+    "next": "Next",
+    "takeControlOfYourFinances": "Take control of your finances with smart budgeting and expense tracking",
+    "chooseYourCurrency": "Choose your currency"
 }

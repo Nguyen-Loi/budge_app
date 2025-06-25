@@ -1726,6 +1726,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Copied to clipboard: {value}'**
   String pCopyToClipboard(Object value);
+
+  /// No description provided for @userNameDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest'**
+  String get userNameDefault;
+
+  /// No description provided for @agreeToTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you agree to our Terms & Privacy Policy'**
+  String get agreeToTerms;
+
+  /// No description provided for @selectCurrencyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your preferred currency for transactions'**
+  String get selectCurrencyDesc;
+
+  /// No description provided for @tellUsYourNameToGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us your name to get started'**
+  String get tellUsYourNameToGetStarted;
+
+  /// No description provided for @letPersonalizeYourExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\\\'s personalize your experience'**
+  String get letPersonalizeYourExperience;
+
+  /// No description provided for @smartBudgetPlanning.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Budget Planning'**
+  String get smartBudgetPlanning;
+
+  /// No description provided for @easyExpenseTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy Expense Tracking'**
+  String get easyExpenseTracking;
+
+  /// No description provided for @detailedReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed Reports'**
+  String get detailedReports;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @takeControlOfYourFinances.
+  ///
+  /// In en, this message translates to:
+  /// **'Take control of your finances with smart budgeting and expense tracking'**
+  String get takeControlOfYourFinances;
+
+  /// No description provided for @chooseYourCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your currency'**
+  String get chooseYourCurrency;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -335,5 +335,16 @@
   "quickActions": "Thao tác nhanh",
   "pSubjectContactUsEmail": "Hỗ trợ ứng dụng {appName}",
   "pBodyContactUsEmail": "Xin chào đội ngũ {appName},\n\nTôi cần trợ giúp về vấn đề sau:\n\n",
-  "pCopyToClipboard": "Đã sao chép: {value}"
+  "pCopyToClipboard": "Đã sao chép: {value}",
+  "userNameDefault": "Khách",
+  "agreeToTerms": "Bằng việc tiếp tục, bạn đồng ý với Điều khoản & Chính sách Bảo mật của chúng tôi",
+  "selectCurrencyDesc": "Chọn loại tiền tệ ưa thích của bạn cho giao dịch",
+  "tellUsYourNameToGetStarted": "Hãy cho chúng tôi biết tên của bạn để bắt đầu",
+  "letPersonalizeYourExperience": "Hãy cá nhân hóa trải nghiệm của bạn",
+  "smartBudgetPlanning": "Lập Kế hoạch Ngân sách Thông minh",
+  "easyExpenseTracking": "Theo dõi Chi tiêu Dễ dàng",
+  "detailedReports": "Báo cáo Chi tiết",
+  "next": "Tiếp theo",
+  "takeControlOfYourFinances": "Kiểm soát tài chính của bạn với việc lập ngân sách thông minh và theo dõi chi tiêu",
+  "chooseYourCurrency": "Chọn loại tiền tệ của bạn"
 }

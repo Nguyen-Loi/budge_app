@@ -1,3 +1,4 @@
+import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 
@@ -13,6 +14,15 @@ enum CurrencyType {
       (e) => e.code == value.toUpperCase(),
       orElse: () => CurrencyType.usd,
     );
+  }
+
+  factory CurrencyType.fromLanguage(LanguageEnum language) {
+    switch (language) {
+      case LanguageEnum.vietnamese:
+        return CurrencyType.vnd;
+      default:
+        return CurrencyType.usd; 
+    }
   }
 
   const CurrencyType(

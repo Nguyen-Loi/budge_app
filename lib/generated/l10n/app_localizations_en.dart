@@ -870,4 +870,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String pCopyToClipboard(Object value) {
     return 'Copied to clipboard: $value';
   }
+
+  @override
+  String get userNameDefault => 'Guest';
+
+  @override
+  String get agreeToTerms => 'By continuing, you agree to our Terms & Privacy Policy';
+
+  @override
+  String get selectCurrencyDesc => 'Select your preferred currency for transactions';
+
+  @override
+  String get tellUsYourNameToGetStarted => 'Tell us your name to get started';
+
+  @override
+  String get letPersonalizeYourExperience => 'Let\\\'s personalize your experience';
+
+  @override
+  String get smartBudgetPlanning => 'Smart Budget Planning';
+
+  @override
+  String get easyExpenseTracking => 'Easy Expense Tracking';
+
+  @override
+  String get detailedReports => 'Detailed Reports';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get takeControlOfYourFinances => 'Take control of your finances with smart budgeting and expense tracking';
+
+  @override
+  String get chooseYourCurrency => 'Choose your currency';
 }

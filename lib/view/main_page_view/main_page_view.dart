@@ -1,13 +1,17 @@
 import 'package:budget_app/common/log.dart';
+import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
+import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/budget_view/budget_page.dart';
+import 'package:budget_app/view/onboaring_view/onboarding_screen.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:budget_app/view/report_page/report_page.dart';
@@ -51,6 +55,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   late int _selectedIndex;
   late PageController _pageController;
   late List<Widget> _screens;
+  bool _hasCheckedFirstTime = false;
   @override
   void initState() {
     _selectedIndex = 0;
@@ -104,7 +109,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
     return PopScope(
         canPop: false,
         child: ref.watch(mainPageFutureProvider(context)).when(
-              data: (_) => body(),
+              data: (_) => _buildWithFirstTimeCheck(),
               error: (_, __) => Scaffold(
                   body: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -124,6 +129,49 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
               )),
               loading: () => _loadingWidget(),
             ));
+  }
+
+  Widget _buildWithFirstTimeCheck() {
+    if (!_hasCheckedFirstTime) {
+      _hasCheckedFirstTime = true;
+      return FutureBuilder<bool>(
+        future: _checkAndShowFirstTimeSetup(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return _loadingWidget();
+          }
+          return body();
+        },
+      );
+    }
+    return body();
+  }
+
+  Future<bool> _checkAndShowFirstTimeSetup() async {
+    final sharedUtility = ref.read(sharedUtilityProvider);
+
+    if (sharedUtility.isDataFirstTime()) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (mounted) {
+          final result = await Navigator.of(context).pushNamed(
+            RoutePath.onboarding,
+          ) as OnboardingResult?;
+
+          if (result != null && mounted) {
+            final sharedUtility = ref.read(sharedUtilityProvider);
+            final currentUser = ref.read(userBaseControllerProvider);
+            final updatedUser = currentUser.copyWith(
+                name: result.userName, currencyTypeValue: result.currency.code);
+            await ref
+                .read(userBaseControllerProvider.notifier)
+                .updateUser(updatedUser);
+
+            sharedUtility.setDataFirstTimeIsFalse();
+          }
+        }
+      });
+    }
+    return true;
   }
 
   Widget _loadingWidget() {
