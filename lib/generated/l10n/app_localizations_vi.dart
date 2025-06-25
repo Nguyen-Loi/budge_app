@@ -908,4 +908,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String pShowingBudgetsFor(Object data) {
     return 'Hiển thị ngân sách cho $data';
   }
+
+  @override
+  String get thankYouYourFeedback => 'Cảm ơn bạn đã gửi phản hồi của mình! Chúng tôi sẽ xem xét và trả lời sớm nhất có thể.';
 }

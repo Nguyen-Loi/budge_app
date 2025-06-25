@@ -285,22 +285,26 @@ class HomeDrawer extends ConsumerWidget {
       if (await inAppReview.isAvailable()) {
         await inAppReview.requestReview();
       } else {
-        if (context.mounted) {
-          _showThankYouDialog(context);
+        if (!context.mounted) {
+          throw Exception('InAppReview is not available');
         }
-      }
-    } catch (e) {
-      logError('Error requesting app review: $e');
-      if (context.mounted) {
         _showThankYouDialog(context);
+      }
+    } catch (e, stackTrace) {
+      logError('Error requesting app review: $e',
+          error: e, stackTrace: stackTrace);
+      if (context.mounted) {
+        BDialogInfo(
+          message: context.loc.anErrorUnexpectedOccur,
+          dialogInfoType: BDialogInfoType.error,
+        ).present(context);
       }
     }
   }
 
   void _showThankYouDialog(BuildContext context) {
     BDialogInfo(
-      message:
-          "Thank you for your interest in reviewing our app! Your feedback is valuable to us.",
+      message: context.loc.thankYouYourFeedback,
       dialogInfoType: BDialogInfoType.success,
     ).present(context);
   }
@@ -322,6 +326,28 @@ class HomeDrawer extends ConsumerWidget {
       return false;
     }
     return true;
+  }
+
+  void _testCrashlytics(BuildContext context) {
+    // Test 1: Log a simple message to Crashlytics
+    logToCrashlytics('Testing Crashlytics logging functionality');
+
+    // Test 2: Record a non-fatal error
+    try {
+      throw Exception('Test exception for Crashlytics');
+    } catch (e, stackTrace) {
+      logExceptionToCrashlytics(e, stackTrace,
+          reason: 'Testing Crashlytics error recording');
+    }
+
+    // Test 3: Show confirmation to user
+    if (context.mounted) {
+      BDialogInfo(
+        message:
+            'Crashlytics test logs sent. Check Firebase Console in a few minutes.',
+        dialogInfoType: BDialogInfoType.success,
+      ).present(context);
+    }
   }
 }
 

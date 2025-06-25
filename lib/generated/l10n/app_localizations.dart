@@ -1798,6 +1798,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Showing budgets for: {data}'**
   String pShowingBudgetsFor(Object data);
+
+  /// No description provided for @thankYouYourFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your interest in reviewing our app! Your feedback is valuable to us.'**
+  String get thankYouYourFeedback;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

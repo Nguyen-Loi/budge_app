@@ -908,4 +908,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String pShowingBudgetsFor(Object data) {
     return 'Showing budgets for: $data';
   }
+
+  @override
+  String get thankYouYourFeedback => 'Thank you for your interest in reviewing our app! Your feedback is valuable to us.';
 }

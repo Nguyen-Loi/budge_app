@@ -83,56 +83,78 @@ class _HomePageState extends ConsumerState<HomePage>
 
   Widget _buildSliverHeader() {
     return SliverAppBar(
-      expandedHeight: 100,
+      expandedHeight: 90,
       floating: false,
       pinned: false,
-      automaticallyImplyLeading: true,
-      leading: Builder(
-        builder: (context) => IconButton(
-          icon: AnimatedRotation(
-            duration: const Duration(milliseconds: 300),
-            turns: _drawerAnimation.value * 0.5,
-            child: Icon(
-              Icons.menu_rounded,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-          ),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-            _drawerController.forward();
-          },
-        ),
-      ),
+      automaticallyImplyLeading: false,
+      elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
         background: Consumer(builder: (_, ref, __) {
           final UserModel user = ref.watch(userBaseControllerProvider);
           return Container(
-            padding: const EdgeInsets.fromLTRB(72, 50, 16, 16),
+            padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Theme.of(context).colorScheme.primary,
+                  Theme.of(context).colorScheme.primary.withAlpha(200),
+                ],
+              ),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BText(
-                        context.loc.hello,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimary
-                            .withAlpha(100),
+                Container(
+                  margin: const EdgeInsets.only(right: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withAlpha(50),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Builder(
+                    builder: (context) => IconButton(
+                      icon: AnimatedRotation(
+                        duration: const Duration(milliseconds: 300),
+                        turns: _drawerAnimation.value * 0.5,
+                        child: Icon(
+                          Icons.menu_rounded,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          size: 24,
+                        ),
                       ),
-                      BText.h3(
-                        user.name,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                    ],
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                        _drawerController.forward();
+                      },
+                    ),
                   ),
                 ),
-                BAvatarProfile(
-                        url: user.profileUrl, username: user.name),
+                Expanded(
+                  child: BText.h2(
+                    user.name,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    fontWeight: FontWeight.bold,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 12),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white.withAlpha(100),
+                      width: 2,
+                    ),
+                  ),
+                  child: BAvatarProfile(
+                    url: user.profileUrl,
+                    username: user.name,
+                  ),
+                ),
               ],
             ),
           );
