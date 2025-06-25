@@ -3,6 +3,7 @@ import 'package:budget_app/common/widget/b_avatar_profile.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -88,13 +89,14 @@ class HomeDrawer extends ConsumerWidget {
                       fontWeight: FontWeight.bold,
                     ),
                     gapH4,
-                    BText.caption(
-                      user.email,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onPrimary
-                          .withAlpha(180),
-                    ),
+                    if (user.email != StringConstants.emailDefault)
+                      BText.caption(
+                        user.email,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onPrimary
+                            .withAlpha(180),
+                      )
                   ],
                 ),
               ),

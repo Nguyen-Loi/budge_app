@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
@@ -85,7 +86,7 @@ class UserModel {
     final now = DateTime.now();
     return UserModel(
       id: '',
-      email: 'guest@example.com"',
+      email: StringConstants.emailDefault,
       profileUrl: null,
       name: 'guest',
       accountTypeValue: AccountType.emailAndPassword.value,
