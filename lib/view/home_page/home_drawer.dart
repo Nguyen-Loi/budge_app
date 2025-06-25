@@ -327,28 +327,6 @@ class HomeDrawer extends ConsumerWidget {
     }
     return true;
   }
-
-  void _testCrashlytics(BuildContext context) {
-    // Test 1: Log a simple message to Crashlytics
-    logToCrashlytics('Testing Crashlytics logging functionality');
-
-    // Test 2: Record a non-fatal error
-    try {
-      throw Exception('Test exception for Crashlytics');
-    } catch (e, stackTrace) {
-      logExceptionToCrashlytics(e, stackTrace,
-          reason: 'Testing Crashlytics error recording');
-    }
-
-    // Test 3: Show confirmation to user
-    if (context.mounted) {
-      BDialogInfo(
-        message:
-            'Crashlytics test logs sent. Check Firebase Console in a few minutes.',
-        dialogInfoType: BDialogInfoType.success,
-      ).present(context);
-    }
-  }
 }
 
 class _DrawerMenuItem {
