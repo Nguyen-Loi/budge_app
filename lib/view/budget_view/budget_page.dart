@@ -79,10 +79,8 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BText.h3(
+              BText.appbar(
                 context.loc.budgetInUse,
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontWeight: FontWeight.w800,
               ),
               const SizedBox(height: 8),
               BText(

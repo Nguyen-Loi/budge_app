@@ -47,7 +47,7 @@ class _LoginViewState extends ConsumerState<ForgotPasswordView> {
     return BaseAuthView(
       title: context.loc.resetPassword,
       children: [
-        BText.h2(
+        BText.h3(
           context.loc.resetPasswordTitle,
           textAlign: TextAlign.left,
         ),

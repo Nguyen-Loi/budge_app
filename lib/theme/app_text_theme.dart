@@ -38,7 +38,7 @@ class AppTextTheme {
 
   static const TextStyle headlineMedium = TextStyle(
     fontWeight: FontWeight.w700,
-    fontSize: 24,
+    fontSize: 22,
   );
   static const TextStyle headlineSmall = TextStyle(
     fontWeight: FontWeight.w600,

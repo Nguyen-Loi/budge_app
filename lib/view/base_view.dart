@@ -42,10 +42,8 @@ class BaseView extends StatelessWidget {
   Widget _base(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: BText.h3(
+        title: BText.appbar(
           title,
-          fontWeight: FontWeight.w800,
-          color: Theme.of(context).colorScheme.onPrimary,
         ),
         actions: actions,
         bottom: bottom,
@@ -58,10 +56,8 @@ class BaseView extends StatelessWidget {
   Widget _customBackground(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: BText.h3(
+        title: BText.appbar(
           title,
-          fontWeight: FontWeight.w800,
-          color: Theme.of(context).colorScheme.onPrimary,
         ),
         actions: actions,
         bottom: bottom,

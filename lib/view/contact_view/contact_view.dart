@@ -114,8 +114,7 @@ class _ContactViewState extends State<ContactView>
 
     return Scaffold(
       appBar: AppBar(
-        title: BText.h3(context.loc.contactUs,
-            color: Theme.of(context).colorScheme.onPrimary),
+        title: BText.appbar(context.loc.contactUs),
       ),
       body: AnimatedBuilder(
         animation: _mainAnimationController,

@@ -9,6 +9,7 @@ enum _BTextType {
   bodyMedium,
   bodySmall,
   caption,
+  appbar,
 }
 
 class BText extends StatelessWidget {
@@ -122,6 +123,20 @@ class BText extends StatelessWidget {
     super.key,
   }) : _textType = _BTextType.caption;
 
+  const BText.appbar(
+    this.text, {
+    this.color,
+    super.key,
+  })  : _textType = _BTextType.appbar,
+        fontWeight = null,
+        textAlign = TextAlign.center,
+        wordSpacing = null,
+        letterSpacing = null,
+        maxLines = 1,
+        fontStyle = null,
+        overflow = null,
+        textDecoration = null;
+
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -141,6 +156,9 @@ class BText extends StatelessWidget {
       _BTextType.bodyMedium => context.textTheme.bodyMedium!,
       _BTextType.bodySmall => context.textTheme.bodySmall!,
       _BTextType.caption => context.textTheme.labelLarge!,
+      _BTextType.appbar => context.textTheme.headlineMedium!.copyWith(
+          color: color ?? Theme.of(context).colorScheme.onPrimary,
+        ),
     };
 
     return textStyle.copyWith(

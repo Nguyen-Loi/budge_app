@@ -157,10 +157,8 @@ class _ReportPageState extends ConsumerState<ReportPage> {
         alignment: Alignment.center,
         children: [
           Center(
-            child: BText.h3(
+            child: BText.appbar(
               context.loc.report,
-              color: Theme.of(context).colorScheme.onPrimary,
-              fontWeight: FontWeight.w800,
             ),
           ),
           Positioned(
