@@ -1804,6 +1804,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Thank you for your interest in reviewing our app! Your feedback is valuable to us.'**
   String get thankYouYourFeedback;
+
+  /// No description provided for @enterYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get enterYourName;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

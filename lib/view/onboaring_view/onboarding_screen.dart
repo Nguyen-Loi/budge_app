@@ -1,7 +1,6 @@
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
-import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/enums/language_enum.dart';
@@ -439,13 +438,46 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                 ),
                 child: Form(
                   key: _formKey,
-                  child: BFormFieldText(
-                    _nameController,
-                    label: context.loc.name,
-                    prefixIcon: IconManager.account,
+                  child: TextFormField(
+                    // _nameController,
+                    // label: context.loc.name,
+                    // prefixIcon: IconManager.account,
+                    // hint: context.loc.enterYourName,
                     validator: (value) {
                       return value.validateName(context);
                     },
+                    decoration: InputDecoration(
+                      labelText: context.loc.name,
+                      prefixIcon: Icon(
+                        IconManager.account,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      hintText: context.loc.enterYourName,
+                      filled: false,
+                      hintStyle:
+                          Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimary
+                                    .withAlpha(160),
+                              ),
+                      labelStyle:
+                          Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimary
+                                    .withAlpha(160),
+                              ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onPrimary
+                              .withAlpha(80),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),

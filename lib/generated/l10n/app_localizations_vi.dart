@@ -162,7 +162,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get editModeActive => 'Editing enabled';
 
   @override
-  String get name => 'Tên';
+  String get name => 'Họ tên';
 
   @override
   String get save => 'Lưu';
@@ -911,4 +911,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get thankYouYourFeedback => 'Cảm ơn bạn đã gửi phản hồi của mình! Chúng tôi sẽ xem xét và trả lời sớm nhất có thể.';
+
+  @override
+  String get enterYourName => 'Nhập tên của bạn';
 }

@@ -911,4 +911,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get thankYouYourFeedback => 'Thank you for your interest in reviewing our app! Your feedback is valuable to us.';
+
+  @override
+  String get enterYourName => 'Enter your name';
 }

@@ -48,7 +48,7 @@
   "modify": "Sửa đổi",
   "readModeOnly": "View only",
   "editModeActive": "Editing enabled",
-  "name": "Tên",
+  "name": "Họ tên",
   "save": "Lưu",
   "profile": "Hồ sơ",
   "settings": "Cài đặt",
@@ -348,5 +348,6 @@
   "takeControlOfYourFinances": "Kiểm soát tài chính của bạn với việc lập ngân sách thông minh và theo dõi chi tiêu",
   "chooseYourCurrency": "Chọn loại tiền tệ của bạn",
   "pShowingBudgetsFor": "Hiển thị ngân sách cho {data}",
-  "thankYouYourFeedback": "Cảm ơn bạn đã gửi phản hồi của mình! Chúng tôi sẽ xem xét và trả lời sớm nhất có thể."
+  "thankYouYourFeedback": "Cảm ơn bạn đã gửi phản hồi của mình! Chúng tôi sẽ xem xét và trả lời sớm nhất có thể.",
+  "enterYourName": "Nhập tên của bạn"
 }

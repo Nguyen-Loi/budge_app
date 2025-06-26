@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/widget/b_avatar_profile.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/common/widget/form/b_form_field_phone_number.dart';
@@ -170,7 +171,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     );
   }
 
-  Widget _buildProfileImageSection(dynamic user, bool disable) {
+  Widget _buildProfileImageSection(UserModel user, bool disable) {
     return Column(
       children: [
         Stack(
@@ -183,6 +184,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   _file = f;
                 });
               },
+              empty: BAvatarProfile(
+                  url: user.profileUrl, username: user.name, size: 40),
             ),
             if (!disable && !kIsWeb)
               Positioned(
@@ -212,10 +215,6 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                 ),
               ),
           ],
-        ),
-        SizedBox(height: 12),
-        BText.caption(
-          user.name,
         ),
       ],
     );

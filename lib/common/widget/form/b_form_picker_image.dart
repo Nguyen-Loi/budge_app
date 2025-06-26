@@ -15,12 +15,14 @@ class BFormPickerImage extends FormField<File> {
   final double size;
   final bool disable;
   final String? initialUrl;
+  final Widget? empty;
 
   BFormPickerImage(
       {super.key,
       required this.onChanged,
       this.size = 40,
       this.disable = false,
+      this.empty,
       this.initialUrl})
       : super(builder: (field) {
           final _BFormPickerImage state = field as _BFormPickerImage;
@@ -80,14 +82,15 @@ class _BFormPickerImage extends FormFieldState<File> {
   }
 
   Widget _showImageEmpty() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(IconManager.galley, size: 30),
-        gapW16,
-        BText(context.loc.noImage)
-      ],
-    );
+    return widget.empty ??
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(IconManager.galley, size: 30),
+            gapW16,
+            BText(context.loc.noImage)
+          ],
+        );
   }
 
   Widget _showImageNetwork() {

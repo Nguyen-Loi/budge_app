@@ -348,5 +348,6 @@
     "takeControlOfYourFinances": "Take control of your finances with smart budgeting and expense tracking",
     "chooseYourCurrency": "Choose your currency",
     "pShowingBudgetsFor": "Showing budgets for: {data}",
-    "thankYouYourFeedback": "Thank you for your interest in reviewing our app! Your feedback is valuable to us."
+    "thankYouYourFeedback": "Thank you for your interest in reviewing our app! Your feedback is valuable to us.",
+    "enterYourName": "Enter your name"
 }
