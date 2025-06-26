@@ -134,33 +134,10 @@ class _ContactViewState extends State<ContactView>
                       _buildContactCards(colors),
                       gapH32,
                       _buildSocialMediaSection(colors),
-                      gapH32,
-                      _buildQuickActionsSection(colors),
                       gapH56
                     ],
                   ),
                 ),
-              ),
-            ),
-          );
-        },
-      ),
-      floatingActionButton: AnimatedBuilder(
-        animation: _fabAnimationController,
-        builder: (context, child) {
-          return ScaleTransition(
-            scale: _fabAnimation,
-            child: FloatingActionButton.extended(
-              onPressed: () => _launchEmail(),
-              backgroundColor: colors.primary,
-              icon: Icon(
-                IconManager.email,
-                color: colors.onPrimary,
-              ),
-              label: BText(
-                context.loc.sendEmail,
-                color: colors.onPrimary,
-                fontWeight: FontWeight.w600,
               ),
             ),
           );
@@ -403,48 +380,20 @@ class _ContactViewState extends State<ContactView>
     );
   }
 
-  Widget _buildQuickActionsSection(AppColors colors) {
-    AppLocalizations loc = context.loc;
-    return Column(
-      children: [
-        BText.h3(
-          loc.quickActions,
-          fontWeight: FontWeight.w600,
-          color: colors.defaultText,
-        ),
-        gapH16,
-        Row(
-          children: [
-            Expanded(
-              child: BButton(
-                  onPressed: () => _copyToClipboard(_email),
-                  title: loc.copyEmail,
-                  size: ButtonSize.small),
-            ),
-            gapW16,
-            Expanded(
-              child: BButton(
-                  onPressed: () => _copyToClipboard(_phone),
-                  title: loc.copyPhone,
-                  size: ButtonSize.small),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
   // Action methods
   void _launchEmail() async {
     String appName = context.loc.appName;
-    final Uri emailUri = Uri(
-      scheme: 'mailto',
-      path: _email,
-      query:
-          'subject=${context.loc.pSubjectContactUsEmail(appName)}&body=${context.loc.pBodyContactUsEmail(appName)}',
-    );
+    String subject = context.loc.pSubjectContactUsEmail(appName);
+    String body = context.loc.pBodyContactUsEmail(appName);
+
+    String mailtoUrl = 'mailto:$_email?subject=$subject&body=$body';
+
+    final Uri emailUri = Uri.parse(mailtoUrl);
+
     if (await canLaunchUrl(emailUri)) {
-      await launchUrl(emailUri);
+      await launchUrl(emailUri, mode: LaunchMode.externalApplication);
+    } else {
+      _copyToClipboard(_email);
     }
   }
 
