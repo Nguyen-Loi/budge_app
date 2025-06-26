@@ -1,4 +1,5 @@
 import 'package:budget_app/common/log.dart';
+import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
@@ -10,6 +11,7 @@ import 'package:budget_app/data/datasources/repositories/transaction_repository.
 import 'package:budget_app/data/datasources/repositories/user_repository.dart';
 import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/data/models/user_model.dart';
+import 'package:budget_app/data/services/in_app_rating_service.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
@@ -114,6 +116,7 @@ class UserBaseController extends StateNotifier<UserModel> {
     }, (r) {
       reload(r.$1);
       _ref.read(transactionsBaseControllerProvider.notifier).addState(r.$2);
+      _trackTransactionForReview(context);
       Navigator.pop(context);
     });
   }
@@ -143,10 +146,29 @@ class UserBaseController extends StateNotifier<UserModel> {
       reload(r.$3);
       _ref.read(transactionsBaseControllerProvider.notifier).addState(r.$1);
       _ref.read(budgetBaseControllerProvider.notifier).updateState(r.$2);
+      _trackTransactionForReview(context);
+
       Navigator.of(context).pop();
     });
 
     closeDialog();
+  }
+
+  void _trackTransactionForReview(BuildContext context) async {
+    try {
+      final sharedUtility = _ref.read(sharedUtilityProvider);
+      final inAppRatingService = _ref.read(inAppRatingServiceProvider);
+
+      await sharedUtility.incrementUserTransactionCount();
+      final currentTransactionCount = sharedUtility.getUserTransactionCount();
+
+      await inAppRatingService.requestReviewIfNeeded(
+        userTransactionCount: currentTransactionCount,
+      );
+    } catch (e, stackTrace) {
+      logError('Error tracking transaction for review: $e',
+          error: e, stackTrace: stackTrace);
+    }
   }
 
   void toggleNotificationTransaction(

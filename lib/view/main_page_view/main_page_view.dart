@@ -150,7 +150,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   Future<bool> _checkAndShowFirstTimeSetup() async {
     final sharedUtility = ref.read(sharedUtilityProvider);
 
-    if (!sharedUtility.isDataFirstTime()) {
+    if (sharedUtility.isDataFirstTime()) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (mounted) {
           final result = await Navigator.of(context).pushNamed(

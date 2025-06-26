@@ -1,4 +1,3 @@
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_avatar_profile.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
@@ -6,13 +5,13 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/data/services/in_app_rating_service.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:in_app_review/in_app_review.dart';
 
 class HomeDrawer extends ConsumerWidget {
   const HomeDrawer({
@@ -282,33 +281,9 @@ class HomeDrawer extends ConsumerWidget {
   }
 
   void _requestAppReview(BuildContext context) async {
-    try {
-      final InAppReview inAppReview = InAppReview.instance;
-      if (await inAppReview.isAvailable()) {
-        await inAppReview.requestReview();
-      } else {
-        if (!context.mounted) {
-          throw Exception('InAppReview is not available');
-        }
-        _showThankYouDialog(context);
-      }
-    } catch (e, stackTrace) {
-      logError('Error requesting app review: $e',
-          error: e, stackTrace: stackTrace);
-      if (context.mounted) {
-        BDialogInfo(
-          message: context.loc.anErrorUnexpectedOccur,
-          dialogInfoType: BDialogInfoType.error,
-        ).present(context);
-      }
-    }
-  }
-
-  void _showThankYouDialog(BuildContext context) {
-    BDialogInfo(
-      message: context.loc.thankYouYourFeedback,
-      dialogInfoType: BDialogInfoType.success,
-    ).present(context);
+    final inAppRatingService =
+        ProviderScope.containerOf(context).read(inAppRatingServiceProvider);
+    await inAppRatingService.requestReviewManually(context);
   }
 
   void _signOut({required BuildContext context, required WidgetRef ref}) async {

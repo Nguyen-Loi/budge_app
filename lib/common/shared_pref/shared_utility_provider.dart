@@ -17,6 +17,8 @@ const String _darkModeKey = 'darkMode';
 const String _languageCodeKey = 'language_code';
 const String _defaultBudgetsCreatedKey = 'default_budgets_created';
 const String _dataFirstTime = 'data_first_time';
+const String _inAppReviewPromptCountKey = 'in_app_review_prompt_count';
+const String _userTransactionCountKey = 'user_transaction_count';
 
 class SharedUtility {
   SharedUtility({
@@ -68,5 +70,29 @@ class SharedUtility {
 
   void setDataFirstTimeIsFalse() {
     sharedPreferences.setBool(_dataFirstTime, false);
+  }
+
+  // App Review methods
+  int getInAppReviewPromptCount() {
+    return sharedPreferences.getInt(_inAppReviewPromptCountKey) ?? 0;
+  }
+
+  Future<void> incrementInAppReviewPromptCount() async {
+    final currentCount = getInAppReviewPromptCount();
+    await sharedPreferences.setInt(
+        _inAppReviewPromptCountKey, currentCount + 1);
+  }
+
+  int getUserTransactionCount() {
+    return sharedPreferences.getInt(_userTransactionCountKey) ?? 0;
+  }
+
+  Future<void> incrementUserTransactionCount() async {
+    final currentCount = getUserTransactionCount();
+    await sharedPreferences.setInt(_userTransactionCountKey, currentCount + 1);
+  }
+
+  Future<void> resetTransactionCount() async {
+    await sharedPreferences.remove(_userTransactionCountKey);
   }
 }
