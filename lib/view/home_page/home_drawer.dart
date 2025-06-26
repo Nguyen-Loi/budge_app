@@ -5,7 +5,6 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
-import 'package:budget_app/data/services/in_app_rating_service.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
@@ -137,7 +136,10 @@ class HomeDrawer extends ConsumerWidget {
         _DrawerMenuItem(
           icon: IconManager.feedback,
           title: context.loc.feedback,
-          onTap: () => _requestAppReview(context),
+          onTap: () => Navigator.pushNamed(
+            context,
+            RoutePath.feedback,
+          ),
         ),
         if (isLogin)
           _DrawerMenuItem(
@@ -278,12 +280,6 @@ class HomeDrawer extends ConsumerWidget {
 
   void _navigateToSettings(BuildContext context) {
     Navigator.pushNamed(context, RoutePath.settings);
-  }
-
-  void _requestAppReview(BuildContext context) async {
-    final inAppRatingService =
-        ProviderScope.containerOf(context).read(inAppRatingServiceProvider);
-    await inAppRatingService.requestReviewManually(context);
   }
 
   void _signOut({required BuildContext context, required WidgetRef ref}) async {

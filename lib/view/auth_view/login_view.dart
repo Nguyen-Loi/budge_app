@@ -185,10 +185,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
           const SizedBox(width: 24),
           _circularIconButton(
             onPressed: _onLoginFacebook,
-            icon: SvgPicture.asset(
-              SvgAssets.facebook,
-              width: 28,
-              height: 28,
+            icon: Icon(
+              IconManager.facebook,
+              size: 28,
             ),
           ),
         ],

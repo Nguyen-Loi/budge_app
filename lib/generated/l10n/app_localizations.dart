@@ -1631,12 +1631,6 @@ abstract class AppLocalizations {
   /// **'Canadian Dollar'**
   String get cadCurrencyName;
 
-  /// No description provided for @feedback.
-  ///
-  /// In en, this message translates to:
-  /// **'Feedback'**
-  String get feedback;
-
   /// No description provided for @contactUs.
   ///
   /// In en, this message translates to:
@@ -1810,6 +1804,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter your name'**
   String get enterYourName;
+
+  /// No description provided for @feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get feedback;
+
+  /// No description provided for @submitFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Feedback'**
+  String get submitFeedback;
+
+  /// No description provided for @submitFeedbackDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us improve our app by sharing your thoughts and suggestions.'**
+  String get submitFeedbackDesc;
+
+  /// No description provided for @ratingRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating *'**
+  String get ratingRequired;
+
+  /// No description provided for @rate1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Very Poor'**
+  String get rate1Desc;
+
+  /// No description provided for @rate2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Poor'**
+  String get rate2Desc;
+
+  /// No description provided for @rate3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Average'**
+  String get rate3Desc;
+
+  /// No description provided for @rate4Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get rate4Desc;
+
+  /// No description provided for @rate5Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get rate5Desc;
+
+  /// No description provided for @titleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Title *'**
+  String get titleRequired;
+
+  /// No description provided for @feedbackTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Brief summary of your feedback'**
+  String get feedbackTitleHint;
+
+  /// No description provided for @feedbackRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback *'**
+  String get feedbackRequired;
+
+  /// No description provided for @feedbackDescHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your experience, suggestions, or issues...'**
+  String get feedbackDescHint;
+
+  /// No description provided for @feedbackSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your feedback! We appreciate your input and will use it to improve our app.'**
+  String get feedbackSuccess;
+
+  /// No description provided for @submitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting...'**
+  String get submitting;
+
+  /// No description provided for @myFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'My Feedback'**
+  String get myFeedback;
+
+  /// No description provided for @noFeedbackYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No feedback submitted yet'**
+  String get noFeedbackYet;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

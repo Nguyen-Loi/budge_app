@@ -50,6 +50,17 @@ class UserBaseController extends StateNotifier<UserModel> {
         _userApi = userApi,
         super(UserModel.defaultData());
 
+  Future<String> userIdOrSessionId() async {
+    String userId = state.id;
+    if (userId.isNotEmpty) {
+      return userId;
+    }
+
+    String sessionUserId =
+        await _ref.read(sharedUtilityProvider).getSessionId();
+    return sessionUserId;
+  }
+
   Future<UserModel> fetchUserInfo() async {
     UserModel currentUser = await _userRepository.getUserById(_uid);
     String? token = await _ref.read(messagingProvider).getToken();

@@ -16,7 +16,6 @@ class LottieAssets {
 class SvgAssets {
   static const String _svgsPath = 'assets/svgs';
   static const String google = '$_svgsPath/google.svg';
-  static const String facebook = '$_svgsPath/facebook.svg';
   static const String expired = '$_svgsPath/expired.svg';
   static const String coming = '$_svgsPath/coming.svg';
   static const String active = '$_svgsPath/active.svg';

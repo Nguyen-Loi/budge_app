@@ -818,9 +818,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cadCurrencyName => 'Canadian Dollar';
 
   @override
-  String get feedback => 'Feedback';
-
-  @override
   String get contactUs => 'Contact Us';
 
   @override
@@ -914,4 +911,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterYourName => 'Enter your name';
+
+  @override
+  String get feedback => 'Feedback';
+
+  @override
+  String get submitFeedback => 'Submit Feedback';
+
+  @override
+  String get submitFeedbackDesc => 'Help us improve our app by sharing your thoughts and suggestions.';
+
+  @override
+  String get ratingRequired => 'Rating *';
+
+  @override
+  String get rate1Desc => 'Very Poor';
+
+  @override
+  String get rate2Desc => 'Poor';
+
+  @override
+  String get rate3Desc => 'Average';
+
+  @override
+  String get rate4Desc => 'Good';
+
+  @override
+  String get rate5Desc => 'Excellent';
+
+  @override
+  String get titleRequired => 'Title *';
+
+  @override
+  String get feedbackTitleHint => 'Brief summary of your feedback';
+
+  @override
+  String get feedbackRequired => 'Feedback *';
+
+  @override
+  String get feedbackDescHint => 'Tell us about your experience, suggestions, or issues...';
+
+  @override
+  String get feedbackSuccess => 'Thank you for your feedback! We appreciate your input and will use it to improve our app.';
+
+  @override
+  String get submitting => 'Submitting...';
+
+  @override
+  String get myFeedback => 'My Feedback';
+
+  @override
+  String get noFeedbackYet => 'No feedback submitted yet';
 }

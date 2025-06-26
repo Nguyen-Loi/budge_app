@@ -38,6 +38,9 @@ class IconManager {
   static IconData note = Icons.note_outlined;
   static IconData transactionDate = Icons.calendar_today_outlined;
   static IconData createdDate = Icons.schedule_outlined;
+  static IconData rating = Icons.star_rounded;
+  static IconData history = Icons.history_rounded;
+  static IconData feedbackEmpty = Icons.feedback_outlined;
 
   static IconData account = FontAwesomeIcons.user;
   static IconData setting = Icons.settings_outlined;
@@ -47,6 +50,7 @@ class IconManager {
   // Social Media
   static IconData facebook = FontAwesomeIcons.facebook;
   static IconData instagram = FontAwesomeIcons.instagram;
+  static IconData google = FontAwesomeIcons.google;
 
   //Bottombar
   static IconData homeBar = Icons.home_rounded;

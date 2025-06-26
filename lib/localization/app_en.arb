@@ -320,7 +320,6 @@
     "jpyCurrencyName": "Japanese Yen",
     "vndCurrencyName": "Vietnamese Dong",
     "cadCurrencyName": "Canadian Dollar",
-    "feedback": "Feedback",
     "contactUs": "Contact Us",
     "contactUsDesc": "We're here to help and answer any questions you might have.",
     "sendEmail": "Send Email",
@@ -349,5 +348,23 @@
     "chooseYourCurrency": "Choose your currency",
     "pShowingBudgetsFor": "Showing budgets for: {data}",
     "thankYouYourFeedback": "Thank you for your interest in reviewing our app! Your feedback is valuable to us.",
-    "enterYourName": "Enter your name"
+    "enterYourName": "Enter your name",
+    "feedback": "Feedback",
+    "submitFeedback": "Submit Feedback",
+    "submitFeedbackDesc": "Help us improve our app by sharing your thoughts and suggestions.",
+    "ratingRequired": "Rating *",
+    "rate1Desc": "Very Poor",
+    "rate2Desc": "Poor",
+    "rate3Desc": "Average",
+    "rate4Desc": "Good",
+    "rate5Desc": "Excellent",
+    "titleRequired": "Title *",
+    "feedbackTitleHint": "Brief summary of your feedback",
+    "feedbackRequired": "Feedback *",
+    "feedbackDescHint": "Tell us about your experience, suggestions, or issues...",
+    "feedbackSuccess": "Thank you for your feedback! We appreciate your input and will use it to improve our app.",
+    "submitting": "Submitting...",
+    "myFeedback": "My Feedback",
+    "noFeedbackYet": "No feedback submitted yet"
+
 }

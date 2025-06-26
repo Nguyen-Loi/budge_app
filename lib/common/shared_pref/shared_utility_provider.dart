@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:budget_app/core/enums/language_enum.dart';
+import 'package:budget_app/core/gen_id.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,6 +15,7 @@ final sharedUtilityProvider = Provider<SharedUtility>((ref) {
 });
 
 const String _darkModeKey = 'darkMode';
+const String _idSessionKey = 'id_session';
 const String _languageCodeKey = 'language_code';
 const String _defaultBudgetsCreatedKey = 'default_budgets_created';
 const String _dataFirstTime = 'data_first_time';
@@ -94,5 +96,14 @@ class SharedUtility {
 
   Future<void> resetTransactionCount() async {
     await sharedPreferences.remove(_userTransactionCountKey);
+  }
+
+  Future<String> getSessionId() async {
+    String? sessionId = sharedPreferences.getString(_idSessionKey);
+    if (sessionId == null) {
+      await sharedPreferences.setString(_idSessionKey, GenId.session());
+      sessionId = sharedPreferences.getString(_idSessionKey) ?? '';
+    }
+    return sessionId;
   }
 }

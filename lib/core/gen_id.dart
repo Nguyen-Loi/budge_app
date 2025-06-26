@@ -1,3 +1,4 @@
+import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:uuid/uuid.dart';
 
 Uuid _uuid = const Uuid();
@@ -18,4 +19,10 @@ class GenId {
   static String transaction() => _time;
   static String get chat => _time;
   static String devices(String uid) => uid + _time;
+  static String feedback() => _time;
+  static String session() {
+    DateTime now = DateTime.now();
+    String formattedDate = now.toFormatDate(strFormat: "yyyy_MM_dd-HH_mm");
+    return '$formattedDate-$_time';
+  }
 }

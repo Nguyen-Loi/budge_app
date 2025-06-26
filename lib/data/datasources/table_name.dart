@@ -6,4 +6,5 @@ class TableName {
   static const String user = 'Users';
   static const String devices = 'Devices';
   static const String chats = 'Chats';
+  static const String feedback = 'Feedbacks';
 }

@@ -276,7 +276,8 @@ class _ReportPageState extends ConsumerState<ReportPage> {
 
               // Chart Section (removed separate statistics)
               if (state.chartData.isEmpty)
-                _buildEmptyChartState(context)
+                _baseChartEmpty(
+                    icon: IconManager.reportBar, message: context.loc.noData)
               else
                 SmartBudgetChart(
                   chartData: state.chartData,
@@ -294,54 +295,8 @@ class _ReportPageState extends ConsumerState<ReportPage> {
     );
   }
 
-  Widget _buildEmptyChartState(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      alignment: Alignment.center,
-      child: Column(
-        children: [
-          Icon(
-            IconManager.reportBar,
-            size: 48,
-            color: Theme.of(context).disabledColor,
-          ),
-          gapH16,
-          BText(
-            context.loc.noData,
-            color: Theme.of(context).disabledColor,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildTransactionsSection(
       BuildContext context, ReportFilterState state) {
-    if (state.budgetTransactionsList.isEmpty) {
-      return Container(
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.all(32),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              IconManager.transactionBar,
-              size: 48,
-              color: Theme.of(context).disabledColor,
-            ),
-            gapH16,
-            BText(
-              context.loc.noTransactionDescription,
-              color: Theme.of(context).disabledColor,
-            ),
-          ],
-        ),
-      );
-    }
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -363,13 +318,41 @@ class _ReportPageState extends ConsumerState<ReportPage> {
               ],
             ),
           ),
-          ColumnWithSpacing(
-            spacing: 12,
-            children: state.budgetTransactionsList
-                .map((budgetTransaction) => BudgetTransactionCard(
-                      budgetTransaction: budgetTransaction,
-                    ))
-                .toList(),
+          if (state.budgetTransactionsList.isEmpty)
+            _baseChartEmpty(
+                icon: IconManager.transactionBar,
+                message: context.loc.noTransactionDescription)
+          else
+            ColumnWithSpacing(
+              spacing: 12,
+              children: state.budgetTransactionsList
+                  .map((budgetTransaction) => BudgetTransactionCard(
+                        budgetTransaction: budgetTransaction,
+                      ))
+                  .toList(),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _baseChartEmpty({required IconData icon, required String message}) {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(32),
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Icon(
+            icon,
+            size: 48,
+            color: Theme.of(context).colorScheme.primary.withAlpha(150),
+          ),
+          gapH16,
+          BText(
+            message,
+            color: Theme.of(context).colorScheme.primary.withAlpha(150),
+            fontWeight: FontWeight.w600,
           ),
         ],
       ),

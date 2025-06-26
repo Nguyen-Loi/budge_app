@@ -1,5 +1,4 @@
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/social_enum.dart';
@@ -27,7 +26,6 @@ class _ContactViewState extends State<ContactView>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _scaleAnimation;
-  late Animation<double> _fabAnimation;
 
   late final String _email = 'hi.smartbudget@gmail.com';
   late final String _phone = '+84 898 066 957';
@@ -77,14 +75,6 @@ class _ContactViewState extends State<ContactView>
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _mainAnimationController,
-      curve: Curves.easeOutBack,
-    ));
-
-    _fabAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _fabAnimationController,
       curve: Curves.easeOutBack,
     ));
   }

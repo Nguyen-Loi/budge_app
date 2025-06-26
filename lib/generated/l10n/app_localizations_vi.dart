@@ -818,9 +818,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get cadCurrencyName => 'Đô la Canada';
 
   @override
-  String get feedback => 'Phản hồi';
-
-  @override
   String get contactUs => 'Liên hệ';
 
   @override
@@ -914,4 +911,55 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get enterYourName => 'Nhập tên của bạn';
+
+  @override
+  String get feedback => 'Phản hồi';
+
+  @override
+  String get submitFeedback => 'Gửi Phản Hồi';
+
+  @override
+  String get submitFeedbackDesc => 'Giúp chúng tôi cải thiện ứng dụng bằng cách chia sẻ ý kiến và đề xuất của bạn.';
+
+  @override
+  String get ratingRequired => 'Đánh giá *';
+
+  @override
+  String get rate1Desc => 'Rất kém';
+
+  @override
+  String get rate2Desc => 'Kém';
+
+  @override
+  String get rate3Desc => 'Trung bình';
+
+  @override
+  String get rate4Desc => 'Tốt';
+
+  @override
+  String get rate5Desc => 'Xuất sắc';
+
+  @override
+  String get titleRequired => 'Tiêu đề *';
+
+  @override
+  String get feedbackTitleHint => 'Tiêu đề phản hồi của bạn';
+
+  @override
+  String get feedbackRequired => 'Phản hồi *';
+
+  @override
+  String get feedbackDescHint => 'Chia sẻ trải nghiệm, đề xuất hoặc vấn đề của bạn...';
+
+  @override
+  String get feedbackSuccess => 'Cảm ơn phản hồi của bạn! Chúng tôi đánh giá cao đóng góp này và sẽ sử dụng để cải thiện ứng dụng.';
+
+  @override
+  String get submitting => 'Đang gửi...';
+
+  @override
+  String get myFeedback => 'Phản Hồi Của Tôi';
+
+  @override
+  String get noFeedbackYet => 'Chưa có phản hồi nào';
 }

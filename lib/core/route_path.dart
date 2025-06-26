@@ -8,6 +8,7 @@ import 'package:budget_app/view/budget_view/budget_new_view/new_budget_view.dart
 import 'package:budget_app/view/chat_view/chat_view.dart';
 import 'package:budget_app/view/contact_view/contact_view.dart';
 import 'package:budget_app/view/onboaring_view/onboarding_screen.dart';
+import 'package:budget_app/view/feedback_view/feedback_view.dart';
 import 'package:budget_app/view/main_page_view/main_page_view.dart';
 import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
 import 'package:budget_app/view/profile_view/profile_view.dart';
@@ -29,6 +30,7 @@ class RoutePath {
   static const String newTransaction = "/newTransaction";
 
   static const String profile = "/profile";
+  static const String feedback = "/feedback";
 
   //Base
   static const String settings = "/settings";
@@ -67,6 +69,8 @@ class MainRouter {
 
       case RoutePath.profile:
         return MaterialPageRoute(builder: (_) => const ProfileView());
+      case RoutePath.feedback:
+        return MaterialPageRoute(builder: (_) => const FeedbackView());
 
       case RoutePath.settings:
         return MaterialPageRoute(builder: (_) => const SettingsView());
