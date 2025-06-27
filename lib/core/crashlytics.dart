@@ -6,11 +6,6 @@ class Crashlytics {
     // Enable Crashlytics collection (works in debug mode too)
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
 
-    // In debug mode, you can also set this to see crashes immediately
-    if (kDebugMode) {
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-    }
-
     // Pass all uncaught errors to Crashlytics.
     FlutterExceptionHandler? originalOnError = FlutterError.onError;
     FlutterError.onError = (FlutterErrorDetails errorDetails) async {
