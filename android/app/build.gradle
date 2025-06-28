@@ -69,6 +69,10 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
+            // Generate debug symbols for crash analysis
+            ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
         }
         debug {
             signingConfig signingConfigs.debug
