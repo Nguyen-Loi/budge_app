@@ -54,7 +54,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signUp => 'Đăng ký';
 
   @override
-  String get welecomeAppName => 'Chào mừng đến với ứng dụng Sổ Tiêu Dùng!';
+  String get welecomeAppName => 'Chào mừng đến với ứng dụng Ví Chi Tiêu!';
 
   @override
   String get signUpToStart => 'Hoàn thành sau đó đăng ký để bắt đầu';
