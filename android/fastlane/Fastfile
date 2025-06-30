@@ -27,6 +27,10 @@ platform :android do
       )
 
       push_git_tag(version_name, version_code)
+    rescue => e
+      UI.error("An error occurred: #{e.message}")
+      raise e
+    end
   end
 end
 
