@@ -347,7 +347,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   ),
                   child: Icon(
                     feature['icon'] as IconData,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     size: 20,
                   ),
                 ),
@@ -439,10 +439,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                 child: Form(
                   key: _formKey,
                   child: TextFormField(
-                    // _nameController,
-                    // label: context.loc.name,
-                    // prefixIcon: IconManager.account,
-                    // hint: context.loc.enterYourName,
+                    controller: _nameController,
                     validator: (value) {
                       return value.validateName(context);
                     },
@@ -450,7 +447,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                       labelText: context.loc.name,
                       prefixIcon: Icon(
                         IconManager.account,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onPrimary
+                            .withAlpha(160),
                       ),
                       hintText: context.loc.enterYourName,
                       filled: false,
@@ -628,8 +628,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                           currency.getDisplayName(context),
                           color: Theme.of(context)
                               .colorScheme
-                              .primary
-                              .withAlpha(210),
+                              .onPrimary
+                              .withAlpha(160),
+                          fontWeight: FontWeight.w800,
                         ),
                       ],
                     ),

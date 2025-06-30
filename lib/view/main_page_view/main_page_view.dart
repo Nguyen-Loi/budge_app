@@ -54,35 +54,38 @@ List<BottomNavigationBarItem> _navBarItems(BuildContext context) {
 class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   late int _selectedIndex;
   late PageController _pageController;
-  late List<Widget> _screens;
   bool _hasCheckedFirstTime = false;
+
   @override
   void initState() {
     _selectedIndex = 0;
     _pageController = PageController(initialPage: _selectedIndex);
-    _screens = [
-      HomePage(
-        onNavigateToTransactions: () {
-          setState(() {
-            _selectedIndex = 1;
-            _pageController.jumpToPage(_selectedIndex);
-          });
-        },
-        onNavigateToBudgets: () {
-          setState(() {
-            _selectedIndex = 2;
-            _pageController.jumpToPage(_selectedIndex);
-          });
-        },
-      ),
-      const TransactionView(),
-      const BudgetPage(),
-      const ReportPage(),
-    ];
     _listenNotification();
-
     super.initState();
   }
+
+  void _navigateToPage(int index) {
+    if (_selectedIndex != index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  List<Widget> get _screens => [
+        HomePage(
+          onNavigateToTransactions: () => _navigateToPage(1),
+          onNavigateToBudgets: () => _navigateToPage(2),
+        ),
+        const TransactionView(),
+        const BudgetPage(),
+        const ReportPage(),
+      ];
 
   void _listenNotification() {
     FirebaseMessaging.instance
@@ -134,15 +137,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   Widget _buildWithFirstTimeCheck() {
     if (!_hasCheckedFirstTime) {
       _hasCheckedFirstTime = true;
-      return FutureBuilder<bool>(
-        future: _checkAndShowFirstTimeSetup(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return _loadingWidget();
-          }
-          return body();
-        },
-      );
+      _checkAndShowFirstTimeSetup();
     }
     return body();
   }
@@ -209,24 +204,14 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
               unselectedItemColor: Theme.of(context).colorScheme.onSurface,
               selectedItemColor: Theme.of(context).colorScheme.primary,
               currentIndex: _selectedIndex,
-              onTap: (int index) {
-                setState(() {
-                  _selectedIndex = index;
-                  _pageController.jumpToPage(_selectedIndex);
-                });
-              })
+              onTap: _navigateToPage)
           : null,
       body: Row(
         children: <Widget>[
           if (!isSmallScreen)
             NavigationRail(
               selectedIndex: _selectedIndex,
-              onDestinationSelected: (int index) {
-                setState(() {
-                  _selectedIndex = index;
-                  _pageController.jumpToPage(_selectedIndex);
-                });
-              },
+              onDestinationSelected: _navigateToPage,
               extended: !isMediumScreen,
               selectedLabelTextStyle: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
@@ -246,7 +231,11 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
           Expanded(
             child: PageView(
                 controller: _pageController,
-                physics: const NeverScrollableScrollPhysics(),
+                onPageChanged: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
                 children: _screens),
           )
         ],
