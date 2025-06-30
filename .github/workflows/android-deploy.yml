@@ -57,4 +57,4 @@ jobs:
         working-directory: android
         run: |
           bundle install || true
-          fastlane deploy version:patch
+          fastlane deploy
