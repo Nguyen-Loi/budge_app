@@ -46,7 +46,7 @@ Future<void> _initServices() async {
 
   // Manage error
   Crashlytics crashlytics = Crashlytics();
-  await crashlytics.initialize(); 
+  await crashlytics.initialize();
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
