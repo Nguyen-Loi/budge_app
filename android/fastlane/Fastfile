@@ -7,7 +7,7 @@ platform :android do
   desc "Deploy a new version to the Google Play"
   lane :deploy do |options|
     begin
-      mode_distribute = "production" # "internal", "alpha", "beta", "production"
+      mode_distribute = "internal" # "internal", "alpha", "beta", "production"
       newVersion = updateVersion(options)
       version_code = current_version_code
       version_name = "#{version_code}_(#{newVersion})"
