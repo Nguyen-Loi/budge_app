@@ -26,7 +26,7 @@ platform :android do
         version_name: version_name
       )
 
-      push_git_tag(version_name, version_code)
+      UI.success("Successfully deployed version #{version_name} (#{version_code}) to Google Play")
     rescue => e
       UI.error("An error occurred: #{e.message}")
       raise e
@@ -47,11 +47,4 @@ def current_version_code
   re = /versionCode\s+(\d+)/
   s = File.read(path)
   s[re, 1].to_i
-end
-
-def push_git_tag(version_name, version_code)
-  add_git_tag(
-    tag: "GooglePlay_#{version_name}(#{version_code})"
-  )
-  push_to_git_remote
 end
