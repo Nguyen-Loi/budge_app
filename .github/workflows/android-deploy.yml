@@ -30,32 +30,32 @@ jobs:
         with:
           flutter-version: '3.29.3'  
 
-      # - name: Decode keystore
-      #   run: |
-      #     echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/upload-keystore.jks
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/upload-keystore.jks
 
-      # - name: Decode Google Play JSON
-      #   run: |
-      #     echo "${{ secrets.GOOGLE_PLAY_JSON }}" | base64 -d > android/play-account.json
+      - name: Decode Google Play JSON
+        run: |
+          echo "${{ secrets.GOOGLE_PLAY_JSON }}" | base64 -d > android/play-account.json
 
-      # - name: Setup key.properties
-      #   run: |
-      #     cat > android/key.properties <<EOF
-      #     storePassword=${{ secrets.KEYSTORE_PASSWORD }}
-      #     keyPassword=${{ secrets.KEY_PASSWORD }}
-      #     keyAlias=${{ secrets.KEY_ALIAS }}
-      #     storeFile=upload-keystore.jks
-      #     EOF
+      - name: Setup key.properties
+        run: |
+          cat > android/key.properties <<EOF
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          storeFile=upload-keystore.jks
+          EOF
 
-      # - name: Install dependencies
-      #   run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-      # - name: Build release bundle
-      #   run: flutter build appbundle --release
+      - name: Build release bundle
+        run: flutter build appbundle --release
 
-      # - name: Install fastlane
-      #   run: |
-      #     sudo gem install fastlane
+      - name: Install fastlane
+        run: |
+          sudo gem install fastlane
 
       - name: Extract version information
         id: version
@@ -67,13 +67,13 @@ jobs:
           echo "TAG_NAME=GooglePlay_${VERSION_NAME}(${VERSION_CODE})" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION_NAME ($VERSION_CODE)"
 
-      # - name: Deploy to Google Play
-      #   env:
-      #     SUPPLY_JSON_KEY: ${{ github.workspace }}/android/play-account.json
-      #   working-directory: android
-      #   run: |
-      #     bundle install || true
-      #     fastlane deploy
+      - name: Deploy to Google Play
+        env:
+          SUPPLY_JSON_KEY: ${{ github.workspace }}/android/play-account.json
+        working-directory: android
+        run: |
+          bundle install || true
+          fastlane deploy
 
       - name: Create and push Git tag
         if: success()
