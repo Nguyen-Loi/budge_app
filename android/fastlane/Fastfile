@@ -11,6 +11,12 @@ platform :android do
       version_code = current_version_code
       version_name = current_version
 
+      gradle(
+        task: 'bundle',
+        build_type: 'Release',
+        flags: '--stacktrace'
+      )
+      
       upload_to_play_store(
         track: mode_distribute, 
         skip_upload_changelogs: false,
