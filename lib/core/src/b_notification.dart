@@ -13,6 +13,11 @@ class BNotification {
   final FirebaseMessaging _messaging;
   bool isInitialized = false;
 
+  final String _defaultChannelId = 'vi_nho';
+  final String _defaultChannelName = 'vi_nho';
+  final String _defaultChannelDescription =
+      'This channel is used for important notifications.';
+
   BNotification({required FirebaseMessaging messaging})
       : _messaging = messaging;
 
@@ -39,11 +44,10 @@ class BNotification {
       return;
     }
 
-    channel = const AndroidNotificationChannel(
-      '1', // id
-      'Vi Nho', // name
-      description:
-          'This channel is used for important notifications.', // description
+    channel = AndroidNotificationChannel(
+      _defaultChannelId, // id
+      _defaultChannelName, // name
+      description: _defaultChannelDescription, // description
       importance: Importance.high,
     );
 

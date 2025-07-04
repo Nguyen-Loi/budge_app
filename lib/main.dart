@@ -18,10 +18,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_options.dart'; // generated via `flutterfire` CLI
 
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 
-  logInfo("Handling a background message: ${message.toMap().toString()}");
+  logSuccess(
+      '🔔 [BACKGROUND] Notification Received: ${message.toMap().toString()}');
 }
 
 Future<void> main() async {
@@ -43,10 +45,9 @@ Future<void> main() async {
 }
 
 Future<void> _initServices() async {
-
   // Manage error
   Crashlytics crashlytics = Crashlytics();
-  await crashlytics.initialize(); 
+  await crashlytics.initialize();
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -64,7 +65,8 @@ class _MyAppState extends ConsumerState<MyApp> {
     // Init notification
     ref.read(notificationProvider).initialize();
     // Inin language firebase
-    FirebaseAuth.instance.setLanguageCode(ref.read(languageControllerProvider).code);
+    FirebaseAuth.instance
+        .setLanguageCode(ref.read(languageControllerProvider).code);
     super.initState();
   }
 
@@ -72,7 +74,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     final language = ref.watch(languageControllerProvider);
     final isDark = ref.watch(isDarkControllerProvider);
-    
+
     return MaterialApp(
       theme: AppTheme.lightTheme,
       navigatorKey: navigatorKey,

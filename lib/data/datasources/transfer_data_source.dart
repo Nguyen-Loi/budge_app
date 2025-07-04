@@ -152,7 +152,10 @@ class TransferData {
       List<BudgetModel> budgets = data['budgetsModelLocal'];
       List<TransactionModel> transactions = data['transactionsModelLocal'];
 
-      userModel = userModel.copyWith(id: userId, email: userModelApi.email);
+      String? token = await ref.read(messagingProvider).getToken();
+
+      userModel = userModel.copyWith(
+          id: userId, email: userModelApi.email, token: token);
 
       budgets =
           budgets.map((budget) => budget.copyWith(userId: userId)).toList();

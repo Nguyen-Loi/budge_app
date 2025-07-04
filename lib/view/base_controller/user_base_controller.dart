@@ -68,7 +68,7 @@ class UserBaseController extends StateNotifier<UserModel> {
 
     // update token profile
     if (token != null) {
-      await _userRepository.updateUser(user: currentUser, file: null);
+      await updateUser(currentUser, withDb: true);
       reload(currentUser);
     }
 

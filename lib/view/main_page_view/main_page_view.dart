@@ -92,8 +92,11 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
         .getInitialMessage()
         .then((e) => logInfo(e?.toMap().toString() ?? 'NoData'));
 
-    FirebaseMessaging.onMessage
-        .listen(ref.read(notificationProvider).showFlutterNotification);
+    FirebaseMessaging.onMessage.listen((message) {
+      logSuccess(
+          '🔔 [FOREGROUND] Notification Received: ${message.toMap().toString()}');
+      ref.read(notificationProvider).showFlutterNotification(message);
+    });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       logInfo(message.data.toString());
