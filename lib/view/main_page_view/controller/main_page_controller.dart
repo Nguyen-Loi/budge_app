@@ -1,3 +1,4 @@
+import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/data/datasources/apis/device_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/constants/constants.dart';
@@ -36,6 +37,14 @@ class MainPageController extends StateNotifier<void> {
   Future<void> loadBaseDataOptimized(BuildContext context) async {
     final uid = _ref.watch(uidControllerProvider);
     final isLogin = uid.isNotEmpty;
+
+    if (!isLogin && kIsWeb){
+      logInfo('User is not logged in, redirecting to onboarding...');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, RoutePath.login);
+      });
+      return;
+    }
 
     if (!kIsWeb) {
       logInfo('Loading information database....');

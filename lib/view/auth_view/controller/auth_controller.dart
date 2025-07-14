@@ -7,6 +7,7 @@ import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -90,7 +91,11 @@ class AuthController extends StateNotifier<void> {
       return;
     }
     closeLoading();
-    Navigator.pop(context);
+    if (kIsWeb){
+      Navigator.pushReplacementNamed(context, RoutePath.home);
+    } else {
+     Navigator.pop(context);
+    }
     initBaseUid();
   }
 

@@ -18,6 +18,7 @@ import 'package:budget_app/view/report_page/report_page.dart';
 import 'package:budget_app/view/transactions_view/transaction_view.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -148,7 +149,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   Future<bool> _checkAndShowFirstTimeSetup() async {
     final sharedUtility = ref.read(sharedUtilityProvider);
 
-    if (sharedUtility.isDataFirstTime()) {
+    if (sharedUtility.isDataFirstTime() && !kIsWeb) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (mounted) {
           final result = await Navigator.of(context).pushNamed(
