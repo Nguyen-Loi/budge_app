@@ -1,11 +1,13 @@
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/bottom_sheet/b_bottom_sheet_range_datetime.dart';
+import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_field_amount.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/budget_model.dart';
@@ -79,7 +81,7 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
       child: BaseView.customBackground(
         title: context.loc.modifyBudget,
         buildTop: gapH32,
-        child: _form(),
+        child: _form().responsiveCenter(),
       ),
     );
   }
@@ -129,9 +131,10 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
           const SizedBox(height: 64),
           Consumer(
             builder: (context, ref, child) {
-              return FilledButton(
-                  onPressed: () => _updateBudget(ref),
-                  child: BText(context.loc.update, color: ColorManager.white));
+              return BButton(
+                onPressed: () => _updateBudget(ref),
+                title: context.loc.update,
+              );
             },
           )
         ],

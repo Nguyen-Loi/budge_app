@@ -1,4 +1,3 @@
-
 import 'package:budget_app/common/widget/bottom_sheet/b_bottom_sheet_range_datetime.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/form/b_form_budget_type.dart';
@@ -9,6 +8,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -80,7 +80,7 @@ class _BudgetNewViewState extends State<NewBudgetView> {
       child: BaseView.customBackground(
         title: context.loc.newBudget,
         buildTop: gapH32,
-        child: _form(),
+        child: _form().responsiveCenter(),
       ),
     );
   }

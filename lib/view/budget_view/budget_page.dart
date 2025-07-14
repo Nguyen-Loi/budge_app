@@ -88,7 +88,9 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
                 color: Theme.of(context).colorScheme.onPrimary.withAlpha(200),
               ),
               const Spacer(),
-              _buildAddBudgetButton(),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: _buildAddBudgetButton()),
               const SizedBox(height: 8),
             ],
           ),
@@ -98,16 +100,12 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
   }
 
   Widget _buildAddBudgetButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 48,
-      child: BButtonIcon(
-        iconData: IconManager.add,
-        title: context.loc.newBudget,
-        onPressed: () {
-          Navigator.pushNamed(context, RoutePath.newBudget);
-        },
-      ),
+    return BButtonIcon(
+      iconData: IconManager.add,
+      title: context.loc.newBudget,
+      onPressed: () {
+        Navigator.pushNamed(context, RoutePath.newBudget);
+      },
     );
   }
 

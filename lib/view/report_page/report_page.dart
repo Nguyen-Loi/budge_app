@@ -2,6 +2,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/ad_helper.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
@@ -132,12 +133,13 @@ class _ReportPageState extends ConsumerState<ReportPage> {
           // Merged Statistics and Chart Section
           SliverToBoxAdapter(
             child:
-                _buildMergedStatisticsChartSection(context, state, controller),
+                _buildMergedStatisticsChartSection(context, state, controller)
+                    .responsiveCenter(),
           ),
 
           // Budget Transactions List
           SliverToBoxAdapter(
-            child: _buildTransactionsSection(context, state),
+            child: _buildTransactionsSection(context, state).responsiveCenter(),
           ),
 
           // Bottom padding (increased to account for pinned banner ad)
@@ -185,9 +187,8 @@ class _ReportPageState extends ConsumerState<ReportPage> {
   Widget _buildExportButtonSection(BuildContext context,
       ReportFilterState state, ReportPageController controller) {
     return Padding(
-      padding: const EdgeInsets.all(16),
-      child: _buildExportButton(context, state, controller),
-    );
+        padding: const EdgeInsets.all(16),
+        child: _buildExportButton(context, state, controller));
   }
 
   Widget _buildExportButton(BuildContext context, ReportFilterState state,
@@ -220,7 +221,6 @@ class _ReportPageState extends ConsumerState<ReportPage> {
               : disabledColor.withAlpha(120),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             if (state.isLoading)
               const SizedBox(
