@@ -146,4 +146,14 @@ extension TransactionList on List<TransactionModel> {
       };
     }).toList().toString();
   }
+
+  int toBalance() {
+    return fold<int>(0, (previousValue, element) {
+      if (element.transactionType == TransactionTypeEnum.income) {
+        return previousValue + element.amount;
+      } else {
+        return previousValue - element.amount;
+      }
+    });
+  }
 }

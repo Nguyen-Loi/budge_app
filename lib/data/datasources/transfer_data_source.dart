@@ -2,6 +2,7 @@ import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart'
     show BDialogInfo, BDialogInfoType, Present;
+import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/apis/budget_api.dart';
@@ -21,6 +22,7 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,40 @@ class TransferData {
   ///     1. Yes => Replace by Api
   ///     2. No => Cancel
   /// 4. No Sqlite, Api => Move to Sqlite
+
+  static FutureEitherVoid syncApiToSqliteOnLogin(Ref ref) async {
+    try {
+      if (kIsWeb) {
+        return right(null);
+      }
+      User? user = ref.read(authProvider).currentUser;
+      if (user == null) {
+        return left(Failure(message: 'User is null'));
+      }
+      String userIdApi = user.uid;
+      UserModel userApi =
+          await ref.read(userApiProvider).getUserById(userIdApi);
+      List<BudgetModel> budgetsApi =
+          await ref.read(budgetAPIProvider).fetch(userIdApi);
+      List<TransactionModel> transactionsApi =
+          await ref.read(transactionApiProvider).fetchTransaction(userIdApi);
+      bool isApiDataChange = userApi.balance != 0 || transactionsApi.isNotEmpty;
+      if (isApiDataChange) {
+        final data = {
+          'userModelApi': userApi,
+          'budgetsModelApi': budgetsApi,
+          'transactionsModelApi': transactionsApi,
+          'budgetsModelLocal': [], // No local data needed for this sync
+        };
+        return await _apiToSqlite(ref, data: data);
+      }
+      return right(null);
+    } catch (e) {
+      logError("Error syncing API data to SQLite: $e");
+      return left(Failure(message: 'Error syncing API data to SQLite'));
+    }
+  }
+
   static FutureEitherVoid asyncData(Ref ref, BuildContext context,
       {bool showDialogConflig = false, String? currenUidLogout}) async {
     try {
@@ -277,6 +313,146 @@ class TransferData {
       return right(null);
     } catch (e) {
       return left(Failure(message: 'Error transferring data to SQLite: $e'));
+    }
+  }
+
+  static FutureEitherVoid apiToSqliteMerge(Ref ref) async {
+    try {
+      if (kIsWeb) {
+        return right(null);
+      }
+      User? user = ref.read(authProvider).currentUser;
+      if (user == null) {
+        return left(Failure(message: 'User not logged in'));
+      }
+      String userIdApi = user.uid;
+      String userIdLocal = ref.read(uidControllerProvider);
+
+      UserModel userLocal =
+          await ref.read(userLocalProvider).getUserById(userIdLocal);
+      UserModel userApi =
+          await ref.read(userApiProvider).getUserById(userIdApi);
+
+      List<BudgetModel> budgetsLocal =
+          await ref.read(budgetLocalProvider).fetch(userIdLocal);
+      List<BudgetModel> budgetsApi =
+          await ref.read(budgetAPIProvider).fetch(userIdApi);
+
+      List<TransactionModel> transactionsLocal = await ref
+          .read(transactionLocalProvider)
+          .fetchTransaction(userIdLocal);
+      List<TransactionModel> transactionsApi =
+          await ref.read(transactionApiProvider).fetchTransaction(userIdApi);
+
+      bool isSameData = userLocal == userApi &&
+          budgetsLocal.equals(budgetsApi) &&
+          transactionsLocal.equals(transactionsApi);
+      if (isSameData) {
+        logInfo("No data changes, skipping merge");
+        return right(null);
+      }
+
+      // Merge Budgets
+      Map<String, BudgetModel> mergedBudgets = {};
+      for (var budget in budgetsLocal) {
+        mergedBudgets[budget.id] = budget;
+      }
+      for (var budget in budgetsApi) {
+        if (mergedBudgets.containsKey(budget.id)) {
+          final localBudget = mergedBudgets[budget.id]!;
+          if (budget.updatedDate.isAfter(localBudget.updatedDate)) {
+            mergedBudgets[budget.id] = budget;
+          }
+        } else {
+          mergedBudgets[budget.id] = budget;
+        }
+      }
+      List<BudgetModel> finalBudgets = mergedBudgets.values.toList();
+
+      // Merge Transactions
+      Map<String, TransactionModel> mergedTransactions = {};
+      for (var tx in transactionsLocal) {
+        mergedTransactions[tx.id] = tx;
+      }
+      for (var tx in transactionsApi) {
+        if (mergedTransactions.containsKey(tx.id)) {
+          final localTx = mergedTransactions[tx.id]!;
+          if (tx.updatedDate.isAfter(localTx.updatedDate)) {
+            mergedTransactions[tx.id] = tx;
+          }
+        } else {
+          mergedTransactions[tx.id] = tx;
+        }
+      }
+      List<TransactionModel> finalTransactions =
+          mergedTransactions.values.toList();
+
+      // Merge User (keep newest by updatedAt)
+      UserModel finalUser = userLocal.updatedDate.isAfter(userApi.updatedDate)
+          ? userLocal
+          : userApi;
+      String? token = await ref.read(messagingProvider).getToken();
+      finalUser = finalUser.copyWith(
+          balance: finalTransactions.toBalance(),
+          token: token,
+          id: userIdApi,
+          email: userApi.email,
+          role: userApi.role);
+
+      Map<String, BudgetModel> updatedBudgets = {
+        for (var budget in finalBudgets)
+          budget.id: budget.copyWith(currentAmount: 0)
+      };
+      for (var tx in finalTransactions) {
+        final budgetId = tx.budgetId;
+        if (updatedBudgets.containsKey(budgetId)) {
+          var budget = updatedBudgets[budgetId]!;
+          int txAmount = tx.amount;
+          if (tx.transactionType == TransactionTypeEnum.expense) {
+            txAmount = txAmount.abs() * -1;
+          }
+          budget = budget.copyWith(
+            currentAmount: budget.currentAmount + txAmount,
+          );
+          updatedBudgets[budgetId] = budget;
+        }
+      }
+      finalBudgets = updatedBudgets.values.toList();
+
+      // Write merged data to SQLite
+      final db = ref.read(sqlHelperProvider);
+      if (db == null) {
+        return left(Failure(message: 'Database is not initialized'));
+      }
+      final Batch batch = db.batch();
+      batch.delete(TableName.user);
+      batch.delete(TableName.budget);
+      batch.delete(TableName.transaction);
+      batch.insert(
+        TableName.user,
+        finalUser.toMap(isSqliteFomat: true),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      for (final budget in finalBudgets) {
+        batch.insert(
+          TableName.budget,
+          budget.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+      for (final tx in finalTransactions) {
+        batch.insert(
+          TableName.transaction,
+          tx.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+      await batch.commit(noResult: true);
+
+      return right(null);
+    } catch (e) {
+      logError("Error transferring data: $e");
+      return left(Failure(message: 'Error transferring data'));
     }
   }
 }

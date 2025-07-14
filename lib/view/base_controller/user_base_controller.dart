@@ -3,7 +3,7 @@ import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
-import 'package:budget_app/core/providers.dart';
+import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/offline/user_local.dart';
@@ -64,19 +64,12 @@ class UserBaseController extends StateNotifier<UserModel> {
 
   Future<UserModel> fetchUserInfo() async {
     UserModel currentUser = await _userRepository.getUserById(_uid);
-    String? token = await _ref.read(messagingProvider).getToken();
-    currentUser = currentUser.copyWith(token: token);
+    reload(currentUser);
 
-    // update token profile
-    if (token != null) {
-      await updateUser(currentUser, withDb: true);
-      reload(currentUser);
-    }
-
-    return state;
+    return currentUser;
   }
 
-  bool get isLogin => state.id.isNotEmpty;
+  bool get isLogin => !GenId.isSessionId(state.id);
 
   void reload(UserModel user) {
     state = user;
