@@ -44,6 +44,9 @@ class UserApi extends UserRepository {
   @override
   FutureEither<UserModel> updateUser(
       {required UserModel user, required File? file}) async {
+    user = user.copyWith(
+      updatedDate: DateTime.now(),
+    );
     if (file == null) {
       await _db.doc(FirestorePath.user(user.id)).set(user.toMap());
       return right(user);
