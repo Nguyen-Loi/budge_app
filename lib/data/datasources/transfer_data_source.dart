@@ -1,4 +1,5 @@
 import 'package:budget_app/common/log.dart';
+import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart'
     show BDialogInfo, BDialogInfoType, Present;
 import 'package:budget_app/core/providers.dart';
@@ -82,6 +83,9 @@ class TransferData {
         'transactionsModelApi': transactionsApi,
         'currentUidLogout': currenUidLogout,
       };
+
+      String sessionId = await ref.read(sharedUtilityProvider).getSessionId();
+      await ref.read(userApiProvider).removeSession(sessionId: sessionId);
 
       // Case 1: No Sqlite, No Api => Load current
       if (!isLocalDataChange && !isApiDataChange) {

@@ -72,4 +72,16 @@ class UserApi extends UserRepository {
       return left(Failure(error: e.toString()));
     }
   }
+
+  FutureEitherVoid removeSession({required String sessionId}) async {
+    DocumentReference<Map<String, dynamic>> docRef =
+        _db.collection(FirestorePath.users()).doc(sessionId);
+    final isExists = await docRef.get().then((doc) => doc.exists);
+    if (isExists) {
+      await docRef.delete();
+      return right(null);
+    } else {
+      return left(Failure(error: 'Session ID does not exist'));
+    }
+  }
 }

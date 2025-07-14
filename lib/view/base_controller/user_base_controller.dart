@@ -16,6 +16,7 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -83,7 +84,7 @@ class UserBaseController extends StateNotifier<UserModel> {
 
   Future<void> updateUser(UserModel user, {bool withDb = false}) async {
     await _userRepository.updateUser(user: user, file: null);
-    if (withDb) {
+    if (withDb && !kIsWeb) {
       _updaterInDb(user);
     }
     reload(user);

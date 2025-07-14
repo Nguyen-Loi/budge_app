@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
+import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -159,11 +160,18 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
           if (result != null && mounted) {
             final sharedUtility = ref.read(sharedUtilityProvider);
             final currentUser = ref.read(userBaseControllerProvider);
+            final token = await ref.read(messagingProvider).getToken();
+            final userId = await ref
+                .read(userBaseControllerProvider.notifier)
+                .userIdOrSessionId();
             final updatedUser = currentUser.copyWith(
-                name: result.userName, currencyTypeValue: result.currency.code);
+                name: result.userName,
+                currencyTypeValue: result.currency.code,
+                token: token,
+                id: userId);
             await ref
                 .read(userBaseControllerProvider.notifier)
-                .updateUser(updatedUser);
+                .updateUser(updatedUser, withDb: true);
 
             sharedUtility.setDataFirstTimeIsFalse();
           }
