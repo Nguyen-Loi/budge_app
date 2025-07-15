@@ -4,6 +4,7 @@ class SizeConstants {
   SizeConstants._();
 
   static const double maxWidthBase = 700;
+  static const double minWidthBase = 300;
   static const double buttonMaxWidth = 200;
   static const double buttonMinHeight = 48;
   static const double tablet = 700;

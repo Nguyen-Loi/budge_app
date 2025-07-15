@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/user_model.dart';
@@ -63,22 +64,26 @@ class _HomePageState extends ConsumerState<HomePage>
           SliverPadding(
             padding: const EdgeInsets.all(16),
             sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                HomeWalletCard(),
-                gapH24,
-                _buildIncomeExpenseSection(),
-                gapH24,
-                _buildBudgetSection(),
-                gapH24,
-                _buildRecentTransactionsSection(),
-                const SizedBox(height: 80),
-              ]),
+              delegate: SliverChildListDelegate(_buildSliverBody()),
             ),
           ),
         ],
       ),
       floatingActionButton: buildFloatingActionButton(),
     );
+  }
+
+  List<Widget> _buildSliverBody() {
+    return [
+      HomeWalletCard(),
+      gapH24,
+      _buildIncomeExpenseSection(),
+      gapH24,
+      _buildBudgetSection(),
+      gapH24,
+      _buildRecentTransactionsSection(),
+      const SizedBox(height: 80),
+    ].responsiveCenter();
   }
 
   Widget _buildSliverHeader() {

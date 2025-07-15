@@ -1,6 +1,7 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/ad_helper.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
@@ -186,9 +187,18 @@ class _ReportPageState extends ConsumerState<ReportPage> {
 
   Widget _buildExportButtonSection(BuildContext context,
       ReportFilterState state, ReportPageController controller) {
-    return Padding(
-        padding: const EdgeInsets.all(16),
-        child: _buildExportButton(context, state, controller));
+    return Align(
+      alignment: Alignment.center,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: SizeConstants.maxWidthBase,
+          minWidth: SizeConstants.minWidthBase,
+        ),
+        child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: _buildExportButton(context, state, controller)),
+      ),
+    );
   }
 
   Widget _buildExportButton(BuildContext context, ReportFilterState state,
@@ -206,8 +216,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
               controller.exportExcel(context);
             }
           : null,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+      child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -221,6 +230,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
               : disabledColor.withAlpha(120),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (state.isLoading)
               const SizedBox(

@@ -1,4 +1,4 @@
-import 'package:budget_app/core/b_file_storage.dart';
+import 'package:budget_app/core/b_file.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
@@ -8,6 +8,7 @@ import 'package:budget_app/data/models/merge_model/budget_transactions_model.dar
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as xcel;
+
 
 class BExcel {
   static FutureEither<String> generatedReport(
@@ -180,9 +181,11 @@ class BExcel {
       final List<int> bytes = workbook.saveAsStream();
       final fileName =
           '${context.loc.budget}_${dateTimeRange.start.toFormatDate()}_${dateTimeRange.end.toFormatDate()}.xlsx';
-      final file = await BFileStorage.writeCounter(bytes, fileName);
+
       workbook.dispose();
-      return right(file.path);
+
+      String name = await BFile.download(bytes: bytes, fileName: fileName);
+      return right(name);
     } on UnsupportedError catch (e) {
       return left(Failure(message: e.toString(), error: e.toString()));
     } catch (e) {

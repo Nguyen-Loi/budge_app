@@ -1,4 +1,5 @@
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/constants/size_constants.dart';
 import 'package:flutter/material.dart';
 
 class BButtonIcon extends StatelessWidget {
@@ -51,8 +52,7 @@ class BButtonIcon extends StatelessWidget {
           foregroundColor: color,
           elevation: elevation,
           shadowColor: elevation > 0 ? Colors.black26 : Colors.transparent,
-          padding: padding ??
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: paddingData(context),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
             side: BorderSide(
@@ -62,6 +62,17 @@ class BButtonIcon extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  EdgeInsetsGeometry paddingData(BuildContext context) {
+    if (padding != null) {
+      return padding!;
+    }
+    bool isSmallScreen = SizeConstants.isSmallScreen(context);
+    return EdgeInsets.symmetric(
+      horizontal: isSmallScreen ? 16 : 32,
+      vertical: isSmallScreen ? 14 : 20,
     );
   }
 }
