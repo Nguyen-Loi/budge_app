@@ -88,7 +88,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   Widget _buildSliverHeader() {
     return SliverAppBar(
-      expandedHeight: 90,
+      expandedHeight: 100,
       floating: false,
       pinned: false,
       automaticallyImplyLeading: false,
@@ -155,10 +155,8 @@ class _HomePageState extends ConsumerState<HomePage>
                       width: 2,
                     ),
                   ),
-                  child: BAvatarProfile(
-                    url: user.profileUrl,
-                    username: user.name,
-                  ),
+                  child:
+                      BAvatarProfile(url: user.profileUrl, username: user.name),
                 ),
               ],
             ),

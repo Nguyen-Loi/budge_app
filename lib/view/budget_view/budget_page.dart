@@ -123,14 +123,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
         TabBar(
           controller: _tabController,
           tabs: _tabs(context),
-          indicatorColor: ColorManager.primaryBlue,
-          indicatorWeight: 3,
-          indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
-          labelColor: ColorManager.primaryBlue,
-          unselectedLabelColor: ColorManager.greyLight,
-          labelStyle: Theme.of(context).textTheme.bodyLarge,
-          unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
         ),
       ),
     );
@@ -170,7 +162,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
                     }).toList(),
                   ),
                 ),
-                const SizedBox(height: 40), 
+                const SizedBox(height: 40),
               ],
             ),
           );
