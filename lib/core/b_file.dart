@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:budget_app/core/b_file_storage.dart';
-import 'package:budget_app/core/b_file_web.dart';
+import 'package:budget_app/core/web/b_file_web_interface.dart';
 import 'package:flutter/foundation.dart';
-
 
 class BFile {
   BFile._();
