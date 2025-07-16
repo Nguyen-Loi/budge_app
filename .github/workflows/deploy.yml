@@ -205,7 +205,7 @@ jobs:
         run: flutter test
 
       - name: Build web release
-        run: flutter build web --release --web-renderer html
+        run: flutter build web --release
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
