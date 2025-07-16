@@ -962,4 +962,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noFeedbackYet => 'No feedback submitted yet';
+
+  @override
+  String get overview => 'Overview';
+
+  @override
+  String get netIncome => 'Net Income';
+
+  @override
+  String get totalBudgets => 'Total Budgets';
+
+  @override
+  String get totalTransactions => 'Total Transactions';
+
+  @override
+  String get rankedByActivity => 'Ranked by Activity';
+
+  @override
+  String get transactionCount => 'Trans. Count';
+
+  @override
+  String get detailedView => 'Detailed View';
+
+  @override
+  String get incomeTransactions => 'Income Transactions';
+
+  @override
+  String get expenseTransactions => 'Expense Transactions';
+
+  @override
+  String get utilization => 'Utilization';
+
+  @override
+  String get noLimit => 'No Limit';
 }

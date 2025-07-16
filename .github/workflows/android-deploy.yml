@@ -4,9 +4,39 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '.gitignore'
+      - 'LICENSE'
 
 jobs:
+  check-commit:
+    runs-on: ubuntu-latest
+    outputs:
+      should-deploy: ${{ steps.check.outputs.should-deploy }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check commit message
+        id: check
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MSG"
+          if [[ "$COMMIT_MSG" =~ [Aa]ndroid[[:space:]]+[Dd]eploy ]]; then
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+            echo "✅ Found 'android deploy' in commit message - proceeding with deployment"
+          else
+            echo "should-deploy=false" >> $GITHUB_OUTPUT
+            echo "❌ No 'android deploy' found in commit message - skipping deployment"
+          fi
+
   build:
+    needs: check-commit
+    if: needs.check-commit.outputs.should-deploy == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -50,6 +80,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Run tests
+        run: flutter test
+
       - name: Build release bundle
         run: flutter build appbundle --release
 
@@ -75,6 +108,16 @@ jobs:
           bundle install || true
           fastlane deploy
 
+      - name: Upload build artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            build/app/outputs/bundle/release/
+            android/fastlane/report.xml
+          retention-days: 7
+
       - name: Create and push Git tag
         if: success()
         env:
@@ -90,4 +133,35 @@ jobs:
             git tag -a "${{ steps.version.outputs.TAG_NAME }}" -m "Release ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.VERSION_CODE }})"
             git push origin "${{ steps.version.outputs.TAG_NAME }}"
             echo "Created and pushed tag: ${{ steps.version.outputs.TAG_NAME }}"
+          fi
+
+      - name: Create GitHub Release
+        if: success()
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag_name: ${{ steps.version.outputs.TAG_NAME }}
+          release_name: "Android Release ${{ steps.version.outputs.VERSION_NAME }}"
+          body: |
+            ## Android Release ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.VERSION_CODE }})
+            
+            This release has been automatically deployed to Google Play Store.
+            
+            ### Changes in this release:
+            - Deployed via GitHub Actions
+            - Version: ${{ steps.version.outputs.VERSION_NAME }}
+            - Build: ${{ steps.version.outputs.VERSION_CODE }}
+          draft: false
+          prerelease: false
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "🎉 Android deployment completed successfully!"
+            echo "✅ Version ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.VERSION_CODE }}) deployed to Google Play"
+          else
+            echo "❌ Android deployment failed"
+            echo "Please check the logs above for error details"
           fi
