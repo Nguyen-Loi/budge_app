@@ -44,6 +44,9 @@ class BudgetApi implements BudgetRepository {
 
   @override
   FutureEitherVoid updateBudget({required BudgetModel model}) async {
+    model = model.copyWith(
+      updatedDate: DateTime.now(),
+    );
     try {
       await db
           .doc(FirestorePath.budget(uid: model.userId, budgetId: model.id))

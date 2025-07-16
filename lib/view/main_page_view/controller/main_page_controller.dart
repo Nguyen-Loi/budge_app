@@ -1,4 +1,6 @@
+import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/data/datasources/apis/device_api.dart';
+import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/constants/constants.dart';
 import 'package:budget_app/data/datasources/offline/database_helper.dart';
@@ -15,6 +17,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
+import 'dart:io';
+
+final transferDataSourceProvider = Provider((ref) => TransferData);
 
 final mainPageControllerProvider = Provider((ref) {
   return MainPageController(ref: ref);
@@ -37,22 +42,39 @@ class MainPageController extends StateNotifier<void> {
     final uid = _ref.watch(uidControllerProvider);
     final isLogin = uid.isNotEmpty;
 
+    if (!isLogin && kIsWeb) {
+      logInfo('User is not logged in, redirecting to onboarding...');
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, RoutePath.login);
+      });
+      return;
+    }
+
     if (!kIsWeb) {
       logInfo('Loading information database....');
       await _ref.read(sqlHelperProvider.notifier).initDatabase();
+    }
+
+    // Merge API and SQLite data if internet is available
+    if (!kIsWeb && await _hasInternetConnection()) {
+      logInfo('Merging API and SQLite data...');
+      final result = await TransferData.apiToSqliteMerge(_ref);
+      result.match(
+        (failure) => logError('apiToSqliteMerge failed: ${failure.message}'),
+        (_) => logInfo('apiToSqliteMerge completed successfully'),
+      );
+    } else {
+      logInfo('No internet connection, skipping apiToSqliteMerge.');
     }
 
     logInfo('Loading critical user data...');
     await _ref.read(userBaseControllerProvider.notifier).fetchUserInfo();
 
     logInfo('Loading budget and transaction data with lazy loading...');
-
     final budgetFuture = Future.microtask(
         () => _ref.read(budgetBaseControllerProvider.notifier).fetch());
-
     final transactionFuture = Future.microtask(
         () => _ref.read(transactionsBaseControllerProvider.notifier).fetch());
-
     await Future.wait([budgetFuture, transactionFuture]);
 
     // Check if context is still mounted before proceeding with background tasks
@@ -62,6 +84,16 @@ class MainPageController extends StateNotifier<void> {
     }
 
     logInfo('Essential data loading completed with optimization');
+  }
+
+  /// Checks for internet connectivity
+  Future<bool> _hasInternetConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    } catch (_) {
+      return false;
+    }
   }
 
   Future<void> _loadBackgroundTasksOptimized(

@@ -365,5 +365,16 @@
   "feedbackSuccess": "Cảm ơn phản hồi của bạn! Chúng tôi đánh giá cao đóng góp này và sẽ sử dụng để cải thiện ứng dụng.",
   "submitting": "Đang gửi...",
   "myFeedback": "Phản Hồi Của Tôi",
-  "noFeedbackYet": "Chưa có phản hồi nào"
+  "noFeedbackYet": "Chưa có phản hồi nào",
+  "overview": "Tổng quan",
+  "netIncome": "Thu nhập ròng",
+  "totalBudgets": "Tổng ngân sách",
+  "totalTransactions": "Tổng giao dịch",
+  "rankedByActivity": "Xếp hạng theo hoạt động",
+  "transactionCount": "Số giao dịch",
+  "detailedView": "Xem chi tiết",
+  "incomeTransactions": "Giao dịch thu được",
+  "expenseTransactions": "Giao dịch chi ra",
+  "utilization": "Khả năng sử dụng",
+  "noLimit": "Không giới hạn"
 }

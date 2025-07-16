@@ -19,7 +19,7 @@ class ReportFilterDialog extends StatefulWidget {
   final DateTime? lastDate;
   final Function(DateTimeRange?, List<TransactionTypeEnum>?, List<String>?)
       onFiltersChanged;
-  final Function(List<TransactionTypeEnum>) getRelevantBudgets;
+  final Function(List<TransactionTypeEnum>, DateTimeRange) getRelevantBudgets;
 
   const ReportFilterDialog({
     super.key,
@@ -51,7 +51,16 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
   }
 
   List<BudgetModel> get _availableBudgetsForSelectedTypes {
-    return widget.getRelevantBudgets(_selectedTransactionTypes);
+    return widget.getRelevantBudgets(
+        _selectedTransactionTypes, _selectedDateRange);
+  }
+
+  void _updateBudgetListForDateRange() {
+    final relevantBudgets = _availableBudgetsForSelectedTypes;
+    final relevantBudgetIds = relevantBudgets.map((b) => b.id).toSet();
+    _selectedBudgetIds = _selectedBudgetIds
+        .where((id) => relevantBudgetIds.contains(id))
+        .toList();
   }
 
   @override
@@ -157,13 +166,7 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
                     _selectedTransactionTypes.remove(type);
                   }
 
-                  // Update selected budgets to only include relevant ones
-                  final relevantBudgets = _availableBudgetsForSelectedTypes;
-                  final relevantBudgetIds =
-                      relevantBudgets.map((b) => b.id).toSet();
-                  _selectedBudgetIds = _selectedBudgetIds
-                      .where((id) => relevantBudgetIds.contains(id))
-                      .toList();
+                  _updateBudgetListForDateRange();
                 });
               },
             );
@@ -252,7 +255,6 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
         ),
         gapH8,
         if (_selectedTransactionTypes.isNotEmpty) ...[
-          // Show transaction type indicator
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
@@ -260,9 +262,7 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
               borderRadius: BorderRadius.circular(6),
             ),
             child: BText.caption(
-              context.loc.pShowingBudgetsFor(_selectedTransactionTypes
-                  .map((t) => t.content(context))
-                  .join(', ')),
+              '${context.loc.pShowingBudgetsFor(_selectedTransactionTypes.map((t) => t.content(context)).join(', '))} (${_selectedDateRange.start.toFormatDate()} - ${_selectedDateRange.end.toFormatDate()})',
               color: Theme.of(context).colorScheme.primary,
             ),
           ),
@@ -300,41 +300,31 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
 
     final now = DateTime.now();
     final minDate = firstDate ?? DateTime(now.year - 1);
-    final maxDate = lastDate ?? DateTime(now.year + 1);
+    // Use the current date as maximum if it's earlier than the provided lastDate
+    final maxDate = lastDate != null && now.isBefore(lastDate)
+        ? now
+        : (lastDate ?? DateTime(now.year + 1));
 
     DateTimeRange initialRange = _selectedDateRange;
 
-    if (initialRange.start.isBefore(minDate)) {
-      final duration = initialRange.duration;
-      DateTime newStart = minDate;
-      DateTime newEnd = newStart.add(duration);
-
-      if (newEnd.isAfter(maxDate)) {
-        newEnd = maxDate;
-        if (newEnd.difference(newStart).inDays < 1) {
-          newStart = maxDate.subtract(const Duration(days: 30));
-          if (newStart.isBefore(minDate)) {
-            newStart = minDate;
-          }
-        }
-      }
-
-      initialRange = DateTimeRange(start: newStart, end: newEnd);
-    }
-
-    if (initialRange.end.isAfter(maxDate)) {
-      final duration = initialRange.duration;
-      DateTime newEnd = maxDate;
-      DateTime newStart = newEnd.subtract(duration);
+    if (initialRange.start.isBefore(minDate) ||
+        initialRange.end.isAfter(maxDate)) {
+      DateTime newStart = initialRange.start;
+      DateTime newEnd = initialRange.end;
 
       if (newStart.isBefore(minDate)) {
         newStart = minDate;
-        if (newEnd.difference(newStart).inDays < 1) {
-          newEnd = minDate.add(const Duration(days: 30));
-          if (newEnd.isAfter(maxDate)) {
-            newEnd = maxDate;
-          }
+      }
+      if (newEnd.isAfter(maxDate)) {
+        newEnd = maxDate;
+      }
+
+      if (newStart.isAfter(newEnd)) {
+        newStart = maxDate.subtract(const Duration(days: 30));
+        if (newStart.isBefore(minDate)) {
+          newStart = minDate;
         }
+        newEnd = maxDate;
       }
 
       initialRange = DateTimeRange(start: newStart, end: newEnd);
@@ -350,6 +340,7 @@ class _ReportFilterDialogState extends State<ReportFilterDialog> {
     if (picked != null) {
       setState(() {
         _selectedDateRange = picked;
+        _updateBudgetListForDateRange();
       });
     }
   }

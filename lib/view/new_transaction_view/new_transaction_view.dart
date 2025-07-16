@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/picker/b_picker_datetime.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/base_view.dart';
@@ -68,7 +69,7 @@ class _ExpenseViewState extends ConsumerState<NewTransactionView> {
                 ],
               ),
             ),
-          )),
+          ).responsiveCenter()),
     );
   }
 

@@ -132,23 +132,28 @@ class _ChatViewState extends ConsumerState<ChatView>
         ],
       ),
       actions: [
-        IconButton(
-          icon: Icon(IconManager.removeChat),
-          onPressed: () {
-            BDialogInfo(
-                    dialogInfoType: BDialogInfoType.warning,
-                    title: context.loc.removeChatTitle,
-                    message: context.loc.removeChatMessage)
-                .presentAction(
-              context,
-              onSubmit: () {
-                ref
-                    .read(chatControllerProvider.notifier)
-                    .removeSession(context);
-              },
-            );
-          },
-        ),
+        Consumer(builder: (context, ref, child) {
+          final hasContent = ref.watch(chatBaseControllerProvider).isNotEmpty;
+          return hasContent
+              ? IconButton(
+                  icon: Icon(IconManager.removeChat),
+                  onPressed: () {
+                    BDialogInfo(
+                            dialogInfoType: BDialogInfoType.warning,
+                            title: context.loc.removeChatTitle,
+                            message: context.loc.removeChatMessage)
+                        .presentAction(
+                      context,
+                      onSubmit: () {
+                        ref
+                            .read(chatControllerProvider.notifier)
+                            .removeSession(context);
+                      },
+                    );
+                  },
+                )
+              : SizedBox.shrink();
+        }),
       ],
     );
   }

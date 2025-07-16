@@ -6,6 +6,7 @@ import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
+import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/src/b_notification.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -18,6 +19,7 @@ import 'package:budget_app/view/report_page/report_page.dart';
 import 'package:budget_app/view/transactions_view/transaction_view.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -148,7 +150,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   Future<bool> _checkAndShowFirstTimeSetup() async {
     final sharedUtility = ref.read(sharedUtilityProvider);
 
-    if (sharedUtility.isDataFirstTime()) {
+    if (sharedUtility.isDataFirstTime() && !kIsWeb) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (mounted) {
           final result = await Navigator.of(context).pushNamed(
@@ -158,11 +160,18 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
           if (result != null && mounted) {
             final sharedUtility = ref.read(sharedUtilityProvider);
             final currentUser = ref.read(userBaseControllerProvider);
+            final token = await ref.read(messagingProvider).getToken();
+            final userId = await ref
+                .read(userBaseControllerProvider.notifier)
+                .userIdOrSessionId();
             final updatedUser = currentUser.copyWith(
-                name: result.userName, currencyTypeValue: result.currency.code);
+                name: result.userName,
+                currencyTypeValue: result.currency.code,
+                token: token,
+                id: userId);
             await ref
                 .read(userBaseControllerProvider.notifier)
-                .updateUser(updatedUser);
+                .updateUser(updatedUser, withDb: true);
 
             sharedUtility.setDataFirstTimeIsFalse();
           }

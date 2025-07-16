@@ -24,6 +24,7 @@ class HomeWalletCard extends ConsumerWidget {
       {required int value, required WidgetRef ref}) {
     return Container(
       padding: const EdgeInsets.all(20),
+      width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [

@@ -30,13 +30,13 @@ class BaseAuthView extends StatelessWidget {
                 delegate: SliverChildListDelegate(
                   [
                     gapH24,
-                    ...children,
+                    ...children.responsiveCenter(),
                   ],
                 ),
               ),
             ),
           ],
-        ).responsiveCenter(),
+        ),
       ),
     );
   }

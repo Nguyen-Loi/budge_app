@@ -50,14 +50,14 @@ extension HandleDateTime on DateTime {
   bool isAfterOrEqualTo(DateTime dateTime) {
     final date = this;
     final isAtSameMomentAs = dateTime.isAtSameMomentAs(date);
-    return isAtSameMomentAs | date.isAfter(dateTime);
+    return isAtSameMomentAs | date.isAfter(dateTime) | isSameDate(dateTime);
   }
 
   bool isBeforeOrEqualTo(DateTime dateTime) {
     final date = this;
 
     final isAtSameMomentAs = dateTime.isAtSameMomentAs(date);
-    return isAtSameMomentAs | date.isBefore(dateTime);
+    return isAtSameMomentAs | date.isBefore(dateTime) | isSameDate(dateTime);
   }
 
   DateTimeRange get getRangeMonth {

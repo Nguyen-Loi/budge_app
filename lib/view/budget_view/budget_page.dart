@@ -2,9 +2,7 @@ import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button_icon.dart';
-import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
@@ -68,7 +66,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
 
   Widget _buildSliverHeader() {
     return SliverAppBar(
-      expandedHeight: 180,
+      expandedHeight: 140,
       floating: true,
       pinned: false,
       automaticallyImplyLeading: false,
@@ -76,20 +74,31 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
           padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
-          child: Column(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BText.appbar(
-                context.loc.budgetInUse,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BText.appbar(
+                      context.loc.budgetInUse,
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: BText(
+                        context.loc.budgetPageDesc,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onPrimary
+                            .withAlpha(200),
+                      ),
+                    )
+                  ],
+                ),
               ),
-              const SizedBox(height: 8),
-              BText(
-                context.loc.budgetPageDesc,
-                color: Theme.of(context).colorScheme.onPrimary.withAlpha(200),
-              ),
-              const Spacer(),
-              _buildAddBudgetButton(),
-              const SizedBox(height: 8),
+              _buildAddBudgetButton()
             ],
           ),
         ),
@@ -98,16 +107,12 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
   }
 
   Widget _buildAddBudgetButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 48,
-      child: BButtonIcon(
-        iconData: IconManager.add,
-        title: context.loc.newBudget,
-        onPressed: () {
-          Navigator.pushNamed(context, RoutePath.newBudget);
-        },
-      ),
+    return BButtonIcon(
+      iconData: IconManager.add,
+      title: context.loc.newBudget,
+      onPressed: () {
+        Navigator.pushNamed(context, RoutePath.newBudget);
+      },
     );
   }
 
@@ -118,23 +123,12 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
         TabBar(
           controller: _tabController,
           tabs: _tabs(context),
-          indicatorColor: ColorManager.primaryBlue,
-          indicatorWeight: 3,
-          indicatorPadding: const EdgeInsets.symmetric(horizontal: 20),
-          labelColor: ColorManager.primaryBlue,
-          unselectedLabelColor: ColorManager.greyLight,
-          labelStyle: Theme.of(context).textTheme.bodyLarge,
-          unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
         ),
       ),
     );
   }
 
   Widget _itemView({required List<BudgetModel> list}) {
-    bool sizeSmall = SizeConstants.isSmallScreen(context);
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return list.isEmpty
         ? Center(
             child: Padding(
@@ -150,29 +144,28 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
               ),
             ),
           )
-        : sizeSmall
-            ? ListView(
-                padding: const EdgeInsets.fromLTRB(16, 24, 16, 100),
-                children: [
-                  ColumnWithSpacing(
+        : SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Wrap(
                     spacing: 16,
-                    children: list.map((e) => BudgetCard(model: e)).toList(),
+                    runSpacing: 16,
+                    alignment: WrapAlignment.center,
+                    children: list.map((e) {
+                      return ConstrainedBox(
+                        constraints:
+                            const BoxConstraints(maxWidth: 400, minWidth: 350),
+                        child: BudgetCard(model: e),
+                      );
+                    }).toList(),
                   ),
-                ],
-              )
-            : GridView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 24, 16, 100),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: screenWidth > SizeConstants.gridSize ? 3 : 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 5 / 2,
                 ),
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  return BudgetCard(model: list[index]);
-                },
-              );
+                const SizedBox(height: 40),
+              ],
+            ),
+          );
   }
 }
 

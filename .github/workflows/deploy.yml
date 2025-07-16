@@ -1,0 +1,283 @@
+name: Multi-Platform Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '.gitignore'
+      - 'LICENSE'
+
+jobs:
+  check-commit:
+    runs-on: ubuntu-latest
+    outputs:
+      should-deploy-android: ${{ steps.check.outputs.should-deploy-android }}
+      should-deploy-web: ${{ steps.check.outputs.should-deploy-web }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check commit message
+        id: check
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Commit message: $COMMIT_MSG"
+          
+          # Check for Android deployment
+          if [[ "$COMMIT_MSG" =~ [Dd]eploy[[:space:]]+[Aa]ndroid ]]; then
+            echo "should-deploy-android=true" >> $GITHUB_OUTPUT
+            echo "✅ Found 'deploy android' in commit message - proceeding with Android deployment"
+          else
+            echo "should-deploy-android=false" >> $GITHUB_OUTPUT
+            echo "❌ No 'deploy android' found in commit message - skipping Android deployment"
+          fi
+          
+          # Check for Web deployment
+          if [[ "$COMMIT_MSG" =~ [Dd]eploy[[:space:]]+[Ww]eb ]]; then
+            echo "should-deploy-web=true" >> $GITHUB_OUTPUT
+            echo "✅ Found 'deploy web' in commit message - proceeding with Web deployment"
+          else
+            echo "should-deploy-web=false" >> $GITHUB_OUTPUT
+            echo "❌ No 'deploy web' found in commit message - skipping Web deployment"
+          fi
+
+  build-android:
+    needs: check-commit
+    if: needs.check-commit.outputs.should-deploy-android == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'  
+
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/upload-keystore.jks
+
+      - name: Decode Google Play JSON
+        run: |
+          echo "${{ secrets.GOOGLE_PLAY_JSON }}" | base64 -d > android/play-account.json
+
+      - name: Setup key.properties
+        run: |
+          cat > android/key.properties <<EOF
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          storeFile=upload-keystore.jks
+          EOF
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build release bundle
+        run: flutter build appbundle --release
+
+      - name: Install fastlane
+        run: |
+          sudo gem install fastlane
+
+      - name: Extract version information
+        id: version
+        run: |
+          VERSION_CODE=$(grep 'versionCode' android/app/build.gradle | head -n1 | sed 's/.*versionCode \([0-9]*\).*/\1/')
+          VERSION_NAME=$(grep 'versionName' android/app/build.gradle | head -n1 | sed 's/.*versionName "\([^"]*\)".*/\1/')
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "TAG_NAME=GooglePlay_${VERSION_NAME}(${VERSION_CODE})" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION_NAME ($VERSION_CODE)"
+
+      - name: Deploy to Google Play
+        env:
+          SUPPLY_JSON_KEY: ${{ github.workspace }}/android/play-account.json
+        working-directory: android
+        run: |
+          bundle install || true
+          fastlane deploy
+
+      - name: Upload build artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            build/app/outputs/bundle/release/
+            android/fastlane/report.xml
+          retention-days: 7
+
+      - name: Create and push Git tag
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Check if tag already exists
+          if git rev-parse "${{ steps.version.outputs.TAG_NAME }}" >/dev/null 2>&1; then
+            echo "Tag ${{ steps.version.outputs.TAG_NAME }} already exists, skipping tag creation"
+          else
+            git tag -a "${{ steps.version.outputs.TAG_NAME }}" -m "Release ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.VERSION_CODE }})"
+            git push origin "${{ steps.version.outputs.TAG_NAME }}"
+            echo "Created and pushed tag: ${{ steps.version.outputs.TAG_NAME }}"
+          fi
+
+      - name: Create GitHub Release
+        if: success()
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag_name: ${{ steps.version.outputs.TAG_NAME }}
+          release_name: "Android Release ${{ steps.version.outputs.VERSION_NAME }}"
+          body: |
+            ## Android Release ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.VERSION_CODE }})
+            
+            This release has been automatically deployed to Google Play Store.
+            
+            ### Changes in this release:
+            - Deployed via GitHub Actions
+            - Version: ${{ steps.version.outputs.VERSION_NAME }}
+            - Build: ${{ steps.version.outputs.VERSION_CODE }}
+          draft: false
+          prerelease: false
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "🎉 Android deployment completed successfully!"
+            echo "✅ Version ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.VERSION_CODE }}) deployed to Google Play"
+          else
+            echo "❌ Android deployment failed"
+            echo "Please check the logs above for error details"
+          fi
+
+  build-web:
+    needs: check-commit
+    if: needs.check-commit.outputs.should-deploy-web == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build web release
+        run: flutter build web --release --web-renderer html
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          channelId: live
+          projectId: budget-ss
+
+      - name: Extract version information
+        id: version
+        run: |
+          VERSION_NAME=$(grep 'version:' pubspec.yaml | sed 's/version: \([^+]*\).*/\1/')
+          BUILD_NUMBER=$(grep 'version:' pubspec.yaml | sed 's/version: [^+]*+\([0-9]*\).*/\1/')
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+          echo "TAG_NAME=Web_${VERSION_NAME}(${BUILD_NUMBER})" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION_NAME ($BUILD_NUMBER)"
+
+      - name: Create and push Git tag
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Check if tag already exists
+          if git rev-parse "${{ steps.version.outputs.TAG_NAME }}" >/dev/null 2>&1; then
+            echo "Tag ${{ steps.version.outputs.TAG_NAME }} already exists, skipping tag creation"
+          else
+            git tag -a "${{ steps.version.outputs.TAG_NAME }}" -m "Web Release ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.BUILD_NUMBER }})"
+            git push origin "${{ steps.version.outputs.TAG_NAME }}"
+            echo "Created and pushed tag: ${{ steps.version.outputs.TAG_NAME }}"
+          fi
+
+      - name: Create GitHub Release
+        if: success()
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag_name: ${{ steps.version.outputs.TAG_NAME }}
+          release_name: "Web Release ${{ steps.version.outputs.VERSION_NAME }}"
+          body: |
+            ## Web Release ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.BUILD_NUMBER }})
+            
+            This release has been automatically deployed to Firebase Hosting.
+            
+            ### Changes in this release:
+            - Deployed via GitHub Actions
+            - Version: ${{ steps.version.outputs.VERSION_NAME }}
+            - Build: ${{ steps.version.outputs.BUILD_NUMBER }}
+          draft: false
+          prerelease: false
+
+      - name: Upload build artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build-artifacts
+          path: |
+            build/web/
+          retention-days: 7
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "🎉 Web deployment completed successfully!"
+            echo "✅ Version ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.BUILD_NUMBER }}) deployed to Firebase Hosting"
+          else
+            echo "❌ Web deployment failed"
+            echo "Please check the logs above for error details"
+          fi

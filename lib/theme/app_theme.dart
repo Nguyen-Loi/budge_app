@@ -257,10 +257,14 @@ class AppTheme {
       ),
       tabBarTheme: TabBarTheme(
         dividerColor: Colors.transparent,
-        labelStyle: AppTextTheme.bodyLarge,
+        labelStyle: AppTextTheme.bodyLarge.copyWith(fontWeight: FontWeight.w700),
         labelColor: darkColors.primary,
-        unselectedLabelColor: darkColors.onSurfaceVariant,
+        unselectedLabelColor: darkColors.onPrimary.withAlpha(150),
         indicatorSize: TabBarIndicatorSize.label,
+        indicatorColor: darkColors.primary,
+        dividerHeight: 3,
+        labelPadding: const EdgeInsets.symmetric(horizontal: 20),
+        unselectedLabelStyle:AppTextTheme.bodyMedium,
         indicator: BoxDecoration(
           border: Border(
             bottom: BorderSide(

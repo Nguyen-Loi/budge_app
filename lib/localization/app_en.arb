@@ -365,6 +365,16 @@
     "feedbackSuccess": "Thank you for your feedback! We appreciate your input and will use it to improve our app.",
     "submitting": "Submitting...",
     "myFeedback": "My Feedback",
-    "noFeedbackYet": "No feedback submitted yet"
-
+    "noFeedbackYet": "No feedback submitted yet",
+    "overview": "Overview",
+    "netIncome": "Net Income",
+    "totalBudgets": "Total Budgets",
+    "totalTransactions": "Total Transactions",
+    "rankedByActivity": "Ranked by Activity",
+    "transactionCount": "Trans. Count",
+    "detailedView": "Detailed View",
+    "incomeTransactions": "Income Transactions",
+    "expenseTransactions": "Expense Transactions",
+    "utilization": "Utilization",
+    "noLimit": "No Limit"
 }

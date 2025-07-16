@@ -962,4 +962,37 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noFeedbackYet => 'Chưa có phản hồi nào';
+
+  @override
+  String get overview => 'Tổng quan';
+
+  @override
+  String get netIncome => 'Thu nhập ròng';
+
+  @override
+  String get totalBudgets => 'Tổng ngân sách';
+
+  @override
+  String get totalTransactions => 'Tổng giao dịch';
+
+  @override
+  String get rankedByActivity => 'Xếp hạng theo hoạt động';
+
+  @override
+  String get transactionCount => 'Số giao dịch';
+
+  @override
+  String get detailedView => 'Xem chi tiết';
+
+  @override
+  String get incomeTransactions => 'Giao dịch thu được';
+
+  @override
+  String get expenseTransactions => 'Giao dịch chi ra';
+
+  @override
+  String get utilization => 'Khả năng sử dụng';
+
+  @override
+  String get noLimit => 'Không giới hạn';
 }

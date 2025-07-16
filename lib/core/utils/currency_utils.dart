@@ -3,9 +3,10 @@ import 'package:intl/intl.dart';
 
 /// Enhanced currency utility class for improved amount handling
 class CurrencyUtils {
-  static const int _maxSafeInteger = 9223372036854775807; // Max int64
+  static const int _maxSafeInteger =
+      9007199254740991; // JavaScript Number.MAX_SAFE_INTEGER
   static const int _maxSafeDecimalAmount =
-      922337203685477; // Max safe for 2-decimal currencies
+      90071992547404; // Max safe for 2-decimal currencies (MAX_SAFE_INTEGER / 100)
 
   /// Convert display amount to storage amount (minor units)
   /// Example: $12.34 → 1234 cents, ¥500 → 500 yen

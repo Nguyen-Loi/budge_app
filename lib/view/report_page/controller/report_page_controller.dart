@@ -16,6 +16,7 @@ import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -232,26 +233,35 @@ class ReportPageController extends StateNotifier<ReportFilterState> {
 
       showSnackBar(context, l.message);
     }, (r) {
-      BDialogInfo(
-        dialogInfoType: BDialogInfoType.success,
-        message: context.loc.reportExportedSuccessfully,
-      ).presentAction(
-        context,
-        textSubmit: context.loc.openFile,
-        onSubmit: () async {
-          final closeDialog = showLoading(context: context);
-          await BFileStorage.openFile(loc, r).then((e) {
-            closeDialog();
-            if (!context.mounted) return;
-            if (e.isLeft()) {
-              BDialogInfo(
-                dialogInfoType: BDialogInfoType.error,
-                message: e.fold((l) => l.message, (r) => ''),
-              ).present(context);
-            }
-          });
-        },
-      );
+      if (kIsWeb) {
+        // For web, the file is automatically downloaded
+        BDialogInfo(
+          dialogInfoType: BDialogInfoType.success,
+          message: context.loc.reportExportedSuccessfully,
+        ).present(context);
+      } else {
+        // For mobile/desktop, show the dialog with open file option
+        BDialogInfo(
+          dialogInfoType: BDialogInfoType.success,
+          message: context.loc.reportExportedSuccessfully,
+        ).presentAction(
+          context,
+          textSubmit: context.loc.openFile,
+          onSubmit: () async {
+            final closeDialog = showLoading(context: context);
+            await BFileStorage.openFile(loc, r).then((e) {
+              closeDialog();
+              if (!context.mounted) return;
+              if (e.isLeft()) {
+                BDialogInfo(
+                  dialogInfoType: BDialogInfoType.error,
+                  message: e.fold((l) => l.message, (r) => ''),
+                ).present(context);
+              }
+            });
+          },
+        );
+      }
     });
   }
 
@@ -285,17 +295,15 @@ class ReportPageController extends StateNotifier<ReportFilterState> {
   List<TransactionTypeEnum> get availableTransactionTypes =>
       TransactionTypeEnum.values;
 
-  // Helper method to get budgets that have transactions for specific transaction types
   List<BudgetModel> getRelevantBudgets(
-      List<TransactionTypeEnum> transactionTypes) {
+      List<TransactionTypeEnum> transactionTypes, DateTimeRange dateRange) {
     if (transactionTypes.isEmpty) {
       return [];
     }
 
-    // Get all transactions within the current date range
+    // Get all transactions within the specified date range
     final allTransactionsInRange = _transactionsCard.where((e) {
-      return e.transaction.transactionDate
-          .isBetweenDateTimeRange(state.dateTimeRange);
+      return e.transaction.transactionDate.isBetweenDateTimeRange(dateRange);
     }).toList();
 
     // Get budget IDs that have transactions of the selected types

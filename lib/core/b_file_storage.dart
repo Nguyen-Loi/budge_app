@@ -28,6 +28,7 @@ class BFileStorage {
   }
 
   /// Simple file saving - no complex permissions
+  // Mobile/Desktop: Save to file system
   static Future<File> writeCounter(List<int> bytes, String fileName) async {
     final path = await getExternalDocumentPath();
     File file = File('$path/$fileName');

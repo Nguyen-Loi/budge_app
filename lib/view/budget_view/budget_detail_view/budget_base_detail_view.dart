@@ -3,6 +3,7 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -44,7 +45,7 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
               icon: Icon(IconManager.modify, size: 18)),
         )
       ],
-      child: _body(context),
+      child: _body(context).responsiveCenter(),
     );
   }
 
@@ -223,14 +224,12 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
   Widget _status(BuildContext context) {
     return Consumer(builder: (_, ref, __) {
       BudgetModel model = ref.watch(budgetDetailControllerProvider(budget));
-      return Consumer(
-        builder: (_, ref, __) {
-          return ColumnWithSpacing(
-              spacing: 12,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: header(context, model, ref));
-        }
-      );
+      return Consumer(builder: (_, ref, __) {
+        return ColumnWithSpacing(
+            spacing: 12,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: header(context, model, ref));
+      });
     });
   }
 }

@@ -1,12 +1,13 @@
-import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/b_text_money.dart';
+import 'package:budget_app/common/widget/button/b_button_icon.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -179,135 +180,123 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
   Widget build(BuildContext context) {
     Color iconColor = IconManagerData.getIconModel(widget.model.iconName).color;
 
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          color: Theme.of(context).colorScheme.surface,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(40),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
+    return Container(
+      margin: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        color: Theme.of(context).colorScheme.surface,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(40),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header with gradient background
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    iconColor.withAlpha(150),
+                    iconColor.withAlpha(100),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  Hero(
+                    tag: 'transaction_icon_${widget.model.transaction.id}',
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withAlpha(210),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha(30),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: BIcon(name: widget.model.iconName, size: 40),
+                    ),
+                  ),
+                  gapH16,
+                  BText.b1(
+                    widget.model.transactionName,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+
+            // Content area
+            SlideTransition(
+              position: _slideAnimation,
+              child: FadeTransition(
+                opacity: _contentAnimation,
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: ColumnWithSpacing(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 16,
+                    children: [
+                      _buildDetailCard(
+                        icon: IconManager.note,
+                        label: context.loc.note,
+                        content: widget.model.transaction.note,
+                        isNote: true,
+                      ),
+                      _buildAmountCard(context),
+                      _buildDetailCard(
+                        icon: IconManager.transactionDate,
+                        label: context.loc.transactionDate,
+                        content: widget.model.transaction.transactionDate
+                            .toFormatDate(),
+                      ),
+                      _buildDetailCard(
+                        icon: IconManager.createdDate,
+                        label: context.loc.createdDate,
+                        content:
+                            widget.model.transaction.createdDate.toFormatDate(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // Action button
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+              child: SizedBox(
+                width: double.infinity,
+                child: BButtonIcon(
+                    iconData: Icons.close,
+                    title: context.loc.close,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }),
+              ),
             ),
           ],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Header with gradient background
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      iconColor.withAlpha(150),
-                      iconColor.withAlpha(100),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    Hero(
-                      tag: 'transaction_icon_${widget.model.transaction.id}',
-                      child: Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withAlpha(210),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withAlpha(30),
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: BIcon(name: widget.model.iconName, size: 40),
-                      ),
-                    ),
-                    gapH16,
-                    BText.b1(
-                      widget.model.transactionName,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-
-              // Content area
-              SlideTransition(
-                position: _slideAnimation,
-                child: FadeTransition(
-                  opacity: _contentAnimation,
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: ColumnWithSpacing(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 16,
-                      children: [
-                        _buildDetailCard(
-                          icon: IconManager.note,
-                          label: context.loc.note,
-                          content: widget.model.transaction.note,
-                          isNote: true,
-                        ),
-                        _buildAmountCard(context),
-                        _buildDetailCard(
-                          icon: IconManager.transactionDate,
-                          label: context.loc.transactionDate,
-                          content: widget.model.transaction.transactionDate
-                              .toFormatDate(),
-                        ),
-                        _buildDetailCard(
-                          icon: IconManager.createdDate,
-                          label: context.loc.createdDate,
-                          content: widget.model.transaction.createdDate
-                              .toFormatDate(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              // Action button
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FilledButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(Icons.close),
-                    label: BText(
-                      context.loc.close,
-                      color: ColorManager.white,
-                    ),
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
-    );
+    ).responsiveCenter();
   }
 
   Widget _buildDetailCard({

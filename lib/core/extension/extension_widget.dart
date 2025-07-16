@@ -14,3 +14,19 @@ extension WidgetReponsive on Widget {
     );
   }
 }
+
+extension WidgetResponsivePadding on List<Widget> {
+  List<Widget> responsiveCenter({
+    double? width,
+  }) {
+    return map((widget) {
+      return Center(
+        child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: width ?? SizeConstants.maxWidthBase,
+            ),
+            child: widget),
+      );
+    }).toList();
+  }
+}

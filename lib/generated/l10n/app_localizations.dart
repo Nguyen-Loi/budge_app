@@ -1906,6 +1906,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No feedback submitted yet'**
   String get noFeedbackYet;
+
+  /// No description provided for @overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overview;
+
+  /// No description provided for @netIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Net Income'**
+  String get netIncome;
+
+  /// No description provided for @totalBudgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Budgets'**
+  String get totalBudgets;
+
+  /// No description provided for @totalTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Transactions'**
+  String get totalTransactions;
+
+  /// No description provided for @rankedByActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranked by Activity'**
+  String get rankedByActivity;
+
+  /// No description provided for @transactionCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Trans. Count'**
+  String get transactionCount;
+
+  /// No description provided for @detailedView.
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed View'**
+  String get detailedView;
+
+  /// No description provided for @incomeTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Income Transactions'**
+  String get incomeTransactions;
+
+  /// No description provided for @expenseTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Expense Transactions'**
+  String get expenseTransactions;
+
+  /// No description provided for @utilization.
+  ///
+  /// In en, this message translates to:
+  /// **'Utilization'**
+  String get utilization;
+
+  /// No description provided for @noLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'No Limit'**
+  String get noLimit;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
