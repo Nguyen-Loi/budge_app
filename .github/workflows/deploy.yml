@@ -122,7 +122,7 @@ jobs:
 
       - name: Upload build artifacts
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: |
@@ -264,7 +264,7 @@ jobs:
 
       - name: Upload build artifacts
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: web-build-artifacts
           path: |
