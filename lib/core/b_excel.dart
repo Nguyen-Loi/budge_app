@@ -254,8 +254,7 @@ class BExcel {
       final budget = budgetData.budget;
       final transactionCount = budgetData.transactions.length;
       final utilization = budget.budgetLimit > 0
-          ? (budget.currentAmount.abs() / budget.budgetLimit * 100)
-              .toStringAsFixed(1)
+          ? '${(budget.currentAmount.abs() / budget.budgetLimit * 100).toStringAsFixed(1)}%'
           : '';
 
       String rankText = '${i + 1}';
@@ -302,7 +301,7 @@ class BExcel {
         ..cellStyle = styles['value']!;
 
       sheet.getRangeByIndex(rowIndex, 8)
-        ..setText('$utilization%')
+        ..setText(utilization)
         ..cellStyle = styles['value']!;
 
       rowIndex++;
