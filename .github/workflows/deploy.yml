@@ -133,7 +133,7 @@ jobs:
       - name: Create and push Git tag
         if: success()
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -151,7 +151,7 @@ jobs:
         if: success()
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.version.outputs.TAG_NAME }}
           release_name: "Android Release ${{ steps.version.outputs.VERSION_NAME }}"
@@ -207,6 +207,30 @@ jobs:
       - name: Build web release
         run: flutter build web --release
 
+      - name: Prepare Firebase config for hosting
+        run: |
+          # Create a temporary firebase.json with only hosting configuration
+          jq '.hosting' firebase.json > firebase.hosting.json
+          # Replace the original with hosting-only config
+          cp firebase.hosting.json firebase.json
+
+      - name: Verify Firebase service account
+        run: |
+          if [ -z "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" ]; then
+            echo "❌ FIREBASE_SERVICE_ACCOUNT secret is not set"
+            exit 1
+          fi
+          echo "✅ Firebase service account is configured"
+          
+          # Check if the service account is valid JSON
+          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" | jq . > /dev/null 2>&1
+          if [ $? -eq 0 ]; then
+            echo "✅ Firebase service account is valid JSON"
+          else
+            echo "❌ Firebase service account is not valid JSON"
+            exit 1
+          fi
+
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -214,6 +238,11 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
           channelId: live
           projectId: budget-ss
+          
+      - name: Restore original firebase.json
+        if: always()
+        run: |
+          git checkout firebase.json
           
       - name: Extract version information
         id: version
@@ -228,7 +257,7 @@ jobs:
       - name: Create and push Git tag
         if: success()
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -246,7 +275,7 @@ jobs:
         if: success()
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.version.outputs.TAG_NAME }}
           release_name: "Web Release ${{ steps.version.outputs.VERSION_NAME }}"
