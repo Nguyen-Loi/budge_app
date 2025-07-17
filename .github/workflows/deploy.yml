@@ -214,22 +214,27 @@ jobs:
           # Replace the original with hosting-only config
           cp firebase.hosting.json firebase.json
 
+      - name: Verify build output
+        run: |
+          if [ ! -d "build/web" ]; then
+            echo "❌ Build output directory 'build/web' does not exist"
+            exit 1
+          fi
+          if [ ! -f "build/web/index.html" ]; then
+            echo "❌ Build output 'build/web/index.html' does not exist"
+            exit 1
+          fi
+          echo "✅ Build output verified"
+          ls -la build/web/
+
       - name: Verify Firebase service account
         run: |
           if [ -z "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" ]; then
             echo "❌ FIREBASE_SERVICE_ACCOUNT secret is not set"
+            echo "Please add your Firebase service account JSON to GitHub Secrets"
             exit 1
           fi
-          echo "✅ Firebase service account is configured"
-          
-          # Check if the service account is valid JSON
-          echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" | jq . > /dev/null 2>&1
-          if [ $? -eq 0 ]; then
-            echo "✅ Firebase service account is valid JSON"
-          else
-            echo "❌ Firebase service account is not valid JSON"
-            exit 1
-          fi
+          echo "✅ Firebase service account secret is configured"
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
@@ -238,6 +243,8 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
           channelId: live
           projectId: budget-ss
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
           
       - name: Restore original firebase.json
         if: always()
