@@ -14,7 +14,9 @@ CloseLoading showLoading({
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Lottie.asset(LottieAssets.loading2),
+        ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
+            child: Lottie.asset(LottieAssets.loading2)),
         gapH16,
         BAnimatedText(text),
       ],
