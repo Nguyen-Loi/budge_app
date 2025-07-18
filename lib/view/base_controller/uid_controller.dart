@@ -13,7 +13,9 @@ class UidController extends StateNotifier<String> {
 
   void init(String uid) {
     state = uid;
-    FirebaseCrashlytics.instance.setUserIdentifier(uid);
+    if (FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
+      FirebaseCrashlytics.instance.setUserIdentifier(uid);
+    }
   }
 
   void clear() {

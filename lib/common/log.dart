@@ -2,7 +2,6 @@
 import 'dart:developer' as developer;
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 
 // Blue text
 void logInfo(String msg) {
@@ -23,7 +22,7 @@ void logWarning(String msg) {
 void logError(String msg,
     {bool toCrashlytics = true, Object? error, StackTrace? stackTrace}) {
   developer.log('\x1B[31m$msg\x1B[0m');
-  if (toCrashlytics && kReleaseMode) {
+  if (toCrashlytics &&  FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled) {
     if (error != null) {
       FirebaseCrashlytics.instance.recordError(error, stackTrace, reason: msg);
     } else {
