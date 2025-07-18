@@ -248,7 +248,7 @@ jobs:
           BUILD_NUMBER=$(grep 'version:' pubspec.yaml | sed 's/version: [^+]*+\([0-9]*\).*/\1/')
           echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_OUTPUT
-          echo "TAG_NAME=web-deploy" >> $GITHUB_OUTPUT
+          echo "TAG_NAME=Web_${VERSION_NAME}(${BUILD_NUMBER})" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION_NAME ($BUILD_NUMBER)"
 
       - name: Create GitHub Release
