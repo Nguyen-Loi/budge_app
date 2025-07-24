@@ -14,6 +14,7 @@ import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/data/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -129,7 +130,10 @@ class AuthAPI implements IAuthApi {
       if (user == null) {
         return right(null);
       }
-      await TransferData.asyncData(_ref, context, currenUidLogout: user.uid);
+      if (!kIsWeb) {
+        await TransferData.asyncData(_ref, context, currenUidLogout: user.uid);
+        await _ref.read(sqlHelperProvider.notifier).clearAndResetDb();
+      }
 
       final providerId = user.providerData.isNotEmpty
           ? user.providerData.first.providerId
@@ -144,7 +148,6 @@ class AuthAPI implements IAuthApi {
         await FacebookAuth.instance.logOut();
       }
 
-      await _ref.read(sqlHelperProvider.notifier).clearAndResetDb();
       await _auth.signOut();
       await _sharedPref.reset();
 

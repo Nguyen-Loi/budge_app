@@ -1,3 +1,4 @@
+import 'package:budget_app/core/utils/data_config_utils.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +14,9 @@ class UidController extends StateNotifier<String> {
 
   void init(String uid) {
     state = uid;
-    FirebaseCrashlytics.instance.setUserIdentifier(uid);
+    if (DataConfigUtils.instance.isCrashlyticsEnabled) {
+      FirebaseCrashlytics.instance.setUserIdentifier(uid);
+    }
   }
 
   void clear() {
