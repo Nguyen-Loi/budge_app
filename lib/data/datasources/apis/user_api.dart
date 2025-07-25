@@ -43,7 +43,7 @@ class UserApi extends UserRepository {
 
   @override
   FutureEither<UserModel> updateUser(
-      {required UserModel user, required File? file}) async {
+      {required UserModel user, File? file}) async {
     user = user.copyWith(
       updatedDate: DateTime.now(),
     );

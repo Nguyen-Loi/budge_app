@@ -30,7 +30,7 @@ class UserLocal extends UserRepository {
   @override
   Future<UserModel> getUserById(String uid) async {
     if (_db == null) {
-     return UserModel.defaultData();
+     return UserModel.defaultData(uid);
     }
     try {
       final result = await _db.query(
@@ -42,10 +42,10 @@ class UserLocal extends UserRepository {
       if (result.isNotEmpty) {
         return UserModel.fromMap(result.first);
       } else {
-        UserModel userDefault = UserModel.defaultData();
+        UserModel userDefault = UserModel.defaultData(uid);
         await _db.insert(
           TableName.user,
-          userDefault.toMap(),
+          userDefault.toMap(isSqliteFomat: true),
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
         return userDefault;
@@ -59,7 +59,7 @@ class UserLocal extends UserRepository {
   @override
   FutureEither<UserModel> updateUser({
     required UserModel user,
-    required File? file,
+    File? file,
   }) async {
     try {
       String? profileUrl = user.profileUrl;

@@ -81,7 +81,7 @@
   "nameInvalid": "Tên không hợp lệ",
   "passwordMininum6": "Mật khẩu tối thiểu là 6 ký tự",
   "confirmPasswordInvalid": "Xác nhận mật khẩu không hợp lệ",
-  "accountCreatePleaseLogin": "Tài khoản đã được tạo! Vui lòng đăng nhập",
+  "accountCreateSuccess": "Tạo tài khoản thành công!",
   "forgetPassword": "Quên mật khẩu?",
   "pBudgetNameExits": "Ngân sách {budgetName} đã tồn tại. Vui lòng thay đổi tên ngân sách và thử lại",
   "@pBudgetNameExits": {
@@ -376,5 +376,10 @@
   "incomeTransactions": "Giao dịch thu được",
   "expenseTransactions": "Giao dịch chi ra",
   "utilization": "Khả năng sử dụng",
-  "noLimit": "Không giới hạn"
+  "noLimit": "Không giới hạn",
+  "dataSyncConflict": "Xung đột đồng bộ dữ liệu",
+  "dataSyncConflictDesc": "Cả dữ liệu cục bộ và dữ liệu trên máy chủ đều tồn tại cho {email}. Bạn muốn tiếp tục như thế nào?",
+  "useCurrentData": "Sử dụng dữ liệu hiện tại",
+  "overwriteWithNewData": "Ghi đè bằng dữ liệu mới",
+  "combineData": "Kết hợp dữ liệu"
 }

@@ -13,7 +13,6 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/budget_view/budget_page.dart';
 import 'package:budget_app/view/onboaring_view/onboarding_screen.dart';
-import 'package:budget_app/view/home_page/controller/home_controller.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:budget_app/view/report_page/report_page.dart';
 import 'package:budget_app/view/transactions_view/transaction_view.dart';
@@ -56,7 +55,6 @@ List<BottomNavigationBarItem> _navBarItems(BuildContext context) {
 class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   late int _selectedIndex;
   late PageController _pageController;
-  bool _hasCheckedFirstTime = false;
 
   @override
   void initState() {
@@ -129,7 +127,8 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
                   SizedBox(height: 16),
                   BButton(
                     onPressed: () {
-                      ref.read(homeControllerProvider.notifier).refresh();
+                      final refresh = ref.refresh(mainPageControllerProvider);
+                      logInfo('Refresh status: $refresh');
                     },
                     title: context.loc.refresh,
                   )
@@ -140,44 +139,35 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
   }
 
   Widget _buildWithFirstTimeCheck() {
-    if (!_hasCheckedFirstTime) {
-      _hasCheckedFirstTime = true;
+    final sharedUtility = ref.read(sharedUtilityProvider);
+    bool isFirstTimeInfo = sharedUtility.isDataFirstTime() && !kIsWeb;
+    if (isFirstTimeInfo) {
       _checkAndShowFirstTimeSetup();
+      sharedUtility.setDataFirstTimeIsFalse();
     }
     return body();
   }
 
   Future<bool> _checkAndShowFirstTimeSetup() async {
-    final sharedUtility = ref.read(sharedUtilityProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        final result = await Navigator.of(context).pushNamed(
+          RoutePath.onboarding,
+        ) as OnboardingResult?;
 
-    if (sharedUtility.isDataFirstTime() && !kIsWeb) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (mounted) {
-          final result = await Navigator.of(context).pushNamed(
-            RoutePath.onboarding,
-          ) as OnboardingResult?;
-
-          if (result != null && mounted) {
-            final sharedUtility = ref.read(sharedUtilityProvider);
-            final currentUser = ref.read(userBaseControllerProvider);
-            final token = await ref.read(messagingProvider).getToken();
-            final userId = await ref
-                .read(userBaseControllerProvider.notifier)
-                .userIdOrSessionId();
-            final updatedUser = currentUser.copyWith(
-                name: result.userName,
-                currencyTypeValue: result.currency.code,
-                token: token,
-                id: userId);
-            await ref
-                .read(userBaseControllerProvider.notifier)
-                .updateUser(updatedUser, withDb: true);
-
-            sharedUtility.setDataFirstTimeIsFalse();
-          }
+          final currentUser = ref.read(userBaseControllerProvider);
+          final token = await ref.read(messagingProvider).getToken();
+          final updatedUser = currentUser.copyWith(
+              name: result?.userName,
+              currencyTypeValue: result?.currency.code,
+              token: token);
+          await ref
+              .read(userBaseControllerProvider.notifier)
+              .updateUser(updatedUser, withDb: true);
         }
-      });
-    }
+      }
+    });
     return true;
   }
 

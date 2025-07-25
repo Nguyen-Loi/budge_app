@@ -1,5 +1,7 @@
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
+import 'package:budget_app/constants/string_constants.dart';
+import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/core/enums/account_type_enum.dart';
@@ -44,6 +46,7 @@ abstract class IAuthApi {
     required String email,
   });
   bool get isLogin;
+  Future<User> signInAnonymously();
 }
 
 class AuthAPI implements IAuthApi {
@@ -60,7 +63,6 @@ class AuthAPI implements IAuthApi {
         _ref = ref,
         _db = db,
         _sharedPref = sharedPref;
-  String get uid => _auth.currentUser?.uid ?? '';
 
   User _currentUserAccount() {
     return _auth.currentUser!;
@@ -80,19 +82,21 @@ class AuthAPI implements IAuthApi {
       }
     }
     final DateTime now = DateTime.now();
-    String email = user.email ?? 'member@gmail.com';
+    String email = user.email ?? StringConstants.emailDefault;
+    String name = user.displayName ?? getNameFromEmail(email);
     final newUser = UserModel(
       id: user.uid,
       email: email,
       balance: 0,
       profileUrl: user.photoURL ??
           'https://cdn-icons-png.flaticon.com/512/1144/1144760.png',
-      name: user.displayName ?? email.split('@')[0],
+      name: name,
       accountTypeValue: accountType.value,
       currencyTypeValue: CurrencyType.vnd.code,
       role: UserRole.normal,
       languageCode: _ref.read(languageControllerProvider).code,
       isRemindTransactionEveryDate: true,
+      isActive: true,
       createdDate: now,
       updatedDate: now,
     );
@@ -104,8 +108,12 @@ class AuthAPI implements IAuthApi {
   FutureEither<User> signUp(
       {required String email, required String password}) async {
     try {
-      final account = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential account;
+      final credential = EmailAuthProvider.credential(
+        email: email,
+        password: password,
+      );
+      account = await _auth.currentUser!.linkWithCredential(credential);
 
       await _writeNewInfoToDB(accountType: AccountType.emailAndPassword);
       return right(account.user!);
@@ -114,6 +122,9 @@ class AuthAPI implements IAuthApi {
         return left(Failure(
             error: _ref.read(appLocalizationsProvider).passwordTooWeak));
       } else if (e.code == 'email-already-in-use') {
+        return left(Failure(
+            error: _ref.read(appLocalizationsProvider).emailAlreadyExits));
+      } else if (e.code == 'credential-already-in-use') {
         return left(Failure(
             error: _ref.read(appLocalizationsProvider).emailAlreadyExits));
       }
@@ -131,7 +142,7 @@ class AuthAPI implements IAuthApi {
         return right(null);
       }
       if (!kIsWeb) {
-        await TransferData.asyncData(_ref, context, currenUidLogout: user.uid);
+        await TransferData.asyncData(_ref, context);
         await _ref.read(sqlHelperProvider.notifier).clearAndResetDb();
       }
 
@@ -181,7 +192,9 @@ class AuthAPI implements IAuthApi {
       final LoginResult result = await FacebookAuth.instance.login();
       final AuthCredential facebookCredential =
           FacebookAuthProvider.credential(result.accessToken!.tokenString);
-      await _auth.signInWithCredential(facebookCredential);
+
+      await _auth.currentUser!.linkWithCredential(facebookCredential);
+
       await _writeNewInfoToDB(accountType: AccountType.facebook);
       return right(null);
     } on FirebaseAuthException catch (e) {
@@ -194,6 +207,20 @@ class AuthAPI implements IAuthApi {
             message: _ref.read(appLocalizationsProvider).errorCredentials,
           ),
         );
+      } else if (e.code == 'credential-already-in-use') {
+        // If credential is already in use, sign out anonymous and sign in normally
+        await _auth.signOut();
+        try {
+          final LoginResult retryResult = await FacebookAuth.instance.login();
+          final AuthCredential retryCredential =
+              FacebookAuthProvider.credential(
+                  retryResult.accessToken!.tokenString);
+          await _auth.signInWithCredential(retryCredential);
+          return right(null);
+        } catch (retryError) {
+          return left(
+              Failure(error: retryError.toString(), message: defaultError));
+        }
       }
       return left(Failure(message: defaultError, error: e.toString()));
     } catch (e) {
@@ -216,7 +243,9 @@ class AuthAPI implements IAuthApi {
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
-        await _auth.signInWithCredential(credential);
+
+        await _auth.currentUser!.linkWithCredential(credential);
+
         await _writeNewInfoToDB(accountType: AccountType.google);
         return right(null);
       }
@@ -231,6 +260,28 @@ class AuthAPI implements IAuthApi {
             message: _ref.read(appLocalizationsProvider).errorCredentials,
           ),
         );
+      } else if (e.code == 'credential-already-in-use') {
+        // If credential is already in use, sign out anonymous and sign in normally
+        await _auth.signOut();
+        try {
+          final GoogleSignIn retryGoogleSignIn = GoogleSignIn();
+          final GoogleSignInAccount? retryGoogleUser =
+              await retryGoogleSignIn.signIn();
+          if (retryGoogleUser != null) {
+            final GoogleSignInAuthentication retryGoogleAuth =
+                await retryGoogleUser.authentication;
+            final retryCredential = GoogleAuthProvider.credential(
+              accessToken: retryGoogleAuth.accessToken,
+              idToken: retryGoogleAuth.idToken,
+            );
+            await _auth.signInWithCredential(retryCredential);
+            return right(null);
+          }
+          return left(Failure(message: defaultError));
+        } catch (retryError) {
+          return left(
+              Failure(error: retryError.toString(), message: defaultError));
+        }
       }
       return left(Failure(message: defaultError, error: e.toString()));
     } catch (e) {
@@ -239,7 +290,9 @@ class AuthAPI implements IAuthApi {
   }
 
   @override
-  bool get isLogin => _auth.currentUser != null;
+  bool get isLogin {
+    return _auth.currentUser != null && !_auth.currentUser!.isAnonymous;
+  }
 
   @override
   FutureEitherVoid resetPassword({required String email}) async {
@@ -255,5 +308,17 @@ class AuthAPI implements IAuthApi {
     } catch (e) {
       return left(Failure(error: e.toString()));
     }
+  }
+
+  @override
+  Future<User> signInAnonymously() {
+    return _auth.signInAnonymously().then((userCredential) {
+      final user = userCredential.user!;
+      _writeNewInfoToDB(accountType: AccountType.anonymous);
+      return user;
+    }).catchError((error, stackTrace) {
+      logError('Error signing in anonymously: $error', stackTrace: stackTrace);
+      throw Exception('Error signing in anonymously: $error');
+    });
   }
 }

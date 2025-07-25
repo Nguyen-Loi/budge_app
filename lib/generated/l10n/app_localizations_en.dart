@@ -265,7 +265,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmPasswordInvalid => 'Confirm password invalid';
 
   @override
-  String get accountCreatePleaseLogin => 'Account created! Please login';
+  String get accountCreateSuccess => 'Account created successfully!';
 
   @override
   String get forgetPassword => 'Forgot password?';
@@ -995,4 +995,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noLimit => 'No Limit';
+
+  @override
+  String get dataSyncConflict => 'Data Sync Conflict';
+
+  @override
+  String dataSyncConflictDesc(Object email) {
+    return 'Both local and remote data exist for $email. How would you like to proceed?';
+  }
+
+  @override
+  String get useCurrentData => 'Use Current Data';
+
+  @override
+  String get overwriteWithNewData => 'Overwrite with New Data';
+
+  @override
+  String get combineData => 'Combine Data';
 }

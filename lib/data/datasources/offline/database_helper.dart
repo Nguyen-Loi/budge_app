@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-
 final sqlHelperProvider = StateNotifierProvider<DatabaseHelper, Database?>((_) {
   return DatabaseHelper(null);
 });
@@ -16,7 +15,7 @@ class DatabaseHelper extends StateNotifier<Database?> {
   static const String userTable = TableName.user;
 
   static const _databaseName = "app.db";
-  static const _databaseVersion = 1;
+  static const _databaseVersion = 2;
 
   Database get db {
     if (state == null) {
@@ -107,6 +106,8 @@ class DatabaseHelper extends StateNotifier<Database?> {
       role TEXT,
       languageCode TEXT,
       isRemindTransactionEveryDate INTEGER,
+      isActive INTEGER,
+      inactiveReason TEXT,
       createdDate INTEGER,
       updatedDate INTEGER
     )
@@ -114,7 +115,14 @@ class DatabaseHelper extends StateNotifier<Database?> {
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < newVersion) {}
+    if (oldVersion < newVersion) {
+      // Add the new columns that were introduced in version 2
+      if (oldVersion < 2) {
+        await db.execute('ALTER TABLE $userTable ADD COLUMN isActive INTEGER');
+        await db
+            .execute('ALTER TABLE $userTable ADD COLUMN inactiveReason TEXT');
+      }
+    }
   }
 
   Future close() async {

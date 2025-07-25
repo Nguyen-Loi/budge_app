@@ -3,8 +3,8 @@ import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
-import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
+import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/offline/user_local.dart';
 import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
@@ -16,6 +16,7 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
+import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,18 +50,7 @@ class UserBaseController extends StateNotifier<UserModel> {
         _ref = ref,
         _uid = uid,
         _userApi = userApi,
-        super(UserModel.defaultData());
-
-  Future<String> userIdOrSessionId() async {
-    String userId = state.id;
-    if (userId.isNotEmpty) {
-      return userId;
-    }
-
-    String sessionUserId =
-        await _ref.read(sharedUtilityProvider).getSessionId();
-    return sessionUserId;
-  }
+        super(UserModel.defaultData(uid));
 
   Future<UserModel> fetchUserInfo() async {
     UserModel currentUser = await _userRepository.getUserById(_uid);
@@ -69,7 +59,7 @@ class UserBaseController extends StateNotifier<UserModel> {
     return currentUser;
   }
 
-  bool get isLogin => !GenId.isSessionId(state.id);
+  bool get isLogin => _ref.read(authApiProvider).isLogin;
 
   void reload(UserModel user) {
     state = user;
@@ -198,7 +188,7 @@ class UserBaseController extends StateNotifier<UserModel> {
   }
 
   void _updaterInDb(UserModel user) {
-    if (_userRepository is UserLocal && user.id.isNotEmpty) {
+    if (_userRepository is UserLocal) {
       _userApi.updateUser(user: user, file: null);
     }
   }
@@ -206,7 +196,7 @@ class UserBaseController extends StateNotifier<UserModel> {
   void transferData(BuildContext context) async {
     final closeDialog = showLoading(
         context: context, text: context.loc.syncLocalToCloudLoading);
-    final res = await TransferData.asyncData(_ref, context);
+    final res = await TransferData.merge(_ref);
     closeDialog();
 
     res.fold((l) {
@@ -215,7 +205,10 @@ class UserBaseController extends StateNotifier<UserModel> {
     }, (r) {
       showBDialog(context,
           dialogInfoType: BDialogInfoType.success,
-          message: context.loc.syncLocalToCloudSuccess);
+          message: context.loc.syncLocalToCloudSuccess, onConfirm: () {
+        Navigator.pop(context);
+        _ref.invalidate(mainPageControllerProvider);
+      });
     });
   }
 }

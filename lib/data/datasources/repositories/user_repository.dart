@@ -18,6 +18,6 @@ final userRepositoryProvider = Provider<UserRepository>((ref) {
 abstract class UserRepository {
   Future<UserModel> getUserById(String uid);
   FutureEither<UserModel> updateUser(
-      {required UserModel user, required File? file});
+      {required UserModel user, File? file});
   FutureEitherVoid add({required UserModel user});
 }

@@ -581,11 +581,11 @@ abstract class AppLocalizations {
   /// **'Confirm password invalid'**
   String get confirmPasswordInvalid;
 
-  /// No description provided for @accountCreatePleaseLogin.
+  /// No description provided for @accountCreateSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Account created! Please login'**
-  String get accountCreatePleaseLogin;
+  /// **'Account created successfully!'**
+  String get accountCreateSuccess;
 
   /// No description provided for @forgetPassword.
   ///
@@ -1972,6 +1972,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Limit'**
   String get noLimit;
+
+  /// No description provided for @dataSyncConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Sync Conflict'**
+  String get dataSyncConflict;
+
+  /// No description provided for @dataSyncConflictDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Both local and remote data exist for {email}. How would you like to proceed?'**
+  String dataSyncConflictDesc(Object email);
+
+  /// No description provided for @useCurrentData.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Current Data'**
+  String get useCurrentData;
+
+  /// No description provided for @overwriteWithNewData.
+  ///
+  /// In en, this message translates to:
+  /// **'Overwrite with New Data'**
+  String get overwriteWithNewData;
+
+  /// No description provided for @combineData.
+  ///
+  /// In en, this message translates to:
+  /// **'Combine Data'**
+  String get combineData;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

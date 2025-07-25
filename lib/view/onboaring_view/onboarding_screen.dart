@@ -443,6 +443,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                     validator: (value) {
                       return value.validateName(context);
                     },
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontWeight: FontWeight.w600),
                     decoration: InputDecoration(
                       labelText: context.loc.name,
                       prefixIcon: Icon(
@@ -673,7 +676,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             BText.caption(
               context.loc.agreeToTerms,
               textAlign: TextAlign.center,
-              color: Theme.of(context).colorScheme.onPrimary.withAlpha(160),
+              color: Theme.of(context).colorScheme.onPrimary.withAlpha(220),
+              fontWeight: FontWeight.w700,
             ),
             gapH16,
           ],

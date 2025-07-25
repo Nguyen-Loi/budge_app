@@ -265,7 +265,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get confirmPasswordInvalid => 'Xác nhận mật khẩu không hợp lệ';
 
   @override
-  String get accountCreatePleaseLogin => 'Tài khoản đã được tạo! Vui lòng đăng nhập';
+  String get accountCreateSuccess => 'Tạo tài khoản thành công!';
 
   @override
   String get forgetPassword => 'Quên mật khẩu?';
@@ -995,4 +995,21 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noLimit => 'Không giới hạn';
+
+  @override
+  String get dataSyncConflict => 'Xung đột đồng bộ dữ liệu';
+
+  @override
+  String dataSyncConflictDesc(Object email) {
+    return 'Cả dữ liệu cục bộ và dữ liệu trên máy chủ đều tồn tại cho $email. Bạn muốn tiếp tục như thế nào?';
+  }
+
+  @override
+  String get useCurrentData => 'Sử dụng dữ liệu hiện tại';
+
+  @override
+  String get overwriteWithNewData => 'Ghi đè bằng dữ liệu mới';
+
+  @override
+  String get combineData => 'Kết hợp dữ liệu';
 }
