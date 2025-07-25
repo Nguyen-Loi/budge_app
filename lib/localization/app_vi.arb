@@ -265,7 +265,6 @@
   "transactionHistory": "Lịch Sử Giao Dịch",
   "monthlySummary": "Tóm Tắt Tháng",
   "netBalance": "Số Dư",
-  "budgetPageDesc": "Quản lý và theo dõi ngân sách của bạn",
   "errorValidateForm": "Hãy chỉnh sửa các lỗi có trong biểu mẫu.",
   "protected": "Bảo vệ",
   "initializingTheApplication": "Đang khởi tạo ứng dụng...",
@@ -381,5 +380,7 @@
   "dataSyncConflictDesc": "Cả dữ liệu cục bộ và dữ liệu trên máy chủ đều tồn tại cho {email}. Bạn muốn tiếp tục như thế nào?",
   "useCurrentData": "Sử dụng dữ liệu hiện tại",
   "overwriteWithNewData": "Ghi đè bằng dữ liệu mới",
-  "combineData": "Kết hợp dữ liệu"
+  "combineData": "Kết hợp dữ liệu",
+  "chooseAvatar": "Chọn Avatar",
+  "selectYourFavoriteAvatar": "Chọn avatar yêu thích của bạn"
 }

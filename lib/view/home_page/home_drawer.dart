@@ -1,4 +1,4 @@
-import 'package:budget_app/common/widget/b_avatar_profile.dart';
+import 'package:budget_app/common/widget/b_smart_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -71,10 +71,12 @@ class HomeDrawer extends ConsumerWidget {
           ).animate(drawerAnimation),
           child: Row(
             children: [
-              BAvatarProfile(
-                url: user.profileUrl,
-                username: user.name,
-                size: 25,
+              BSmartAvatar(
+                data: user.profileUrl,
+                size: 23,
+                showBorder: true,
+                borderColor: Theme.of(context).colorScheme.onPrimary,
+                borderWidth: 2.0,
               ),
               gapW16,
               Expanded(

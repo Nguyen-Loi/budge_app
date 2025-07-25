@@ -1301,12 +1301,6 @@ abstract class AppLocalizations {
   /// **'Net Balance'**
   String get netBalance;
 
-  /// No description provided for @budgetPageDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Manage and track your budgets'**
-  String get budgetPageDesc;
-
   /// No description provided for @errorValidateForm.
   ///
   /// In en, this message translates to:
@@ -2002,6 +1996,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Combine Data'**
   String get combineData;
+
+  /// No description provided for @chooseAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Avatar'**
+  String get chooseAvatar;
+
+  /// No description provided for @selectYourFavoriteAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your favorite avatar'**
+  String get selectYourFavoriteAvatar;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
