@@ -1,6 +1,6 @@
 import 'package:budget_app/common/mixin/floating_action_transaction_mixin.dart';
-import 'package:budget_app/common/widget/b_avatar_profile.dart';
 import 'package:budget_app/common/widget/b_divider.dart';
+import 'package:budget_app/common/widget/b_selectable_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -155,8 +155,15 @@ class _HomePageState extends ConsumerState<HomePage>
                       width: 2,
                     ),
                   ),
-                  child:
-                      BAvatarProfile(url: user.profileUrl, username: user.name),
+                  child: BSelectableAvatar(
+                    initialAvatar: user.profileUrl,
+                    size: 22,
+                    onAvatarChanged: (newAvatar) {
+                      ref
+                          .read(userBaseControllerProvider.notifier)
+                          .updateUser(user.copyWith(profileUrl: newAvatar));
+                    },
+                  ),
                 ),
               ],
             ),

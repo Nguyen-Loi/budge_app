@@ -1,4 +1,6 @@
-import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/core/providers.dart';
+import 'package:budget_app/core/utils/data_config_utils.dart';
+import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/data/datasources/apis/device_api.dart';
 import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/common/log.dart';
@@ -17,7 +19,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
-import 'dart:io';
 
 final transferDataSourceProvider = Provider((ref) => TransferData);
 
@@ -39,32 +40,23 @@ class MainPageController extends StateNotifier<void> {
         super(null);
 
   Future<void> loadBaseDataOptimized(BuildContext context) async {
-    final uid = _ref.watch(uidControllerProvider);
-    final isLogin = uid.isNotEmpty;
-
-    if (!isLogin && kIsWeb) {
-      logInfo('User is not logged in, redirecting to onboarding...');
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacementNamed(context, RoutePath.login);
-      });
-      return;
+    final isLogin = _ref.read(authApiProvider).isLogin;
+    if (!isLogin) {
+      await _ref.read(authApiProvider).signInAnonymously();
+    }
+    String? uid = _ref.read(authProvider).currentUser?.uid ;
+    if (uid == null) {
+      throw Exception('User UID is null, cannot proceed with loading data');
     }
 
-    if (!kIsWeb) {
+    // Only initialize UID if it's not already set
+    Future.microtask(() {
+      _ref.read(uidControllerProvider.notifier).init(uid);
+    });
+
+    if (!DataConfigUtils.instance.isOnlyOnlineData) {
       logInfo('Loading information database....');
       await _ref.read(sqlHelperProvider.notifier).initDatabase();
-    }
-
-    // Merge API and SQLite data if internet is available
-    if (!kIsWeb && await _hasInternetConnection()) {
-      logInfo('Merging API and SQLite data...');
-      final result = await TransferData.apiToSqliteMerge(_ref);
-      result.match(
-        (failure) => logError('apiToSqliteMerge failed: ${failure.message}'),
-        (_) => logInfo('apiToSqliteMerge completed successfully'),
-      );
-    } else {
-      logInfo('No internet connection, skipping apiToSqliteMerge.');
     }
 
     logInfo('Loading critical user data...');
@@ -80,37 +72,35 @@ class MainPageController extends StateNotifier<void> {
     // Check if context is still mounted before proceeding with background tasks
     if (context.mounted) {
       logInfo('Loading background tasks with optimization...');
-      unawaited(_loadBackgroundTasksOptimized(context, uid, isLogin));
+      unawaited(_loadBackgroundTasksOptimized(context:  context, uid: uid, isLogin: isLogin));
+      unawaited(_refreshToken(_ref));
     }
 
     logInfo('Essential data loading completed with optimization');
   }
 
-  /// Checks for internet connectivity
-  Future<bool> _hasInternetConnection() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } catch (_) {
-      return false;
-    }
+  Future<void> _refreshToken(Ref ref) async {
+    ref.read(messagingProvider).getToken().then((token) {
+      if (token != null) {
+        ref.read(userBaseControllerProvider.notifier).updateUser(
+              ref.read(userBaseControllerProvider),
+              withDb: true,
+            );
+      }
+    }).catchError((e) {
+      logError('Failed to refresh token: $e');
+    });
   }
 
   Future<void> _loadBackgroundTasksOptimized(
-      [BuildContext? context, String? uid, bool? isLogin]) async {
-    final currentUid = uid ?? _ref.read(uidControllerProvider);
-    final currentIsLogin = isLogin ?? (currentUid?.isNotEmpty ?? false);
+      {required BuildContext context, required String uid, required bool isLogin}) async {
 
     final backgroundTasks = <String, Future Function()>{
-      'package_info': () => context != null
-          ? _loadPackageInfoAndRemoteConfig(context)
-          : Future.value(),
+      'package_info': () =>_loadPackageInfoAndRemoteConfig(context),
       'ads_init': () => !kIsWeb ? _initGoogleMobileAds() : Future.value(),
       'svg_assets': () => _loadSvgAssets(),
       'user_specific': () =>
-          (currentIsLogin && (currentUid?.isNotEmpty ?? false))
-              ? _loadUserSpecificData(currentUid!)
-              : Future.value(),
+          isLogin ? _loadUserSpecificData(uid) : Future.value(),
     };
 
     // Schedule each task in a separate microtask to distribute load
@@ -141,13 +131,11 @@ class MainPageController extends StateNotifier<void> {
       final refPackage = _ref.read(packageInfoBaseControllerProvider.notifier);
       logInfo('Loading package info app...');
       final packageInfo = await refPackage.init();
-
-      if (context.mounted && !kIsWeb) {
-        logInfo('Check version update ...');
-        _ref
-            .read(remoteConfigBaseControllerProvider.notifier)
-            .initialize(context, packageInfo: packageInfo);
-      }
+      if (!context.mounted) return;
+      logInfo('Check version update ...');
+      _ref
+          .read(remoteConfigBaseControllerProvider.notifier)
+          .initialize(context, packageInfo: packageInfo);
     } catch (e) {
       logInfo('Package info/remote config loading failed: $e');
     }

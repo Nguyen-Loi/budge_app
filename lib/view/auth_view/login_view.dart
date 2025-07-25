@@ -125,6 +125,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       label: context.loc.email,
       hint: context.loc.emailHint,
       prefixIcon: IconManager.email,
+      maxLines: 1,
       validator: (e) => e.validateEmail(context),
     );
   }

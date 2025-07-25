@@ -1,4 +1,4 @@
-import 'package:budget_app/common/widget/b_animated_text.dart';
+import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ CloseLoading showLoading({
             constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
             child: Lottie.asset(LottieAssets.loading2)),
         gapH16,
-        BAnimatedText(text),
+        BText.b1(text, fontWeight: FontWeight.bold),
       ],
     ),
   );

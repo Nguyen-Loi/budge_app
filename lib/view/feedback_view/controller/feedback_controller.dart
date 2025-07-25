@@ -67,9 +67,7 @@ class FeedbackController extends StateNotifier<FeedbackState> {
     required String content,
     required int rating,
   }) async {
-    String userId = await _ref
-        .read(userBaseControllerProvider.notifier)
-        .userIdOrSessionId();
+    String userId = _ref.read(userBaseControllerProvider).id;
 
     state = state.copyWith(isSubmitting: true, error: null);
 
@@ -100,9 +98,7 @@ class FeedbackController extends StateNotifier<FeedbackState> {
   }
 
   Future<void> loadUserFeedbacks() async {
-    String userId = await _ref
-        .read(userBaseControllerProvider.notifier)
-        .userIdOrSessionId();
+    String userId = _ref.read(userBaseControllerProvider).id;
 
     state = state.copyWith(isLoading: true, error: null);
 

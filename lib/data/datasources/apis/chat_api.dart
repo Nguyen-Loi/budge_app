@@ -44,7 +44,7 @@ class ChatApi implements IBotApi {
   })  : _uid = uid,
         _ref = ref;
 
-  List<ChatContentModel> basePrompt (BuildContext context) {
+  List<ChatContentModel> basePrompt(BuildContext context) {
     PackageInfo packageInfo = _ref.read(packageInfoBaseControllerProvider);
     final userModel = _ref.read(userBaseControllerProvider);
     final allBudgets = _ref.read(budgetBaseControllerProvider);
@@ -114,10 +114,7 @@ class ChatApi implements IBotApi {
         );
         // Write to DB
         List<ChatModel> list = [currentUserChat, assistentChat];
-        bool writeSuccess = await _writeToDB(list);
-        if (!writeSuccess) {
-          return left(Failure(message: loc.errorContactSupport));
-        }
+        await _writeToDB(list);
         return right(assistentChat);
       } else {
         throw Exception(
@@ -140,20 +137,14 @@ class ChatApi implements IBotApi {
         .then((value) => value.docs.map((e) => e.data()).toList());
   }
 
-  Future<bool> _writeToDB(List<ChatModel> chats) async {
-    try {
-      var batch = db.batch();
-      chats.sort((a, b) => a.createdDate.compareTo(b.createdDate));
-      for (var chat in chats) {
-        final docRef =
-            db.collection(FirestorePath.chats(uid: _uid)).doc(chat.id);
-        batch.set(docRef, chat.toMap());
-      }
-      await batch.commit();
-      return true;
-    } catch (e) {
-      return false;
+  Future<void> _writeToDB(List<ChatModel> chats) async {
+    var batch = db.batch();
+    chats.sort((a, b) => a.createdDate.compareTo(b.createdDate));
+    for (var chat in chats) {
+      final docRef = db.collection(FirestorePath.chats(uid: _uid)).doc(chat.id);
+      batch.set(docRef, chat.toMap());
     }
+    await batch.commit();
   }
 
   FutureEitherVoid removeSession() async {

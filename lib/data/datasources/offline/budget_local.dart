@@ -55,4 +55,21 @@ class BudgetLocal implements BudgetRepository {
       return left(Failure(error: e.toString()));
     }
   }
+
+  FutureEitherVoid updateAll(
+      {required List<BudgetModel> budgets}) async {
+    try {
+      for (var budget in budgets) {
+        await _db?.update(
+          TableName.budget,
+          budget.toMap(),
+          where: 'id = ?',
+          whereArgs: [budget.id],
+        );
+      }
+      return right(null);
+    } catch (e) {
+      return left(Failure(error: e.toString()));
+    }
+  }
 }

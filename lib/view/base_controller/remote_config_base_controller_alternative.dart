@@ -6,7 +6,6 @@ import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/remote_config_model.dart';
-import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,24 +13,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// Alternative approach: Don't depend on user model in provider creation
 final remoteConfigBaseControllerProvider =
     StateNotifierProvider<RemoteConfigBaseController, RemoteConfigModel>((ref) {
-  bool isRoleUserAds = ref.watch(userBaseControllerProvider).roleAds;
-  return RemoteConfigBaseController(isRoleUserAds: isRoleUserAds);
+  return RemoteConfigBaseController();
 });
 
 class RemoteConfigBaseController extends StateNotifier<RemoteConfigModel> {
   static RemoteConfigModel? _cachedConfig;
 
-  RemoteConfigBaseController({required bool isRoleUserAds})
-      : _isRoleUserAds = isRoleUserAds,
-        super(_cachedConfig ?? RemoteConfigModel.empty());
+  RemoteConfigBaseController()
+      : super(_cachedConfig ?? RemoteConfigModel.empty());
 
   final remoteConfig = FirebaseRemoteConfig.instance;
-  final bool _isRoleUserAds;
   StreamSubscription<RemoteConfigUpdate>? _configUpdateSubscription;
 
-  bool get isUserAds => state.isAds && !kIsWeb && _isRoleUserAds == true;
+  // Get isRoleUserAds dynamically when needed instead of storing it
+  bool isUserAds(bool isRoleUserAds) =>
+      state.isAds && !kIsWeb && isRoleUserAds == true;
 
   @override
   void dispose() {

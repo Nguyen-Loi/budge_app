@@ -242,4 +242,22 @@ class TransactionLocal extends TransactionRepository {
       return [];
     }
   }
+
+  FutureEitherVoid updateAll({
+    required List<TransactionModel> transactions,
+  }) async {
+    try {
+      for (var transaction in transactions) {
+        await _db?.update(
+          TableName.transaction,
+          transaction.toMap(),
+          where: 'id = ?',
+          whereArgs: [transaction.id],
+        );
+      }
+      return right(null);
+    } catch (e) {
+      return left(Failure(error: e.toString()));
+    }
+  }
 }

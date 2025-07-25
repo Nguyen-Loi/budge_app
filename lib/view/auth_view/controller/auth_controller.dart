@@ -7,7 +7,7 @@ import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
-import 'package:flutter/foundation.dart';
+import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -26,12 +26,6 @@ class AuthController extends StateNotifier<void> {
         _ref = ref,
         super(null);
 
-  bool get isLogin => _authAPI.isLogin;
-
-  void initBaseUid() {
-    _ref.read(uidControllerProvider.notifier).init(_authAPI.uid);
-  }
-
   void loginWithEmailPassword(BuildContext context,
       {required String email, required String password}) async {
     _baseLogin(context,
@@ -43,14 +37,8 @@ class AuthController extends StateNotifier<void> {
     BuildContext context, {
     required String email,
     required String password,
-  }) async {
-    final closeLoading = showLoading(context: context);
-    final res = await _authAPI.signUp(email: email, password: password);
-    closeLoading();
-    res.fold((l) => showSnackBar(context, l.error), (r) {
-      showSnackBar(context, context.loc.accountCreatePleaseLogin);
-      Navigator.pop(context);
-    });
+  }) {
+    _baseLogin(context, res: _authAPI.signUp(email: email, password: password));
   }
 
   void loginWithFacebook(BuildContext context) async {
@@ -65,6 +53,7 @@ class AuthController extends StateNotifier<void> {
 
   void _baseLogin(BuildContext context,
       {required Future<Either<Failure, void>> res}) async {
+    String preUid = _ref.read(uidControllerProvider);
     final closeLoading = showLoading(context: context);
     final resApi = await res;
     if (!context.mounted) {
@@ -73,30 +62,26 @@ class AuthController extends StateNotifier<void> {
     if (resApi.isLeft()) {
       String errorMessage = resApi.getLeftOrDefault().message;
       logError(errorMessage);
-      showSnackBar(context, errorMessage);
+      showSnackBarError(context, errorMessage);
       closeLoading();
       return;
     }
 
     final resTranfer =
-        await TransferData.asyncData(_ref, context, showDialogConflig: true);
+        await TransferData.asyncData(_ref, context, canShowDialogConflig: true, preUid: preUid);
     if (!context.mounted) {
       throw Exception('context is not mounted');
     }
     if (resTranfer.isLeft()) {
       String errorMessage = resTranfer.getLeftOrDefault().message;
       logError(errorMessage);
-      showSnackBar(context, errorMessage);
+      showSnackBarError(context, errorMessage);
       closeLoading();
       return;
     }
+    _ref.invalidate(mainPageControllerProvider);
     closeLoading();
-    if (kIsWeb){
-      Navigator.pushReplacementNamed(context, RoutePath.home);
-    } else {
-     Navigator.pop(context);
-    }
-    initBaseUid();
+    Navigator.popUntil(context, (route) => route.isFirst);
   }
 
   void resetPassword(BuildContext context, {required String email}) async {

@@ -68,6 +68,7 @@ flutter:
     - assets/svgs/
     - assets/lottie/
     - assets/images/
+    - assets/images/avatar/
 
   fonts:
     - family: Inter

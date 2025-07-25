@@ -22,7 +22,7 @@ class BFormFieldText extends StatelessWidget {
   const BFormFieldText(
     this.controller, {
     super.key,
-    this.maxLines,
+    this.maxLines = 1,
     this.maxLength,
     this.disable = false,
     required this.label,

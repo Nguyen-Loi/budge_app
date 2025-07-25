@@ -52,13 +52,6 @@ class SettingsView extends StatelessWidget {
         value:
             ref.watch(userBaseControllerProvider).isRemindTransactionEveryDate,
         onChanged: (value) {
-          if (!ref.read(userBaseControllerProvider.notifier).isLogin) {
-            BDialogInfo(
-                    message: context.loc.loginToUse,
-                    dialogInfoType: BDialogInfoType.warning)
-                .present(context);
-            return;
-          }
           ref
               .read(userBaseControllerProvider.notifier)
               .toggleNotificationTransaction(context, isOn: value);
@@ -139,8 +132,7 @@ class SettingsView extends StatelessWidget {
   }
 
   Widget _asyncDb(BuildContext context, WidgetRef ref) {
-    final user = ref.read(userBaseControllerProvider.notifier);
-    if (!user.isLogin && !kIsWeb) {
+    if (kIsWeb) {
       return const SizedBox();
     }
     return ListTile(
@@ -148,6 +140,12 @@ class SettingsView extends StatelessWidget {
       trailing: IconButton(
         icon: Icon(IconManager.sync),
         onPressed: () async {
+          if (!ref.read(userBaseControllerProvider.notifier).isLogin) {
+            showBDialog(context,
+                dialogInfoType: BDialogInfoType.error,
+                message: context.loc.loginToUse);
+            return;
+          }
           ref.read(userBaseControllerProvider.notifier).transferData(context);
         },
       ),

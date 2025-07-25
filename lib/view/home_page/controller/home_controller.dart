@@ -1,3 +1,4 @@
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
@@ -8,8 +9,8 @@ import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
-import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,13 +19,12 @@ final homeControllerProvider =
   final transactions = ref.watch(transactionsBaseControllerProvider);
   final budgets = ref.watch(budgetBaseControllerProvider);
   final authApi = ref.watch(authApiProvider);
-  final uidController = ref.watch(uidControllerProvider.notifier);
   return HomeController(
     null,
     transactions: transactions,
     budgets: budgets,
     authAPI: authApi,
-    uidController: uidController,
+    ref: ref,
   );
 });
 
@@ -34,14 +34,14 @@ class HomeController extends StateNotifier<void> {
     required this.transactions,
     required this.budgets,
     required AuthAPI authAPI,
-    required UidController uidController,
+    required Ref ref,
   })  : _authApi = authAPI,
-        _uidController = uidController;
+        _ref = ref;
 
   final List<TransactionCardModel> transactions;
   final List<BudgetModel> budgets;
   final AuthAPI _authApi;
-  final UidController _uidController;
+  final Ref _ref;
 
   Future<void> signOut(BuildContext context) async {
     final navigator = Navigator.of(context);
@@ -52,20 +52,18 @@ class HomeController extends StateNotifier<void> {
 
     try {
       await _authApi.signOut(context);
-      _uidController.clear();
+      final refresh = _ref.refresh(mainPageControllerProvider);
+      logInfo('Refresh status: $refresh');
     } catch (e) {
       if (context.mounted) {
         showSnackBar(context, 'Error signing out. Please try again.');
       }
     } finally {
+      // Dismiss loading dialog
       if (navigator.canPop()) {
         navigator.pop();
       }
     }
-  }
-
-  void refresh() {
-    _uidController.clear();
   }
 
   double get totalExpenseThisMonth {

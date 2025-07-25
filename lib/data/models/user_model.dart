@@ -24,6 +24,8 @@ class UserModel {
   final UserRole role;
   final String languageCode;
   final bool isRemindTransactionEveryDate;
+  final bool isActive;
+  final String? inactiveReason;
   final DateTime createdDate;
   final DateTime updatedDate;
   UserModel({
@@ -39,6 +41,8 @@ class UserModel {
     required this.languageCode,
     required this.isRemindTransactionEveryDate,
     required this.role,
+    required this.isActive,
+    this.inactiveReason,
     required this.createdDate,
     required this.updatedDate,
   });
@@ -60,6 +64,8 @@ class UserModel {
     UserRole? role,
     String? languageCode,
     bool? isRemindTransactionEveryDate,
+    bool? isActive,
+    String? inactiveReason,
     DateTime? createdDate,
     DateTime? updatedDate,
   }) {
@@ -77,18 +83,20 @@ class UserModel {
       languageCode: languageCode ?? this.languageCode,
       isRemindTransactionEveryDate:
           isRemindTransactionEveryDate ?? this.isRemindTransactionEveryDate,
+      isActive: isActive ?? this.isActive,
+      inactiveReason: inactiveReason ?? this.inactiveReason,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
     );
   }
 
-  factory UserModel.defaultData() {
+  factory UserModel.defaultData(String uid) {
     final now = DateTime.now();
     return UserModel(
-      id: '',
+      id: uid,
       email: StringConstants.emailDefault,
       profileUrl: null,
-      name: 'guest',
+      name: StringConstants.nameDefault,
       accountTypeValue: AccountType.emailAndPassword.value,
       currencyTypeValue: CurrencyType.usd.code,
       balance: 0,
@@ -97,6 +105,8 @@ class UserModel {
       role: UserRole.normal,
       languageCode: LanguageEnum.english.code,
       isRemindTransactionEveryDate: false,
+      isActive: true,
+      inactiveReason: null,
       createdDate: now,
       updatedDate: now,
     );
@@ -116,6 +126,8 @@ class UserModel {
       'role': role.value,
       'languageCode': languageCode,
       'isRemindTransactionEveryDate': isRemindTransactionEveryDate,
+      'isActive': isActive,
+      'inactiveReason': inactiveReason,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
     };
@@ -162,6 +174,16 @@ class UserModel {
       }
     }
 
+    bool isActive = true;
+    if (map['isActive'] != null) {
+      final value = map['isActive'];
+      if (value is bool) {
+        isActive = value;
+      } else if (value is int) {
+        isActive = value == 1;
+      }
+    }
+
     return UserModel(
       id: map['id'] as String,
       email: map['email'] as String,
@@ -176,6 +198,8 @@ class UserModel {
       languageCode:
           map['languageCode'] != null ? map['languageCode'] as String : 'en',
       isRemindTransactionEveryDate: isRemindTransactionEveryDate,
+      isActive: isActive,
+      inactiveReason: map['inactiveReason'] as String?,
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       updatedDate:
@@ -190,7 +214,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountTypeValue: $accountTypeValue, currencyTypeValue: $currencyTypeValue, balance: $balance, phoneNumber: $phoneNumber, token: $token, languageCode: $languageCode, isRemindTransactionEveryDate: $isRemindTransactionEveryDate, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountTypeValue: $accountTypeValue, currencyTypeValue: $currencyTypeValue, balance: $balance, phoneNumber: $phoneNumber, token: $token, languageCode: $languageCode, isRemindTransactionEveryDate: $isRemindTransactionEveryDate, isActive: $isActive, createdDate: $createdDate, updatedDate: $updatedDate)';
   }
 
   @override
@@ -207,6 +231,7 @@ class UserModel {
         other.phoneNumber == phoneNumber &&
         other.token == token &&
         other.role == role &&
+        other.isActive == isActive &&
         other.createdDate == createdDate &&
         other.updatedDate == updatedDate;
   }
@@ -225,6 +250,8 @@ class UserModel {
         role.hashCode ^
         languageCode.hashCode ^
         isRemindTransactionEveryDate.hashCode ^
+        isActive.hashCode ^
+        inactiveReason.hashCode ^
         createdDate.hashCode ^
         updatedDate.hashCode;
   }

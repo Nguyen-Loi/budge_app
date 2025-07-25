@@ -42,7 +42,7 @@ Future<void> showBDialog(BuildContext context,
     message: message,
     title: title,
     dialogInfoType: dialogInfoType,
-  ).present(context);
+  ).present(context, onSubmit: onConfirm, textSubmit: textSubmit);
 }
 
 extension Present<T> on BDialogInfo {
@@ -90,6 +90,44 @@ extension Present<T> on BDialogInfo {
                 ),
               )
             ]);
+      },
+    );
+  }
+
+  Future<T?> presentCustomAction(
+    BuildContext context, {
+    required List<Widget> actions,
+  }) {
+    IconData bIcon;
+    Color bColorButtonSubmit;
+    String bTitle;
+
+    switch (dialogInfoType) {
+      case BDialogInfoType.error:
+        bIcon = icon ?? IconManager.emojiFrown;
+        bTitle = title ?? context.loc.errorUp;
+
+        bColorButtonSubmit = ColorManager.red2;
+      case BDialogInfoType.success:
+        bIcon = icon ?? IconManager.success;
+        bTitle = title ?? context.loc.successUp;
+
+        bColorButtonSubmit = Theme.of(context).colorScheme.tertiary;
+      case BDialogInfoType.warning:
+        bIcon = icon ?? IconManager.warning;
+        bTitle = title ?? context.loc.warning;
+
+        bColorButtonSubmit = ColorManager.yellow;
+    }
+    return showDialog<T?>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return _baseDialog(context,
+            bColor: bColorButtonSubmit,
+            bIcon: bIcon,
+            bTitle: bTitle,
+            actions: actions);
       },
     );
   }

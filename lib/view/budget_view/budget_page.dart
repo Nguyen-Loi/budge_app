@@ -66,7 +66,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
 
   Widget _buildSliverHeader() {
     return SliverAppBar(
-      expandedHeight: 140,
+      expandedHeight: 120,
       floating: true,
       pinned: false,
       automaticallyImplyLeading: false,
@@ -79,25 +79,11 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BText.appbar(
-                      context.loc.budgetInUse,
-                    ),
-                    const SizedBox(height: 8),
-                    Expanded(
-                      child: BText(
-                        context.loc.budgetPageDesc,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimary
-                            .withAlpha(200),
-                      ),
-                    )
-                  ],
+                child: BText.b1(
+                  context.loc.budgetInUse,
                 ),
               ),
+              SizedBox(width: 8),
               _buildAddBudgetButton()
             ],
           ),

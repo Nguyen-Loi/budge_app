@@ -1,4 +1,5 @@
 enum AccountType {
+  anonymous('ANONYMOUS'),
   emailAndPassword('DEFAULT'),
   facebook('FACEBOOK'),
   google('GOOGLE');
@@ -20,6 +21,8 @@ extension ConvertTypeAccount on AccountType {
         return 'Facebook';
       case AccountType.google:
         return 'Google';
+      case AccountType.anonymous:
+        return 'Anonymous';
     }
   }
 }

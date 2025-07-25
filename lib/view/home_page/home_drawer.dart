@@ -1,4 +1,4 @@
-import 'package:budget_app/common/widget/b_avatar_profile.dart';
+import 'package:budget_app/common/widget/b_smart_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -71,10 +71,12 @@ class HomeDrawer extends ConsumerWidget {
           ).animate(drawerAnimation),
           child: Row(
             children: [
-              BAvatarProfile(
-                url: user.profileUrl,
-                username: user.name,
-                size: 25,
+              BSmartAvatar(
+                data: user.profileUrl,
+                size: 23,
+                showBorder: true,
+                borderColor: Theme.of(context).colorScheme.onPrimary,
+                borderWidth: 2.0,
               ),
               gapW16,
               Expanded(
@@ -120,7 +122,6 @@ class HomeDrawer extends ConsumerWidget {
           icon: IconManager.botChat,
           title: context.loc.chatWithViBot,
           onTap: () => _navigateToChat(
-            isLogin: isLogin,
             context: context,
           ),
         ),
@@ -272,10 +273,8 @@ class HomeDrawer extends ConsumerWidget {
     }
   }
 
-  void _navigateToChat({required bool isLogin, required BuildContext context}) {
-    if (_validateLogin(context, isLogin: isLogin)) {
-      Navigator.pushNamed(context, RoutePath.chat);
-    }
+  void _navigateToChat({required BuildContext context}) {
+    Navigator.pushNamed(context, RoutePath.chat);
   }
 
   void _navigateToSettings(BuildContext context) {

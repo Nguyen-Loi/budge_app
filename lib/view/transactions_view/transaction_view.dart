@@ -1,9 +1,11 @@
 import 'package:budget_app/common/color_manager.dart';
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/mixin/floating_action_transaction_mixin.dart';
 import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month_dialog.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/ad_helper.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
@@ -11,10 +13,12 @@ import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/transactions_view/widget/transaction_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class TransactionState {
   final List<TransactionCardModel> transactions;
@@ -40,26 +44,80 @@ class TransactionState {
   }
 }
 
-class TransactionView extends StatefulWidget {
+class TransactionView extends ConsumerStatefulWidget {
   const TransactionView({super.key});
 
   @override
-  State<TransactionView> createState() => _TransactionViewState();
+  ConsumerState<TransactionView> createState() => _TransactionViewState();
 }
 
-class _TransactionViewState extends State<TransactionView>
+class _TransactionViewState extends ConsumerState<TransactionView>
     with FloatingActionMixin {
+  BannerAd? _bannerAd;
+
+  @override
+  void initState() {
+    bool isPermissionAds =
+        ref.read(remoteConfigBaseControllerProvider.notifier).isUserAds;
+
+    if (isPermissionAds) {
+      _loadBannerAd();
+    }
+    super.initState();
+  }
+
+  void _loadBannerAd() {
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          logError('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: buildFloatingActionButton(),
-      body: CustomScrollView(
-        slivers: [
-          _buildSliverHeader(),
-          SliverToBoxAdapter(
-            child: _buildSummarySection(),
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              _buildSliverHeader(),
+              SliverToBoxAdapter(
+                child: _buildSummarySection(),
+              ),
+              _buildTransactionList(),
+            ],
           ),
-          _buildTransactionList(),
+          if (_bannerAd != null)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                color: ColorManager.white,
+                child: SizedBox(
+                  height: _bannerAd!.size.height.toDouble(),
+                  width: _bannerAd!.size.width.toDouble(),
+                  child: AdWidget(ad: _bannerAd!),
+                ),
+              ),
+            ),
         ],
       ),
     );

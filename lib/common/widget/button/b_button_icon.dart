@@ -27,7 +27,7 @@ class BButtonIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = Theme.of(context).colorScheme.secondary;
-    final color = Theme.of(context).colorScheme.onSecondary;
+    final color = Theme.of(context).colorScheme.onPrimary;
 
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -71,8 +71,8 @@ class BButtonIcon extends StatelessWidget {
     }
     bool isSmallScreen = SizeConstants.isSmallScreen(context);
     return EdgeInsets.symmetric(
-      horizontal: isSmallScreen ? 16 : 32,
-      vertical: isSmallScreen ? 14 : 20,
+      horizontal: isSmallScreen ? 12 : 32,
+      vertical: isSmallScreen ? 8 : 20,
     );
   }
 }
