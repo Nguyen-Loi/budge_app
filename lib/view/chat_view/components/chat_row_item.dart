@@ -1,4 +1,4 @@
-import 'package:budget_app/common/widget/b_avatar_profile.dart';
+import 'package:budget_app/common/widget/b_smart_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/role_chat_enum.dart';
@@ -189,9 +189,8 @@ class _ChatRowItemState extends ConsumerState<ChatRowItem>
           ),
         ],
       ),
-      child: BAvatarProfile(
-        url: user.profileUrl,
-        username: user.name,
+      child: BSmartAvatar(
+        data: user.profileUrl,
         size: 20,
       ),
     );

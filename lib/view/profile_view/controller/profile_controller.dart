@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
@@ -33,10 +32,11 @@ class ProfileController extends StateNotifier<bool> {
   }
 
   Future<void> update(BuildContext context,
-      {required File? file,
+      {
       required UserModel user,
       required String name,
-      required PhoneNumber phoneNumber}) async {
+      required PhoneNumber phoneNumber,
+      required String profileUrl}) async {
     if (!Validate.phoneNumber(context, phoneNumber: phoneNumber.phoneNumber)) {
       return;
     }
@@ -46,9 +46,8 @@ class ProfileController extends StateNotifier<bool> {
         user: user.copyWith(
           name: name,
           phoneNumber: phoneNumber,
-          updatedDate: DateTime.now(),
-        ),
-        file: file);
+          profileUrl: profileUrl,
+        ),);
 
     res.fold((l) => showSnackBar(context, l.message), (user) {
       updateDisable(true);

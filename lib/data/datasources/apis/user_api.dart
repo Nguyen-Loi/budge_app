@@ -1,9 +1,5 @@
-import 'dart:io';
-
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
-import 'package:budget_app/data/datasources/apis/storage_api.dart';
-import 'package:budget_app/data/datasources/apis/storage_path.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/repositories/user_repository.dart';
@@ -14,18 +10,14 @@ import 'package:fpdart/fpdart.dart';
 
 final userApiProvider = Provider((ref) {
   final db = ref.watch(dbProvider);
-  final storageApi = ref.watch(storageAPIProvider);
-  return UserApi(db: db, storageApi: storageApi);
+  return UserApi(db: db);
 });
 
 class UserApi extends UserRepository {
   final FirebaseFirestore _db;
-  final StorageApi _storageApi;
   UserApi({
     required FirebaseFirestore db,
-    required StorageApi storageApi,
-  })  : _db = db,
-        _storageApi = storageApi;
+  }) : _db = db;
 
   @override
   Future<UserModel> getUserById(String uid) async {
@@ -42,27 +34,15 @@ class UserApi extends UserRepository {
   }
 
   @override
-  FutureEither<UserModel> updateUser(
-      {required UserModel user, File? file}) async {
+  FutureEither<UserModel> updateUser({required UserModel user}) async {
     user = user.copyWith(
       updatedDate: DateTime.now(),
     );
-    if (file == null) {
-      await _db.doc(FirestorePath.user(user.id)).set(user.toMap());
-      return right(user);
-    }
-
-    String profileUrl = '';
-    final res =
-        await _storageApi.uploadFile(file, filePath: StoragePath.user(user.id));
-    res.fold((l) {
-      return left(Failure(message: l.message, error: l.error));
-    }, (r) {
-      profileUrl = r;
-    });
-    final newUser = user.copyWith(profileUrl: profileUrl);
-    await _db.doc(FirestorePath.user(user.id)).set(newUser.toMap());
-    return right(newUser);
+    Map<String, dynamic> data = user.toMap();
+    data.remove(
+        'balance'); // Avoid updating balance directly beacuse it invalid when use with web
+    await _db.doc(FirestorePath.user(user.id)).update(data);
+    return right(user);
   }
 
   @override

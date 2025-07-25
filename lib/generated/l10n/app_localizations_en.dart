@@ -647,9 +647,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get netBalance => 'Net Balance';
 
   @override
-  String get budgetPageDesc => 'Manage and track your budgets';
-
-  @override
   String get errorValidateForm => 'Please fix the errors in the form.';
 
   @override
@@ -1012,4 +1009,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get combineData => 'Combine Data';
+
+  @override
+  String get chooseAvatar => 'Choose Avatar';
+
+  @override
+  String get selectYourFavoriteAvatar => 'Select your favorite avatar';
 }

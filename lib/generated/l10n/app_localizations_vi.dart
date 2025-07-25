@@ -647,9 +647,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get netBalance => 'Số Dư';
 
   @override
-  String get budgetPageDesc => 'Quản lý và theo dõi ngân sách của bạn';
-
-  @override
   String get errorValidateForm => 'Hãy chỉnh sửa các lỗi có trong biểu mẫu.';
 
   @override
@@ -1012,4 +1009,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get combineData => 'Kết hợp dữ liệu';
+
+  @override
+  String get chooseAvatar => 'Chọn Avatar';
+
+  @override
+  String get selectYourFavoriteAvatar => 'Chọn avatar yêu thích của bạn';
 }

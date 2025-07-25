@@ -265,7 +265,6 @@
     "transactionHistory": "Transaction History",
     "monthlySummary": "Monthly Summary",
     "netBalance": "Net Balance",
-    "budgetPageDesc": "Manage and track your budgets",
     "errorValidateForm": "Please fix the errors in the form.",
     "protected": "Protected",
     "initializingTheApplication": "Initializing the application...",
@@ -381,5 +380,7 @@
     "dataSyncConflictDesc": "Both local and remote data exist for {email}. How would you like to proceed?",
     "useCurrentData": "Use Current Data",
     "overwriteWithNewData": "Overwrite with New Data",
-    "combineData": "Combine Data"
+    "combineData": "Combine Data",
+    "chooseAvatar": "Choose Avatar",
+    "selectYourFavoriteAvatar": "Select your favorite avatar"
 }

@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:budget_app/common/color_manager.dart';
-import 'package:budget_app/common/widget/b_avatar_profile.dart';
+import 'package:budget_app/common/widget/b_selectable_avatar.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/common/widget/form/b_form_field_phone_number.dart';
 import 'package:budget_app/common/widget/form/b_form_field_text.dart';
-import 'package:budget_app/common/widget/form/b_form_picker_image.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/extension/extension_validate.dart';
@@ -17,7 +14,6 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_view.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/profile_view/controller/profile_controller.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -30,17 +26,17 @@ class ProfileView extends ConsumerStatefulWidget {
 }
 
 class _ProfileViewState extends ConsumerState<ProfileView> {
-  String? _name;
-  File? _file;
-  PhoneNumber? _phoneNumber;
+  late String _name;
+  late String? _avatarAsset;
+  late PhoneNumber? _phoneNumber;
   final _keyState = GlobalKey<FormState>();
 
   bool _hasChanges(UserModel user) {
-    final nameChanged = _name != null && _name != user.name;
+    final nameChanged = _name != user.name;
     final phoneChanged = _phoneNumber != user.phoneNumber;
-    final imageChanged = _file != null;
+    final avatarChanged = _avatarAsset != user.profileUrl;
 
-    return nameChanged || phoneChanged || imageChanged;
+    return nameChanged || phoneChanged || avatarChanged;
   }
 
   @override
@@ -48,6 +44,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     UserModel user = ref.read(userBaseControllerProvider);
     _phoneNumber = user.phoneNumber;
     _name = user.name;
+    _avatarAsset = user.profileUrl;
     super.initState();
   }
 
@@ -77,7 +74,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildHeader(ref, disable, isLoading),
+          _buildHeader(ref, disable),
           gapH24,
           _buildProfileCard(user, disable, isLoading, ref),
           gapH32,
@@ -87,7 +84,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     });
   }
 
-  Widget _buildHeader(WidgetRef ref, bool disable, bool isLoading) {
+  Widget _buildHeader(WidgetRef ref, bool disable) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -105,46 +102,34 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   disable
                       ? context.loc.readModeOnly
                       : context.loc.editModeActive,
-                  color: disable ? ColorManager.grey : ColorManager.primaryBlue,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(170),
                 ),
               ],
             ),
-            _buildToggleButton(ref, disable, isLoading),
+            _buildToggleButton(ref, disable),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildToggleButton(WidgetRef ref, bool disable, bool isLoading) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
-      child: isLoading
-          ? const SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : OutlinedButton.icon(
-              key: ValueKey(disable),
-              onPressed: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-                ref
-                    .read(profileControllerProvider.notifier)
-                    .updateDisable(!disable);
-              },
-              icon: Icon(
-                disable ? Icons.edit : Icons.lock,
-                size: 18,
-              ),
-              label: BText.caption(
-                disable ? context.loc.modify : context.loc.protected,
-              ),
-              style: OutlinedButton.styleFrom(
-                foregroundColor:
-                    disable ? ColorManager.primaryBlue : ColorManager.grey,
-              ),
-            ),
+  Widget _buildToggleButton(WidgetRef ref, bool disable) {
+    return OutlinedButton.icon(
+      key: ValueKey(disable),
+      onPressed: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        ref.read(profileControllerProvider.notifier).updateDisable(!disable);
+      },
+      icon: Icon(
+        disable ? Icons.edit : Icons.lock,
+        size: 18,
+      ),
+      label: BText.caption(
+        disable ? context.loc.modify : context.loc.protected,
+      ),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: disable ? ColorManager.primaryBlue : ColorManager.grey,
+      ),
     );
   }
 
@@ -160,7 +145,16 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             key: _keyState,
             child: Column(
               children: [
-                _buildProfileImageSection(user, disable),
+                BSelectableAvatar(
+                  initialAvatar: user.profileUrl,
+                  size: 50,
+                  onAvatarChanged: (newAvatar) {
+                    setState(() {
+                      _avatarAsset = newAvatar;
+                    });
+                  },
+                  enabled: !disable,
+                ),
                 gapH32,
                 _buildFormFields(user),
               ],
@@ -168,55 +162,6 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildProfileImageSection(UserModel user, bool disable) {
-    return Column(
-      children: [
-        Stack(
-          children: [
-            BFormPickerImage(
-              initialUrl: user.profileUrl,
-              disable: disable || kIsWeb,
-              onChanged: (f) {
-                setState(() {
-                  _file = f;
-                });
-              },
-              empty: BAvatarProfile(
-                  url: user.profileUrl, username: user.name, size: 40),
-            ),
-            if (!disable && !kIsWeb)
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ColorManager.primaryBlue,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimary
-                            .withValues(alpha: 0.2),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(8),
-                  child: const Icon(
-                    Icons.camera_alt,
-                    color: Colors.white,
-                    size: 16,
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -323,17 +268,16 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     );
   }
 
-  void _handleSave(WidgetRef ref, dynamic user) {
+  void _handleSave(WidgetRef ref, UserModel user) {
     FocusScope.of(context).requestFocus(FocusNode());
 
     if (_keyState.currentState!.validate()) {
       ref.read(profileControllerProvider.notifier).update(
             context,
-            file: _file,
             user: user,
-            name: _name ?? user.name,
-            phoneNumber:
-                _phoneNumber ?? PhoneNumber(phoneNumber: user.phoneNumber),
+            name: _name,
+            phoneNumber: _phoneNumber!,
+            profileUrl: _avatarAsset!,
           );
     } else {
       showSnackBarError(context, context.loc.errorValidateForm);
@@ -349,7 +293,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     setState(() {
       final user = ref.read(userBaseControllerProvider);
       _name = user.name;
-      _file = null;
+      _avatarAsset = user.profileUrl;
       _phoneNumber = user.phoneNumber;
     });
   }

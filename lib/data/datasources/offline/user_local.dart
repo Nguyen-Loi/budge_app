@@ -1,8 +1,4 @@
-import 'dart:io';
-
 import 'package:budget_app/common/log.dart';
-import 'package:budget_app/data/datasources/apis/storage_api.dart';
-import 'package:budget_app/data/datasources/apis/storage_path.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/offline/database_helper.dart';
 import 'package:budget_app/data/datasources/repositories/user_repository.dart';
@@ -14,18 +10,14 @@ import 'package:sqflite/sqlite_api.dart';
 
 final userLocalProvider = Provider((ref) {
   final db = ref.watch(sqlHelperProvider);
-  final storageApi = ref.watch(storageAPIProvider);
-  return UserLocal(db: db, storageApi: storageApi);
+  return UserLocal(db: db,);
 });
 
 class UserLocal extends UserRepository {
   final Database? _db;
-  final StorageApi _storageApi;
   UserLocal({
     required Database? db,
-    required StorageApi storageApi,
-  })  : _db = db,
-        _storageApi = storageApi;
+  })  : _db = db;
 
   @override
   Future<UserModel> getUserById(String uid) async {
@@ -59,31 +51,17 @@ class UserLocal extends UserRepository {
   @override
   FutureEither<UserModel> updateUser({
     required UserModel user,
-    File? file,
   }) async {
     try {
-      String? profileUrl = user.profileUrl;
-
-      if (file != null) {
-        final res = await _storageApi.uploadFile(
-          file,
-          filePath: StoragePath.user(user.id),
-        );
-        res.fold(
-          (l) => throw Exception('Error uploading file: ${l.message}'),
-          (r) => profileUrl = r,
-        );
-      }
-
-      final updatedUser = user.copyWith(profileUrl: profileUrl);
+    
       await _db?.update(
         TableName.user,
-        updatedUser.toMap(isSqliteFomat: true),
+        user.toMap(isSqliteFomat: true),
         where: 'id = ?',
-        whereArgs: [updatedUser.id],
+        whereArgs: [user.id],
       );
 
-      return right(updatedUser);
+      return right(user);
     } catch (e) {
       return left(Failure(message: 'Error updating user', error: e.toString()));
     }

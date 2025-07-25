@@ -88,8 +88,7 @@ class AuthAPI implements IAuthApi {
       id: user.uid,
       email: email,
       balance: 0,
-      profileUrl: user.photoURL ??
-          'https://cdn-icons-png.flaticon.com/512/1144/1144760.png',
+      profileUrl: user.photoURL,
       name: name,
       accountTypeValue: accountType.value,
       currencyTypeValue: CurrencyType.vnd.code,

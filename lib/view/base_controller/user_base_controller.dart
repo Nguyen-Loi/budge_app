@@ -66,7 +66,7 @@ class UserBaseController extends StateNotifier<UserModel> {
   }
 
   Future<void> updateUser(UserModel user, {bool withDb = false}) async {
-    await _userRepository.updateUser(user: user, file: null);
+    await _userRepository.updateUser(user: user);
     if (withDb && !kIsWeb) {
       _updaterInDb(user);
     }
@@ -87,7 +87,7 @@ class UserBaseController extends StateNotifier<UserModel> {
     );
 
     // Update in database
-    final res = await _userRepository.updateUser(user: updatedUser, file: null);
+    final res = await _userRepository.updateUser(user: updatedUser);
     res.fold(
       (failure) {
         showSnackBarError(context, failure.message);
@@ -178,7 +178,7 @@ class UserBaseController extends StateNotifier<UserModel> {
     final newUser = currentUser.copyWith(
         isRemindTransactionEveryDate:
             !currentUser.isRemindTransactionEveryDate);
-    final res = await _userRepository.updateUser(user: newUser, file: null);
+    final res = await _userRepository.updateUser(user: newUser);
     res.fold((l) {
       showSnackBar(context, l.message);
     }, (r) {
@@ -189,7 +189,7 @@ class UserBaseController extends StateNotifier<UserModel> {
 
   void _updaterInDb(UserModel user) {
     if (_userRepository is UserLocal) {
-      _userApi.updateUser(user: user, file: null);
+      _userApi.updateUser(user: user);
     }
   }
 
