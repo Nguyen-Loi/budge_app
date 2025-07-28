@@ -1,5 +1,4 @@
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/constants/size_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

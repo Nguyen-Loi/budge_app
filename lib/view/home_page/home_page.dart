@@ -88,7 +88,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   Widget _buildSliverHeader() {
     return SliverAppBar(
-      expandedHeight: 80,
+      expandedHeight: 70,
       floating: false,
       pinned: false,
       automaticallyImplyLeading: false,

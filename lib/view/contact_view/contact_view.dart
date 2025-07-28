@@ -2,6 +2,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/social_enum.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -19,11 +20,9 @@ class ContactView extends StatefulWidget {
 
 class _ContactViewState extends State<ContactView>
     with TickerProviderStateMixin {
-
   late final String _email = 'hi.smartbudget@gmail.com';
   late final String _phone = '+84 898 066 957';
   late final String _pathPhone = '+84898066957';
-
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class _ContactViewState extends State<ContactView>
             gapH56
           ],
         ),
-      ),
+      ).responsiveCenter(),
     );
   }
 

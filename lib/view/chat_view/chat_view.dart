@@ -77,7 +77,7 @@ class _ChatViewState extends ConsumerState<ChatView>
         body: Column(
           children: [
             Expanded(child: _listChat()),
-            _buildInputArea(context),
+            _buildInputArea(context).responsiveCenter(),
           ],
         ),
       ),
@@ -159,50 +159,29 @@ class _ChatViewState extends ConsumerState<ChatView>
   }
 
   Widget _buildInputArea(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(30),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
+    return Padding(
       padding: const EdgeInsets.all(16),
       child: SafeArea(
         child: Row(
           children: [
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.outline.withAlpha(150),
+              child: TextField(
+                controller: _textEditingController,
+                decoration: InputDecoration(
+                  hintText: context.loc.chatHint,
+                  hintStyle: TextStyle(
+                    color:
+                        Theme.of(context).colorScheme.onSurface.withAlpha(150),
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
                   ),
                 ),
-                child: TextField(
-                  controller: _textEditingController,
-                  decoration: InputDecoration(
-                    hintText: context.loc.chatHint,
-                    hintStyle: TextStyle(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withAlpha(150),
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                  ),
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  textCapitalization: TextCapitalization.sentences,
-                ),
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                textCapitalization: TextCapitalization.sentences,
               ),
             ),
             gapW12,

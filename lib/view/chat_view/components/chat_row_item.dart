@@ -214,8 +214,9 @@ class _ChatRowItemState extends ConsumerState<ChatRowItem>
   }
 
   Widget _showText(bool isUser) {
-    final textColor =
-        isUser ? Colors.white : Theme.of(context).colorScheme.onSurfaceVariant;
+    final textColor = isUser
+        ? Theme.of(context).colorScheme.onPrimary
+        : Theme.of(context).colorScheme.onSurface;
 
     return isUser
         ? BText(
