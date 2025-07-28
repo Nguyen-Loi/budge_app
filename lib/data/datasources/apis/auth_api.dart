@@ -46,6 +46,7 @@ abstract class IAuthApi {
     required String email,
   });
   bool get isLogin;
+  bool get isAuthenticated;
   Future<User> signInAnonymously();
 }
 
@@ -320,4 +321,7 @@ class AuthAPI implements IAuthApi {
       throw Exception('Error signing in anonymously: $error');
     });
   }
+  
+  @override
+  bool get isAuthenticated => _auth.currentUser != null;
 }

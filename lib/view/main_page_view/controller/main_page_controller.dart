@@ -40,11 +40,11 @@ class MainPageController extends StateNotifier<void> {
         super(null);
 
   Future<void> loadBaseDataOptimized(BuildContext context) async {
-    final isLogin = _ref.read(authApiProvider).isLogin;
-    if (!isLogin) {
+    final isAuthenicated = _ref.read(authApiProvider).isAuthenticated;
+    if (!isAuthenicated) {
       await _ref.read(authApiProvider).signInAnonymously();
     }
-    String? uid = _ref.read(authProvider).currentUser?.uid ;
+    String? uid = _ref.read(authProvider).currentUser?.uid;
     if (uid == null) {
       throw Exception('User UID is null, cannot proceed with loading data');
     }
@@ -72,7 +72,8 @@ class MainPageController extends StateNotifier<void> {
     // Check if context is still mounted before proceeding with background tasks
     if (context.mounted) {
       logInfo('Loading background tasks with optimization...');
-      unawaited(_loadBackgroundTasksOptimized(context:  context, uid: uid, isLogin: isLogin));
+      unawaited(_loadBackgroundTasksOptimized(
+          context: context, uid: uid, isLogin: isAuthenicated));
       unawaited(_refreshToken(_ref));
     }
 
@@ -93,10 +94,11 @@ class MainPageController extends StateNotifier<void> {
   }
 
   Future<void> _loadBackgroundTasksOptimized(
-      {required BuildContext context, required String uid, required bool isLogin}) async {
-
+      {required BuildContext context,
+      required String uid,
+      required bool isLogin}) async {
     final backgroundTasks = <String, Future Function()>{
-      'package_info': () =>_loadPackageInfoAndRemoteConfig(context),
+      'package_info': () => _loadPackageInfoAndRemoteConfig(context),
       'ads_init': () => !kIsWeb ? _initGoogleMobileAds() : Future.value(),
       'svg_assets': () => _loadSvgAssets(),
       'user_specific': () =>

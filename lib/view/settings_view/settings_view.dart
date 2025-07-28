@@ -7,6 +7,7 @@ import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
+import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/view/base_controller/currency_base_controller.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -35,7 +36,7 @@ class SettingsView extends StatelessWidget {
               _asyncDb(context, ref),
               _openInBrowser(context),
             ],
-          );
+          ).responsiveCenter();
         }));
   }
 

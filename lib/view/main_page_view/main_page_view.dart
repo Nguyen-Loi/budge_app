@@ -18,7 +18,6 @@ import 'package:budget_app/view/report_page/report_page.dart';
 import 'package:budget_app/view/transactions_view/transaction_view.dart';
 import 'package:budget_app/view/home_page/home_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -140,7 +139,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
 
   Widget _buildWithFirstTimeCheck() {
     final sharedUtility = ref.read(sharedUtilityProvider);
-    bool isFirstTimeInfo = sharedUtility.isDataFirstTime() && !kIsWeb;
+    bool isFirstTimeInfo = sharedUtility.isDataFirstTime();
     if (isFirstTimeInfo) {
       _checkAndShowFirstTimeSetup();
       sharedUtility.setDataFirstTimeIsFalse();

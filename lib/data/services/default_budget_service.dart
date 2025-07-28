@@ -35,13 +35,13 @@ class DefaultBudgetService {
       ),
       _createBudgetData(
         name: localizations.defaultBudgetTransportation,
-        icon: AppIcons.transport, 
+        icon: AppIcons.transport,
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'transportation',
       ),
       _createBudgetData(
         name: localizations.defaultBudgetUtilities,
-        icon: AppIcons.water, 
+        icon: AppIcons.water,
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'utilities',
       ),
@@ -53,13 +53,13 @@ class DefaultBudgetService {
       ),
       _createBudgetData(
         name: localizations.defaultBudgetHealthcare,
-        icon: AppIcons.heart, 
+        icon: AppIcons.heart,
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'healthcare',
       ),
       _createBudgetData(
         name: localizations.defaultBudgetShopping,
-        icon: AppIcons.shopping, 
+        icon: AppIcons.shopping,
         budgetType: BudgetTypeEnum.expense,
         localizationKey: 'shopping',
       ),
@@ -129,11 +129,12 @@ class DefaultBudgetService {
     List<BudgetModel> existingBudgets,
     SharedUtility sharedUtility,
   ) {
-    if (sharedUtility.areDefaultBudgetsCreated()) {
+    if (sharedUtility.areDefaultBudgetsCreated() ||
+        existingBudgets.isNotEmpty) {
       return false;
     }
 
-    return existingBudgets.isEmpty;
+    return true;
   }
 
   /// Gets the default budget name mappings for translation
