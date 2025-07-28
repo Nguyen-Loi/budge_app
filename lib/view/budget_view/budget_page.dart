@@ -66,17 +66,17 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
 
   Widget _buildSliverHeader() {
     return SliverAppBar(
-      expandedHeight: 120,
+      expandedHeight: 80,
       floating: true,
       pinned: false,
       automaticallyImplyLeading: false,
       backgroundColor: ColorManager.primaryBlue,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-          padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          alignment: Alignment.center,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: BText.h3(

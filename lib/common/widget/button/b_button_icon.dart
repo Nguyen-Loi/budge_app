@@ -1,5 +1,6 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/size_constants.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BButtonIcon extends StatelessWidget {
@@ -69,10 +70,9 @@ class BButtonIcon extends StatelessWidget {
     if (padding != null) {
       return padding!;
     }
-    bool isSmallScreen = SizeConstants.isSmallScreen(context);
     return EdgeInsets.symmetric(
-      horizontal: isSmallScreen ? 12 : 32,
-      vertical: isSmallScreen ? 8 : 20,
+      horizontal: !kIsWeb ? 12 : 32,
+      vertical: !kIsWeb ? 8 : 20,
     );
   }
 }
