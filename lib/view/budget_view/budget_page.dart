@@ -79,8 +79,9 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: BText.b1(
+                child: BText.h3(
                   context.loc.budgetInUse,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
               SizedBox(width: 8),
