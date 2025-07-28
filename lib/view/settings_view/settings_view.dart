@@ -16,6 +16,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -32,6 +33,7 @@ class SettingsView extends StatelessWidget {
               _currencyDropdown(context, ref),
               _dailyTransactionReminderSwitch(context, ref),
               _asyncDb(context, ref),
+              _openInBrowser(context),
             ],
           );
         }));
@@ -129,6 +131,22 @@ class SettingsView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _openInBrowser(BuildContext context) {
+    if (!kIsWeb) {
+      return ListTile(
+        title: BText(context.loc.openInBrowser),
+        trailing: IconButton(
+          icon: Icon(IconManager.openLink),
+          onPressed: () {
+            final url = 'https://budget-ss.web.app/';
+            launchUrl(Uri.parse(url));
+          },
+        ),
+      );
+    }
+    return const SizedBox();
   }
 
   Widget _asyncDb(BuildContext context, WidgetRef ref) {

@@ -382,5 +382,6 @@
   "overwriteWithNewData": "Ghi đè bằng dữ liệu mới",
   "combineData": "Kết hợp dữ liệu",
   "chooseAvatar": "Chọn Avatar",
-  "selectYourFavoriteAvatar": "Chọn avatar yêu thích của bạn"
+  "selectYourFavoriteAvatar": "Chọn avatar yêu thích của bạn",
+  "openInBrowser": "Mở trong trình duyệt"
 }
