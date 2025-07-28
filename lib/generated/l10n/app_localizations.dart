@@ -2008,6 +2008,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select your favorite avatar'**
   String get selectYourFavoriteAvatar;
+
+  /// No description provided for @openInBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Browser'**
+  String get openInBrowser;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

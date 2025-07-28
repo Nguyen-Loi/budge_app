@@ -382,5 +382,6 @@
     "overwriteWithNewData": "Overwrite with New Data",
     "combineData": "Combine Data",
     "chooseAvatar": "Choose Avatar",
-    "selectYourFavoriteAvatar": "Select your favorite avatar"
+    "selectYourFavoriteAvatar": "Select your favorite avatar",
+    "openInBrowser": "Open in Browser"
 }

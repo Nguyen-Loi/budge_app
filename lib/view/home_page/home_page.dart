@@ -88,7 +88,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   Widget _buildSliverHeader() {
     return SliverAppBar(
-      expandedHeight: 100,
+      expandedHeight: 80,
       floating: false,
       pinned: false,
       automaticallyImplyLeading: false,
@@ -97,7 +97,7 @@ class _HomePageState extends ConsumerState<HomePage>
         background: Consumer(builder: (_, ref, __) {
           final UserModel user = ref.watch(userBaseControllerProvider);
           return Container(
-            padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,

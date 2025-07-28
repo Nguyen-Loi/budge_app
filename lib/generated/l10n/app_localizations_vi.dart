@@ -1015,4 +1015,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get selectYourFavoriteAvatar => 'Chọn avatar yêu thích của bạn';
+
+  @override
+  String get openInBrowser => 'Mở trong trình duyệt';
 }

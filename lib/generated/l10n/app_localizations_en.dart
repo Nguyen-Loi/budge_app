@@ -1015,4 +1015,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectYourFavoriteAvatar => 'Select your favorite avatar';
+
+  @override
+  String get openInBrowser => 'Open in Browser';
 }

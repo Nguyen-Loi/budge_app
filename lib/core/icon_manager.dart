@@ -19,6 +19,7 @@ class IconManager {
   static IconData budget = FontAwesomeIcons.wallet;
   static IconData filter = Icons.filter_list_rounded;
   static IconData removeChat = Icons.delete_outline_rounded;
+  static IconData openLink = Icons.open_in_new_outlined;
 
   // Field
   static IconData email = Icons.email_outlined;
