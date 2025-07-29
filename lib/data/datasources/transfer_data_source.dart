@@ -8,6 +8,7 @@ import 'package:budget_app/core/enums/inactive_account_reason_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
+import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/data/datasources/apis/budget_api.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/data/datasources/apis/transaction_api.dart';
@@ -113,8 +114,7 @@ class TransferData {
 
     await BDialogInfo(
       title: loc.dataSyncConflict,
-      message:
-          loc.dataSyncConflictDesc(userApi.email),
+      message: loc.dataSyncConflictDesc(userApi.email),
       dialogInfoType: BDialogInfoType.warning,
     ).presentCustomAction(context, actions: [
       Row(
@@ -189,6 +189,14 @@ class TransferData {
       UserModel userLocal =
           await _safeUidLocalUser(ref, uid: uid, preUid: preUid);
       UserModel userApi = await ref.read(userApiProvider).getUserById(uid);
+      userApi = userApi.copyWith(
+        email: user.email,
+        name: _safeGetUserName(user, userApi),
+      );
+      userLocal = userLocal.copyWith(
+        email: user.email,
+        name: _safeGetUserName(user, userApi),
+      );
 
       List<BudgetModel> budgetsLocal =
           await _safeUidLocalBudgets(ref, uid: uid, preUid: preUid);
@@ -310,6 +318,12 @@ class TransferData {
     return transactionsLocal;
   }
 
+  static String _safeGetUserName(User user, UserModel userApi) {
+    return userApi.name == StringConstants.nameDefault
+        ? (user.displayName ?? userApi.name)
+        : getNameFromEmail(user.email ?? StringConstants.emailDefault);
+  }
+
   static Future<UserModel> _safeUidLocalUser(
     Ref ref, {
     required String uid,
@@ -338,12 +352,6 @@ class TransferData {
       UserModel userModel = data[_userLocalKey];
       List<BudgetModel> budgets = data[_budgetLocalKey];
       List<TransactionModel> transactions = data[_transactionLocalKey];
-
-      userModel = userModel.copyWith(
-          email: userModelApi.email,
-          name: userModel.name == StringConstants.nameDefault
-              ? userModelApi.name
-              : userModel.name);
 
       logInfo(
           "Syncing ${budgets.length} budgets and ${transactions.length} transactions for user: $userId");
