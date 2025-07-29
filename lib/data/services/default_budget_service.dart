@@ -129,12 +129,11 @@ class DefaultBudgetService {
     List<BudgetModel> existingBudgets,
     SharedUtility sharedUtility,
   ) {
-    if (sharedUtility.areDefaultBudgetsCreated() ||
-        existingBudgets.isNotEmpty) {
-      return false;
+    if (!sharedUtility.areDefaultBudgetsCreated() && existingBudgets.isEmpty) {
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   /// Gets the default budget name mappings for translation
