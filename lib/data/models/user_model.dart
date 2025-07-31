@@ -1,8 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/enums/language_enum.dart';
+import 'package:budget_app/core/enums/subscription_plan_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +21,15 @@ class UserModel {
   final int balance;
   final PhoneNumber? phoneNumber;
   final String? token;
-  final UserRole role;
+  final UserRoleEnum role;
   final String languageCode;
   final bool isRemindTransactionEveryDate;
   final bool isActive;
   final String? inactiveReason;
   final DateTime createdDate;
   final DateTime updatedDate;
+  final DateTime? subscriptionExpiryDate;
+  final SubscriptionPlanEnum? subscriptionPlan;
   UserModel({
     required this.id,
     required this.email,
@@ -45,11 +47,18 @@ class UserModel {
     this.inactiveReason,
     required this.createdDate,
     required this.updatedDate,
+    this.subscriptionExpiryDate,
+    this.subscriptionPlan,
   });
 
-  bool get roleAds => role == UserRole.normal;
+  bool get roleAds => role == UserRoleEnum.normal;
   AccountType get accountType => AccountType.fromValue(accountTypeValue);
   CurrencyType get currency => CurrencyType.fromValue(currencyTypeValue);
+
+  bool get isPremium {
+    if (role == UserRoleEnum.premium) return true;
+    return false;
+  }
 
   UserModel copyWith({
     String? id,
@@ -61,13 +70,15 @@ class UserModel {
     int? balance,
     PhoneNumber? phoneNumber,
     String? token,
-    UserRole? role,
+    UserRoleEnum? role,
     String? languageCode,
     bool? isRemindTransactionEveryDate,
     bool? isActive,
     String? inactiveReason,
     DateTime? createdDate,
     DateTime? updatedDate,
+    DateTime? subscriptionExpiryDate,
+    SubscriptionPlanEnum? subscriptionPlan,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -87,6 +98,9 @@ class UserModel {
       inactiveReason: inactiveReason ?? this.inactiveReason,
       createdDate: createdDate ?? this.createdDate,
       updatedDate: updatedDate ?? this.updatedDate,
+      subscriptionExpiryDate:
+          subscriptionExpiryDate ?? this.subscriptionExpiryDate,
+      subscriptionPlan: subscriptionPlan ?? this.subscriptionPlan,
     );
   }
 
@@ -102,13 +116,15 @@ class UserModel {
       balance: 0,
       phoneNumber: null,
       token: null,
-      role: UserRole.normal,
+      role: UserRoleEnum.normal,
       languageCode: LanguageEnum.english.code,
       isRemindTransactionEveryDate: false,
       isActive: true,
       inactiveReason: null,
       createdDate: now,
       updatedDate: now,
+      subscriptionExpiryDate: null,
+      subscriptionPlan: null,
     );
   }
 
@@ -130,6 +146,8 @@ class UserModel {
       'inactiveReason': inactiveReason,
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
+      'subscriptionExpiryDate': subscriptionExpiryDate?.millisecondsSinceEpoch,
+      'subscriptionPlan': subscriptionPlan,
     };
     if (isSqliteFomat) {
       data['isRemindTransactionEveryDate'] =
@@ -194,7 +212,8 @@ class UserModel {
       balance: map['balance'] as int,
       phoneNumber: phoneNumber,
       token: map['token'] != null ? map['token'] as String : null,
-      role: UserRole.fromValue(map['role'] as String? ?? UserRole.normal.value),
+      role: UserRoleEnum.fromValue(
+          map['role'] as String? ?? UserRoleEnum.normal.value),
       languageCode:
           map['languageCode'] != null ? map['languageCode'] as String : 'en',
       isRemindTransactionEveryDate: isRemindTransactionEveryDate,
@@ -204,6 +223,11 @@ class UserModel {
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),
       updatedDate:
           DateTime.fromMillisecondsSinceEpoch(map['updatedDate'] as int),
+      subscriptionExpiryDate: map['subscriptionExpiryDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              map['subscriptionExpiryDate'] as int)
+          : null,
+      subscriptionPlan: map['subscriptionPlan'] as SubscriptionPlanEnum?,
     );
   }
 
@@ -214,7 +238,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountTypeValue: $accountTypeValue, currencyTypeValue: $currencyTypeValue, balance: $balance, phoneNumber: $phoneNumber, token: $token, languageCode: $languageCode, isRemindTransactionEveryDate: $isRemindTransactionEveryDate, isActive: $isActive, createdDate: $createdDate, updatedDate: $updatedDate)';
+    return 'UserModel(id: $id, email: $email, profileUrl: $profileUrl, name: $name, accountTypeValue: $accountTypeValue, currencyTypeValue: $currencyTypeValue, balance: $balance, phoneNumber: $phoneNumber, token: $token, languageCode: $languageCode, isRemindTransactionEveryDate: $isRemindTransactionEveryDate, isActive: $isActive, createdDate: $createdDate, updatedDate: $updatedDate, subscriptionExpiryDate: $subscriptionExpiryDate, subscriptionPlan: $subscriptionPlan)';
   }
 
   @override
@@ -233,7 +257,9 @@ class UserModel {
         other.role == role &&
         other.isActive == isActive &&
         other.createdDate == createdDate &&
-        other.updatedDate == updatedDate;
+        other.updatedDate == updatedDate &&
+        other.subscriptionExpiryDate == subscriptionExpiryDate &&
+        other.subscriptionPlan == subscriptionPlan;
   }
 
   @override
@@ -253,7 +279,9 @@ class UserModel {
         isActive.hashCode ^
         inactiveReason.hashCode ^
         createdDate.hashCode ^
-        updatedDate.hashCode;
+        updatedDate.hashCode ^
+        subscriptionExpiryDate.hashCode ^
+        subscriptionPlan.hashCode;
   }
 }
 

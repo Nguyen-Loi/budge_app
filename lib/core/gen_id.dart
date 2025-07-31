@@ -19,4 +19,5 @@ class GenId {
   static String get chat => _time;
   static String devices(String uid) => uid + _time;
   static String feedback() => _time;
+  static String subscription() => _time;
 }

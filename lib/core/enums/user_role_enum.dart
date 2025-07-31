@@ -1,27 +1,25 @@
 import 'package:collection/collection.dart';
 
-enum UserRole {
+enum UserRoleEnum {
   normal('NORMAL'),
-  vip('VIP'),
-  prenium('PREMIUM');
+  premium('PREMIUM');
 
-  factory UserRole.fromValue(String value) {
-    return UserRole.values.firstWhereOrNull((e) => e.value == value)??UserRole.normal;
+  factory UserRoleEnum.fromValue(String value) {
+    return UserRoleEnum.values.firstWhereOrNull((e) => e.value == value) ??
+        UserRoleEnum.normal;
   }
 
   final String value;
-  const UserRole(this.value);
+  const UserRoleEnum(this.value);
 }
 
-extension ConvertTypeAccount on UserRole {
+extension ConvertTypeAccount on UserRoleEnum {
   String toText() {
     switch (this) {
-      case UserRole.normal:
+      case UserRoleEnum.normal:
         return 'Normal';
-      case UserRole.vip:
-        return 'Vip';
-      case UserRole.prenium:
-        return 'Prenium';
+      case UserRoleEnum.premium:
+        return 'Premium';
     }
   }
 }

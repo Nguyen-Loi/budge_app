@@ -13,6 +13,7 @@ import 'package:budget_app/view/main_page_view/main_page_view.dart';
 import 'package:budget_app/view/new_transaction_view/new_transaction_view.dart';
 import 'package:budget_app/view/profile_view/profile_view.dart';
 import 'package:budget_app/view/settings_view/settings_view.dart';
+import 'package:budget_app/view/subscription_view/subscription_view.dart';
 import 'package:flutter/material.dart';
 
 class RoutePath {
@@ -37,6 +38,7 @@ class RoutePath {
   static const String report = "/report";
   static const String chat = "/chat";
   static const String contact = "/contact";
+  static const String subscription = "/subscription";
 }
 
 class MainRouter {
@@ -78,6 +80,8 @@ class MainRouter {
         return MaterialPageRoute(builder: (_) => const ChatView());
       case RoutePath.contact:
         return MaterialPageRoute(builder: (_) => const ContactView());
+      case RoutePath.subscription:
+        return MaterialPageRoute(builder: (_) => const SubscriptionView());
 
       default:
         return MaterialPageRoute(
