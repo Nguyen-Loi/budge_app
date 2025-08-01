@@ -93,7 +93,7 @@ class AuthAPI implements IAuthApi {
       name: name,
       accountTypeValue: accountType.value,
       currencyTypeValue: CurrencyType.vnd.code,
-      role: UserRole.normal,
+      role: UserRoleEnum.normal,
       languageCode: _ref.read(languageControllerProvider).code,
       isRemindTransactionEveryDate: true,
       isActive: true,
@@ -321,7 +321,7 @@ class AuthAPI implements IAuthApi {
       throw Exception('Error signing in anonymously: $error');
     });
   }
-  
+
   @override
   bool get isAuthenticated => _auth.currentUser != null;
 }

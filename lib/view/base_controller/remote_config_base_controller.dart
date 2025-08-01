@@ -16,7 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 final remoteConfigBaseControllerProvider =
     StateNotifierProvider<RemoteConfigBaseController, RemoteConfigModel>((ref) {
-  bool isRoleUserAds = ref.watch(userBaseControllerProvider).roleAds;
+  bool isRoleUserAds = ref.watch(userBaseControllerProvider.select((value) => value.roleAds));
   return RemoteConfigBaseController(isRoleUserAds: isRoleUserAds);
 });
 

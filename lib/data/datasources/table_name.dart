@@ -7,4 +7,5 @@ class TableName {
   static const String devices = 'Devices';
   static const String chats = 'Chats';
   static const String feedback = 'Feedbacks';
+  static const String subscriptions = 'Subscriptions';
 }
