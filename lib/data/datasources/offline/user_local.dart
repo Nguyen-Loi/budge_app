@@ -10,19 +10,21 @@ import 'package:sqflite/sqlite_api.dart';
 
 final userLocalProvider = Provider((ref) {
   final db = ref.watch(sqlHelperProvider);
-  return UserLocal(db: db,);
+  return UserLocal(
+    db: db,
+  );
 });
 
 class UserLocal extends UserRepository {
   final Database? _db;
   UserLocal({
     required Database? db,
-  })  : _db = db;
+  }) : _db = db;
 
   @override
   Future<UserModel> getUserById(String uid) async {
     if (_db == null) {
-     return UserModel.defaultData(uid);
+      return UserModel.defaultData(uid);
     }
     try {
       final result = await _db.query(
@@ -53,7 +55,6 @@ class UserLocal extends UserRepository {
     required UserModel user,
   }) async {
     try {
-    
       await _db?.update(
         TableName.user,
         user.toMap(isSqliteFomat: true),
@@ -63,7 +64,7 @@ class UserLocal extends UserRepository {
 
       return right(user);
     } catch (e) {
-      return left(Failure(message: 'Error updating user', error: e.toString()));
+      return left(Failure(message: 'Error update user', error: e.toString()));
     }
   }
 
@@ -72,7 +73,7 @@ class UserLocal extends UserRepository {
     try {
       await _db?.insert(
         TableName.user,
-        user.toMap(),
+        user.toMap(isSqliteFomat: true),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
       return right(null);

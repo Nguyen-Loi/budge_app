@@ -185,17 +185,16 @@ class SubscriptionApi implements ISubscriptionApi {
 
     // Update user model
     if (purchase.status == PurchaseStatus.purchased) {
-      final updatedUser = user.copyWith(
-        role: UserRoleEnum.premium,
-        subscriptionPlan: plan,
-        subscriptionExpiryDate: expiryDate,
+      final updatedUser = user.withPlan(
+        plan: plan,
+        expiryDate: expiryDate,
+        newUserRole: UserRoleEnum.premium,
       );
       await _userDb.updateUser(user: updatedUser);
     }
 
     logInfo('Subscription activated successfully for user: ${user.id}');
   }
-
 
   Future<void> _newSubscription(SubscriptionModel subscription) {
     return _db
@@ -220,10 +219,10 @@ class SubscriptionApi implements ISubscriptionApi {
   @override
   Future<List<ProductDetails>> getProducts(CurrencyType currency) async {
     try {
-      final monthlyProductId =
-          SubscriptionPricing.getProductId(SubscriptionPlanEnum.monthly, currency);
-      final yearlyProductId =
-          SubscriptionPricing.getProductId(SubscriptionPlanEnum.yearly, currency);
+      final monthlyProductId = SubscriptionPricing.getProductId(
+          SubscriptionPlanEnum.monthly, currency);
+      final yearlyProductId = SubscriptionPricing.getProductId(
+          SubscriptionPlanEnum.yearly, currency);
 
       final productIds = {monthlyProductId, yearlyProductId};
 

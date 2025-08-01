@@ -60,6 +60,17 @@ class UserModel {
     return false;
   }
 
+  UserModel withPlan({
+    required SubscriptionPlanEnum plan,
+    required DateTime? expiryDate,
+    required UserRoleEnum newUserRole,
+  }) {
+    return copyWith(
+        subscriptionPlan: plan,
+        subscriptionExpiryDate: expiryDate,
+        role: newUserRole);
+  }
+
   UserModel copyWith({
     String? id,
     String? email,
@@ -152,6 +163,7 @@ class UserModel {
     if (isSqliteFomat) {
       data['isRemindTransactionEveryDate'] =
           isRemindTransactionEveryDate ? 1 : 0;
+      data['isActive'] = isActive ? 1 : 0;
       data['phoneNumber'] = phoneNumber?.toString();
     }
     return data;

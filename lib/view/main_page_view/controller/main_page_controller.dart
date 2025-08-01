@@ -6,6 +6,7 @@ import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/constants/constants.dart';
 import 'package:budget_app/data/datasources/offline/database_helper.dart';
+import 'package:budget_app/view/base_controller/asset_controller.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
@@ -41,6 +42,7 @@ class MainPageController extends StateNotifier<void> {
 
   Future<void> loadBaseDataOptimized(BuildContext context) async {
     final isAuthenicated = _ref.read(authApiProvider).isAuthenticated;
+    await _ref.read(assetControllerProvider.notifier).load(context);
     if (!isAuthenicated) {
       await _ref.read(authApiProvider).signInAnonymously();
     }
