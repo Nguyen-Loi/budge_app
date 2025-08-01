@@ -37,17 +37,12 @@ final subscriptionApiProvider = Provider((ref) {
 });
 
 abstract class ISubscriptionApi {
-  Future<void> updateSubscription(SubscriptionModel subscription);
-
-  // In-app purchase methods
   Future<bool> initialize();
   Future<List<ProductDetails>> getProducts(CurrencyType currency);
   FutureEitherVoid purchaseSubscription({
     required UserModel user,
     required SubscriptionPlanEnum plan,
   });
-  Future<List<PurchaseDetails>> restorePurchases(UserModel user);
-  Future<void> cancelSubscription(UserModel user);
   Stream<PurchaseResponse> get purchaseStream;
 }
 
@@ -205,19 +200,6 @@ class SubscriptionApi implements ISubscriptionApi {
   }
 
   @override
-  Future<void> updateSubscription(SubscriptionModel subscription) async {
-    try {
-      await _db
-          .collection(FirestorePath.subscriptions(uid: _uid))
-          .doc(subscription.id)
-          .update(subscription.toMap());
-    } catch (e, stackTrace) {
-      logError('Failed to update subscription: $e', stackTrace: stackTrace);
-      rethrow;
-    }
-  }
-
-  @override
   Future<List<ProductDetails>> getProducts(CurrencyType currency) async {
     try {
       final monthlyProductId =
@@ -272,36 +254,6 @@ class SubscriptionApi implements ISubscriptionApi {
     } catch (e, stackTrace) {
       logError('Failed to purchase subscription: $e', stackTrace: stackTrace);
       return left(Failure(message: 'Failed to purchase subscription: $e'));
-    }
-  }
-
-  @override
-  Future<List<PurchaseDetails>> restorePurchases(UserModel user) async {
-    try {
-      logInfo('Restoring purchases for user: ${user.id}');
-      await _instance.restorePurchases();
-
-      // The restored purchases will come through the purchase stream
-      // For now, return empty list as the actual restoration is handled by the stream
-      return [];
-    } catch (e, stackTrace) {
-      logError('Failed to restore purchases: $e', stackTrace: stackTrace);
-      return [];
-    }
-  }
-
-  @override
-  Future<void> cancelSubscription(UserModel user) async {
-    try {
-      // Log cancellation - we'll just log a message since we don't have
-      // a specific cancellation transaction structure
-      logInfo('Subscription cancellation requested for user: ${user.id}');
-
-      // In a real implementation, you would call the platform-specific
-      // cancellation APIs here or update the subscription status in Firestore
-    } catch (e, stackTrace) {
-      logError('Failed to cancel subscription: $e', stackTrace: stackTrace);
-      rethrow;
     }
   }
 

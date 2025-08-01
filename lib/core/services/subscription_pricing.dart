@@ -61,46 +61,4 @@ class SubscriptionPricing {
     return _productIds[key] ?? _productIds['${plan.name}_usd']!;
   }
 
-  /// Get all available product IDs for a currency
-  static List<String> getProductIdsForCurrency(CurrencyType currency) {
-    return [
-      getProductId(SubscriptionPlanEnum.monthly, currency),
-      getProductId(SubscriptionPlanEnum.yearly, currency),
-    ];
-  }
-
-  /// Format price for display
-  static String formatPrice(double price, CurrencyType currency) {
-    if (currency.hasDecimals) {
-      return '${currency.symbol}${price.toStringAsFixed(2)}';
-    } else {
-      return '${currency.symbol}${price.toStringAsFixed(0)}';
-    }
-  }
-
-  /// Get formatted monthly price
-  static String getFormattedMonthlyPrice(CurrencyType currency) {
-    return formatPrice(getMonthlyPrice(currency), currency);
-  }
-
-  /// Get formatted yearly price
-  static String getFormattedYearlyPrice(CurrencyType currency) {
-    return formatPrice(getYearlyPrice(currency), currency);
-  }
-
-  /// Get formatted yearly monthly equivalent
-  static String getFormattedYearlyMonthlyEquivalent(CurrencyType currency) {
-    return formatPrice(getYearlyMonthlyEquivalent(currency), currency);
-  }
-
-  /// Validate if a price matches expected pricing
-  static bool validatePrice(double price, String plan, CurrencyType currency) {
-    final expectedPrice = plan == 'monthly'
-        ? getMonthlyPrice(currency)
-        : getYearlyPrice(currency);
-
-    // Allow for small variations due to app store pricing tiers
-    final tolerance = expectedPrice * 0.1; // 10% tolerance
-    return (price - expectedPrice).abs() <= tolerance;
-  }
 }
