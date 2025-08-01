@@ -1,55 +1,62 @@
 import 'package:budget_app/core/enums/currency_type_enum.dart';
-import 'package:budget_app/core/services/subscription_pricing.dart';
+import 'package:budget_app/core/utils/data_config_utils.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 enum SubscriptionPlanEnum {
-  monthly(30),
-  yearly(365);
+  monthlyVnd('monthly_vnd', 10000, 30, CurrencyType.vnd),
+  yearlyVnd('yearly_vnd', 100000, 365, CurrencyType.vnd),
+  monthlyUsd('monthly_usd', 10, 30, CurrencyType.usd),
+  yearlyUsd('yearly_usd', 100, 365, CurrencyType.usd);
 
-  factory SubscriptionPlanEnum.baseOnProductId(String productId) {
-    return SubscriptionPlanEnum.values.firstWhere(
-      (e) => productId.contains(e.name),
-      orElse: () => SubscriptionPlanEnum.monthly,
+  static List<SubscriptionPlanEnum> get listInAppPurchase =>
+      SubscriptionPlanEnum.values
+          .where((e) => e.currencyType == DataConfigUtils.instance.currencyType)
+          .toList();
+
+  static SubscriptionPlanEnum get defaultPlan {
+    return listInAppPurchase.firstWhere(
+      (e) => e.name.contains('monthly'),
     );
   }
 
-  final int value;
-  const SubscriptionPlanEnum(this.value);
+  bool get isYearly =>
+      this == SubscriptionPlanEnum.yearlyVnd ||
+      this == SubscriptionPlanEnum.yearlyUsd;
+
+  bool get isMonthly =>
+      this == SubscriptionPlanEnum.monthlyVnd ||
+      this == SubscriptionPlanEnum.monthlyUsd;
+
+  factory SubscriptionPlanEnum.fromProductId(String productId) {
+    return SubscriptionPlanEnum.values.firstWhere(
+      (e) => e.productId == productId,
+      orElse: () => throw Exception('Invalid product ID: $productId'),
+    );
+  }
+
+  final String productId;
+  final int price;
+  final int durationDays;
+  final CurrencyType currencyType;
+  const SubscriptionPlanEnum(
+      this.productId, this.price, this.durationDays, this.currencyType);
 }
 
-extension SubscriptionPlanEnumX on SubscriptionPlanEnum {
-  double amountDependsOnCurrency(CurrencyType currency) {
-    switch (this) {
-      case SubscriptionPlanEnum.monthly:
-        return SubscriptionPricing.getMonthlyPrice(currency);
-      case SubscriptionPlanEnum.yearly:
-        return SubscriptionPricing.getYearlyPrice(currency);
-    }
+extension SubscriptionProductEnumX on SubscriptionPlanEnum {
+  String get displayPrice {
+    return "${currencyType.symbol}${price.toStringAsFixed(currencyType.decimalPlaces)}";
   }
 
   String content(BuildContext context) {
     AppLocalizations loc = context.loc;
-    switch (this) {
-      case SubscriptionPlanEnum.monthly:
-        return loc.monthly;
-      case SubscriptionPlanEnum.yearly:
-        return loc.yearly;
+    if (isYearly) {
+      return loc.yearly;
     }
-  }
-
-  String displayPrice(BuildContext context) {
-    double price = 0;
-    switch (this) {
-      case SubscriptionPlanEnum.monthly:
-        price = SubscriptionPricing.getMonthlyPrice(CurrencyType.usd);
-        break;
-      case SubscriptionPlanEnum.yearly:
-        price =
-            SubscriptionPricing.getYearlyMonthlyEquivalent(CurrencyType.usd);
-        break;
+    if (isMonthly) {
+      return loc.monthly;
     }
-    return "\$${price.toStringAsFixed(2)}";
+    throw Exception("Invalid subscription plan: $this");
   }
 }

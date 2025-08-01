@@ -8,7 +8,6 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 
 final subscriptionControllerProvider = StateNotifierProvider.autoDispose<
     SubscriptionController, SubscriptionPlanEnum?>(
@@ -18,7 +17,7 @@ final subscriptionControllerProvider = StateNotifierProvider.autoDispose<
 class SubscriptionController extends StateNotifier<SubscriptionPlanEnum?> {
   final Ref ref;
 
-  SubscriptionController(this.ref) : super(SubscriptionPlanEnum.monthly) {
+  SubscriptionController(this.ref) : super(SubscriptionPlanEnum.defaultPlan) {
     _initializeService();
   }
 
@@ -58,19 +57,12 @@ class SubscriptionController extends StateNotifier<SubscriptionPlanEnum?> {
           message: "Subscription started successfully");
       final userNewPlan = user.withPlan(
         plan: plan,
-        expiryDate: DateTime.now().add(Duration(days: plan.value)),
+        expiryDate: DateTime.now().add(Duration(days: plan.durationDays)),
         newUserRole: UserRoleEnum.premium,
       );
       ref
           .read(userBaseControllerProvider.notifier)
           .updateUser(userNewPlan, withDb: true);
     });
-  }
-
-  /// Get available products for current user
-  Future<List<ProductDetails>> getAvailableProducts() async {
-    final user = ref.read(userBaseControllerProvider);
-    final api = ref.read(subscriptionApiProvider);
-    return api.getProducts(user.currency);
   }
 }

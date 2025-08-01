@@ -2,10 +2,8 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
-import 'package:budget_app/core/services/subscription_pricing.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/theme/app_colors.dart';
@@ -285,23 +283,15 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
-            children: [
-              Expanded(
-                child: _buildPlanToggle(
-                  title: loc.monthly,
-                  plan: SubscriptionPlanEnum.monthly,
-                  colors: colors,
-                ),
-              ),
-              Expanded(
-                child: _buildPlanToggle(
-                  title: loc.yearly,
-                  subtitle: loc.saveValuePercent(20),
-                  plan: SubscriptionPlanEnum.yearly,
-                  colors: colors,
-                ),
-              ),
-            ],
+            children: SubscriptionPlanEnum.listInAppPurchase
+                .map((e) => Expanded(
+                      child: _buildPlanToggle(
+                        title: e.content(context),
+                        plan: e,
+                        colors: colors,
+                      ),
+                    ))
+                .toList(),
           ),
         ),
         gapH24,
@@ -353,7 +343,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                   ],
                 ],
               ),
-              if (plan == SubscriptionPlanEnum.yearly)
+              if (plan.isYearly) ...[
                 Positioned(
                   top: -16,
                   right: -16,
@@ -371,6 +361,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                     ),
                   ),
                 ),
+              ],
             ],
           ),
         ),
@@ -409,7 +400,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 BText.h1(
-                  plan?.displayPrice(context) ?? "",
+                  plan?.displayPrice ?? "",
                   fontWeight: FontWeight.bold,
                   color: colors.primary,
                 ),
@@ -423,11 +414,12 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                 ),
               ],
             ),
-            if (plan == SubscriptionPlanEnum.yearly) ...[
+            if (plan?.isYearly == true) ...[
               gapH8,
               BText.b3(
                 loc.billedAnnuallyAt(
-                    '\$${SubscriptionPricing.getYearlyPrice(CurrencyType.usd).toStringAsFixed(2)}'),
+                  plan!.displayPrice,
+                ),
                 color: colors.lightText,
                 textAlign: TextAlign.center,
               ),

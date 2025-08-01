@@ -6,6 +6,7 @@ import 'package:budget_app/core/crashlytics.dart';
 import 'package:budget_app/core/logger_observer.dart';
 import 'package:budget_app/core/route_path.dart';
 import 'package:budget_app/core/src/b_notification.dart';
+import 'package:budget_app/core/utils/data_config_utils.dart';
 import 'package:budget_app/theme/app_theme.dart';
 import 'package:budget_app/view/main_page_view/main_page_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,6 +68,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     // Inin language firebase
     FirebaseAuth.instance
         .setLanguageCode(ref.read(languageControllerProvider).code);
+    DataConfigUtils.instance.init(context);
     super.initState();
   }
 
