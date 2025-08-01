@@ -91,7 +91,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
         showBDialog(context,
             dialogInfoType: BDialogInfoType.error,
             message: context.loc.purchaseFailed(
-              response.message ?? 'Unknown error occurred',
+              response.message
             ));
       }
     });

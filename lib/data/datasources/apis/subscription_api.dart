@@ -9,7 +9,6 @@ import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/models/subscription_model.dart';
 import 'package:budget_app/data/models/user_model.dart';
-import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -108,7 +107,6 @@ class SubscriptionApi implements ISubscriptionApi {
   }
 
   Future<void> _processPurchase(PurchaseDetails purchaseDetails) async {
-    AppLocalizations loc = context.locl
     switch (purchaseDetails.status) {
       case PurchaseStatus.purchased:
         _purchaseController.add(PurchaseResponse(
@@ -300,30 +298,3 @@ class SubscriptionApi implements ISubscriptionApi {
   }
 }
 
-extension PurchaseStatusText on PurchaseStatus {
-  String get productId {
-    switch (this) {
-      case SubscriptionPlanEnum.monthly:
-        return 'monthly_subscription';
-      case SubscriptionPlanEnum.yearly:
-        return 'yearly_subscription';
-      case SubscriptionPlanEnum.lifetime:
-        return 'lifetime_subscription';
-      default:
-        throw 'Unknown subscription plan: $this';
-    }
-  }
-
-  int get durationDays {
-    switch (this) {
-      case SubscriptionPlanEnum.monthly:
-        return 30;
-      case SubscriptionPlanEnum.yearly:
-        return 365;
-      case SubscriptionPlanEnum.lifetime:
-        return 9999; // Arbitrary large number for lifetime
-      default:
-        throw 'Unknown subscription plan: $this';
-    }
-  }
-}
