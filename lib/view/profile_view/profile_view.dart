@@ -149,9 +149,11 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                   initialAvatar: user.profileUrl,
                   size: 50,
                   onAvatarChanged: (newAvatar) {
-                    setState(() {
-                      _avatarAsset = newAvatar;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _avatarAsset = newAvatar;
+                      });
+                    }
                   },
                   enabled: !disable,
                 ),

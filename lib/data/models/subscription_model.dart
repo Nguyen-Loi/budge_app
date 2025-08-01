@@ -6,7 +6,7 @@ class SubscriptionModel {
   final String userId;
   final PurchaseStatus purchaseStatus;
   final SubscriptionPlanEnum? subscriptionPlan;
-  final double amount;
+  final int amount;
   final String currency;
   final String? productId;
   final String? transactionId;
@@ -54,7 +54,7 @@ class SubscriptionModel {
     String? userEmail,
     PurchaseStatus? purchaseStatus,
     SubscriptionPlanEnum? subscriptionPlan,
-    double? amount,
+    int? amount,
     String? currency,
     String? productId,
     String? transactionId,
@@ -87,7 +87,7 @@ class SubscriptionModel {
         (e) => e.name == map['purchaseStatus'] as String,
       ),
       subscriptionPlan: map['subscriptionPlan'] as SubscriptionPlanEnum?,
-      amount: (map['amount'] as num).toDouble(),
+      amount: (map['amount'] as num).toInt(),
       currency: map['currency'] as String,
       productId: map['productId'] as String?,
       transactionId: map['transactionId'] as String?,

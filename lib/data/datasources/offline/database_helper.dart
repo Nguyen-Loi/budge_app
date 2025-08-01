@@ -15,7 +15,7 @@ class DatabaseHelper extends StateNotifier<Database?> {
   static const String userTable = TableName.user;
 
   static const _databaseName = "app.db";
-  static const _databaseVersion = 2;
+  static const _databaseVersion = 3;
 
   Database get db {
     if (state == null) {
@@ -109,7 +109,9 @@ class DatabaseHelper extends StateNotifier<Database?> {
       isActive INTEGER,
       inactiveReason TEXT,
       createdDate INTEGER,
-      updatedDate INTEGER
+      updatedDate INTEGER,
+      subscriptionExpiryDate INTEGER,
+      subscriptionPlan TEXT
     )
   ''');
   }
@@ -121,6 +123,14 @@ class DatabaseHelper extends StateNotifier<Database?> {
         await db.execute('ALTER TABLE $userTable ADD COLUMN isActive INTEGER');
         await db
             .execute('ALTER TABLE $userTable ADD COLUMN inactiveReason TEXT');
+      }
+
+      // Add the new columns that were introduced in version 3
+      if (oldVersion < 3) {
+        await db.execute(
+            'ALTER TABLE $userTable ADD COLUMN subscriptionExpiryDate INTEGER');
+        await db
+            .execute('ALTER TABLE $userTable ADD COLUMN subscriptionPlan TEXT');
       }
     }
   }

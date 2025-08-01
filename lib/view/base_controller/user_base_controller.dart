@@ -107,7 +107,7 @@ class UserBaseController extends StateNotifier<UserModel> {
     closeLoading();
 
     res.fold((l) {
-      showSnackBar(context, l.message);
+      showSnackBarError(context, l.message);
     }, (r) {
       reload(r.$1);
       _ref.read(transactionsBaseControllerProvider.notifier).addState(r.$2);
@@ -136,7 +136,7 @@ class UserBaseController extends StateNotifier<UserModel> {
             transactionDate: transactionDate);
 
     res.fold((l) {
-      showSnackBar(context, l.message);
+      showSnackBarError(context, l.message);
     }, (r) {
       reload(r.$3);
       _ref.read(transactionsBaseControllerProvider.notifier).addState(r.$1);
@@ -180,7 +180,7 @@ class UserBaseController extends StateNotifier<UserModel> {
             !currentUser.isRemindTransactionEveryDate);
     final res = await _userRepository.updateUser(user: newUser);
     res.fold((l) {
-      showSnackBar(context, l.message);
+      showSnackBarError(context, l.message);
     }, (r) {
       reload(r);
     });

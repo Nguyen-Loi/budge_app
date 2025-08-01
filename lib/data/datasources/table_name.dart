@@ -8,4 +8,5 @@ class TableName {
   static const String chats = 'Chats';
   static const String feedback = 'Feedbacks';
   static const String subscriptions = 'Subscriptions';
+  static const String assets = 'Assets';
 }

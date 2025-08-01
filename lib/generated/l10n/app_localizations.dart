@@ -2206,6 +2206,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Banner dismissed'**
   String get bannerDismissed;
+
+  /// No description provided for @purchaseSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase successful! Your subscription is now active.'**
+  String get purchaseSuccessful;
+
+  /// No description provided for @purchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed: {errorMessage}'**
+  String purchaseFailed(Object errorMessage);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1120,4 +1120,12 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get bannerDismissed => 'Đã bỏ qua quảng cáo';
+
+  @override
+  String get purchaseSuccessful => 'Mua hàng thành công! Đăng ký của bạn hiện đã hoạt động.';
+
+  @override
+  String purchaseFailed(Object errorMessage) {
+    return 'Mua hàng thất bại: $errorMessage';
+  }
 }

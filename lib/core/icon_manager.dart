@@ -20,6 +20,9 @@ class IconManager {
   static IconData filter = Icons.filter_list_rounded;
   static IconData removeChat = Icons.delete_outline_rounded;
   static IconData openLink = Icons.open_in_new_outlined;
+  static IconData avatar = Icons.account_circle_rounded;
+
+  static IconData errorLoadLottie = Icons.info_outline_rounded;
 
   // Field
   static IconData email = Icons.email_outlined;

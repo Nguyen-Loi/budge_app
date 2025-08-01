@@ -4,13 +4,12 @@ import 'package:budget_app/core/enums/subscription_plan_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/core/providers.dart';
-import 'package:budget_app/core/services/subscription_pricing.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/models/subscription_model.dart';
 import 'package:budget_app/data/models/user_model.dart';
-import 'package:budget_app/core/enums/currency_type_enum.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,12 +18,12 @@ import 'package:fpdart/fpdart.dart';
 
 class PurchaseResponse {
   final PurchaseStatus result;
-  final String? message;
+  final String message;
   final PurchaseDetails? purchaseDetails;
 
   const PurchaseResponse({
     required this.result,
-    this.message,
+    required this.message,
     this.purchaseDetails,
   });
 }
@@ -41,9 +40,8 @@ abstract class ISubscriptionApi {
 
   // In-app purchase methods
   Future<bool> initialize();
-  Future<List<ProductDetails>> getProducts(CurrencyType currency);
+  Future<List<ProductDetails>> getProducts();
   FutureEitherVoid purchaseSubscription({
-    required UserModel user,
     required SubscriptionPlanEnum plan,
   });
   Future<List<PurchaseDetails>> restorePurchases(UserModel user);
@@ -110,6 +108,7 @@ class SubscriptionApi implements ISubscriptionApi {
   }
 
   Future<void> _processPurchase(PurchaseDetails purchaseDetails) async {
+    AppLocalizations loc = context.locl
     switch (purchaseDetails.status) {
       case PurchaseStatus.purchased:
         _purchaseController.add(PurchaseResponse(
@@ -150,7 +149,7 @@ class SubscriptionApi implements ISubscriptionApi {
       _instance.completePurchase(purchaseDetails);
       await _logPurchase(
         purchase: purchaseDetails,
-        plan: SubscriptionPlanEnum.baseOnProductId(purchaseDetails.productID),
+        plan: SubscriptionPlanEnum.fromProductId(purchaseDetails.productID),
       );
     }
   }
@@ -159,7 +158,7 @@ class SubscriptionApi implements ISubscriptionApi {
       {required PurchaseDetails purchase,
       required SubscriptionPlanEnum plan}) async {
     final now = DateTime.now();
-    final expiryDate = now.add(Duration(days: plan.value));
+    final expiryDate = now.add(Duration(days: plan.durationDays));
     UserModel user = await _userDb.getUserById(_uid);
 
     // Create subscription model for database
@@ -168,7 +167,7 @@ class SubscriptionApi implements ISubscriptionApi {
       userId: user.id,
       purchaseStatus: purchase.status,
       subscriptionPlan: plan,
-      amount: plan.amountDependsOnCurrency(user.currency),
+      amount: plan.price,
       currency: user.currency.code,
       productId: purchase.productID,
       transactionId: purchase.purchaseID,
@@ -185,17 +184,16 @@ class SubscriptionApi implements ISubscriptionApi {
 
     // Update user model
     if (purchase.status == PurchaseStatus.purchased) {
-      final updatedUser = user.copyWith(
-        role: UserRoleEnum.premium,
-        subscriptionPlan: plan,
-        subscriptionExpiryDate: expiryDate,
+      final updatedUser = user.withPlan(
+        plan: plan,
+        expiryDate: expiryDate,
+        newUserRole: UserRoleEnum.premium,
       );
       await _userDb.updateUser(user: updatedUser);
     }
 
     logInfo('Subscription activated successfully for user: ${user.id}');
   }
-
 
   Future<void> _newSubscription(SubscriptionModel subscription) {
     return _db
@@ -218,15 +216,10 @@ class SubscriptionApi implements ISubscriptionApi {
   }
 
   @override
-  Future<List<ProductDetails>> getProducts(CurrencyType currency) async {
+  Future<List<ProductDetails>> getProducts() async {
     try {
-      final monthlyProductId =
-          SubscriptionPricing.getProductId(SubscriptionPlanEnum.monthly, currency);
-      final yearlyProductId =
-          SubscriptionPricing.getProductId(SubscriptionPlanEnum.yearly, currency);
-
-      final productIds = {monthlyProductId, yearlyProductId};
-
+      Set<String> productIds =
+          SubscriptionPlanEnum.values.map((plan) => plan.productId).toSet();
       final response = await _instance.queryProductDetails(productIds);
 
       if (response.error != null) {
@@ -244,22 +237,17 @@ class SubscriptionApi implements ISubscriptionApi {
 
   @override
   FutureEitherVoid purchaseSubscription({
-    required UserModel user,
     required SubscriptionPlanEnum plan,
   }) async {
     try {
-      final productId = SubscriptionPricing.getProductId(plan, user.currency);
-      final products = await getProducts(user.currency);
+      final productId = plan.productId;
+      final products = await getProducts();
       final product = products.firstWhere(
         (p) => p.id == productId,
         orElse: () => throw 'Product not found: $productId',
       );
 
       final purchaseParam = PurchaseParam(productDetails: product);
-
-      // Log purchase attempt
-      logInfo(
-          'Starting subscription purchase: $productId for user: ${user.id}');
 
       final success =
           await _instance.buyNonConsumable(purchaseParam: purchaseParam);
@@ -309,5 +297,33 @@ class SubscriptionApi implements ISubscriptionApi {
   void dispose() {
     _subscription?.cancel();
     _purchaseController.close();
+  }
+}
+
+extension PurchaseStatusText on PurchaseStatus {
+  String get productId {
+    switch (this) {
+      case SubscriptionPlanEnum.monthly:
+        return 'monthly_subscription';
+      case SubscriptionPlanEnum.yearly:
+        return 'yearly_subscription';
+      case SubscriptionPlanEnum.lifetime:
+        return 'lifetime_subscription';
+      default:
+        throw 'Unknown subscription plan: $this';
+    }
+  }
+
+  int get durationDays {
+    switch (this) {
+      case SubscriptionPlanEnum.monthly:
+        return 30;
+      case SubscriptionPlanEnum.yearly:
+        return 365;
+      case SubscriptionPlanEnum.lifetime:
+        return 9999; // Arbitrary large number for lifetime
+      default:
+        throw 'Unknown subscription plan: $this';
+    }
   }
 }
