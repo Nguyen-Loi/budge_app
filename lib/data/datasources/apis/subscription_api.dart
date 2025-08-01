@@ -9,6 +9,7 @@ import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/models/subscription_model.dart';
 import 'package:budget_app/data/models/user_model.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,12 +18,12 @@ import 'package:fpdart/fpdart.dart';
 
 class PurchaseResponse {
   final PurchaseStatus result;
-  final String? message;
+  final String message;
   final PurchaseDetails? purchaseDetails;
 
   const PurchaseResponse({
     required this.result,
-    this.message,
+    required this.message,
     this.purchaseDetails,
   });
 }
@@ -41,7 +42,6 @@ abstract class ISubscriptionApi {
   Future<bool> initialize();
   Future<List<ProductDetails>> getProducts();
   FutureEitherVoid purchaseSubscription({
-    required UserModel user,
     required SubscriptionPlanEnum plan,
   });
   Future<List<PurchaseDetails>> restorePurchases(UserModel user);
@@ -108,6 +108,7 @@ class SubscriptionApi implements ISubscriptionApi {
   }
 
   Future<void> _processPurchase(PurchaseDetails purchaseDetails) async {
+    AppLocalizations loc = context.locl
     switch (purchaseDetails.status) {
       case PurchaseStatus.purchased:
         _purchaseController.add(PurchaseResponse(
@@ -217,9 +218,8 @@ class SubscriptionApi implements ISubscriptionApi {
   @override
   Future<List<ProductDetails>> getProducts() async {
     try {
-      Set<String> productIds = SubscriptionPlanEnum.listInAppPurchase
-          .map((plan) => plan.productId)
-          .toSet();
+      Set<String> productIds =
+          SubscriptionPlanEnum.values.map((plan) => plan.productId).toSet();
       final response = await _instance.queryProductDetails(productIds);
 
       if (response.error != null) {
@@ -237,7 +237,6 @@ class SubscriptionApi implements ISubscriptionApi {
 
   @override
   FutureEitherVoid purchaseSubscription({
-    required UserModel user,
     required SubscriptionPlanEnum plan,
   }) async {
     try {
@@ -249,10 +248,6 @@ class SubscriptionApi implements ISubscriptionApi {
       );
 
       final purchaseParam = PurchaseParam(productDetails: product);
-
-      // Log purchase attempt
-      logInfo(
-          'Starting subscription purchase: $productId for user: ${user.id}');
 
       final success =
           await _instance.buyNonConsumable(purchaseParam: purchaseParam);
@@ -302,5 +297,33 @@ class SubscriptionApi implements ISubscriptionApi {
   void dispose() {
     _subscription?.cancel();
     _purchaseController.close();
+  }
+}
+
+extension PurchaseStatusText on PurchaseStatus {
+  String get productId {
+    switch (this) {
+      case SubscriptionPlanEnum.monthly:
+        return 'monthly_subscription';
+      case SubscriptionPlanEnum.yearly:
+        return 'yearly_subscription';
+      case SubscriptionPlanEnum.lifetime:
+        return 'lifetime_subscription';
+      default:
+        throw 'Unknown subscription plan: $this';
+    }
+  }
+
+  int get durationDays {
+    switch (this) {
+      case SubscriptionPlanEnum.monthly:
+        return 30;
+      case SubscriptionPlanEnum.yearly:
+        return 365;
+      case SubscriptionPlanEnum.lifetime:
+        return 9999; // Arbitrary large number for lifetime
+      default:
+        throw 'Unknown subscription plan: $this';
+    }
   }
 }

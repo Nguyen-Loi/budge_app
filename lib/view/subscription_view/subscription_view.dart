@@ -2,12 +2,14 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/theme/app_colors.dart';
 import 'package:budget_app/core/enums/subscription_plan_enum.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/subscription_view/controller/subscription_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,15 +61,38 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
         .purchaseStream
         .listen((response) {
       if (!mounted) return;
-      if (response.result == PurchaseStatus.purchased ||
-          response.result == PurchaseStatus.restored) {
+      if (response.result == PurchaseStatus.purchased) {
+        final user = ref.read(userBaseControllerProvider);
+        String? productId = response.purchaseDetails?.productID;
+
+        if (productId == null) {
+          showBDialogInfoError(context,
+              message: context.loc.purchaseFailed(
+                response.message,
+              ));
+          return;
+        }
+        SubscriptionPlanEnum? plan =
+            SubscriptionPlanEnum.fromProductId(productId);
+        final userNewPlan = user.withPlan(
+          plan: plan,
+          expiryDate: DateTime.now().add(
+            Duration(days: plan.durationDays),
+          ),
+          newUserRole: UserRoleEnum.premium,
+        );
         showBDialog(context,
             dialogInfoType: BDialogInfoType.success,
-            message: 'Purchase successful');
+            message: context.loc.purchaseSuccessful);
+        ref
+            .read(userBaseControllerProvider.notifier)
+            .updateUser(userNewPlan, withDb: true);
       } else {
         showBDialog(context,
             dialogInfoType: BDialogInfoType.error,
-            message: 'Purchase failed: ${response.message}');
+            message: context.loc.purchaseFailed(
+              response.message ?? 'Unknown error occurred',
+            ));
       }
     });
   }
@@ -283,7 +308,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
-            children: SubscriptionPlanEnum.listInAppPurchase
+            children: SubscriptionPlanEnum.values
                 .map((e) => Expanded(
                       child: _buildPlanToggle(
                         title: e.content(context),
@@ -343,7 +368,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                   ],
                 ],
               ),
-              if (plan.isYearly) ...[
+              if (plan == SubscriptionPlanEnum.yearlyPremium) ...[
                 Positioned(
                   top: -16,
                   right: -16,
@@ -414,7 +439,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                 ),
               ],
             ),
-            if (plan?.isYearly == true) ...[
+            if (plan == SubscriptionPlanEnum.yearlyPremium) ...[
               gapH8,
               BText.b3(
                 loc.billedAnnuallyAt(

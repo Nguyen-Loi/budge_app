@@ -17,7 +17,7 @@ final subscriptionControllerProvider = StateNotifierProvider.autoDispose<
 class SubscriptionController extends StateNotifier<SubscriptionPlanEnum?> {
   final Ref ref;
 
-  SubscriptionController(this.ref) : super(SubscriptionPlanEnum.defaultPlan) {
+  SubscriptionController(this.ref) : super(SubscriptionPlanEnum.monthlyPremium) {
     _initializeService();
   }
 
@@ -44,7 +44,6 @@ class SubscriptionController extends StateNotifier<SubscriptionPlanEnum?> {
     final api = ref.read(subscriptionApiProvider);
 
     final res = await api.purchaseSubscription(
-      user: user,
       plan: plan,
     );
     closeLoading();

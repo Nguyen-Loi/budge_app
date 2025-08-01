@@ -61,6 +61,8 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
+  bool _isInitialized = false;
+
   @override
   void initState() {
     // Init notification
@@ -68,8 +70,18 @@ class _MyAppState extends ConsumerState<MyApp> {
     // Inin language firebase
     FirebaseAuth.instance
         .setLanguageCode(ref.read(languageControllerProvider).code);
-    DataConfigUtils.instance.init(context);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        DataConfigUtils.instance.init(context);
+      });
+      _isInitialized = true;
+    }
   }
 
   @override
