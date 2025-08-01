@@ -1044,12 +1044,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get detailedAnalyticsAndInsights => 'Phân tích và thống kê chi tiết';
 
   @override
-  String get budgetAnalytics => 'Phân tích ngân sách';
-
-  @override
-  String get comprehensiveBudgetTracking => 'Theo dõi ngân sách toàn diện';
-
-  @override
   String get dataExport => 'Xuất dữ liệu';
 
   @override

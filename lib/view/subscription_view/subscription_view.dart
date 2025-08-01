@@ -182,11 +182,6 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
         description: loc.detailedAnalyticsAndInsights,
       ),
       _BenefitItem(
-        icon: IconManager.budgetBar,
-        title: loc.budgetAnalytics,
-        description: loc.comprehensiveBudgetTracking,
-      ),
-      _BenefitItem(
         icon: IconManager.export,
         title: loc.dataExport,
         description: loc.exportYourDataAnytime,
@@ -360,8 +355,8 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
               ),
               if (plan == SubscriptionPlanEnum.yearly)
                 Positioned(
-                  top: -8,
-                  right: -8,
+                  top: -16,
+                  right: -16,
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

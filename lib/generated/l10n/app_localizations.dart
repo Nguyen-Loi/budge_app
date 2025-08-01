@@ -2063,18 +2063,6 @@ abstract class AppLocalizations {
   /// **'Detailed analytics and insights'**
   String get detailedAnalyticsAndInsights;
 
-  /// No description provided for @budgetAnalytics.
-  ///
-  /// In en, this message translates to:
-  /// **'Budget Analytics'**
-  String get budgetAnalytics;
-
-  /// No description provided for @comprehensiveBudgetTracking.
-  ///
-  /// In en, this message translates to:
-  /// **'Comprehensive budget tracking'**
-  String get comprehensiveBudgetTracking;
-
   /// No description provided for @dataExport.
   ///
   /// In en, this message translates to:

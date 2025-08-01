@@ -7,19 +7,19 @@ class SubscriptionPricing {
   // All other locations: $1 USD monthly, $10 USD yearly
 
   static const Map<String, double> _monthlyPrices = {
-    'VND': 10000.0, 
+    'VND': 10000.0,
   };
 
   static const Map<String, double> _yearlyPrices = {
-    'VND': 100000.0, 
+    'VND': 100000.0,
   };
 
   // App Store/Google Play product IDs
   static const Map<String, String> _productIds = {
-    'monthly_vnd': 'budget_premium_monthly_vnd',
-    'yearly_vnd': 'budget_premium_yearly_vnd',
-    'monthly_usd': 'budget_premium_monthly_usd',
-    'yearly_usd': 'budget_premium_yearly_usd',
+    'monthly_vnd': 'premium_monthly_vnd',
+    'yearly_vnd': 'premium_yearly_vnd',
+    'monthly_usd': 'premium_monthly_usd',
+    'yearly_usd': 'premium_yearly_usd',
   };
 
   /// Get the monthly price in the user's currency

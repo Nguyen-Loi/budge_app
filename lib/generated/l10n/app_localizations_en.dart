@@ -1044,12 +1044,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get detailedAnalyticsAndInsights => 'Detailed analytics and insights';
 
   @override
-  String get budgetAnalytics => 'Budget Analytics';
-
-  @override
-  String get comprehensiveBudgetTracking => 'Comprehensive budget tracking';
-
-  @override
   String get dataExport => 'Data Export';
 
   @override
