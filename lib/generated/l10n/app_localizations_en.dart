@@ -1142,5 +1142,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get purchaseRestored => 'Purchase restored successfully.';
 
   @override
-  String get errorLoadingProducts => 'Error loading products. Please try again later.';
+  String errorLoadingProducts(Object errorMessage) {
+    return 'Error loading products: $errorMessage';
+  }
+
+  @override
+  String get loadingSubscriptionPlans => 'Loading subscription plans...';
 }

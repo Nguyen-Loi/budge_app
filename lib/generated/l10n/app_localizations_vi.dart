@@ -1142,5 +1142,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get purchaseRestored => 'Đơn hàng đã được khôi phục thành công.';
 
   @override
-  String get errorLoadingProducts => 'Lỗi khi tải sản phẩm. Vui lòng thử lại sau.';
+  String errorLoadingProducts(Object errorMessage) {
+    return 'Lỗi khi tải sản phẩm: $errorMessage';
+  }
+
+  @override
+  String get loadingSubscriptionPlans => 'Đang tải các gói đăng ký...';
 }

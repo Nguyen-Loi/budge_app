@@ -80,13 +80,12 @@ class _BSelectableAvatarState extends ConsumerState<BSelectableAvatar> {
     return Stack(
       children: [
         BSmartAvatar(
-          data: _currentAvatar,
-          size: widget.size,
-          onTap: widget.enabled ? _showAvatarPicker : null,
-          showBorder: widget.showBorder,
-          borderColor: widget.borderColor,
-          borderWidth: widget.borderWidth
-        ),
+            data: _currentAvatar,
+            size: widget.size,
+            onTap: widget.enabled ? _showAvatarPicker : null,
+            showBorder: widget.showBorder,
+            borderColor: widget.borderColor,
+            borderWidth: widget.borderWidth),
         if (widget.enabled)
           Positioned(
             bottom: 0,
@@ -187,7 +186,7 @@ class _AvatarPickerDialogState extends State<_AvatarPickerDialog>
           borderRadius: BorderRadius.circular(20),
         ),
         child: Container(
-          constraints: const BoxConstraints(maxWidth: 400, maxHeight: 600),
+          constraints: const BoxConstraints(maxWidth: 400, maxHeight: 460),
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,

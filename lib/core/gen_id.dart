@@ -6,6 +6,7 @@ class GenId {
   GenId._();
 
   static String get _time => _uuid.v1();
+  static String get uuid => _uuid.v4();
   // static String get _random => _uuid.v4();
   // static String get _currentMonth {
   //   final DateTime now = DateTime.now();
@@ -20,4 +21,5 @@ class GenId {
   static String devices(String uid) => uid + _time;
   static String feedback() => _time;
   static String subscription() => _time;
+  static String asset() => uuid;
 }

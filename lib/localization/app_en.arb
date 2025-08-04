@@ -422,5 +422,6 @@
     "purchaseCanceledByUser": "Purchase canceled by user.",
     "purchasePending": "Purchase is pending. Please wait for confirmation.",
     "purchaseRestored": "Purchase restored successfully.",
-    "errorLoadingProducts": "Error loading products. Please try again later."
+    "errorLoadingProducts": "Error loading products: {errorMessage}",
+    "loadingSubscriptionPlans": "Loading subscription plans..."
 }
