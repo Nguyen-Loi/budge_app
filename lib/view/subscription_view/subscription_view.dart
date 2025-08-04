@@ -1,3 +1,5 @@
+import 'package:budget_app/common/log.dart';
+import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
@@ -82,17 +84,13 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
           newUserRole: UserRoleEnum.premium,
         );
         showBDialog(context,
-            dialogInfoType: BDialogInfoType.success,
-            message: context.loc.purchaseSuccessful);
+            dialogInfoType: BDialogInfoType.success, message: response.message);
         ref
             .read(userBaseControllerProvider.notifier)
             .updateUser(userNewPlan, withDb: true);
       } else {
         showBDialog(context,
-            dialogInfoType: BDialogInfoType.error,
-            message: context.loc.purchaseFailed(
-              response.message
-            ));
+            dialogInfoType: BDialogInfoType.error, message: response.message);
       }
     });
   }
@@ -101,7 +99,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
   void dispose() {
     _animationController.dispose();
     _purchaseSubscription?.cancel();
-    ref.read(subscriptionControllerProvider.notifier).dispose();
+
     super.dispose();
   }
 
@@ -121,22 +119,26 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
             opacity: _fadeAnimation,
             child: SlideTransition(
               position: _slideAnimation,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildHeaderSection(colors),
-                    gapH32,
-                    _buildBenefitsSection(colors),
-                    gapH32,
-                    _buildPricingSection(colors),
-                    gapH32,
-                    _buildActionSection(colors),
-                    gapH32
-                  ],
-                ),
-              ).responsiveCenter(),
+              child: RefreshIndicator(
+                onRefresh: () => ref.refresh(
+                    productsSubscriptionFutureControllerProvider.future),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _buildHeaderSection(colors),
+                      gapH32,
+                      _buildBenefitsSection(colors),
+                      gapH32,
+                      _buildPricingSection(colors),
+                      gapH32,
+                      _buildActionSection(colors),
+                      gapH32
+                    ],
+                  ),
+                ).responsiveCenter(),
+              ),
             ),
           );
         },
@@ -292,37 +294,54 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
   Widget _buildPricingSection(AppColors colors) {
     AppLocalizations loc = context.loc;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        BText.h2(
-          loc.chooseYourPlan,
-          fontWeight: FontWeight.bold,
-          color: colors.defaultText,
-        ),
-        gapH16,
-        Container(
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: colors.tileBackgroundColor,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            children: SubscriptionPlanEnum.values
-                .map((e) => Expanded(
-                      child: _buildPlanToggle(
-                        title: e.content(context),
-                        plan: e,
-                        colors: colors,
-                      ),
-                    ))
-                .toList(),
-          ),
-        ),
-        gapH24,
-        _buildPricingCard(colors),
-      ],
-    );
+    return Consumer(builder: (context, ref, _) {
+      return ref.watch(productsSubscriptionFutureControllerProvider).when(
+            data: (products) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BText.h2(
+                    loc.chooseYourPlan,
+                    fontWeight: FontWeight.bold,
+                    color: colors.defaultText,
+                  ),
+                  gapH16,
+                  Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    children: products.map((product) {
+                      final plan =
+                          SubscriptionPlanEnum.fromProductId(product.id);
+                      return SizedBox(
+                        width:
+                            (MediaQuery.of(context).size.width - 48 - 16) / 2,
+                        height: 100,
+                        child: _buildPlanToggle(
+                          title: plan.content(context),
+                          subtitle: product.price,
+                          plan: plan,
+                          colors: colors,
+                          product: product,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  gapH24,
+                  _buildPricingCard(colors: colors),
+                ],
+              );
+            },
+            error: (error, stack) {
+              logError(error.toString(), stackTrace: stack);
+              return BText(
+                loc.errorLoadingProducts,
+                color: colors.error,
+                textAlign: TextAlign.center,
+              );
+            },
+            loading: () => Center(child: BStatus.loading()),
+          );
+    });
   }
 
   Widget _buildPlanToggle({
@@ -330,25 +349,35 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
     String? subtitle,
     required SubscriptionPlanEnum plan,
     required AppColors colors,
+    required ProductDetails product,
   }) {
     AppLocalizations loc = context.loc;
+
     return Consumer(builder: (context, ref, _) {
-      final isSelected = ref.watch(subscriptionControllerProvider) == plan;
+      bool isSelected = ref.watch(subscriptionControllerProvider) == product;
       return GestureDetector(
         onTap: () {
-          ref.read(subscriptionControllerProvider.notifier).updatePlan(plan);
+          ref
+              .read(subscriptionControllerProvider.notifier)
+              .updateProduct(product);
         },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-          height: 80,
           decoration: BoxDecoration(
             color: isSelected ? colors.primary : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: isSelected
+                  ? colors.onPrimary.withAlpha(200)
+                  : colors.primary.withAlpha(30),
+              width: 2,
+            ),
           ),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   BText.b1(
                     title,
@@ -363,15 +392,14 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                       color: isSelected
                           ? colors.onPrimary.withAlpha(180)
                           : colors.lightText,
-                      textAlign: TextAlign.center,
                     ),
                   ],
                 ],
               ),
               if (plan == SubscriptionPlanEnum.yearlyPremium) ...[
                 Positioned(
-                  top: -16,
-                  right: -16,
+                  top: -24,
+                  right: -24,
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -394,13 +422,18 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
     });
   }
 
-  Widget _buildPricingCard(AppColors colors) {
+  Widget _buildPricingCard({required AppColors colors}) {
     AppLocalizations loc = context.loc;
 
     return Consumer(builder: (context, ref, _) {
-      SubscriptionPlanEnum? plan = ref.watch(subscriptionControllerProvider);
+      ProductDetails? product = ref.watch(subscriptionControllerProvider);
+      SubscriptionPlanEnum? plan =
+          ref.read(subscriptionControllerProvider.notifier).currentPlan;
 
       final textPeriod = plan == null ? "" : plan.content(context);
+      if (plan == null) {
+        return SizedBox.shrink();
+      }
       return Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
@@ -425,7 +458,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 BText.h1(
-                  plan?.displayPrice ?? "",
+                  product?.price ?? '',
                   fontWeight: FontWeight.bold,
                   color: colors.primary,
                 ),
@@ -443,7 +476,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
               gapH8,
               BText.b3(
                 loc.billedAnnuallyAt(
-                  plan!.displayPrice,
+                  product?.price ?? '',
                 ),
                 color: colors.lightText,
                 textAlign: TextAlign.center,
@@ -457,13 +490,13 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
 
   Widget _buildActionSection(AppColors colors) {
     return Consumer(builder: (context, ref, _) {
-      SubscriptionPlanEnum? plan = ref.watch(subscriptionControllerProvider);
+      ProductDetails? product = ref.watch(subscriptionControllerProvider);
       final controller = ref.read(subscriptionControllerProvider.notifier);
       return BButton.premium(
           onPressed: () {
-            controller.startSubscription(plan!, context);
+            controller.startSubscription(context, product: product!);
           },
-          enabled: plan != null,
+          enabled: product != null,
           title: context.loc.upgradeNow);
     });
   }

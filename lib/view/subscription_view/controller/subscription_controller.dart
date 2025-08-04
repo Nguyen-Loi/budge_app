@@ -5,18 +5,29 @@ import 'package:budget_app/core/enums/subscription_plan_enum.dart';
 import 'package:budget_app/data/datasources/apis/subscription_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
-final subscriptionControllerProvider = StateNotifierProvider.autoDispose<
-    SubscriptionController, SubscriptionPlanEnum?>(
+final subscriptionControllerProvider =
+    StateNotifierProvider.autoDispose<SubscriptionController, ProductDetails?>(
   (ref) => SubscriptionController(ref),
 );
 
-class SubscriptionController extends StateNotifier<SubscriptionPlanEnum?> {
+final productsSubscriptionFutureControllerProvider =
+    FutureProvider.autoDispose<List<ProductDetails>>((ref) async {
+  final api = ref.read(subscriptionApiProvider);
+  return await api.getProducts();
+});
+
+class SubscriptionController extends StateNotifier<ProductDetails?> {
   final Ref ref;
 
-  SubscriptionController(this.ref)
-      : super(SubscriptionPlanEnum.monthlyPremium) {
+  SubscriptionController(this.ref) : super(null) {
     _initializeService();
+  }
+
+  SubscriptionPlanEnum? get currentPlan {
+    if (state == null) return null;
+    return SubscriptionPlanEnum.fromProductId(state!.id);
   }
 
   Future<void> _initializeService() async {
@@ -24,8 +35,8 @@ class SubscriptionController extends StateNotifier<SubscriptionPlanEnum?> {
     await api.initialize();
   }
 
-  void updatePlan(SubscriptionPlanEnum plan) {
-    state = plan;
+  void updateProduct(ProductDetails product) {
+    state = product;
   }
 
   Stream<PurchaseResponse> get purchaseStream {
@@ -33,14 +44,14 @@ class SubscriptionController extends StateNotifier<SubscriptionPlanEnum?> {
     return api.purchaseStream;
   }
 
-  Future<void> startSubscription(
-      SubscriptionPlanEnum plan, BuildContext context) async {
+  Future<void> startSubscription(BuildContext context,
+      {required ProductDetails product}) async {
     final closeLoading = showLoading(context: context);
 
     final api = ref.read(subscriptionApiProvider);
 
     final res = await api.purchaseSubscription(
-      plan: plan,
+      product: product,
     );
     closeLoading();
 

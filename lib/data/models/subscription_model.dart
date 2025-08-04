@@ -6,14 +6,13 @@ class SubscriptionModel {
   final String userId;
   final PurchaseStatus purchaseStatus;
   final SubscriptionPlanEnum? subscriptionPlan;
-  final int amount;
+  final double amount;
   final String currency;
   final String? productId;
   final String? transactionId;
   final String? purchaseToken;
   final DateTime transactionDate;
   final DateTime? expiryDate;
-  final Map<String, dynamic>? metadata;
 
   const SubscriptionModel({
     required this.id,
@@ -27,7 +26,6 @@ class SubscriptionModel {
     this.purchaseToken,
     required this.transactionDate,
     this.expiryDate,
-    this.metadata,
   });
 
   Map<String, dynamic> toMap() {
@@ -42,8 +40,6 @@ class SubscriptionModel {
       'transactionId': transactionId,
       'purchaseToken': purchaseToken,
       'transactionDate': transactionDate.millisecondsSinceEpoch,
-      'expiryDate': expiryDate?.millisecondsSinceEpoch,
-      'metadata': metadata,
     };
   }
 
@@ -54,14 +50,13 @@ class SubscriptionModel {
     String? userEmail,
     PurchaseStatus? purchaseStatus,
     SubscriptionPlanEnum? subscriptionPlan,
-    int? amount,
+    double? amount,
     String? currency,
     String? productId,
     String? transactionId,
     String? purchaseToken,
     DateTime? transactionDate,
     DateTime? expiryDate,
-    Map<String, dynamic>? metadata,
   }) {
     return SubscriptionModel(
       id: id ?? this.id,
@@ -75,7 +70,6 @@ class SubscriptionModel {
       purchaseToken: purchaseToken ?? this.purchaseToken,
       transactionDate: transactionDate ?? this.transactionDate,
       expiryDate: expiryDate ?? this.expiryDate,
-      metadata: metadata ?? this.metadata,
     );
   }
 
@@ -87,7 +81,7 @@ class SubscriptionModel {
         (e) => e.name == map['purchaseStatus'] as String,
       ),
       subscriptionPlan: map['subscriptionPlan'] as SubscriptionPlanEnum?,
-      amount: (map['amount'] as num).toInt(),
+      amount: (map['amount'] as num).toDouble(),
       currency: map['currency'] as String,
       productId: map['productId'] as String?,
       transactionId: map['transactionId'] as String?,
@@ -97,7 +91,6 @@ class SubscriptionModel {
       expiryDate: map['expiryDate'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['expiryDate'] as int)
           : null,
-      metadata: map['metadata'] as Map<String, dynamic>?,
     );
   }
 }

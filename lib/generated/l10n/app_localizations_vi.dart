@@ -1128,4 +1128,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String purchaseFailed(Object errorMessage) {
     return 'Mua hàng thất bại: $errorMessage';
   }
+
+  @override
+  String get unknownError => 'Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.';
+
+  @override
+  String get purchaseCanceledByUser => 'Đơn hàng đã bị hủy bởi người dùng.';
+
+  @override
+  String get purchasePending => 'Đơn hàng đang chờ xử lý. Vui lòng chờ xác nhận.';
+
+  @override
+  String get purchaseRestored => 'Đơn hàng đã được khôi phục thành công.';
+
+  @override
+  String get errorLoadingProducts => 'Lỗi khi tải sản phẩm. Vui lòng thử lại sau.';
 }
