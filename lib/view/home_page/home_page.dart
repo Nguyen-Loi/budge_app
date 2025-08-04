@@ -16,6 +16,7 @@ import 'package:budget_app/view/home_page/home_drawer.dart';
 import 'package:budget_app/view/home_page/widgets/home_chart/income_expense_chart.dart';
 import 'package:budget_app/view/home_page/widgets/home_wallet_card.dart';
 import 'package:budget_app/view/transactions_view/widget/transaction_card.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,7 +34,6 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage>
     with FloatingActionMixin, TickerProviderStateMixin {
   late AnimationController _drawerController;
-  late Animation<double> _drawerAnimation;
 
   @override
   void initState() {
@@ -41,10 +41,6 @@ class _HomePageState extends ConsumerState<HomePage>
     _drawerController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
-    );
-    _drawerAnimation = CurvedAnimation(
-      parent: _drawerController,
-      curve: Curves.easeInOut,
     );
   }
 
@@ -57,7 +53,7 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: HomeDrawer(drawerAnimation: _drawerAnimation),
+      drawer: HomeDrawer(),
       body: CustomScrollView(
         slivers: [
           _buildSliverHeader(),
@@ -97,7 +93,8 @@ class _HomePageState extends ConsumerState<HomePage>
         background: Consumer(builder: (_, ref, __) {
           final UserModel user = ref.watch(userBaseControllerProvider);
           return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+            padding: const EdgeInsets.only(
+                left: 16, right: 16, top: kIsWeb ? 0 : 16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -120,14 +117,10 @@ class _HomePageState extends ConsumerState<HomePage>
                   ),
                   child: Builder(
                     builder: (context) => IconButton(
-                      icon: AnimatedRotation(
-                        duration: const Duration(milliseconds: 300),
-                        turns: _drawerAnimation.value * 0.5,
-                        child: Icon(
-                          Icons.menu_rounded,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          size: 24,
-                        ),
+                      icon: Icon(
+                        Icons.menu_rounded,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        size: 24,
                       ),
                       onPressed: () {
                         Scaffold.of(context).openDrawer();

@@ -20,6 +20,9 @@ class IconManager {
   static IconData filter = Icons.filter_list_rounded;
   static IconData removeChat = Icons.delete_outline_rounded;
   static IconData openLink = Icons.open_in_new_outlined;
+  static IconData avatar = Icons.account_circle_rounded;
+
+  static IconData errorLoadLottie = Icons.info_outline_rounded;
 
   // Field
   static IconData email = Icons.email_outlined;
@@ -47,6 +50,15 @@ class IconManager {
   static IconData setting = Icons.settings_outlined;
   static IconData contact = Icons.phone_outlined;
   static IconData feedback = FontAwesomeIcons.commentDots;
+
+  // Premium/Subscription
+  static IconData premium = Icons.workspace_premium_rounded;
+  static IconData crown = FontAwesomeIcons.crown;
+  static IconData noAds = Icons.block_rounded;
+  static IconData analytics = Icons.analytics_outlined;
+  static IconData export = Icons.file_download_outlined;
+  static IconData support = Icons.support_agent_outlined;
+  static IconData check = Icons.check_circle_rounded;
 
   // Social Media
   static IconData facebook = FontAwesomeIcons.facebook;

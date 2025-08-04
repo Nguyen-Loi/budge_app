@@ -1018,4 +1018,129 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get openInBrowser => 'Mở trong trình duyệt';
+
+  @override
+  String get premium => 'Cao cấp';
+
+  @override
+  String get subscription => 'Đăng ký';
+
+  @override
+  String get upgradeToUnlockFeatures => 'Nâng cấp để mở khóa tính năng cao cấp';
+
+  @override
+  String get premiumBenefits => 'Lợi ích Cao cấp';
+
+  @override
+  String get noAds => 'Không quảng cáo';
+
+  @override
+  String get enjoyAdFreeExperience => 'Trải nghiệm không có quảng cáo';
+
+  @override
+  String get advancedReports => 'Báo cáo nâng cao';
+
+  @override
+  String get detailedAnalyticsAndInsights => 'Phân tích và thống kê chi tiết';
+
+  @override
+  String get dataExport => 'Xuất dữ liệu';
+
+  @override
+  String get exportYourDataAnytime => 'Xuất dữ liệu của bạn bất cứ lúc nào';
+
+  @override
+  String get prioritySupport => 'Hỗ trợ ưu tiên';
+
+  @override
+  String get getFastPersonalizedHelp => 'Nhận trợ giúp nhanh chóng và cá nhân hóa';
+
+  @override
+  String get unlimitedBudgets => 'Ngân sách không giới hạn';
+
+  @override
+  String get createAsMany => 'Tạo bao nhiêu ngân sách tùy ý';
+
+  @override
+  String get chooseYourPlan => 'Chọn gói của bạn';
+
+  @override
+  String get monthly => 'Hàng tháng';
+
+  @override
+  String get yearly => 'Hàng năm';
+
+  @override
+  String saveValuePercent(Object value) {
+    return 'Tiết kiệm $value%';
+  }
+
+  @override
+  String get mostPopular => 'Phổ biến nhất';
+
+  @override
+  String get perMonth => 'mỗi tháng';
+
+  @override
+  String get perYear => 'mỗi năm';
+
+  @override
+  String get subscribe => 'Đăng ký';
+
+  @override
+  String get restorePurchases => 'Khôi phục mua hàng';
+
+  @override
+  String get termsOfService => 'Điều khoản dịch vụ';
+
+  @override
+  String get privacyPolicy => 'Chính sách bảo mật';
+
+  @override
+  String get freeTrial => 'Dùng thử miễn phí 7 ngày';
+
+  @override
+  String get continueWithPremium => 'Tiếp tục với Cao cấp';
+
+  @override
+  String get upgradeNow => 'Nâng cấp ngay';
+
+  @override
+  String billedAnnuallyAt(Object amount) {
+    return 'Được lập hóa đơn hàng năm tại $amount';
+  }
+
+  @override
+  String get processing => 'Đang xử lý...';
+
+  @override
+  String failedToStartSubscription(Object errorMessage) {
+    return 'Lỗi khi bắt đầu đăng ký. Vui lòng thử lại: $errorMessage';
+  }
+
+  @override
+  String get bannerDismissed => 'Đã bỏ qua quảng cáo';
+
+  @override
+  String get purchaseSuccessful => 'Mua hàng thành công! Đăng ký của bạn hiện đã hoạt động.';
+
+  @override
+  String purchaseFailed(Object errorMessage) {
+    return 'Mua hàng thất bại: $errorMessage';
+  }
+
+  @override
+  String get unknownError => 'Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.';
+
+  @override
+  String get purchaseCanceledByUser => 'Đơn hàng đã bị hủy bởi người dùng.';
+
+  @override
+  String get purchasePending => 'Đơn hàng đang chờ xử lý. Vui lòng chờ xác nhận.';
+
+  @override
+  String get purchaseRestored => 'Đơn hàng đã được khôi phục thành công.';
+
+  @override
+  String get errorLoadingProducts => 'Lỗi khi tải sản phẩm. Vui lòng thử lại sau.';
 }

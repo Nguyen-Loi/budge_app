@@ -1,8 +1,8 @@
+import 'package:budget_app/common/widget/b_lottie.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 enum _Status { loading, error, empty }
 
@@ -48,7 +48,7 @@ class BStatus extends StatelessWidget {
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Lottie.asset(LottieAssets.loading1),
+        BLottie(LottieUrl.loading1),
         gapH16,
         BText.b1(
           text,
@@ -65,7 +65,7 @@ class BStatus extends StatelessWidget {
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Lottie.asset(LottieAssets.error),
+        BLottie(LottieUrl.error),
         gapH16,
         BText.b1(text,
             fontWeight: FontWeight.bold, textAlign: TextAlign.center),
@@ -79,7 +79,7 @@ class BStatus extends StatelessWidget {
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Lottie.asset(LottieAssets.empty),
+        BLottie(LottieUrl.empty),
         gapH16,
         BText.b1(text,
             fontWeight: FontWeight.bold, textAlign: TextAlign.center),

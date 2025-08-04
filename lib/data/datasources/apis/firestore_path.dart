@@ -8,6 +8,8 @@ class FirestorePath {
   static const String _devices = TableName.devices;
   static const String _chats = TableName.chats;
   static const String _feedback = TableName.feedback;
+  static const String _subscriptions = TableName.subscriptions;
+  static const String _assets = TableName.assets;
 
   static String users() => _user;
   static String user(String uid) => '$_user/$uid';
@@ -21,6 +23,10 @@ class FirestorePath {
   static String devices({required String uid}) => '$_user/$uid/$_devices';
   static String chats({required String uid}) => '$_user/$uid/$_chats';
   static String feedbacks() => _feedback;
+
+  static String subscriptions({required String uid}) =>
+      '$_user/$uid/$_subscriptions';
+  static String get assets => _assets;
 }
 
 extension Converter<T> on CollectionReference<Map<String, dynamic>> {

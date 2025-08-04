@@ -1,57 +1,14 @@
-class AssetsConstants {
-  static const String _imagePath = 'assets/images';
-  static const String _avatarImagePath = '$_imagePath/avatar';
-
-  static const String avatarDefault = '$_imagePath/avatar_default.png';
-
-  static const String avatar1 = '$_avatarImagePath/1.png';
-  static const String avatar2 = '$_avatarImagePath/2.png';
-  static const String avatar3 = '$_avatarImagePath/3.png';
-  static const String avatar4 = '$_avatarImagePath/4.png';
-  static const String avatar5 = '$_avatarImagePath/5.png';
-  static const String avatar6 = '$_avatarImagePath/6.png';
-  static const String avatar7 = '$_avatarImagePath/7.png';
-  static const String avatar8 = '$_avatarImagePath/8.png';
-  static const String avatar9 = '$_avatarImagePath/9.png';
-  static const String avatar10 = '$_avatarImagePath/10.png';
-  static const String avatar11 = '$_avatarImagePath/11.png';
-  static const String avatar12 = '$_avatarImagePath/12.png';
-  static const String avatar13 = '$_avatarImagePath/13.png';
-  static const String avatar14 = '$_avatarImagePath/14.png';
-  static const String avatar15 = '$_avatarImagePath/15.png';
-  static const String avatar16 = '$_avatarImagePath/16.png';
-
-  /// List of all available avatar assets
-  static const List<String> allAvatars = [
-    avatar1,
-    avatar2,
-    avatar3,
-    avatar4,
-    avatar5,
-    avatar6,
-    avatar7,
-    avatar8,
-    avatar9,
-    avatar10,
-    avatar11,
-    avatar12,
-    avatar13,
-    avatar14,
-    avatar15,
-    avatar16,
-  ];
-
-  /// Returns the default avatar (avatar1) if null or empty
-  static String getDefaultAvatar() => avatar1;
-}
-
-class LottieAssets {
-  static const String _lottiePath = 'assets/lottie';
-  static const String loading1 = '$_lottiePath/loading1.json';
-  static const String loading2 = '$_lottiePath/loading2.json';
-  static const String loadingImage = '$_lottiePath/loadingImage.json';
-  static const String error = '$_lottiePath/error.json';
-  static const String empty = '$_lottiePath/empty.json';
+class LottieUrl {
+  static const String loading1 =
+      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Floading1.json?alt=media&token=06fac971-6191-4118-950c-43d798136ec9';
+  static const String loading2 =
+      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Floading2.json?alt=media&token=03f48e21-d2d6-4a3d-9f5b-dc8bb3d2a4c4';
+  static const String loadingImage =
+      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2FloadingImage.json?alt=media&token=92b63b5b-e79e-4266-9aab-394704a9495b';
+  static const String error =
+      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Ferror.json?alt=media&token=d39b59fd-7a5f-4f9a-b40d-6fe51b3a5fb2';
+  static const String empty =
+      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Fempty.json?alt=media&token=ab2be7db-0cc9-4f4b-ac6e-da932b1fc167';
 }
 
 class SvgAssets {

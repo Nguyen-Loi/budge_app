@@ -1,3 +1,4 @@
+import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/utils/data_config_utils.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
@@ -6,6 +7,7 @@ import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/constants/constants.dart';
 import 'package:budget_app/data/datasources/offline/database_helper.dart';
+import 'package:budget_app/view/base_controller/asset_controller.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
@@ -41,6 +43,7 @@ class MainPageController extends StateNotifier<void> {
 
   Future<void> loadBaseDataOptimized(BuildContext context) async {
     final isAuthenicated = _ref.read(authApiProvider).isAuthenticated;
+    await _ref.read(assetControllerProvider.notifier).load(context);
     if (!isAuthenicated) {
       await _ref.read(authApiProvider).signInAnonymously();
     }
@@ -74,24 +77,36 @@ class MainPageController extends StateNotifier<void> {
       logInfo('Loading background tasks with optimization...');
       unawaited(_loadBackgroundTasksOptimized(
           context: context, uid: uid, isLogin: isAuthenicated));
-      unawaited(_refreshToken(_ref));
+      unawaited(_refreshInfoUser(_ref));
     }
 
     logInfo('Essential data loading completed with optimization');
   }
 
-  Future<void> _refreshToken(Ref ref) async {
-    ref.read(messagingProvider).getToken().then((token) {
-      if (token != null) {
-        ref.read(userBaseControllerProvider.notifier).updateUser(
-              ref.read(userBaseControllerProvider),
-              withDb: true,
-            );
-      }
-    }).catchError((e) {
-      logError('Failed to refresh token: $e');
+  Future<void> _refreshInfoUser(Ref ref) async {
+    String? token = await ref.read(messagingProvider).getToken().catchError((e) {
+      logError('Failed to get FCM token: $e');
+      return null;
     });
-  }
+    final user = ref.read(userBaseControllerProvider);
+    final now = DateTime.now();
+    final UserRoleEnum newRole = user.subscriptionExpiryDate != null &&
+            user.subscriptionExpiryDate!.isAfter(now)
+        ? UserRoleEnum.premium
+        : UserRoleEnum.normal;
+    final updatedUser = user.copyWith(
+      token: token,
+      role: newRole,
+    );
+    if (token != null) {
+     await ref.read(userBaseControllerProvider.notifier).updateUser(
+            updatedUser,
+            withDb: true,
+          );
+      }
+    }
+
+  
 
   Future<void> _loadBackgroundTasksOptimized(
       {required BuildContext context,

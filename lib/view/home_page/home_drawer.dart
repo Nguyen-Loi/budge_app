@@ -5,46 +5,41 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeDrawer extends ConsumerWidget {
   const HomeDrawer({
     super.key,
-    required this.drawerAnimation,
   });
-  final Animation<double> drawerAnimation;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
-      child: AnimatedBuilder(
-        animation: drawerAnimation,
-        builder: (context, child) {
-          return Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Theme.of(context).colorScheme.secondary.withAlpha(100),
-                  Theme.of(context).colorScheme.secondary.withAlpha(30),
-                ],
-              ),
-            ),
-            child: Column(
-              children: [
-                _buildDrawerHeader(context),
-                Expanded(child: _buildDrawerBody(context, ref)),
-                _buildDrawerFooter(context),
-              ],
-            ),
-          );
-        },
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Theme.of(context).colorScheme.secondary.withAlpha(100),
+              Theme.of(context).colorScheme.secondary.withAlpha(30),
+            ],
+          ),
+        ),
+        child: Column(
+          children: [
+            _buildDrawerHeader(context),
+            Expanded(child: _buildDrawerBody(context, ref)),
+            _buildDrawerFooter(context),
+          ],
+        ),
       ),
     );
   }
@@ -64,44 +59,38 @@ class HomeDrawer extends ConsumerWidget {
             ],
           ),
         ),
-        child: SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(-1, 0),
-            end: Offset.zero,
-          ).animate(drawerAnimation),
-          child: Row(
-            children: [
-              BSmartAvatar(
-                data: user.profileUrl,
-                size: 23,
-                showBorder: true,
-                borderColor: Theme.of(context).colorScheme.onPrimary,
-                borderWidth: 2.0,
+        child: Row(
+          children: [
+            BSmartAvatar(
+              data: user.profileUrl,
+              size: 23,
+              showBorder: true,
+              borderColor: Theme.of(context).colorScheme.onPrimary,
+              borderWidth: 2.0,
+            ),
+            gapW16,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BText.b1(
+                    user.name,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  gapH4,
+                  if (user.email != StringConstants.emailDefault)
+                    BText.caption(
+                      user.email,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onPrimary
+                          .withAlpha(180),
+                    )
+                ],
               ),
-              gapW16,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BText.b1(
-                      user.name,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    gapH4,
-                    if (user.email != StringConstants.emailDefault)
-                      BText.caption(
-                        user.email,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onPrimary
-                            .withAlpha(180),
-                      )
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     });
@@ -110,33 +99,40 @@ class HomeDrawer extends ConsumerWidget {
   Widget _buildDrawerBody(BuildContext context, WidgetRef ref) {
     return Consumer(builder: (_, ref, __) {
       final isLogin = ref.watch(userBaseControllerProvider.notifier).isLogin;
+      AppLocalizations loc = context.loc;
 
       final menuItems = [
         if (isLogin)
           _DrawerMenuItem(
             icon: IconManager.account,
-            title: context.loc.myAccount,
+            title: loc.myAccount,
             onTap: () => _navigateToProfile(isLogin: isLogin, context: context),
           ),
         _DrawerMenuItem(
           icon: IconManager.botChat,
-          title: context.loc.chatWithViBot,
+          title: loc.chatWithViBot,
           onTap: () => _navigateToChat(
             context: context,
           ),
         ),
         _DrawerMenuItem(
           icon: IconManager.setting,
-          title: context.loc.settings,
+          title: loc.settings,
           onTap: () => _navigateToSettings(context),
         ),
+        if (!kIsWeb)
+          _DrawerMenuItem(
+            icon: IconManager.premium,
+            title: loc.premium,
+            onTap: () => _navigateToSubscription(context),
+          ),
         _DrawerMenuItem(
             icon: IconManager.contact,
-            title: context.loc.contact,
+            title: loc.contact,
             onTap: () => Navigator.pushNamed(context, RoutePath.contact)),
         _DrawerMenuItem(
           icon: IconManager.feedback,
-          title: context.loc.feedback,
+          title: loc.feedback,
           onTap: () => Navigator.pushNamed(
             context,
             RoutePath.feedback,
@@ -145,7 +141,7 @@ class HomeDrawer extends ConsumerWidget {
         if (isLogin)
           _DrawerMenuItem(
             icon: IconManager.signOut,
-            title: context.loc.signOut,
+            title: loc.signOut,
             onTap: () => _signOut(
               context: context,
               ref: ref,
@@ -155,7 +151,7 @@ class HomeDrawer extends ConsumerWidget {
         if (!isLogin)
           _DrawerMenuItem(
             icon: IconManager.signIn,
-            title: context.loc.signIn,
+            title: loc.signIn,
             onTap: () => _navigateToLogin(context),
           ),
       ];
@@ -167,21 +163,58 @@ class HomeDrawer extends ConsumerWidget {
         ),
         itemCount: menuItems.length,
         itemBuilder: (context, index) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(-1, 0),
-              end: Offset.zero,
-            ).animate(CurvedAnimation(
-              parent: drawerAnimation,
-              curve: Interval(
-                0.1 + (index * 0.1),
-                0.5 + (index * 0.1),
-                curve: Curves.easeOut,
+          final item = menuItems[index];
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () {
+                  Navigator.pop(context);
+                  item.onTap();
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: item.isDestructive
+                              ? Theme.of(context)
+                                  .colorScheme
+                                  .error
+                                  .withAlpha(20)
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withAlpha(20),
+                        ),
+                        child: Icon(
+                          item.icon,
+                          color: item.isDestructive
+                              ? Theme.of(context).colorScheme.error
+                              : Theme.of(context).colorScheme.primary,
+                          size: 20,
+                        ),
+                      ),
+                      gapW16,
+                      Expanded(
+                        child: BText(
+                          item.title,
+                          fontWeight: FontWeight.w600,
+                          color: item.isDestructive
+                              ? Theme.of(context).colorScheme.error
+                              : null,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            )),
-            child: FadeTransition(
-              opacity: drawerAnimation,
-              child: _buildDrawerItem(context, menuItems[index], index),
             ),
           );
         },
@@ -189,79 +222,22 @@ class HomeDrawer extends ConsumerWidget {
     });
   }
 
-  Widget _buildDrawerItem(
-      BuildContext context, _DrawerMenuItem item, int index) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            Navigator.pop(context);
-            item.onTap();
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: item.isDestructive
-                        ? Theme.of(context).colorScheme.error.withAlpha(20)
-                        : Theme.of(context).colorScheme.primary.withAlpha(20),
-                  ),
-                  child: Icon(
-                    item.icon,
-                    color: item.isDestructive
-                        ? Theme.of(context).colorScheme.error
-                        : Theme.of(context).colorScheme.primary,
-                    size: 20,
-                  ),
-                ),
-                gapW16,
-                Expanded(
-                  child: BText(
-                    item.title,
-                    fontWeight: FontWeight.w600,
-                    color: item.isDestructive
-                        ? Theme.of(context).colorScheme.error
-                        : null,
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildDrawerFooter(BuildContext context) {
-    return SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(0, 1),
-        end: Offset.zero,
-      ).animate(drawerAnimation),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        child: Consumer(builder: (_, ref, __) {
-          final appVersion =
-              ref.watch(packageInfoBaseControllerProvider).version;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Consumer(builder: (_, ref, __) {
+        final appVersion = ref.watch(packageInfoBaseControllerProvider).version;
 
-          return Column(
-            children: [
-              BText.caption(
-                context.loc.pAppVersion(appVersion),
-                textAlign: TextAlign.center,
-                color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-              ),
-            ],
-          );
-        }),
-      ),
+        return Column(
+          children: [
+            BText.caption(
+              context.loc.pAppVersion(appVersion),
+              textAlign: TextAlign.center,
+              color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+            ),
+          ],
+        );
+      }),
     );
   }
 
@@ -279,6 +255,10 @@ class HomeDrawer extends ConsumerWidget {
 
   void _navigateToSettings(BuildContext context) {
     Navigator.pushNamed(context, RoutePath.settings);
+  }
+
+  void _navigateToSubscription(BuildContext context) {
+    Navigator.pushNamed(context, RoutePath.subscription);
   }
 
   void _signOut({required BuildContext context, required WidgetRef ref}) async {

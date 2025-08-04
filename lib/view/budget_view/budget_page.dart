@@ -10,6 +10,7 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/budget_view/widget/budget_card.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -73,7 +74,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage>
       backgroundColor: ColorManager.primaryBlue,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+          padding: EdgeInsets.only(left: 16, right: 16, top: kIsWeb ? 0 : 16),
           alignment: Alignment.center,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,

@@ -80,7 +80,7 @@ class _BAnimatedTextState extends State<BAnimatedText>
     return GestureDetector(
       onTap: () {
         // Display full text on tap and stop animation
-        if (_repeatCount < maxRepeats) {
+        if (_repeatCount < maxRepeats && mounted && !_isDisposed) {
           setState(() {
             _repeatCount = maxRepeats;
           });

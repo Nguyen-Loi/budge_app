@@ -2014,6 +2014,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open in Browser'**
   String get openInBrowser;
+
+  /// No description provided for @premium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premium;
+
+  /// No description provided for @subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get subscription;
+
+  /// No description provided for @upgradeToUnlockFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to unlock premium features'**
+  String get upgradeToUnlockFeatures;
+
+  /// No description provided for @premiumBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Benefits'**
+  String get premiumBenefits;
+
+  /// No description provided for @noAds.
+  ///
+  /// In en, this message translates to:
+  /// **'No Ads'**
+  String get noAds;
+
+  /// No description provided for @enjoyAdFreeExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy an ad-free experience'**
+  String get enjoyAdFreeExperience;
+
+  /// No description provided for @advancedReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced Reports'**
+  String get advancedReports;
+
+  /// No description provided for @detailedAnalyticsAndInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed analytics and insights'**
+  String get detailedAnalyticsAndInsights;
+
+  /// No description provided for @dataExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Export'**
+  String get dataExport;
+
+  /// No description provided for @exportYourDataAnytime.
+  ///
+  /// In en, this message translates to:
+  /// **'Export your data anytime'**
+  String get exportYourDataAnytime;
+
+  /// No description provided for @prioritySupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority Support'**
+  String get prioritySupport;
+
+  /// No description provided for @getFastPersonalizedHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Get fast, personalized help'**
+  String get getFastPersonalizedHelp;
+
+  /// No description provided for @unlimitedBudgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Budgets'**
+  String get unlimitedBudgets;
+
+  /// No description provided for @createAsMany.
+  ///
+  /// In en, this message translates to:
+  /// **'Create as many budgets as you need'**
+  String get createAsMany;
+
+  /// No description provided for @chooseYourPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Plan'**
+  String get chooseYourPlan;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @yearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get yearly;
+
+  /// No description provided for @saveValuePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Save {value}%'**
+  String saveValuePercent(Object value);
+
+  /// No description provided for @mostPopular.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Popular'**
+  String get mostPopular;
+
+  /// No description provided for @perMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'per month'**
+  String get perMonth;
+
+  /// No description provided for @perYear.
+  ///
+  /// In en, this message translates to:
+  /// **'per year'**
+  String get perYear;
+
+  /// No description provided for @subscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe'**
+  String get subscribe;
+
+  /// No description provided for @restorePurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get restorePurchases;
+
+  /// No description provided for @termsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @freeTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day free trial'**
+  String get freeTrial;
+
+  /// No description provided for @continueWithPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Premium'**
+  String get continueWithPremium;
+
+  /// No description provided for @upgradeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade Now'**
+  String get upgradeNow;
+
+  /// No description provided for @billedAnnuallyAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Billed annually at {amount}'**
+  String billedAnnuallyAt(Object amount);
+
+  /// No description provided for @processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get processing;
+
+  /// No description provided for @failedToStartSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start subscription. Please try again: {errorMessage}'**
+  String failedToStartSubscription(Object errorMessage);
+
+  /// No description provided for @bannerDismissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Banner dismissed'**
+  String get bannerDismissed;
+
+  /// No description provided for @purchaseSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase successful! Your subscription is now active.'**
+  String get purchaseSuccessful;
+
+  /// No description provided for @purchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed: {errorMessage}'**
+  String purchaseFailed(Object errorMessage);
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error occurred. Please try again later.'**
+  String get unknownError;
+
+  /// No description provided for @purchaseCanceledByUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase canceled by user.'**
+  String get purchaseCanceledByUser;
+
+  /// No description provided for @purchasePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase is pending. Please wait for confirmation.'**
+  String get purchasePending;
+
+  /// No description provided for @purchaseRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase restored successfully.'**
+  String get purchaseRestored;
+
+  /// No description provided for @errorLoadingProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading products. Please try again later.'**
+  String get errorLoadingProducts;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

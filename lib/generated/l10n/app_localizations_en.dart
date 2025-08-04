@@ -1018,4 +1018,129 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openInBrowser => 'Open in Browser';
+
+  @override
+  String get premium => 'Premium';
+
+  @override
+  String get subscription => 'Subscription';
+
+  @override
+  String get upgradeToUnlockFeatures => 'Upgrade to unlock premium features';
+
+  @override
+  String get premiumBenefits => 'Premium Benefits';
+
+  @override
+  String get noAds => 'No Ads';
+
+  @override
+  String get enjoyAdFreeExperience => 'Enjoy an ad-free experience';
+
+  @override
+  String get advancedReports => 'Advanced Reports';
+
+  @override
+  String get detailedAnalyticsAndInsights => 'Detailed analytics and insights';
+
+  @override
+  String get dataExport => 'Data Export';
+
+  @override
+  String get exportYourDataAnytime => 'Export your data anytime';
+
+  @override
+  String get prioritySupport => 'Priority Support';
+
+  @override
+  String get getFastPersonalizedHelp => 'Get fast, personalized help';
+
+  @override
+  String get unlimitedBudgets => 'Unlimited Budgets';
+
+  @override
+  String get createAsMany => 'Create as many budgets as you need';
+
+  @override
+  String get chooseYourPlan => 'Choose Your Plan';
+
+  @override
+  String get monthly => 'Monthly';
+
+  @override
+  String get yearly => 'Yearly';
+
+  @override
+  String saveValuePercent(Object value) {
+    return 'Save $value%';
+  }
+
+  @override
+  String get mostPopular => 'Most Popular';
+
+  @override
+  String get perMonth => 'per month';
+
+  @override
+  String get perYear => 'per year';
+
+  @override
+  String get subscribe => 'Subscribe';
+
+  @override
+  String get restorePurchases => 'Restore Purchases';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get freeTrial => '7-day free trial';
+
+  @override
+  String get continueWithPremium => 'Continue with Premium';
+
+  @override
+  String get upgradeNow => 'Upgrade Now';
+
+  @override
+  String billedAnnuallyAt(Object amount) {
+    return 'Billed annually at $amount';
+  }
+
+  @override
+  String get processing => 'Processing...';
+
+  @override
+  String failedToStartSubscription(Object errorMessage) {
+    return 'Failed to start subscription. Please try again: $errorMessage';
+  }
+
+  @override
+  String get bannerDismissed => 'Banner dismissed';
+
+  @override
+  String get purchaseSuccessful => 'Purchase successful! Your subscription is now active.';
+
+  @override
+  String purchaseFailed(Object errorMessage) {
+    return 'Purchase failed: $errorMessage';
+  }
+
+  @override
+  String get unknownError => 'Unknown error occurred. Please try again later.';
+
+  @override
+  String get purchaseCanceledByUser => 'Purchase canceled by user.';
+
+  @override
+  String get purchasePending => 'Purchase is pending. Please wait for confirmation.';
+
+  @override
+  String get purchaseRestored => 'Purchase restored successfully.';
+
+  @override
+  String get errorLoadingProducts => 'Error loading products. Please try again later.';
 }
