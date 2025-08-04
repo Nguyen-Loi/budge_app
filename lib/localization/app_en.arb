@@ -415,5 +415,7 @@
     "billedAnnuallyAt": "Billed annually at {amount}",
     "processing": "Processing...",
     "failedToStartSubscription": "Failed to start subscription. Please try again: {errorMessage}",
-    "bannerDismissed": "Banner dismissed"
+    "bannerDismissed": "Banner dismissed",
+    "purchaseSuccessful": "Purchase successful! Your subscription is now active.",
+    "purchaseFailed": "Purchase failed: {errorMessage}"
 }

@@ -1,10 +1,13 @@
+import 'package:budget_app/common/widget/b_lottie.dart';
 import 'package:budget_app/constants/assets_constants.dart';
+import 'package:budget_app/core/icon_manager.dart';
+import 'package:budget_app/view/base_controller/asset_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BSmartAvatar extends StatelessWidget {
+class BSmartAvatar extends ConsumerWidget {
   const BSmartAvatar({
     this.data,
     super.key,
@@ -22,21 +25,16 @@ class BSmartAvatar extends StatelessWidget {
   final Color? borderColor;
   final double borderWidth;
 
-  bool get _isNetworkUrl {
-    if (data == null) return false;
-    return data!.startsWith('http://') || data!.startsWith('https://');
-  }
-
-  String get _effectiveAvatarPath {
-    if (data == null || data!.isEmpty) {
-      return AssetsConstants.getDefaultAvatar();
+  String _effectiveAvatarPath(WidgetRef ref) {
+    if (data != null) {
+      return data!;
     }
-    return _isNetworkUrl ? data! : data!;
+    return ref.read(assetControllerProvider.notifier).defaultAvatar;
   }
 
   @override
-  Widget build(BuildContext context) {
-    Widget avatar = _isNetworkUrl ? _buildNetworkAvatar() : _buildAssetAvatar();
+  Widget build(BuildContext context, WidgetRef ref) {
+    Widget avatar = _buildNetworkAvatar(ref);
 
     if (showBorder) {
       avatar = Container(
@@ -61,47 +59,35 @@ class BSmartAvatar extends StatelessWidget {
     return avatar;
   }
 
-  Widget _buildAssetAvatar() {
-    return CircleAvatar(
-      radius: size,
-      backgroundColor: Colors.transparent,
-      child: ClipOval(
-        child: Image.asset(
-          _effectiveAvatarPath,
-          width: size * 2,
-          height: size * 2,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return Image.asset(
-              AssetsConstants.getDefaultAvatar(),
-              width: size * 2,
-              height: size * 2,
-              fit: BoxFit.cover,
-            );
-          },
-        ),
+  Widget _errorImage(BuildContext context) {
+    return Container(
+      width: size * 2,
+      height: size * 2,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Theme.of(context).colorScheme.primary.withAlpha(50),
+      ),
+      child: Icon(
+        IconManager.avatar,
+        size: size * 1.5,
+        color: Theme.of(context).colorScheme.onPrimary,
       ),
     );
   }
 
-  Widget _buildNetworkAvatar() {
+  Widget _buildNetworkAvatar(WidgetRef ref) {
     if (kIsWeb) {
       return CircleAvatar(
         radius: size,
         backgroundColor: Colors.transparent,
         child: ClipOval(
           child: Image.network(
-            _effectiveAvatarPath,
+            _effectiveAvatarPath(ref),
             width: size * 2,
             height: size * 2,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
-              return Image.asset(
-                AssetsConstants.getDefaultAvatar(),
-                width: size * 2,
-                height: size * 2,
-                fit: BoxFit.cover,
-              );
+              return _errorImage(context);
             },
           ),
         ),
@@ -109,11 +95,11 @@ class BSmartAvatar extends StatelessWidget {
     }
 
     return CachedNetworkImage(
-      imageUrl: _effectiveAvatarPath,
+      imageUrl: _effectiveAvatarPath(ref),
       placeholder: (context, url) => CircleAvatar(
         radius: size,
-        child: Lottie.asset(
-          LottieAssets.loadingImage,
+        child: BLottie(
+          LottieUrl.loadingImage,
           width: size * 1.5,
           height: size * 1.5,
         ),
@@ -123,18 +109,7 @@ class BSmartAvatar extends StatelessWidget {
         radius: size,
         backgroundColor: Colors.transparent,
       ),
-      errorWidget: (context, url, error) => CircleAvatar(
-        radius: size,
-        backgroundColor: Colors.transparent,
-        child: ClipOval(
-          child: Image.asset(
-            AssetsConstants.getDefaultAvatar(),
-            width: size * 2,
-            height: size * 2,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
+      errorWidget: (context, url, error) => _errorImage(context),
     );
   }
 }

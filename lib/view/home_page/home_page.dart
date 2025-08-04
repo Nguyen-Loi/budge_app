@@ -16,6 +16,7 @@ import 'package:budget_app/view/home_page/home_drawer.dart';
 import 'package:budget_app/view/home_page/widgets/home_chart/income_expense_chart.dart';
 import 'package:budget_app/view/home_page/widgets/home_wallet_card.dart';
 import 'package:budget_app/view/transactions_view/widget/transaction_card.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -92,7 +93,8 @@ class _HomePageState extends ConsumerState<HomePage>
         background: Consumer(builder: (_, ref, __) {
           final UserModel user = ref.watch(userBaseControllerProvider);
           return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+            padding: const EdgeInsets.only(
+                left: 16, right: 16, top: kIsWeb ? 0 : 16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -116,10 +118,10 @@ class _HomePageState extends ConsumerState<HomePage>
                   child: Builder(
                     builder: (context) => IconButton(
                       icon: Icon(
-                          Icons.menu_rounded,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          size: 24,
-                        ),
+                        Icons.menu_rounded,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        size: 24,
+                      ),
                       onPressed: () {
                         Scaffold.of(context).openDrawer();
                         _drawerController.forward();

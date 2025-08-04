@@ -104,6 +104,9 @@ class _TransactionViewState extends ConsumerState<TransactionView>
                 child: _buildSummarySection(),
               ),
               _buildTransactionList(),
+              SliverToBoxAdapter(
+                child: gapH80,
+              ),
             ],
           ),
           if (_bannerAd != null)
@@ -339,7 +342,6 @@ class _TransactionViewState extends ConsumerState<TransactionView>
               BStatus.empty(
                 text: context.loc.noTransactionDescription,
               ),
-              gapH80,
             ],
           ),
         );

@@ -1,13 +1,17 @@
 import 'package:budget_app/common/widget/b_smart_avatar.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
-import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/enums/asset_type_enum.dart';
+import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
+import 'package:budget_app/view/base_controller/asset_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// A tappable avatar widget that shows a picker dialog when tapped
-class BSelectableAvatar extends StatefulWidget {
+class BSelectableAvatar extends ConsumerStatefulWidget {
   const BSelectableAvatar({
     super.key,
     this.initialAvatar,
@@ -42,24 +46,32 @@ class BSelectableAvatar extends StatefulWidget {
   final bool enabled;
 
   @override
-  State<BSelectableAvatar> createState() => _BSelectableAvatarState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _BSelectableAvatarState();
 }
 
-class _BSelectableAvatarState extends State<BSelectableAvatar> {
+class _BSelectableAvatarState extends ConsumerState<BSelectableAvatar> {
   late String _currentAvatar;
 
   @override
   void initState() {
     super.initState();
-    _currentAvatar = widget.initialAvatar ?? AssetsConstants.getDefaultAvatar();
+    _currentAvatar = widget.initialAvatar ?? _defaultAvatar;
+  }
+
+  String get _defaultAvatar {
+    return ref
+        .read(assetControllerProvider.notifier)
+        .getAssetsByType(AssetTypeEnum.avatarImage)
+        .first
+        .url;
   }
 
   @override
   void didUpdateWidget(BSelectableAvatar oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialAvatar != oldWidget.initialAvatar) {
-      _currentAvatar =
-          widget.initialAvatar ?? AssetsConstants.getDefaultAvatar();
+      _currentAvatar = widget.initialAvatar ?? _defaultAvatar;
     }
   }
 
@@ -73,7 +85,7 @@ class _BSelectableAvatarState extends State<BSelectableAvatar> {
           onTap: widget.enabled ? _showAvatarPicker : null,
           showBorder: widget.showBorder,
           borderColor: widget.borderColor,
-          borderWidth: widget.borderWidth,
+          borderWidth: widget.borderWidth
         ),
         if (widget.enabled)
           Positioned(
@@ -100,14 +112,9 @@ class _BSelectableAvatarState extends State<BSelectableAvatar> {
   }
 
   Future<void> _showAvatarPicker() async {
-    // For network URLs, we don't pre-select any avatar in the picker
-    // For asset paths, we pre-select the current avatar
-    final bool isCurrentNetwork = _currentAvatar.startsWith('http://') ||
-        _currentAvatar.startsWith('https://');
-
     final String? selectedAvatar = await showAvatarPicker(
       context,
-      currentAvatar: isCurrentNetwork ? null : _currentAvatar,
+      currentAvatar: _currentAvatar,
     );
 
     if (selectedAvatar != null && selectedAvatar != _currentAvatar) {
@@ -236,26 +243,35 @@ class _AvatarPickerDialogState extends State<_AvatarPickerDialog>
   }
 
   Widget _buildAvatarGrid() {
-    return GridView.builder(
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 1,
-      ),
-      itemCount: AssetsConstants.allAvatars.length,
-      itemBuilder: (context, index) {
-        final avatarPath = AssetsConstants.allAvatars[index];
-        final isSelected = _selectedAvatar == avatarPath;
-
-        return _buildAvatarItem(
-          avatarPath: avatarPath,
-          isSelected: isSelected,
-          onTap: () => _selectAvatar(avatarPath),
+    return Consumer(builder: (_, ref, __) {
+      final avatars = ref
+          .watch(assetControllerProvider.notifier)
+          .getAssetsByType(AssetTypeEnum.avatarImage);
+      if (avatars.isEmpty) {
+        return Center(
+          child: BText.caption(context.loc.noData),
         );
-      },
-    );
+      }
+
+      return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+        ),
+        itemCount: avatars.length,
+        itemBuilder: (context, index) {
+          final avatarModel = avatars[index];
+          final isSelected = _selectedAvatar == avatarModel.url;
+
+          return _buildAvatarItem(
+            avatarPath: avatarModel.url,
+            isSelected: isSelected,
+            onTap: () => _selectAvatar(avatarModel.url),
+          );
+        },
+      );
+    });
   }
 
   Widget _buildAvatarItem({
@@ -288,22 +304,7 @@ class _AvatarPickerDialogState extends State<_AvatarPickerDialog>
         child: Container(
           padding: const EdgeInsets.all(4),
           child: ClipOval(
-            child: Image.asset(
-              avatarPath,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.errorContainer,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.error_outline,
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                );
-              },
-            ),
+            child: _buildImageWidget(avatarPath),
           ),
         ),
       ),
@@ -337,5 +338,29 @@ class _AvatarPickerDialogState extends State<_AvatarPickerDialog>
     setState(() {
       _selectedAvatar = avatarPath;
     });
+  }
+
+  Widget _buildImageWidget(String imagePath) {
+    return CachedNetworkImage(
+      imageUrl: imagePath,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          shape: BoxShape.circle,
+        ),
+        child: const CircularProgressIndicator(),
+      ),
+      errorWidget: (context, url, error) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          IconManager.avatar,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+    );
   }
 }

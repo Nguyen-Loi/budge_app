@@ -16,6 +16,13 @@ enum CurrencyType {
     );
   }
 
+  factory CurrencyType.fromLocale(Locale locale) {
+    return CurrencyType.values.firstWhere(
+      (e) => e.locale == locale.toString(),
+      orElse: () => CurrencyType.usd,
+    );
+  }
+
   factory CurrencyType.fromLanguage(LanguageEnum language) {
     switch (language) {
       case LanguageEnum.vietnamese:

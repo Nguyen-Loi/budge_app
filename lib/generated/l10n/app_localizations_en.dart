@@ -1120,4 +1120,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bannerDismissed => 'Banner dismissed';
+
+  @override
+  String get purchaseSuccessful => 'Purchase successful! Your subscription is now active.';
+
+  @override
+  String purchaseFailed(Object errorMessage) {
+    return 'Purchase failed: $errorMessage';
+  }
 }

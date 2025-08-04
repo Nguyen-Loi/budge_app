@@ -78,7 +78,7 @@ class TransactionLocal extends TransactionRepository {
 
       await _db?.update(
         TableName.user,
-        updatedUser.toMap(),
+        updatedUser.toMap(isSqliteFomat: true),
         where: 'id = ?',
         whereArgs: [updatedUser.id],
       );
@@ -154,7 +154,7 @@ class TransactionLocal extends TransactionRepository {
 
       await _db?.update(
         TableName.user,
-        updatedUser.toMap(),
+        updatedUser.toMap(isSqliteFomat: true),
         where: 'id = ?',
         whereArgs: [updatedUser.id],
       );
