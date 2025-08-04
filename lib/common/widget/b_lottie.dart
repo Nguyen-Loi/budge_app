@@ -74,10 +74,12 @@ class _BLottieState extends State<BLottie> {
         final now = DateTime.now();
 
         if (now.difference(lastModified) < widget.cacheDuration) {
-          setState(() {
-            _cachedFilePath = cachedFile.path;
-            _isLoading = false;
-          });
+          if (mounted) {
+            setState(() {
+              _cachedFilePath = cachedFile.path;
+              _isLoading = false;
+            });
+          }
           widget.onLoaded?.call();
           return;
         }
@@ -87,10 +89,12 @@ class _BLottieState extends State<BLottie> {
       await _downloadAndCache();
     } catch (e) {
       debugPrint('BLottie: Error loading animation: $e');
-      setState(() {
-        _hasError = true;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _hasError = true;
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -130,10 +134,12 @@ class _BLottieState extends State<BLottie> {
         final cacheFile = await _getCachedFile();
         if (cacheFile != null) {
           await cacheFile.writeAsBytes(response.bodyBytes);
-          setState(() {
-            _cachedFilePath = cacheFile.path;
-            _isLoading = false;
-          });
+          if (mounted) {
+            setState(() {
+              _cachedFilePath = cacheFile.path;
+              _isLoading = false;
+            });
+          }
           widget.onLoaded?.call();
         } else {
           throw Exception('Failed to create cache file');
@@ -143,10 +149,12 @@ class _BLottieState extends State<BLottie> {
       }
     } catch (e) {
       debugPrint('BLottie: Error downloading animation: $e');
-      setState(() {
-        _hasError = true;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _hasError = true;
+          _isLoading = false;
+        });
+      }
     }
   }
 

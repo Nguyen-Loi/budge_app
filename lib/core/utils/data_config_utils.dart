@@ -17,9 +17,25 @@ class DataConfigUtils {
     _initDeviceLocale(context);
   }
 
+  /// Initialize using platform locale without requiring context
+  void initFromPlatform() {
+    try {
+      final platformLocale = WidgetsBinding.instance.platformDispatcher.locale;
+      _currencyType = CurrencyType.fromLocale(platformLocale);
+    } catch (e) {
+      _currencyType = CurrencyType.usd;
+    }
+  }
+
   void _initDeviceLocale(BuildContext context) {
-    final locale = Localizations.localeOf(context);
-    _currencyType = CurrencyType.fromLocale(locale);
+     final locale = Localizations.maybeLocaleOf(context);
+      if (locale != null) {
+        _currencyType = CurrencyType.fromLocale(locale);
+        return;
+      }
+
+      final platformLocale = WidgetsBinding.instance.platformDispatcher.locale;
+      _currencyType = CurrencyType.fromLocale(platformLocale);
   }
 
   DataConfigUtils._internal();

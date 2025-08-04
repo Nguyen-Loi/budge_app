@@ -1128,4 +1128,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String purchaseFailed(Object errorMessage) {
     return 'Purchase failed: $errorMessage';
   }
+
+  @override
+  String get unknownError => 'Unknown error occurred. Please try again later.';
+
+  @override
+  String get purchaseCanceledByUser => 'Purchase canceled by user.';
+
+  @override
+  String get purchasePending => 'Purchase is pending. Please wait for confirmation.';
+
+  @override
+  String get purchaseRestored => 'Purchase restored successfully.';
+
+  @override
+  String get errorLoadingProducts => 'Error loading products. Please try again later.';
 }

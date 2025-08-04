@@ -417,5 +417,10 @@
     "failedToStartSubscription": "Failed to start subscription. Please try again: {errorMessage}",
     "bannerDismissed": "Banner dismissed",
     "purchaseSuccessful": "Purchase successful! Your subscription is now active.",
-    "purchaseFailed": "Purchase failed: {errorMessage}"
+    "purchaseFailed": "Purchase failed: {errorMessage}",
+    "unknownError": "Unknown error occurred. Please try again later.",
+    "purchaseCanceledByUser": "Purchase canceled by user.",
+    "purchasePending": "Purchase is pending. Please wait for confirmation.",
+    "purchaseRestored": "Purchase restored successfully.",
+    "errorLoadingProducts": "Error loading products. Please try again later."
 }

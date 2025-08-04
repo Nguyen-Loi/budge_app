@@ -78,7 +78,11 @@ class _MyAppState extends ConsumerState<MyApp> {
     super.didChangeDependencies();
     if (!_isInitialized) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        DataConfigUtils.instance.init(context);
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (mounted) {
+            DataConfigUtils.instance.init(context);
+          }
+        });
       });
       _isInitialized = true;
     }

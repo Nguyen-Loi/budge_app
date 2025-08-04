@@ -10,6 +10,7 @@ import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/pakage_info_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -119,11 +120,12 @@ class HomeDrawer extends ConsumerWidget {
           title: loc.settings,
           onTap: () => _navigateToSettings(context),
         ),
-        _DrawerMenuItem(
-          icon: IconManager.premium,
-          title: loc.premium,
-          onTap: () => _navigateToSubscription(context),
-        ),
+        if (!kIsWeb)
+          _DrawerMenuItem(
+            icon: IconManager.premium,
+            title: loc.premium,
+            onTap: () => _navigateToSubscription(context),
+          ),
         _DrawerMenuItem(
             icon: IconManager.contact,
             title: loc.contact,

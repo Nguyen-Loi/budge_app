@@ -9,7 +9,10 @@ import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/models/subscription_model.dart';
 import 'package:budget_app/data/models/user_model.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
+import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -31,20 +34,15 @@ final subscriptionApiProvider = Provider((ref) {
   final db = ref.watch(dbProvider);
   final uid = ref.watch(uidControllerProvider);
   final userDb = ref.watch(userApiProvider);
-  return SubscriptionApi(db: db, uid: uid, userDb: userDb);
+  return SubscriptionApi(db: db, uid: uid, userDb: userDb, ref: ref);
 });
 
 abstract class ISubscriptionApi {
-  Future<void> updateSubscription(SubscriptionModel subscription);
-
-  // In-app purchase methods
   Future<bool> initialize();
   Future<List<ProductDetails>> getProducts();
   FutureEitherVoid purchaseSubscription({
-    required SubscriptionPlanEnum plan,
+    required ProductDetails product,
   });
-  Future<List<PurchaseDetails>> restorePurchases(UserModel user);
-  Future<void> cancelSubscription(UserModel user);
   Stream<PurchaseResponse> get purchaseStream;
 }
 
@@ -52,6 +50,7 @@ class SubscriptionApi implements ISubscriptionApi {
   final FirebaseFirestore _db;
   final String _uid;
   final UserApi _userDb;
+  final Ref _ref;
 
   // In-app purchase instance
   static final InAppPurchase _instance = InAppPurchase.instance;
@@ -63,9 +62,11 @@ class SubscriptionApi implements ISubscriptionApi {
     required FirebaseFirestore db,
     required String uid,
     required UserApi userDb,
+    required Ref ref,
   })  : _db = db,
         _uid = uid,
-        _userDb = userDb;
+        _userDb = userDb,
+        _ref = ref;
 
   @override
   Stream<PurchaseResponse> get purchaseStream => _purchaseController.stream;
@@ -107,37 +108,39 @@ class SubscriptionApi implements ISubscriptionApi {
   }
 
   Future<void> _processPurchase(PurchaseDetails purchaseDetails) async {
+    AppLocalizations loc = _ref.read(appLocalizationsProvider);
     switch (purchaseDetails.status) {
       case PurchaseStatus.purchased:
         _purchaseController.add(PurchaseResponse(
           result: purchaseDetails.status,
           purchaseDetails: purchaseDetails,
-          message: 'Purchase completed successfully',
+          message: loc.purchaseSuccessful,
         ));
         break;
       case PurchaseStatus.error:
         _purchaseController.add(PurchaseResponse(
           result: purchaseDetails.status,
-          message: purchaseDetails.error?.message ?? 'Unknown error',
+          message: loc.purchaseFailed(
+              purchaseDetails.error?.message ?? loc.unknownError),
         ));
         break;
       case PurchaseStatus.canceled:
         _purchaseController.add(PurchaseResponse(
           result: purchaseDetails.status,
-          message: 'Purchase cancelled by user',
+          message: loc.purchaseFailed(loc.purchaseCanceledByUser),
         ));
         break;
       case PurchaseStatus.pending:
         _purchaseController.add(PurchaseResponse(
           result: purchaseDetails.status,
-          message: 'Purchase is pending',
+          message: loc.purchasePending,
         ));
         break;
       case PurchaseStatus.restored:
         _purchaseController.add(PurchaseResponse(
           result: purchaseDetails.status,
           purchaseDetails: purchaseDetails,
-          message: 'Purchase restored successfully',
+          message: loc.purchaseRestored,
         ));
         break;
     }
@@ -147,14 +150,43 @@ class SubscriptionApi implements ISubscriptionApi {
       _instance.completePurchase(purchaseDetails);
       await _logPurchase(
         purchase: purchaseDetails,
-        plan: SubscriptionPlanEnum.fromProductId(purchaseDetails.productID),
       );
+      await _updateUserSubscription(purchaseDetails);
     }
   }
 
-  Future<void> _logPurchase(
-      {required PurchaseDetails purchase,
-      required SubscriptionPlanEnum plan}) async {
+  Future<void> _updateUserSubscription(PurchaseDetails purchaseDetails) async {
+    final user = _ref.read(userBaseControllerProvider);
+    SubscriptionPlanEnum? plan =
+        SubscriptionPlanEnum.fromProductId(purchaseDetails.productID);
+
+    DateTime? expiryDate;
+    final now = DateTime.now();
+    switch (user.subscriptionExpiryDate) {
+      case null:
+        expiryDate = now.add(Duration(days: plan.durationDays));
+        break;
+      case DateTime expiry when expiry.isBefore(now):
+        expiryDate = now.add(Duration(days: plan.durationDays));
+        break;
+      case DateTime expiry when expiry.isAfter(now):
+        expiryDate = expiry.add(Duration(days: plan.durationDays));
+        break;
+    }
+    final userNewPlan = user.withPlan(
+      plan: plan,
+      expiryDate: expiryDate,
+      newUserRole: UserRoleEnum.premium,
+    );
+    await _ref
+        .read(userBaseControllerProvider.notifier)
+        .updateUser(userNewPlan, withDb: true);
+  }
+
+  Future<void> _logPurchase({required PurchaseDetails purchase}) async {
+    final product = await getProductById(purchase.productID);
+    final plan = SubscriptionPlanEnum.fromProductId(purchase.productID);
+
     final now = DateTime.now();
     final expiryDate = now.add(Duration(days: plan.durationDays));
     UserModel user = await _userDb.getUserById(_uid);
@@ -165,17 +197,13 @@ class SubscriptionApi implements ISubscriptionApi {
       userId: user.id,
       purchaseStatus: purchase.status,
       subscriptionPlan: plan,
-      amount: plan.price,
-      currency: user.currency.code,
+      amount: product.rawPrice,
+      currency: product.currencyCode,
       productId: purchase.productID,
       transactionId: purchase.purchaseID,
       purchaseToken: purchase.verificationData.serverVerificationData,
       transactionDate: now,
       expiryDate: expiryDate,
-      metadata: {
-        'isTrial': true,
-        'trialDuration': 7,
-      },
     );
 
     await _newSubscription(subscription);
@@ -201,19 +229,6 @@ class SubscriptionApi implements ISubscriptionApi {
   }
 
   @override
-  Future<void> updateSubscription(SubscriptionModel subscription) async {
-    try {
-      await _db
-          .collection(FirestorePath.subscriptions(uid: _uid))
-          .doc(subscription.id)
-          .update(subscription.toMap());
-    } catch (e, stackTrace) {
-      logError('Failed to update subscription: $e', stackTrace: stackTrace);
-      rethrow;
-    }
-  }
-
-  @override
   Future<List<ProductDetails>> getProducts() async {
     try {
       Set<String> productIds =
@@ -233,25 +248,26 @@ class SubscriptionApi implements ISubscriptionApi {
     }
   }
 
+  Future<ProductDetails> getProductById(String productId) async {
+    final products = await getProducts();
+    return products.firstWhere(
+      (product) => product.id == productId,
+      orElse: () => throw Exception('Product not found: $productId'),
+    );
+  }
+
   @override
   FutureEitherVoid purchaseSubscription({
-    required SubscriptionPlanEnum plan,
+    required ProductDetails product,
   }) async {
     try {
-      final productId = plan.productId;
-      final products = await getProducts();
-      final product = products.firstWhere(
-        (p) => p.id == productId,
-        orElse: () => throw 'Product not found: $productId',
-      );
-
       final purchaseParam = PurchaseParam(productDetails: product);
 
       final success =
           await _instance.buyNonConsumable(purchaseParam: purchaseParam);
 
       if (!success) {
-        throw 'Purchase failed for product: $productId';
+        throw 'Purchase failed for product: ${product.id}';
       }
 
       return right(null);
@@ -261,40 +277,9 @@ class SubscriptionApi implements ISubscriptionApi {
     }
   }
 
-  @override
-  Future<List<PurchaseDetails>> restorePurchases(UserModel user) async {
-    try {
-      logInfo('Restoring purchases for user: ${user.id}');
-      await _instance.restorePurchases();
-
-      // The restored purchases will come through the purchase stream
-      // For now, return empty list as the actual restoration is handled by the stream
-      return [];
-    } catch (e, stackTrace) {
-      logError('Failed to restore purchases: $e', stackTrace: stackTrace);
-      return [];
-    }
-  }
-
-  @override
-  Future<void> cancelSubscription(UserModel user) async {
-    try {
-      // Log cancellation - we'll just log a message since we don't have
-      // a specific cancellation transaction structure
-      logInfo('Subscription cancellation requested for user: ${user.id}');
-
-      // In a real implementation, you would call the platform-specific
-      // cancellation APIs here or update the subscription status in Firestore
-    } catch (e, stackTrace) {
-      logError('Failed to cancel subscription: $e', stackTrace: stackTrace);
-      rethrow;
-    }
-  }
-
   /// Clean up resources
   void dispose() {
     _subscription?.cancel();
     _purchaseController.close();
   }
 }
-

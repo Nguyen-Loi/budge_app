@@ -2218,6 +2218,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Purchase failed: {errorMessage}'**
   String purchaseFailed(Object errorMessage);
+
+  /// No description provided for @unknownError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error occurred. Please try again later.'**
+  String get unknownError;
+
+  /// No description provided for @purchaseCanceledByUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase canceled by user.'**
+  String get purchaseCanceledByUser;
+
+  /// No description provided for @purchasePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase is pending. Please wait for confirmation.'**
+  String get purchasePending;
+
+  /// No description provided for @purchaseRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase restored successfully.'**
+  String get purchaseRestored;
+
+  /// No description provided for @errorLoadingProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading products. Please try again later.'**
+  String get errorLoadingProducts;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

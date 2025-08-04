@@ -417,5 +417,10 @@
   "failedToStartSubscription": "Lỗi khi bắt đầu đăng ký. Vui lòng thử lại: {errorMessage}",
   "bannerDismissed": "Đã bỏ qua quảng cáo",
   "purchaseSuccessful": "Mua hàng thành công! Đăng ký của bạn hiện đã hoạt động.",
-  "purchaseFailed": "Mua hàng thất bại: {errorMessage}"
+  "purchaseFailed": "Mua hàng thất bại: {errorMessage}",
+  "unknownError": "Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.",
+  "purchaseCanceledByUser": "Đơn hàng đã bị hủy bởi người dùng.",
+  "purchasePending": "Đơn hàng đang chờ xử lý. Vui lòng chờ xác nhận.",
+  "purchaseRestored": "Đơn hàng đã được khôi phục thành công.",
+  "errorLoadingProducts": "Lỗi khi tải sản phẩm. Vui lòng thử lại sau."
 }
