@@ -38,7 +38,7 @@ final subscriptionApiProvider = Provider((ref) {
 });
 
 abstract class ISubscriptionApi {
-  Future<bool> initialize();
+  Future<void> initialize();
   Future<List<ProductDetails>> getProducts();
   FutureEitherVoid purchaseSubscription({
     required ProductDetails product,
@@ -72,33 +72,25 @@ class SubscriptionApi implements ISubscriptionApi {
   Stream<PurchaseResponse> get purchaseStream => _purchaseController.stream;
 
   @override
-  Future<bool> initialize() async {
-    try {
-      final available = await _instance.isAvailable();
-      if (!available) {
-        logError('In-app purchases not available');
-        return false;
-      }
-
-      // Listen for purchase updates
-      _subscription = _instance.purchaseStream.listen(
-        _handlePurchaseUpdate,
-        onError: (error) {
-          logError('Purchase stream error: $error');
-          _purchaseController.add(PurchaseResponse(
-            result: PurchaseStatus.error,
-            message: error.toString(),
-          ));
-        },
-      );
-
-      logInfo('In-app purchase service initialized successfully');
-      return true;
-    } catch (e, stackTrace) {
-      logError('Failed to initialize in-app purchase service: $e',
-          stackTrace: stackTrace);
-      return false;
+  Future<void> initialize() async {
+    final available = await _instance.isAvailable();
+    if (!available) {
+      return;
     }
+
+    // Listen for purchase updates
+    _subscription = _instance.purchaseStream.listen(
+      _handlePurchaseUpdate,
+      onError: (error) {
+        logError('Purchase stream error: $error');
+        _purchaseController.add(PurchaseResponse(
+          result: PurchaseStatus.error,
+          message: error.toString(),
+        ));
+      },
+    );
+
+    logInfo('In-app purchase service initialized successfully');
   }
 
   void _handlePurchaseUpdate(List<PurchaseDetails> purchaseDetailsList) {
@@ -230,22 +222,21 @@ class SubscriptionApi implements ISubscriptionApi {
 
   @override
   Future<List<ProductDetails>> getProducts() async {
-    try {
-      Set<String> productIds =
-          SubscriptionPlanEnum.values.map((plan) => plan.productId).toSet();
-      final response = await _instance.queryProductDetails(productIds);
+    final available = await _instance.isAvailable();
+    if (!available) {
+      throw 'In-app purchase is not available on this device';
+    }
+    Set<String> productIds =
+        SubscriptionPlanEnum.values.map((plan) => plan.productId).toSet();
+    final response = await _instance.queryProductDetails(productIds);
 
-      if (response.error != null) {
-        logError('Failed to query products: ${response.error}');
-        return [];
-      }
-
-      logInfo('Retrieved ${response.productDetails.length} products');
-      return response.productDetails;
-    } catch (e, stackTrace) {
-      logError('Failed to get products: $e', stackTrace: stackTrace);
+    if (response.error != null) {
+      logError('Failed to query products: ${response.error}');
       return [];
     }
+
+    logInfo('Retrieved ${response.productDetails.length} products');
+    return response.productDetails;
   }
 
   Future<ProductDetails> getProductById(String productId) async {

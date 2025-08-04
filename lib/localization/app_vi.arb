@@ -422,5 +422,6 @@
   "purchaseCanceledByUser": "Đơn hàng đã bị hủy bởi người dùng.",
   "purchasePending": "Đơn hàng đang chờ xử lý. Vui lòng chờ xác nhận.",
   "purchaseRestored": "Đơn hàng đã được khôi phục thành công.",
-  "errorLoadingProducts": "Lỗi khi tải sản phẩm. Vui lòng thử lại sau."
+  "errorLoadingProducts": "Lỗi khi tải sản phẩm: {errorMessage}",
+  "loadingSubscriptionPlans": "Đang tải các gói đăng ký..."
 }

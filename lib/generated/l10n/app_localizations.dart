@@ -2246,8 +2246,14 @@ abstract class AppLocalizations {
   /// No description provided for @errorLoadingProducts.
   ///
   /// In en, this message translates to:
-  /// **'Error loading products. Please try again later.'**
-  String get errorLoadingProducts;
+  /// **'Error loading products: {errorMessage}'**
+  String errorLoadingProducts(Object errorMessage);
+
+  /// No description provided for @loadingSubscriptionPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading subscription plans...'**
+  String get loadingSubscriptionPlans;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
