@@ -4,19 +4,20 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/constants/gap_constants.dart';
-import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/theme/app_colors.dart';
 import 'package:budget_app/core/enums/subscription_plan_enum.dart';
+import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/subscription_view/controller/subscription_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'dart:async';
+import 'package:intl/intl.dart';
 
 class SubscriptionView extends ConsumerStatefulWidget {
   const SubscriptionView({super.key});
@@ -58,40 +59,22 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
 
     _animationController.forward();
 
-    _purchaseSubscription = ref
-        .read(subscriptionControllerProvider.notifier)
-        .purchaseStream
-        .listen((response) {
-      if (!mounted) return;
-      if (response.result == PurchaseStatus.purchased) {
-        final user = ref.read(userBaseControllerProvider);
-        String? productId = response.purchaseDetails?.productID;
-
-        if (productId == null) {
-          showBDialogInfoError(context,
-              message: context.loc.purchaseFailed(
-                response.message,
-              ));
-          return;
+    // Use addPostFrameCallback to ensure widget is built before accessing provider
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _purchaseSubscription = ref
+          .read(subscriptionControllerProvider.notifier)
+          .purchaseStream
+          .listen((response) {
+        if (!mounted) return;
+        if (response.result == PurchaseStatus.purchased) {
+          showBDialog(context,
+              dialogInfoType: BDialogInfoType.success,
+              message: response.message);
+        } else {
+          showBDialog(context,
+              dialogInfoType: BDialogInfoType.error, message: response.message);
         }
-        SubscriptionPlanEnum? plan =
-            SubscriptionPlanEnum.fromProductId(productId);
-        final userNewPlan = user.withPlan(
-          plan: plan,
-          expiryDate: DateTime.now().add(
-            Duration(days: plan.durationDays),
-          ),
-          newUserRole: UserRoleEnum.premium,
-        );
-        showBDialog(context,
-            dialogInfoType: BDialogInfoType.success, message: response.message);
-        ref
-            .read(userBaseControllerProvider.notifier)
-            .updateUser(userNewPlan, withDb: true);
-      } else {
-        showBDialog(context,
-            dialogInfoType: BDialogInfoType.error, message: response.message);
-      }
+      });
     });
   }
 
@@ -106,6 +89,9 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
+    final userRole =
+        ref.watch(userBaseControllerProvider.select((user) => user.role));
+    final isPremium = userRole == UserRoleEnum.premium;
 
     return Scaffold(
       appBar: AppBar(
@@ -127,13 +113,19 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      _buildHeaderSection(colors),
+                      _buildHeaderSection(colors, isPremium: isPremium),
                       gapH32,
+                      if (isPremium) ...[
+                        _buildPremiumStatusSection(colors),
+                        gapH32,
+                      ],
                       _buildBenefitsSection(colors),
-                      gapH32,
-                      _buildPricingSection(colors),
-                      gapH32,
-                      _buildActionSection(colors),
+                      if (!isPremium) ...[
+                        gapH32,
+                        _buildPricingSection(colors),
+                        gapH32,
+                        _buildActionSection(colors),
+                      ],
                       gapH32
                     ],
                   ),
@@ -146,7 +138,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
     );
   }
 
-  Widget _buildHeaderSection(AppColors colors) {
+  Widget _buildHeaderSection(AppColors colors, {bool isPremium = false}) {
     AppLocalizations loc = context.loc;
     return Container(
       padding: const EdgeInsets.all(32),
@@ -177,20 +169,146 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
           ),
           gapH16,
           BText.h1(
-            loc.premium,
+            isPremium ? "${loc.premium} ${loc.active}" : loc.premium,
             color: colors.onPrimary,
             fontWeight: FontWeight.bold,
             textAlign: TextAlign.center,
           ),
           gapH8,
           BText.b1(
-            loc.upgradeToUnlockFeatures,
+            isPremium
+                ? "Enjoy unlimited access to all premium features"
+                : loc.upgradeToUnlockFeatures,
             color: colors.onPrimary.withAlpha(200),
             textAlign: TextAlign.center,
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildPremiumStatusSection(AppColors colors) {
+    AppLocalizations loc = context.loc;
+
+    return Consumer(builder: (context, ref, _) {
+      final user = ref.watch(userBaseControllerProvider);
+      final subscriptionExpiryDate = user.subscriptionExpiryDate;
+      final subscriptionPlan = user.subscriptionPlan;
+
+      return Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: colors.tileBackgroundColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: colors.success.withAlpha(30),
+            width: 2,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  IconManager.check,
+                  color: colors.success,
+                  size: 24,
+                ),
+                gapW12,
+                BText.h3(
+                  "${loc.status}: ${loc.active}",
+                  color: colors.success,
+                  fontWeight: FontWeight.w600,
+                ),
+              ],
+            ),
+            gapH16,
+            _buildStatusRow(
+              icon: IconManager.crown,
+              label: "Plan",
+              value: subscriptionPlan?.content(context) ?? "Premium",
+              colors: colors,
+            ),
+            gapH12,
+            if (subscriptionExpiryDate != null)
+              _buildStatusRow(
+                icon: IconManager.calendar,
+                label: "Expires",
+                value: _formatExpiryDate(subscriptionExpiryDate),
+                colors: colors,
+              ),
+            gapH16,
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: colors.success.withAlpha(20),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    IconManager.check,
+                    color: colors.success,
+                    size: 16,
+                  ),
+                  gapW8,
+                  Expanded(
+                    child: BText.b3(
+                      "You have full access to all premium features. No action required.",
+                      color: colors.success,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _buildStatusRow({
+    required IconData icon,
+    required String label,
+    required String value,
+    required AppColors colors,
+  }) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          color: colors.primary,
+          size: 20,
+        ),
+        gapW12,
+        BText.b1(
+          "$label:",
+          color: colors.lightText,
+          fontWeight: FontWeight.w500,
+        ),
+        gapW8,
+        Expanded(
+          child: BText.b1(
+            value,
+            color: colors.defaultText,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _formatExpiryDate(DateTime expiryDate) {
+    final now = DateTime.now();
+    final difference = expiryDate.difference(now);
+
+    if (difference.inDays > 0) {
+      final formatter = DateFormat('MMM dd, yyyy');
+      return "${formatter.format(expiryDate)} (${difference.inDays} days left)";
+    } else {
+      return "Expired";
+    }
   }
 
   Widget _buildBenefitsSection(AppColors colors) {
