@@ -10,13 +10,10 @@ import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
-import 'package:budget_app/data/datasources/offline/database_helper.dart';
-import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/data/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -140,10 +137,6 @@ class AuthAPI implements IAuthApi {
       final user = _auth.currentUser;
       if (user == null) {
         return right(null);
-      }
-      if (!kIsWeb) {
-        await TransferData.asyncData(_ref, context);
-        await _ref.read(sqlHelperProvider.notifier).clearAndResetDb();
       }
 
       final providerId = user.providerData.isNotEmpty

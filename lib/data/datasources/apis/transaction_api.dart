@@ -53,7 +53,7 @@ class TransactionApi extends TransactionRepository {
     await _db
         .collection(FirestorePath.transactions(uid: uid))
         .doc(transaction.id)
-        .customSet(transaction.toMap());
+        .set(transaction.toMap());
     return transaction;
   }
 

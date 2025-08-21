@@ -1,6 +1,5 @@
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
-import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
@@ -8,14 +7,11 @@ import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
 import 'package:budget_app/data/datasources/repositories/user_repository.dart';
-import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/data/services/in_app_rating_service.dart';
-import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
-import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -178,23 +174,4 @@ class UserBaseController extends StateNotifier<UserModel> {
     });
   }
 
-
-  void transferData(BuildContext context) async {
-    final closeDialog = showLoading(
-        context: context, text: context.loc.syncLocalToCloudLoading);
-    final res = await TransferData.merge(_ref);
-    closeDialog();
-
-    res.fold((l) {
-      logError(l.message);
-      showBDialogInfoError(context, message: context.loc.syncLocalToCloudError);
-    }, (r) {
-      showBDialog(context,
-          dialogInfoType: BDialogInfoType.success,
-          message: context.loc.syncLocalToCloudSuccess, onConfirm: () {
-        Navigator.pop(context);
-        _ref.invalidate(mainPageControllerProvider);
-      });
-    });
-  }
 }

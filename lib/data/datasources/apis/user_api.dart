@@ -1,5 +1,4 @@
 import 'package:budget_app/common/log.dart';
-import 'package:budget_app/core/utils/data_config_utils.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
@@ -40,9 +39,6 @@ class UserApi extends UserRepository {
       updatedDate: DateTime.now(),
     );
     Map<String, dynamic> data = user.toMap();
-    if (!DataConfigUtils.instance.isOnlyOnlineData) {
-      data.remove('balance');
-    }
     await _db.doc(FirestorePath.user(user.id)).update(data);
     return right(user);
   }

@@ -603,18 +603,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get loginCancelledByUser => 'Đăng nhập đã bị hủy bởi người dùng';
 
   @override
-  String get syncLocalToCloud => 'Lưu trữ dữ liệu cục bộ lên cloud';
-
-  @override
-  String get syncLocalToCloudLoading => 'Đang đồng bộ hóa dữ liệu cục bộ lên đám mây...';
-
-  @override
-  String get syncLocalToCloudSuccess => 'Đồng bộ hóa dữ liệu cục bộ lên đám mây thành công';
-
-  @override
-  String get syncLocalToCloudError => 'Đã xảy ra lỗi khi đồng bộ hóa dữ liệu cục bộ lên đám mây. Vui lòng thử lại sau';
-
-  @override
   String get totalBalance => 'Tổng số dư';
 
   @override
@@ -992,14 +980,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noLimit => 'Không giới hạn';
-
-  @override
-  String get dataSyncConflict => 'Xung đột đồng bộ dữ liệu';
-
-  @override
-  String dataSyncConflictDesc(Object email) {
-    return 'Cả dữ liệu cục bộ và dữ liệu trên máy chủ đều tồn tại cho $email. Bạn muốn tiếp tục như thế nào?';
-  }
 
   @override
   String get useCurrentData => 'Sử dụng dữ liệu hiện tại';

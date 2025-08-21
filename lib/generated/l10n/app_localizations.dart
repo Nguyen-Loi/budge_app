@@ -1217,30 +1217,6 @@ abstract class AppLocalizations {
   /// **'Login cancelled by user'**
   String get loginCancelledByUser;
 
-  /// No description provided for @syncLocalToCloud.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync local data to cloud'**
-  String get syncLocalToCloud;
-
-  /// No description provided for @syncLocalToCloudLoading.
-  ///
-  /// In en, this message translates to:
-  /// **'Syncing local data to cloud...'**
-  String get syncLocalToCloudLoading;
-
-  /// No description provided for @syncLocalToCloudSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync local data to cloud success'**
-  String get syncLocalToCloudSuccess;
-
-  /// No description provided for @syncLocalToCloudError.
-  ///
-  /// In en, this message translates to:
-  /// **'Sync local data to cloud error. Please try again'**
-  String get syncLocalToCloudError;
-
   /// No description provided for @totalBalance.
   ///
   /// In en, this message translates to:
@@ -1966,18 +1942,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Limit'**
   String get noLimit;
-
-  /// No description provided for @dataSyncConflict.
-  ///
-  /// In en, this message translates to:
-  /// **'Data Sync Conflict'**
-  String get dataSyncConflict;
-
-  /// No description provided for @dataSyncConflictDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Both local and remote data exist for {email}. How would you like to proceed?'**
-  String dataSyncConflictDesc(Object email);
 
   /// No description provided for @useCurrentData.
   ///

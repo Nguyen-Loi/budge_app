@@ -4,9 +4,7 @@ import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/route_path.dart';
-import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,7 +51,6 @@ class AuthController extends StateNotifier<void> {
 
   void _baseLogin(BuildContext context,
       {required Future<Either<Failure, void>> res}) async {
-    String preUid = _ref.read(uidControllerProvider);
     final closeLoading = showLoading(context: context);
     final resApi = await res;
     if (!context.mounted) {
@@ -61,19 +58,6 @@ class AuthController extends StateNotifier<void> {
     }
     if (resApi.isLeft()) {
       String errorMessage = resApi.getLeftOrDefault().message;
-      logError(errorMessage);
-      showSnackBarError(context, errorMessage);
-      closeLoading();
-      return;
-    }
-
-    final resTranfer =
-        await TransferData.asyncData(_ref, context, canShowDialogConflig: true, preUid: preUid);
-    if (!context.mounted) {
-      throw Exception('context is not mounted');
-    }
-    if (resTranfer.isLeft()) {
-      String errorMessage = resTranfer.getLeftOrDefault().message;
       logError(errorMessage);
       showSnackBarError(context, errorMessage);
       closeLoading();

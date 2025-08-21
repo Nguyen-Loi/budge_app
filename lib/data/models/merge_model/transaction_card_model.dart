@@ -19,7 +19,7 @@ class TransactionCardModel {
     required List<TransactionModel> transactions,
     required List<BudgetModel> budgets,
   }) async {
-    if (transactions.isEmpty) {
+    if (transactions.isEmpty || budgets.isEmpty) {
       return [];
     }
 

@@ -603,18 +603,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginCancelledByUser => 'Login cancelled by user';
 
   @override
-  String get syncLocalToCloud => 'Sync local data to cloud';
-
-  @override
-  String get syncLocalToCloudLoading => 'Syncing local data to cloud...';
-
-  @override
-  String get syncLocalToCloudSuccess => 'Sync local data to cloud success';
-
-  @override
-  String get syncLocalToCloudError => 'Sync local data to cloud error. Please try again';
-
-  @override
   String get totalBalance => 'Total balance';
 
   @override
@@ -992,14 +980,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noLimit => 'No Limit';
-
-  @override
-  String get dataSyncConflict => 'Data Sync Conflict';
-
-  @override
-  String dataSyncConflictDesc(Object email) {
-    return 'Both local and remote data exist for $email. How would you like to proceed?';
-  }
 
   @override
   String get useCurrentData => 'Use Current Data';

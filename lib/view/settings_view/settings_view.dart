@@ -2,7 +2,6 @@ import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:budget_app/common/shared_pref/theme_controller.dart';
 import 'package:budget_app/common/widget/b_switch_list_tile.dart';
 import 'package:budget_app/common/widget/b_text.dart';
-import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/language_enum.dart';
@@ -33,8 +32,7 @@ class SettingsView extends StatelessWidget {
               _languageDropdown(context, ref),
               _currencyDropdown(context, ref),
               _dailyTransactionReminderSwitch(context, ref),
-              _asyncDb(context, ref),
-              _openInBrowser(context),
+              if (!kIsWeb) _openInBrowser(context),
             ],
           ).responsiveCenter();
         }));
@@ -135,37 +133,13 @@ class SettingsView extends StatelessWidget {
   }
 
   Widget _openInBrowser(BuildContext context) {
-    if (!kIsWeb) {
-      return ListTile(
-        title: BText(context.loc.openInBrowser),
-        trailing: IconButton(
-          icon: Icon(IconManager.openLink),
-          onPressed: () {
-            final url = 'https://budget-ss.web.app/';
-            launchUrl(Uri.parse(url));
-          },
-        ),
-      );
-    }
-    return const SizedBox();
-  }
-
-  Widget _asyncDb(BuildContext context, WidgetRef ref) {
-    if (kIsWeb) {
-      return const SizedBox();
-    }
     return ListTile(
-      title: BText(context.loc.syncLocalToCloud),
+      title: BText(context.loc.openInBrowser),
       trailing: IconButton(
-        icon: Icon(IconManager.sync),
-        onPressed: () async {
-          if (!ref.read(userBaseControllerProvider.notifier).isLogin) {
-            showBDialog(context,
-                dialogInfoType: BDialogInfoType.error,
-                message: context.loc.loginToUse);
-            return;
-          }
-          ref.read(userBaseControllerProvider.notifier).transferData(context);
+        icon: Icon(IconManager.openLink),
+        onPressed: () {
+          final url = 'https://budget-ss.web.app/';
+          launchUrl(Uri.parse(url));
         },
       ),
     );
