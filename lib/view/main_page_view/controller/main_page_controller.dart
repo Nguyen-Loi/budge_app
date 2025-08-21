@@ -101,7 +101,6 @@ class MainPageController extends StateNotifier<void> {
     if (token != null) {
      await ref.read(userBaseControllerProvider.notifier).updateUser(
             updatedUser,
-            withDb: true,
           );
       }
     }

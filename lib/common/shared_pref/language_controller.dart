@@ -28,7 +28,7 @@ class LanguageController extends StateNotifier<LanguageEnum> {
     user = user.copyWith(languageCode: language.code);
     ref
         .read(userBaseControllerProvider.notifier)
-        .updateUser(user, withDb: true);
+        .updateUser(user);
     // Update default budget names to new language
     await ref
         .read(budgetBaseControllerProvider.notifier)

@@ -172,7 +172,7 @@ class SubscriptionApi implements ISubscriptionApi {
     );
     await _ref
         .read(userBaseControllerProvider.notifier)
-        .updateUser(userNewPlan, withDb: true);
+        .updateUser(userNewPlan);
   }
 
   Future<void> _logPurchase({required PurchaseDetails purchase}) async {

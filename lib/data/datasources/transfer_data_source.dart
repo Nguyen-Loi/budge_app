@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
-import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/enums/inactive_account_reason_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/type_defs.dart';
-import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/data/datasources/apis/budget_api.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/data/datasources/apis/transaction_api.dart';
@@ -16,7 +14,6 @@ import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/offline/budget_local.dart';
 import 'package:budget_app/data/datasources/offline/database_helper.dart';
 import 'package:budget_app/data/datasources/offline/transaction_local.dart';
-import 'package:budget_app/data/datasources/offline/user_local.dart';
 import 'package:budget_app/data/datasources/table_name.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
@@ -55,7 +52,6 @@ final String _budgetLocalKey = 'budgetsModelLocal';
 final String _budgetApiKey = 'budgetsModelApi';
 final String _transactionLocalKey = 'transactionsModelLocal';
 final String _transactionApiKey = 'transactionsModelApi';
-final String _userLocalKey = 'userModelLocal';
 final String _userApiKey = 'userModelApi';
 
 class TransferData {
@@ -109,8 +105,9 @@ class TransferData {
     }
 
     var result = Either<Failure, void>.right(null);
-    final userApi = data[_userApiKey] as UserModel;
+
     AppLocalizations loc = context.loc;
+    UserModel userApi = data[_userApiKey];
 
     await BDialogInfo(
       title: loc.dataSyncConflict,
@@ -184,19 +181,7 @@ class TransferData {
 
       String uid = user.uid;
       logInfo("Starting data sync for user: $uid");
-
-      // Fetch data from both sources
-      UserModel userLocal =
-          await _safeUidLocalUser(ref, uid: uid, preUid: preUid);
       UserModel userApi = await ref.read(userApiProvider).getUserById(uid);
-      userApi = userApi.copyWith(
-        email: user.email,
-        name: _safeGetUserName(user, userApi),
-      );
-      userLocal = userLocal.copyWith(
-        email: user.email,
-        name: _safeGetUserName(user, userApi),
-      );
 
       List<BudgetModel> budgetsLocal =
           await _safeUidLocalBudgets(ref, uid: uid, preUid: preUid);
@@ -209,18 +194,17 @@ class TransferData {
           await ref.read(transactionApiProvider).fetchTransaction(uid);
 
       final data = {
-        _userLocalKey: userLocal,
-        _userApiKey: userApi,
         _budgetLocalKey: budgetsLocal,
         _budgetApiKey: budgetsApi,
         _transactionLocalKey: transactionsLocal,
         _transactionApiKey: transactionsApi,
+        _userApiKey: userApi,
       };
 
       // Determine data presence
       bool hasLocalData =
-          userLocal.balance != 0 || transactionsLocal.isNotEmpty;
-      bool hasRemoteData = userApi.balance != 0 || transactionsApi.isNotEmpty;
+          transactionsLocal.isNotEmpty;
+      bool hasRemoteData =  transactionsApi.isNotEmpty;
 
       logInfo(
           "Local data present: $hasLocalData, Remote data present: $hasRemoteData");
@@ -275,12 +259,12 @@ class TransferData {
     }
     logInfo(
         "Updating account temp (Anonymously) status to active for UID: $preUid");
-    UserModel userModelLocal = data[_userLocalKey];
-    userModelLocal = userModelLocal.copyWith(
+    UserModel userModel = data[_userApiKey];
+    userModel = userModel.copyWith(
         isActive: false,
         id: preUid,
         inactiveReason: InactiveAccountReasonEnum.transferNewAccount.code);
-    await ref.read(userApiProvider).updateUser(user: userModelLocal);
+    await ref.read(userApiProvider).updateUser(user: userModel);
   }
 
   static Future<List<BudgetModel>> _safeUidLocalBudgets(
@@ -318,27 +302,6 @@ class TransferData {
     return transactionsLocal;
   }
 
-  static String _safeGetUserName(User user, UserModel userApi) {
-    return userApi.name == StringConstants.nameDefault
-        ? (user.displayName ?? userApi.name)
-        : getNameFromEmail(user.email ?? StringConstants.emailDefault);
-  }
-
-  static Future<UserModel> _safeUidLocalUser(
-    Ref ref, {
-    required String uid,
-    required String? preUid,
-  }) async {
-    String uidSqlite = preUid ?? uid;
-    UserModel userLocal =
-        await ref.read(userLocalProvider).getUserById(uidSqlite);
-    if (preUid == null) {
-      return userLocal;
-    }
-    userLocal = userLocal.copyWith(id: uid);
-    await ref.read(userLocalProvider).add(user: userLocal);
-    return userLocal;
-  }
 
   static FutureEitherVoid _sqliteToApi(Ref ref,
       {required Map<String, dynamic> data}) async {
@@ -349,7 +312,6 @@ class TransferData {
       UserModel userModelApi = data[_userApiKey];
       String userId = userModelApi.id;
 
-      UserModel userModel = data[_userLocalKey];
       List<BudgetModel> budgets = data[_budgetLocalKey];
       List<TransactionModel> transactions = data[_transactionLocalKey];
 
@@ -374,17 +336,13 @@ class TransferData {
         batch.delete(doc.reference);
       }
 
-      // 3. Set user document
-      final userDoc = db.doc(FirestorePath.user(userId));
-      batch.set(userDoc, userModel.toMap());
-
-      // 4. Insert new budgets
+      // Insert new budgets
       for (var budgetModel in budgets) {
         final docRef = budgetsCollection.doc(budgetModel.id);
         batch.set(docRef, budgetModel.toMap());
       }
 
-      // 5. Insert new transactions
+      // Insert new transactions
       for (var transactionModel in transactions) {
         final docRef = transactionsCollection.doc(transactionModel.id);
         batch.set(docRef, transactionModel.toMap());
@@ -431,16 +389,9 @@ class TransferData {
       final Batch batch = db.batch();
 
       // Remove all data from tables
-      batch.delete(TableName.user);
       batch.delete(TableName.budget);
       batch.delete(TableName.transaction);
 
-      // Add user to SQLite
-      batch.insert(
-        TableName.user,
-        userModel.toMap(isSqliteFomat: true),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
 
       // Add budgets to SQLite
       for (final budget in budgets) {
@@ -485,15 +436,12 @@ class TransferData {
       }
       String userId = user.uid;
 
-      UserModel userLocal = data?[_userLocalKey] ??
-          await ref.read(userLocalProvider).getUserById(userId);
-      UserModel userApi = data?[_userApiKey] ??
-          await ref.read(userApiProvider).getUserById(userId);
-
       List<BudgetModel> budgetsLocal = data?[_budgetLocalKey] ??
           await ref.read(budgetLocalProvider).fetch(userId);
       List<BudgetModel> budgetsApi = data?[_budgetApiKey] ??
           await ref.read(budgetAPIProvider).fetch(userId);
+      UserModel userApi = data?[_userApiKey] ??
+          await ref.read(userApiProvider).getUserById(userId);
 
       List<TransactionModel> transactionsLocal = data?[_transactionLocalKey] ??
           await ref.read(transactionLocalProvider).fetchTransaction(userId);
@@ -503,7 +451,7 @@ class TransferData {
       logInfo(
           "Merge data comparison: Local(${budgetsLocal.length} budgets, ${transactionsLocal.length} transactions) vs API(${budgetsApi.length} budgets, ${transactionsApi.length} transactions)");
 
-      bool isSameData = userLocal == userApi &&
+      bool isSameData =
           budgetsLocal.equals(budgetsApi) &&
           transactionsLocal.equals(transactionsApi);
       if (isSameData) {
@@ -562,19 +510,7 @@ class TransferData {
       List<TransactionModel> finalTransactions =
           mergedTransactions.values.toList();
 
-      // Merge User (keep newest by updatedAt)
-      logInfo("Merging user data...");
-      UserModel finalUser = userLocal.updatedDate.isAfter(userApi.updatedDate)
-          ? userLocal
-          : userApi;
-      logInfo(
-          "Using ${finalUser == userLocal ? 'local' : 'remote'} user data (newer: ${finalUser.updatedDate})");
-
-      finalUser = finalUser.copyWith(
-          balance: finalTransactions.toBalance(),
-          email: userApi.email,
-          role: userApi.role);
-
+      // Merge budgets with transactions
       Map<String, BudgetModel> updatedBudgets = {
         for (var budget in finalBudgets)
           budget.id: budget.copyWith(currentAmount: 0)
@@ -595,20 +531,24 @@ class TransferData {
       }
       finalBudgets = updatedBudgets.values.toList();
 
+      // Total balance
+      final int totalBalance = finalBudgets.fold(
+        0,
+        (value, budget) => value + budget.currentAmount,
+      );
+      userApi = userApi.copyWith(
+        balance: totalBalance,
+        updatedDate: DateTime.now(),
+      );
+
       // Write merged data to SQLite
       final db = ref.read(sqlHelperProvider);
       if (db == null) {
         return left(Failure(message: 'Database is not initialized'));
       }
       final Batch batch = db.batch();
-      batch.delete(TableName.user);
       batch.delete(TableName.budget);
       batch.delete(TableName.transaction);
-      batch.insert(
-        TableName.user,
-        finalUser.toMap(isSqliteFomat: true),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
       for (final budget in finalBudgets) {
         batch.insert(
           TableName.budget,
@@ -625,10 +565,9 @@ class TransferData {
       }
       await batch.commit(noResult: true);
       Map<String, dynamic> newData = {
-        _userLocalKey: finalUser,
         _budgetLocalKey: finalBudgets,
         _transactionLocalKey: finalTransactions,
-        _userApiKey: finalUser,
+        _userApiKey: userApi
       };
       unawaited(_sqliteToApi(ref, data: newData));
 

@@ -163,7 +163,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
               token: token);
           await ref
               .read(userBaseControllerProvider.notifier)
-              .updateUser(updatedUser, withDb: true);
+              .updateUser(updatedUser);
         }
       }
     });
