@@ -721,13 +721,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get defaultBudgetSalary => 'Lương';
 
   @override
-  String get defaultBudgetFreelance => 'Freelance';
+  String get defaultBudgetFreelance => 'Làm việc tự do';
 
   @override
-  String get defaultBudgetInvestments => 'Investments';
+  String get defaultBudgetInvestments => 'Đầu tư';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'Bỏ qua';
 
   @override
   String get createdByViBot => 'Được tạo bởi ViBot';
