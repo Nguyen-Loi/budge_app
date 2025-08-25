@@ -187,6 +187,9 @@ class _ReportPageState extends ConsumerState<ReportPage> {
 
   Widget _buildExportButtonSection(BuildContext context,
       ReportFilterState state, ReportPageController controller) {
+    if (state.budgetTransactionsList.isEmpty) {
+      return const SizedBox.shrink();
+    }
     return Align(
       alignment: Alignment.center,
       child: ConstrainedBox(
@@ -203,14 +206,10 @@ class _ReportPageState extends ConsumerState<ReportPage> {
 
   Widget _buildExportButton(BuildContext context, ReportFilterState state,
       ReportPageController controller) {
-    final hasData = state.budgetTransactionsList.isNotEmpty;
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final disabledColor = Theme.of(context).colorScheme.onSurface;
-    final textColor = hasData
-        ? Theme.of(context).colorScheme.onPrimary
-        : Theme.of(context).disabledColor;
+    final textColor = Theme.of(context).colorScheme.onPrimary;
     return GestureDetector(
-      onTap: hasData && !state.isLoading
+      onTap: !state.isLoading
           ? () {
               _showInterstitialAd();
               controller.exportExcel(context);
@@ -221,13 +220,9 @@ class _ReportPageState extends ConsumerState<ReportPage> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: hasData
-                ? primaryColor.withAlpha(100)
-                : disabledColor.withAlpha(60),
+            color: primaryColor.withAlpha(100),
           ),
-          color: hasData
-              ? primaryColor.withAlpha(200)
-              : disabledColor.withAlpha(120),
+          color: primaryColor.withAlpha(200),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
