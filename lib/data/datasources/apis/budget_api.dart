@@ -31,7 +31,7 @@ class BudgetApi implements BudgetRepository {
   @override
   FutureEitherVoid addBudget({required BudgetModel model}) async {
     try {
-      await db
+        db
           .collection(FirestorePath.budgets(uid: model.userId))
           .doc(model.id)
           .customSet(model.toMap());
@@ -48,7 +48,7 @@ class BudgetApi implements BudgetRepository {
       updatedDate: DateTime.now(),
     );
     try {
-      await db
+        db
           .doc(FirestorePath.budget(uid: model.userId, budgetId: model.id))
           .update(model.toMap());
       return right(null);
@@ -57,4 +57,15 @@ class BudgetApi implements BudgetRepository {
       return left(Failure(error: e.toString()));
     }
   }
+  
+  @override
+  Future<BudgetModel> getBudgetById({required String userId, required String budgetId}) async {
+    final doc = await db.doc(FirestorePath.budget(uid: userId, budgetId: budgetId)).get();
+    if (doc.exists) {
+      return BudgetModel.fromMap(doc.data()!);
+    } else {
+      throw Exception('Budget not found');
+    }
+  }
+
 }

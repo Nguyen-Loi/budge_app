@@ -10,4 +10,5 @@ abstract class BudgetRepository {
   Future<List<BudgetModel>> fetch(String uid);
   FutureEitherVoid addBudget({required BudgetModel model});
   FutureEitherVoid updateBudget({required BudgetModel model});
+  Future<BudgetModel> getBudgetById({required String userId, required String budgetId});
 }

@@ -37,7 +37,7 @@ class DeviceApi implements IDeviceApi {
     final currentDevice = await device.infoDevice(uid);
     final allDeviceOfSignIn = await fetch(uid);
     if (currentDevice.infoDeviceIsExist(allDeviceOfSignIn) == false) {
-      await db
+       db
           .collection(FirestorePath.devices(uid: uid))
           .doc(GenId.device())
           .set(currentDevice.toMap());

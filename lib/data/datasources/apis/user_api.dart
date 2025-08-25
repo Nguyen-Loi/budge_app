@@ -39,30 +39,18 @@ class UserApi extends UserRepository {
       updatedDate: DateTime.now(),
     );
     Map<String, dynamic> data = user.toMap();
-    await _db.doc(FirestorePath.user(user.id)).update(data);
+    _db.doc(FirestorePath.user(user.id)).update(data);
     return right(user);
   }
 
   @override
   FutureEitherVoid add({required UserModel user}) async {
     try {
-      await _db.doc(FirestorePath.user(user.id)).set(user.toMap());
+      _db.doc(FirestorePath.user(user.id)).set(user.toMap());
       return right(null);
     } catch (e) {
       logError(e.toString());
       return left(Failure(error: e.toString()));
-    }
-  }
-
-  FutureEitherVoid removeSession({required String sessionId}) async {
-    DocumentReference<Map<String, dynamic>> docRef =
-        _db.collection(FirestorePath.users()).doc(sessionId);
-    final isExists = await docRef.get().then((doc) => doc.exists);
-    if (isExists) {
-      await docRef.delete();
-      return right(null);
-    } else {
-      return left(Failure(error: 'Session ID does not exist'));
     }
   }
 }

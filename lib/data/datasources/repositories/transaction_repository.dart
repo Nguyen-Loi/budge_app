@@ -18,8 +18,8 @@ abstract class TransactionRepository {
   FutureEither<(UserModel, TransactionModel)> updateWallet(
       {required UserModel user, required int newValue, required String note});
   FutureEither<(TransactionModel, BudgetModel, UserModel)> addBudgetTransaction(
-      {required UserModel user,
-      required BudgetModel budgetModel,
+      {required String userId,
+      required String budgetId,
       required int amount,
       required String? note,
       required DateTime transactionDate});

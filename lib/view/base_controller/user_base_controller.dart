@@ -117,8 +117,8 @@ class UserBaseController extends StateNotifier<UserModel> {
     final res = await _ref
         .read(transactionRepositoryProvider)
         .addBudgetTransaction(
-            user: state,
-            budgetModel: currentBudget,
+            userId: state.id,
+            budgetId: currentBudget.id,
             amount: amount,
             note: note,
             transactionDate: transactionDate);
@@ -173,5 +173,4 @@ class UserBaseController extends StateNotifier<UserModel> {
       reload(r);
     });
   }
-
 }

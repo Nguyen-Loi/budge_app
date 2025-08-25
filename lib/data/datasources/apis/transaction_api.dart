@@ -3,7 +3,9 @@ import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
+import 'package:budget_app/data/datasources/repositories/budget_repository.dart';
 import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
+import 'package:budget_app/data/datasources/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/core/extension/extension_query.dart';
@@ -21,22 +23,27 @@ import 'package:fpdart/fpdart.dart';
 final transactionApiProvider = Provider(((ref) {
   final db = ref.watch(dbProvider);
   final loc = ref.watch(appLocalizationsProvider);
-  return TransactionApi(db: db, loc: loc);
+  return TransactionApi(db: db, loc: loc, ref: ref);
 }));
 
 class TransactionApi extends TransactionRepository {
   final FirebaseFirestore _db;
   final AppLocalizations _loc;
-  TransactionApi({required FirebaseFirestore db, required AppLocalizations loc})
+  final Ref _ref;
+  TransactionApi(
+      {required FirebaseFirestore db,
+      required AppLocalizations loc,
+      required Ref ref})
       : _db = db,
-        _loc = loc;
+        _loc = loc,
+        _ref = ref;
 
-  Future<TransactionModel> _add(String uid,
+  TransactionModel _add(String uid,
       {required String budgetId,
       required int amount,
       required String note,
       required TransactionTypeEnum transactionType,
-      DateTime? transactionDate}) async {
+      DateTime? transactionDate}) {
     final now = DateTime.now();
 
     TransactionModel transaction = TransactionModel(
@@ -50,7 +57,7 @@ class TransactionApi extends TransactionRepository {
         transactionDate: transactionDate ?? now,
         updatedDate: now);
 
-    await _db
+    _db
         .collection(FirestorePath.transactions(uid: uid))
         .doc(transaction.id)
         .set(transaction.toMap());
@@ -67,13 +74,13 @@ class TransactionApi extends TransactionRepository {
 
       // Update user
       final newUser = user.copyWith(balance: newValue, updatedDate: now);
-      await _db.doc(FirestorePath.user(newUser.id)).update(newUser.toMap());
+      _db.doc(FirestorePath.user(newUser.id)).update(newUser.toMap());
 
       // Add transaction
       int amountChanged = newValue - user.balance;
 
       final transactionType = TransactionTypeEnum.fromAmount(amountChanged);
-      final newTransaction = await _add(user.id,
+      final newTransaction = _add(user.id,
           budgetId: GenId.budgetWallet(),
           amount: amountChanged,
           note: note,
@@ -96,12 +103,16 @@ class TransactionApi extends TransactionRepository {
 
   @override
   FutureEither<(TransactionModel, BudgetModel, UserModel)> addBudgetTransaction(
-      {required UserModel user,
-      required BudgetModel budgetModel,
+      {required String userId,
+      required String budgetId,
       required int amount,
       required String? note,
       required DateTime transactionDate}) async {
     try {
+      final budgetModel = await _ref
+          .read(budgetRepositoryProvider)
+          .getBudgetById(budgetId: budgetId, userId: userId);
+      final user = await _ref.read(userRepositoryProvider).getUserById(userId);
       _validateBudgetTransaction(budgetModel, transactionDate);
       TransactionTypeEnum transactionType;
       switch (budgetModel.budgetType) {
@@ -117,7 +128,7 @@ class TransactionApi extends TransactionRepository {
       final newBudget = budgetModel.copyWith(
           currentAmount: budgetModel.currentAmount + amount);
 
-      final newTransaction = await _add(user.id,
+      final newTransaction = _add(user.id,
           budgetId: budgetModel.id,
           amount: amount,
           note: note ?? '',
@@ -126,8 +137,8 @@ class TransactionApi extends TransactionRepository {
 
       UserModel newUser = user.copyWith(balance: user.balance + amount);
 
-      await _db.doc(FirestorePath.user(user.id)).update(newUser.toMap());
-      await _db
+      _db.doc(FirestorePath.user(user.id)).update(newUser.toMap());
+      _db
           .doc(FirestorePath.budget(uid: user.id, budgetId: budgetModel.id))
           .update(newBudget.toMap());
       return right((newTransaction, newBudget, newUser));
