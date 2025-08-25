@@ -3,9 +3,7 @@ import 'package:budget_app/common/log.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
-import 'package:budget_app/data/datasources/repositories/budget_repository.dart';
 import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
-import 'package:budget_app/data/datasources/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/core/extension/extension_query.dart';
@@ -23,20 +21,15 @@ import 'package:fpdart/fpdart.dart';
 final transactionApiProvider = Provider(((ref) {
   final db = ref.watch(dbProvider);
   final loc = ref.watch(appLocalizationsProvider);
-  return TransactionApi(db: db, loc: loc, ref: ref);
+  return TransactionApi(db: db, loc: loc);
 }));
 
 class TransactionApi extends TransactionRepository {
   final FirebaseFirestore _db;
   final AppLocalizations _loc;
-  final Ref _ref;
-  TransactionApi(
-      {required FirebaseFirestore db,
-      required AppLocalizations loc,
-      required Ref ref})
+  TransactionApi({required FirebaseFirestore db, required AppLocalizations loc})
       : _db = db,
-        _loc = loc,
-        _ref = ref;
+        _loc = loc;
 
   TransactionModel _add(String uid,
       {required String budgetId,
@@ -103,16 +96,12 @@ class TransactionApi extends TransactionRepository {
 
   @override
   FutureEither<(TransactionModel, BudgetModel, UserModel)> addBudgetTransaction(
-      {required String userId,
-      required String budgetId,
+      {required UserModel user,
+      required BudgetModel budgetModel,
       required int amount,
       required String? note,
       required DateTime transactionDate}) async {
     try {
-      final budgetModel = await _ref
-          .read(budgetRepositoryProvider)
-          .getBudgetById(budgetId: budgetId, userId: userId);
-      final user = await _ref.read(userRepositoryProvider).getUserById(userId);
       _validateBudgetTransaction(budgetModel, transactionDate);
       TransactionTypeEnum transactionType;
       switch (budgetModel.budgetType) {

@@ -417,5 +417,7 @@
     "purchasePending": "Purchase is pending. Please wait for confirmation.",
     "purchaseRestored": "Purchase restored successfully.",
     "errorLoadingProducts": "Error loading products: {errorMessage}",
-    "loadingSubscriptionPlans": "Loading subscription plans..."
+    "loadingSubscriptionPlans": "Loading subscription plans...",
+    "pAnErrorUnexpectedOccur": "An unexpected error occurred: {errorMessage}",
+    "noInternetConnection": "No internet connection"
 }

@@ -1128,4 +1128,12 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get loadingSubscriptionPlans => 'Đang tải các gói đăng ký...';
+
+  @override
+  String pAnErrorUnexpectedOccur(Object errorMessage) {
+    return 'Đã xảy ra lỗi không xác định: $errorMessage';
+  }
+
+  @override
+  String get noInternetConnection => 'Không có kết nối internet';
 }

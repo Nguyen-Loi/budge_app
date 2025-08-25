@@ -2218,6 +2218,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading subscription plans...'**
   String get loadingSubscriptionPlans;
+
+  /// No description provided for @pAnErrorUnexpectedOccur.
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred: {errorMessage}'**
+  String pAnErrorUnexpectedOccur(Object errorMessage);
+
+  /// No description provided for @noInternetConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get noInternetConnection;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

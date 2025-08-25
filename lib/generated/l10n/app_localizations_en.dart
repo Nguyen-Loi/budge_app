@@ -1128,4 +1128,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadingSubscriptionPlans => 'Loading subscription plans...';
+
+  @override
+  String pAnErrorUnexpectedOccur(Object errorMessage) {
+    return 'An unexpected error occurred: $errorMessage';
+  }
+
+  @override
+  String get noInternetConnection => 'No internet connection';
 }

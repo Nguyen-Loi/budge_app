@@ -117,8 +117,8 @@ class UserBaseController extends StateNotifier<UserModel> {
     final res = await _ref
         .read(transactionRepositoryProvider)
         .addBudgetTransaction(
-            userId: state.id,
-            budgetId: currentBudget.id,
+            user: state,
+            budgetModel: currentBudget,
             amount: amount,
             note: note,
             transactionDate: transactionDate);

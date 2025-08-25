@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/constants/assets_constants.dart';
 import 'package:budget_app/constants/size_constants.dart';
+import 'package:budget_app/core/extension/extension_exception.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/core/route_path.dart';
@@ -115,24 +116,26 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
         canPop: false,
         child: ref.watch(mainPageFutureProvider(context)).when(
               data: (_) => _buildWithFirstTimeCheck(),
-              error: (_, __) => Scaffold(
-                  body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                      child: BStatus.error(
-                    text: context.loc.anErrorUnexpectedOccur,
-                  )),
-                  SizedBox(height: 16),
-                  BButton(
-                    onPressed: () {
-                      final refresh = ref.refresh(mainPageControllerProvider);
-                      logInfo('Refresh status: $refresh');
-                    },
-                    title: context.loc.refresh,
-                  )
-                ],
-              )),
+              error: (e, __) {
+                return Scaffold(
+                    body: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                        child: BStatus.error(
+                      text: e.toErrorMessage(context.loc),
+                    )),
+                    SizedBox(height: 16),
+                    BButton(
+                      onPressed: () {
+                        final refresh = ref.refresh(mainPageControllerProvider);
+                        logInfo('Refresh status: $refresh');
+                      },
+                      title: context.loc.refresh,
+                    )
+                  ],
+                ));
+              },
               loading: () => _loadingWidget(),
             ));
   }

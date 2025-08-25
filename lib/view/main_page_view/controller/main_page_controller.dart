@@ -57,12 +57,13 @@ class MainPageController extends StateNotifier<void> {
     logInfo('Loading critical user data...');
     await _ref.read(userBaseControllerProvider.notifier).fetchUserInfo();
 
-    logInfo('Loading budget and transaction data with lazy loading...');
-    final budgetFuture = Future.microtask(
+    logInfo('Loading budget data first...');
+    await Future.microtask(
         () => _ref.read(budgetBaseControllerProvider.notifier).fetch());
-    final transactionFuture = Future.microtask(
+
+    logInfo('Budget data loaded, now loading transaction data...');
+    await Future.microtask(
         () => _ref.read(transactionsBaseControllerProvider.notifier).fetch());
-    await Future.wait([budgetFuture, transactionFuture]);
 
     // Check if context is still mounted before proceeding with background tasks
     if (context.mounted) {

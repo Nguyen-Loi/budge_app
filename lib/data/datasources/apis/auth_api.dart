@@ -1,3 +1,4 @@
+import 'package:budget_app/common/exception/network_exception.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/constants/string_constants.dart';
@@ -310,6 +311,13 @@ class AuthAPI implements IAuthApi {
       _writeNewInfoToDB(accountType: AccountType.anonymous);
       return user;
     }).catchError((error, stackTrace) {
+      if (error is FirebaseAuthException) {
+        if (error.code == 'network-request-failed') {
+          throw NetworkException(
+              message:
+                  _ref.read(appLocalizationsProvider).noInternetConnection);
+        }
+      }
       logError('Error signing in anonymously: $error', stackTrace: stackTrace);
       throw Exception('Error signing in anonymously: $error');
     });

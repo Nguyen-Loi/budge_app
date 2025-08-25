@@ -417,5 +417,7 @@
   "purchasePending": "Đơn hàng đang chờ xử lý. Vui lòng chờ xác nhận.",
   "purchaseRestored": "Đơn hàng đã được khôi phục thành công.",
   "errorLoadingProducts": "Lỗi khi tải sản phẩm: {errorMessage}",
-  "loadingSubscriptionPlans": "Đang tải các gói đăng ký..."
+  "loadingSubscriptionPlans": "Đang tải các gói đăng ký...",
+  "pAnErrorUnexpectedOccur": "Đã xảy ra lỗi không xác định: {errorMessage}",
+  "noInternetConnection": "Không có kết nối internet"
 }
