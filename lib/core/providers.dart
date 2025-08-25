@@ -9,7 +9,14 @@ final authProvider = Provider((ref) {
 });
 
 final dbProvider = Provider((ref) {
-  return FirebaseFirestore.instance;
+  final db = FirebaseFirestore.instance;
+  
+  db.settings = const Settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+  );
+  
+  return db;
 });
 
 final storageProvider = Provider((ref) {

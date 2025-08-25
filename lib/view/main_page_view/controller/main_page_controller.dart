@@ -1,12 +1,9 @@
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/providers.dart';
-import 'package:budget_app/core/utils/data_config_utils.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/data/datasources/apis/device_api.dart';
-import 'package:budget_app/data/datasources/transfer_data_source.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/constants/constants.dart';
-import 'package:budget_app/data/datasources/offline/database_helper.dart';
 import 'package:budget_app/view/base_controller/asset_controller.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
@@ -21,8 +18,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
-
-final transferDataSourceProvider = Provider((ref) => TransferData);
 
 final mainPageControllerProvider = Provider((ref) {
   return MainPageController(ref: ref);
@@ -43,7 +38,9 @@ class MainPageController extends StateNotifier<void> {
 
   Future<void> loadBaseDataOptimized(BuildContext context) async {
     final isAuthenicated = _ref.read(authApiProvider).isAuthenticated;
+
     await _ref.read(assetControllerProvider.notifier).load(context);
+
     if (!isAuthenicated) {
       await _ref.read(authApiProvider).signInAnonymously();
     }
@@ -57,20 +54,16 @@ class MainPageController extends StateNotifier<void> {
       _ref.read(uidControllerProvider.notifier).init(uid);
     });
 
-    if (!DataConfigUtils.instance.isOnlyOnlineData) {
-      logInfo('Loading information database....');
-      await _ref.read(sqlHelperProvider.notifier).initDatabase();
-    }
-
     logInfo('Loading critical user data...');
     await _ref.read(userBaseControllerProvider.notifier).fetchUserInfo();
 
-    logInfo('Loading budget and transaction data with lazy loading...');
-    final budgetFuture = Future.microtask(
+    logInfo('Loading budget data first...');
+    await Future.microtask(
         () => _ref.read(budgetBaseControllerProvider.notifier).fetch());
-    final transactionFuture = Future.microtask(
+
+    logInfo('Budget data loaded, now loading transaction data...');
+    await Future.microtask(
         () => _ref.read(transactionsBaseControllerProvider.notifier).fetch());
-    await Future.wait([budgetFuture, transactionFuture]);
 
     // Check if context is still mounted before proceeding with background tasks
     if (context.mounted) {
@@ -84,7 +77,8 @@ class MainPageController extends StateNotifier<void> {
   }
 
   Future<void> _refreshInfoUser(Ref ref) async {
-    String? token = await ref.read(messagingProvider).getToken().catchError((e) {
+    String? token =
+        await ref.read(messagingProvider).getToken().catchError((e) {
       logError('Failed to get FCM token: $e');
       return null;
     });
@@ -99,14 +93,11 @@ class MainPageController extends StateNotifier<void> {
       role: newRole,
     );
     if (token != null) {
-     await ref.read(userBaseControllerProvider.notifier).updateUser(
+      await ref.read(userBaseControllerProvider.notifier).updateUser(
             updatedUser,
-            withDb: true,
           );
-      }
     }
-
-  
+  }
 
   Future<void> _loadBackgroundTasksOptimized(
       {required BuildContext context,

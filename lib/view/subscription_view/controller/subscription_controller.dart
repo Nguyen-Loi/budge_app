@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
@@ -15,7 +17,12 @@ final subscriptionControllerProvider =
 final productsSubscriptionFutureControllerProvider =
     FutureProvider.autoDispose<List<ProductDetails>>((ref) async {
   final api = ref.read(subscriptionApiProvider);
-  return await api.getProducts();
+  return await api.getProducts().timeout(
+    const Duration(seconds: 10),
+    onTimeout: () {
+      throw "Connection timeout.";
+    },
+  );
 });
 
 class SubscriptionController extends StateNotifier<ProductDetails?> {

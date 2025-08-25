@@ -1,5 +1,4 @@
 import 'package:budget_app/common/log.dart';
-import 'package:budget_app/common/widget/b_status.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
@@ -452,12 +451,25 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
             error: (error, stack) {
               logError(error.toString(), stackTrace: stack);
               return BText(
-                loc.errorLoadingProducts,
+                loc.errorLoadingProducts(error.toString()),
                 color: colors.error,
                 textAlign: TextAlign.center,
               );
             },
-            loading: () => Center(child: BStatus.loading()),
+            loading: () => Container(
+              padding: const EdgeInsets.all(48),
+              child: Column(
+                children: [
+                  const CircularProgressIndicator(),
+                  gapH16,
+                  BText.b1(
+                    loc.loadingSubscriptionPlans,
+                    color: colors.lightText,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
           );
     });
   }

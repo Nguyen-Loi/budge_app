@@ -43,7 +43,7 @@ class FeedbackApi extends FeedbackRepository {
         updatedDate: now,
       );
 
-      await _db
+        _db
           .collection(FirestorePath.feedbacks())
           .doc(feedback.id)
           .customSet(feedback.toMap());

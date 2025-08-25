@@ -51,5 +51,4 @@ class DataConfigUtils {
     return FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled;
   }
 
-  bool get isOnlyOnlineData => kIsWeb;
 }

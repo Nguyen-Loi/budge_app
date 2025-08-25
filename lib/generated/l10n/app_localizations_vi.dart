@@ -603,18 +603,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get loginCancelledByUser => 'Đăng nhập đã bị hủy bởi người dùng';
 
   @override
-  String get syncLocalToCloud => 'Lưu trữ dữ liệu cục bộ lên cloud';
-
-  @override
-  String get syncLocalToCloudLoading => 'Đang đồng bộ hóa dữ liệu cục bộ lên đám mây...';
-
-  @override
-  String get syncLocalToCloudSuccess => 'Đồng bộ hóa dữ liệu cục bộ lên đám mây thành công';
-
-  @override
-  String get syncLocalToCloudError => 'Đã xảy ra lỗi khi đồng bộ hóa dữ liệu cục bộ lên đám mây. Vui lòng thử lại sau';
-
-  @override
   String get totalBalance => 'Tổng số dư';
 
   @override
@@ -733,13 +721,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get defaultBudgetSalary => 'Lương';
 
   @override
-  String get defaultBudgetFreelance => 'Freelance';
+  String get defaultBudgetFreelance => 'Làm việc tự do';
 
   @override
-  String get defaultBudgetInvestments => 'Investments';
+  String get defaultBudgetInvestments => 'Đầu tư';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'Bỏ qua';
 
   @override
   String get createdByViBot => 'Được tạo bởi ViBot';
@@ -994,14 +982,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get noLimit => 'Không giới hạn';
 
   @override
-  String get dataSyncConflict => 'Xung đột đồng bộ dữ liệu';
-
-  @override
-  String dataSyncConflictDesc(Object email) {
-    return 'Cả dữ liệu cục bộ và dữ liệu trên máy chủ đều tồn tại cho $email. Bạn muốn tiếp tục như thế nào?';
-  }
-
-  @override
   String get useCurrentData => 'Sử dụng dữ liệu hiện tại';
 
   @override
@@ -1142,5 +1122,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get purchaseRestored => 'Đơn hàng đã được khôi phục thành công.';
 
   @override
-  String get errorLoadingProducts => 'Lỗi khi tải sản phẩm. Vui lòng thử lại sau.';
+  String errorLoadingProducts(Object errorMessage) {
+    return 'Lỗi khi tải sản phẩm: $errorMessage';
+  }
+
+  @override
+  String get loadingSubscriptionPlans => 'Đang tải các gói đăng ký...';
+
+  @override
+  String pAnErrorUnexpectedOccur(Object errorMessage) {
+    return 'Đã xảy ra lỗi không xác định: $errorMessage';
+  }
+
+  @override
+  String get noInternetConnection => 'Không có kết nối internet';
 }

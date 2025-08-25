@@ -31,12 +31,12 @@ class TransactionApi extends TransactionRepository {
       : _db = db,
         _loc = loc;
 
-  Future<TransactionModel> _add(String uid,
+  TransactionModel _add(String uid,
       {required String budgetId,
       required int amount,
       required String note,
       required TransactionTypeEnum transactionType,
-      DateTime? transactionDate}) async {
+      DateTime? transactionDate}) {
     final now = DateTime.now();
 
     TransactionModel transaction = TransactionModel(
@@ -50,10 +50,10 @@ class TransactionApi extends TransactionRepository {
         transactionDate: transactionDate ?? now,
         updatedDate: now);
 
-    await _db
+    _db
         .collection(FirestorePath.transactions(uid: uid))
         .doc(transaction.id)
-        .customSet(transaction.toMap());
+        .set(transaction.toMap());
     return transaction;
   }
 
@@ -67,13 +67,13 @@ class TransactionApi extends TransactionRepository {
 
       // Update user
       final newUser = user.copyWith(balance: newValue, updatedDate: now);
-      await _db.doc(FirestorePath.user(newUser.id)).update(newUser.toMap());
+      _db.doc(FirestorePath.user(newUser.id)).update(newUser.toMap());
 
       // Add transaction
       int amountChanged = newValue - user.balance;
 
       final transactionType = TransactionTypeEnum.fromAmount(amountChanged);
-      final newTransaction = await _add(user.id,
+      final newTransaction = _add(user.id,
           budgetId: GenId.budgetWallet(),
           amount: amountChanged,
           note: note,
@@ -117,7 +117,7 @@ class TransactionApi extends TransactionRepository {
       final newBudget = budgetModel.copyWith(
           currentAmount: budgetModel.currentAmount + amount);
 
-      final newTransaction = await _add(user.id,
+      final newTransaction = _add(user.id,
           budgetId: budgetModel.id,
           amount: amount,
           note: note ?? '',
@@ -126,8 +126,8 @@ class TransactionApi extends TransactionRepository {
 
       UserModel newUser = user.copyWith(balance: user.balance + amount);
 
-      await _db.doc(FirestorePath.user(user.id)).update(newUser.toMap());
-      await _db
+      _db.doc(FirestorePath.user(user.id)).update(newUser.toMap());
+      _db
           .doc(FirestorePath.budget(uid: user.id, budgetId: budgetModel.id))
           .update(newBudget.toMap());
       return right((newTransaction, newBudget, newUser));

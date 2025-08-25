@@ -251,10 +251,6 @@
     "loginToUse": "You need to login to use this feature",
     "pAccountAlreadyHasExistingData": "The account {accountName} already has existing data. If you proceed with this login, all current data will be deleted.\nAre you sure you want to continue?",
     "loginCancelledByUser": "Login cancelled by user",
-    "syncLocalToCloud": "Sync local data to cloud",
-    "syncLocalToCloudLoading": "Syncing local data to cloud...",
-    "syncLocalToCloudSuccess": "Sync local data to cloud success",
-    "syncLocalToCloudError": "Sync local data to cloud error. Please try again",
     "totalBalance": "Total balance",
     "incomeExpenseThisMonth": "INCOME - EXPENSE THIS MONTH",
     "totalRevenue": "Total Revenue",
@@ -376,8 +372,6 @@
     "expenseTransactions": "Expense Transactions",
     "utilization": "Utilization",
     "noLimit": "No Limit",
-    "dataSyncConflict": "Data Sync Conflict",
-    "dataSyncConflictDesc": "Both local and remote data exist for {email}. How would you like to proceed?",
     "useCurrentData": "Use Current Data",
     "overwriteWithNewData": "Overwrite with New Data",
     "combineData": "Combine Data",
@@ -422,5 +416,8 @@
     "purchaseCanceledByUser": "Purchase canceled by user.",
     "purchasePending": "Purchase is pending. Please wait for confirmation.",
     "purchaseRestored": "Purchase restored successfully.",
-    "errorLoadingProducts": "Error loading products. Please try again later."
+    "errorLoadingProducts": "Error loading products: {errorMessage}",
+    "loadingSubscriptionPlans": "Loading subscription plans...",
+    "pAnErrorUnexpectedOccur": "An unexpected error occurred: {errorMessage}",
+    "noInternetConnection": "No internet connection"
 }

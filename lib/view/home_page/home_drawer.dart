@@ -120,7 +120,7 @@ class HomeDrawer extends ConsumerWidget {
           title: loc.settings,
           onTap: () => _navigateToSettings(context),
         ),
-        if (!kIsWeb)
+        if (!kIsWeb && isLogin)
           _DrawerMenuItem(
             icon: IconManager.premium,
             title: loc.premium,

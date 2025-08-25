@@ -603,18 +603,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginCancelledByUser => 'Login cancelled by user';
 
   @override
-  String get syncLocalToCloud => 'Sync local data to cloud';
-
-  @override
-  String get syncLocalToCloudLoading => 'Syncing local data to cloud...';
-
-  @override
-  String get syncLocalToCloudSuccess => 'Sync local data to cloud success';
-
-  @override
-  String get syncLocalToCloudError => 'Sync local data to cloud error. Please try again';
-
-  @override
   String get totalBalance => 'Total balance';
 
   @override
@@ -994,14 +982,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noLimit => 'No Limit';
 
   @override
-  String get dataSyncConflict => 'Data Sync Conflict';
-
-  @override
-  String dataSyncConflictDesc(Object email) {
-    return 'Both local and remote data exist for $email. How would you like to proceed?';
-  }
-
-  @override
   String get useCurrentData => 'Use Current Data';
 
   @override
@@ -1142,5 +1122,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get purchaseRestored => 'Purchase restored successfully.';
 
   @override
-  String get errorLoadingProducts => 'Error loading products. Please try again later.';
+  String errorLoadingProducts(Object errorMessage) {
+    return 'Error loading products: $errorMessage';
+  }
+
+  @override
+  String get loadingSubscriptionPlans => 'Loading subscription plans...';
+
+  @override
+  String pAnErrorUnexpectedOccur(Object errorMessage) {
+    return 'An unexpected error occurred: $errorMessage';
+  }
+
+  @override
+  String get noInternetConnection => 'No internet connection';
 }
