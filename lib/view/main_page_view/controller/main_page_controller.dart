@@ -4,6 +4,7 @@ import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/data/datasources/apis/device_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/constants/constants.dart';
+import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/asset_controller.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
@@ -52,10 +53,11 @@ class MainPageController extends StateNotifier<void> {
     // Only initialize UID if it's not already set
     Future.microtask(() {
       _ref.read(uidControllerProvider.notifier).init(uid);
+      logInfo('Loading critical user data...');
+      _ref.read(userBaseControllerProvider.notifier).fetchUserInfo().then((e) {
+        unawaited(_refreshInfoUser(_ref, user: e));
+      });
     });
-
-    logInfo('Loading critical user data...');
-    await _ref.read(userBaseControllerProvider.notifier).fetchUserInfo();
 
     logInfo('Loading budget data first...');
     await Future.microtask(
@@ -70,19 +72,17 @@ class MainPageController extends StateNotifier<void> {
       logInfo('Loading background tasks with optimization...');
       unawaited(_loadBackgroundTasksOptimized(
           context: context, uid: uid, isLogin: isAuthenicated));
-      unawaited(_refreshInfoUser(_ref));
     }
 
     logInfo('Essential data loading completed with optimization');
   }
 
-  Future<void> _refreshInfoUser(Ref ref) async {
+  Future<void> _refreshInfoUser(Ref ref, {required UserModel user}) async {
     String? token =
         await ref.read(messagingProvider).getToken().catchError((e) {
       logError('Failed to get FCM token: $e');
       return null;
     });
-    final user = ref.read(userBaseControllerProvider);
     final now = DateTime.now();
     final UserRoleEnum newRole = user.subscriptionExpiryDate != null &&
             user.subscriptionExpiryDate!.isAfter(now)
