@@ -40,6 +40,7 @@ class SubscriptionModel {
       'transactionId': transactionId,
       'purchaseToken': purchaseToken,
       'transactionDate': transactionDate.millisecondsSinceEpoch,
+      'expiryDate': expiryDate?.millisecondsSinceEpoch,
     };
   }
 
@@ -80,7 +81,11 @@ class SubscriptionModel {
       purchaseStatus: PurchaseStatus.values.firstWhere(
         (e) => e.name == map['purchaseStatus'] as String,
       ),
-      subscriptionPlan: map['subscriptionPlan'] as SubscriptionPlanEnum?,
+      subscriptionPlan: map['subscriptionPlan'] != null
+          ? SubscriptionPlanEnum.values.firstWhere(
+              (e) => e.name == map['subscriptionPlan'] as String,
+            )
+          : null,
       amount: (map['amount'] as num).toDouble(),
       currency: map['currency'] as String,
       productId: map['productId'] as String?,

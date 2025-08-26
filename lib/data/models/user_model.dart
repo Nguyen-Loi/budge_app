@@ -158,7 +158,7 @@ class UserModel {
       'createdDate': createdDate.millisecondsSinceEpoch,
       'updatedDate': updatedDate.millisecondsSinceEpoch,
       'subscriptionExpiryDate': subscriptionExpiryDate?.millisecondsSinceEpoch,
-      'subscriptionPlan': subscriptionPlan,
+      'subscriptionPlan': subscriptionPlan?.name,
     };
     if (isSqliteFomat) {
       data['isRemindTransactionEveryDate'] =
@@ -239,7 +239,11 @@ class UserModel {
           ? DateTime.fromMillisecondsSinceEpoch(
               map['subscriptionExpiryDate'] as int)
           : null,
-      subscriptionPlan: map['subscriptionPlan'] as SubscriptionPlanEnum?,
+      subscriptionPlan: map['subscriptionPlan'] != null
+          ? SubscriptionPlanEnum.values.firstWhere(
+              (e) => e.name == map['subscriptionPlan'] as String,
+            )
+          : null,
     );
   }
 
