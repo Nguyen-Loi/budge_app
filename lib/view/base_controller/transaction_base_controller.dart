@@ -34,7 +34,7 @@ class TransactionsBaseController
   List<TransactionCardModel> _allCardTranctions = [];
 
   Future<List<TransactionCardModel>> fetch() async {
-    final transactions = await _transactionRepository.fetchTransaction(_uid);
+    final transactions = await _transactionRepository.getAllByUserId(_uid);
     _allCardTranctions = await TransactionCardModel.transactionCard(
         transactions: transactions, budgets: _budgetController.getAll);
 

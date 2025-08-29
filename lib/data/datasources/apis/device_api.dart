@@ -11,7 +11,7 @@ final deviceAPIProvider = Provider((ref) {
 });
 
 abstract class IDeviceApi {
-  Future<List<DeviceModel>> fetch(String uid);
+  Future<List<DeviceModel>> getAllByUserId(String uid);
   Future<void> writeDeviceInfo(String uid);
 }
 
@@ -22,7 +22,7 @@ class DeviceApi implements IDeviceApi {
   });
 
   @override
-  Future<List<DeviceModel>> fetch(String uid) async {
+  Future<List<DeviceModel>> getAllByUserId(String uid) async {
     final data = await db
         .collection(FirestorePath.devices(uid: uid))
         .mapModel<DeviceModel>(
@@ -35,7 +35,7 @@ class DeviceApi implements IDeviceApi {
   Future<void> writeDeviceInfo(String uid) async {
     Devices device = Devices();
     final currentDevice = await device.infoDevice(uid);
-    final allDeviceOfSignIn = await fetch(uid);
+    final allDeviceOfSignIn = await getAllByUserId(uid);
     if (currentDevice.infoDeviceIsExist(allDeviceOfSignIn) == false) {
        db
           .collection(FirestorePath.devices(uid: uid))

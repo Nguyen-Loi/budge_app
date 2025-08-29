@@ -6,9 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final budgetRepositoryProvider = Provider<BudgetRepository>((ref) {
   return ref.watch(budgetAPIProvider);
 });
+
 abstract class BudgetRepository {
-  Future<List<BudgetModel>> fetch(String uid);
+  Future<List<BudgetModel>> getAllByUserId(String uid);
   FutureEitherVoid addBudget({required BudgetModel model});
   FutureEitherVoid updateBudget({required BudgetModel model});
-  Future<BudgetModel> getBudgetById({required String userId, required String budgetId});
+  Future<BudgetModel> getBudgetById(
+      {required String userId, required String budgetId});
 }

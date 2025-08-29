@@ -10,7 +10,7 @@ final transactionRepositoryProvider = Provider<TransactionRepository>((ref) {
 });
 
 abstract class TransactionRepository {
-  Future<List<TransactionModel>> fetchTransaction(String uid);
+  Future<List<TransactionModel>> getAllByUserId(String uid);
   Future<List<TransactionModel>> getTransactionsByBudgetId(
       {required String uid, required String budgetId});
   Future<List<TransactionModel>> fetchTransactionOfMonth(

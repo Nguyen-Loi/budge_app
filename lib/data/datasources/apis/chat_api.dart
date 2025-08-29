@@ -44,6 +44,15 @@ class ChatApi implements IBotApi {
   })  : _uid = uid,
         _ref = ref;
 
+  Future<List<ChatModel>> getAllByUserId(String userId) {
+     return db
+        .collection(FirestorePath.chats(uid: _uid))
+        .mapModel<ChatModel>(
+            modelFrom: ChatModel.fromMap, modelTo: (model) => model.toMap())
+        .get()
+        .then((value) => value.docs.map((e) => e.data()).toList());
+  }
+
   List<ChatContentModel> basePrompt(BuildContext context) {
     PackageInfo packageInfo = _ref.read(packageInfoBaseControllerProvider);
     final userModel = _ref.read(userBaseControllerProvider);
@@ -149,6 +158,7 @@ class ChatApi implements IBotApi {
 
   FutureEitherVoid removeSession() async {
     try {
+      final now = DateTime.now();
       final batch = db.batch();
       final querySnapshot = await db
           .collection(FirestorePath.chats(uid: _uid))
@@ -156,7 +166,7 @@ class ChatApi implements IBotApi {
           .get();
 
       for (final doc in querySnapshot.docs) {
-        batch.update(doc.reference, {'deletedDate': DateTime.now()});
+        batch.update(doc.reference, {'deletedDate': now, 'updatedDate': now});
       }
       await batch.commit();
       return right(null);

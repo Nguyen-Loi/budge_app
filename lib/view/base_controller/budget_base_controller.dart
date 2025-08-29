@@ -52,7 +52,7 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
   }
 
   Future<List<BudgetModel>> fetch() async {
-    final budgets = await _budgetRepository.fetch(_uid);
+    final budgets = await _budgetRepository.getAllByUserId(_uid);
     _allBudgets = budgets;
 
     // Check if we need to create default budgets for first-time users
@@ -124,7 +124,7 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
     }
   }
 
-  ///  reset default budgets 
+  ///  reset default budgets
   Future<void> resetDefaultBudgets() async {
     _sharedUtility.resetDefaultBudgetsFlag();
     if (_uid.isNotEmpty) {

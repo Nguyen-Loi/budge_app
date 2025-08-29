@@ -137,7 +137,7 @@ class TransactionApi extends TransactionRepository {
   }
 
   @override
-  Future<List<TransactionModel>> fetchTransaction(String uid) async {
+  Future<List<TransactionModel>> getAllByUserId(String uid) async {
     final data = await _db
         .collection(FirestorePath.transactions(uid: uid))
         .mapModel<TransactionModel>(

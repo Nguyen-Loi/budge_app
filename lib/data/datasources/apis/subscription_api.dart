@@ -44,6 +44,7 @@ abstract class ISubscriptionApi {
     required ProductDetails product,
   });
   Stream<PurchaseResponse> get purchaseStream;
+  Future<List<SubscriptionModel>> getAllByUserId(String userId);
 }
 
 class SubscriptionApi implements ISubscriptionApi {
@@ -272,5 +273,15 @@ class SubscriptionApi implements ISubscriptionApi {
   void dispose() {
     _subscription?.cancel();
     _purchaseController.close();
+  }
+
+  @override
+  Future<List<SubscriptionModel>> getAllByUserId(String userId) async {
+    final data = await _db
+        .collection(FirestorePath.subscriptions(uid: userId))
+        .mapModel<SubscriptionModel>(
+            modelFrom: SubscriptionModel.fromMap, modelTo: (e) => e.toMap())
+        .get();
+    return data.docs.map((e) => e.data()).toList();
   }
 }
