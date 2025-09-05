@@ -1,0 +1,30 @@
+{
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": "YOUR_PROJECT_ID"
+      },
+      "android": {
+        "android/app/google-services.json": "YOUR_PROJECT_ID",
+        "projectId": "YOUR_PROJECT_ID"
+      },
+      "web": {
+        "web/index.html": "YOUR_PROJECT_ID"
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
