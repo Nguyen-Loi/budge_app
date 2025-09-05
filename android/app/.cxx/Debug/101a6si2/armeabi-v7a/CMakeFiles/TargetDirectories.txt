@@ -1,0 +1,2 @@
+/Users/nguyenloi/Documents/code/budge_app/android/app/.cxx/Debug/101a6si2/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/nguyenloi/Documents/code/budge_app/android/app/.cxx/Debug/101a6si2/armeabi-v7a/CMakeFiles/rebuild_cache.dir

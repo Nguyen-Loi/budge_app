@@ -1,0 +1,2 @@
+/Users/nguyenloi/Documents/code/budge_app/android/app/.cxx/RelWithDebInfo/3d5c1e4l/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/nguyenloi/Documents/code/budge_app/android/app/.cxx/RelWithDebInfo/3d5c1e4l/arm64-v8a/CMakeFiles/rebuild_cache.dir
