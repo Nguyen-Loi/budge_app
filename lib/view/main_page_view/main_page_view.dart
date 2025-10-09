@@ -116,7 +116,8 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
         canPop: false,
         child: ref.watch(mainPageFutureProvider(context)).when(
               data: (_) => _buildWithFirstTimeCheck(),
-              error: (e, __) {
+              error: (e, stackTrace) {
+                logError('MainPageView error: $e', error: e, stackTrace: stackTrace);
                 return Scaffold(
                     body: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
