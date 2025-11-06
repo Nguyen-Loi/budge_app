@@ -53,6 +53,8 @@ jobs:
     permissions:
       contents: write
       actions: read
+      pull-requests: write
+      issues: write
 
     steps:
       - name: Checkout code
@@ -140,12 +142,10 @@ jobs:
 
       - name: Create GitHub Release
         if: success()
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.TAG_NAME }}
-          release_name: "Android Release ${{ steps.version.outputs.VERSION_NAME }}"
+          name: "Android Release ${{ steps.version.outputs.VERSION_NAME }}"
           body: |
             ## Android Release ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.VERSION_CODE }})
             
@@ -176,6 +176,8 @@ jobs:
     permissions:
       contents: write
       actions: read
+      pull-requests: write
+      issues: write
 
     steps:
       - name: Checkout code
@@ -217,8 +219,8 @@ jobs:
       - name: Setup Firebase service account
         run: |
           # Create service account file from secret
-          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > firebase-service-account.json
-          
+          echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > firebase-service-account.json
+
           # Verify the JSON is valid
           if jq empty firebase-service-account.json 2>/dev/null; then
             echo "✅ Service account JSON is valid"
@@ -239,7 +241,7 @@ jobs:
           npm install -g firebase-tools
           
           # Set service account environment variable
-          export GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/play-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/firebase-service-account.json
           
           # Deploy to Firebase Hosting using service account
           firebase deploy --only hosting --project budget-ss --non-interactive
@@ -247,7 +249,7 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          rm -f play-account.json
+          rm -f firebase-service-account.json
           
       - name: Restore original firebase.json
         if: always()
@@ -265,12 +267,10 @@ jobs:
 
       - name: Create GitHub Release
         if: success()
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.TAG_NAME }}
-          release_name: "Web Release ${{ steps.version.outputs.VERSION_NAME }}"
+          name: "Web Release ${{ steps.version.outputs.VERSION_NAME }}"
           body: |
             ## Web Release ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.BUILD_NUMBER }})
             
