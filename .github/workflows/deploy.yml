@@ -241,8 +241,11 @@ jobs:
           # Set service account
           export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
           
-          # Deploy to Firebase Hosting
-          firebase deploy --only hosting --project budget-ss --non-interactive
+          # Authenticate using service account
+          firebase login:ci --no-localhost
+          
+          # Deploy to Firebase Hosting using service account
+          firebase deploy --only hosting --project budget-ss --non-interactive --token "$(cat firebase-service-account.json | jq -r .private_key)"
           
       - name: Cleanup
         if: always()
