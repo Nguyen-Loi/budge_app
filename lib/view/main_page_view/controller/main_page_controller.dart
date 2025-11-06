@@ -39,8 +39,8 @@ class MainPageController extends StateNotifier<void> {
 
   Future<void> loadBaseDataOptimized(BuildContext context) async {
     final isAuthenicated = _ref.read(authApiProvider).isAuthenticated;
-
-    await _ref.read(assetControllerProvider.notifier).load(context);
+    logInfo('Loading asset data...');
+    _ref.read(assetControllerProvider.notifier).load(context);
 
     if (!isAuthenicated) {
       await _ref.read(authApiProvider).signInAnonymously();
@@ -52,8 +52,8 @@ class MainPageController extends StateNotifier<void> {
 
     // Only initialize UID if it's not already set
     Future.microtask(() {
-      _ref.read(uidControllerProvider.notifier).init(uid);
       logInfo('Loading critical user data...');
+      _ref.read(uidControllerProvider.notifier).init(uid);
       _ref.read(userBaseControllerProvider.notifier).fetchUserInfo().then((e) {
         unawaited(_refreshInfoUser(_ref, user: e));
       });

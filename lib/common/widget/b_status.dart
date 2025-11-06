@@ -79,8 +79,7 @@ class BStatus extends StatelessWidget {
       mainAxisAlignment: mainAxisAlignment,
       mainAxisSize: MainAxisSize.min,
       children: [
-        BLottie(LottieUrl.empty),
-        gapH16,
+        BLottie(LottieUrl.empty, width: 200, height: 200, repeat: false),
         BText.b1(text,
             fontWeight: FontWeight.bold, textAlign: TextAlign.center),
       ],
