@@ -3,6 +3,7 @@ import 'package:budget_app/core/enums/asset_type_enum.dart';
 import 'package:budget_app/data/datasources/apis/asset_api.dart';
 import 'package:budget_app/data/models/asset_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,6 +23,7 @@ class AssetController extends StateNotifier<List<AssetModel>> {
   Future<void> load(BuildContext context) async {
     try {
       final assets = await _assetApi.fetch();
+      if (kIsWeb) return;
       if (!context.mounted) {
         throw Exception('Context is not mounted: $runtimeType');
       }
