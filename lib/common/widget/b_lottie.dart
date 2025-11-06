@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:budget_app/core/icon_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
@@ -50,6 +51,9 @@ class _BLottieState extends State<BLottie> {
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb){
+      return _buildCachedLottie();
+    }
     if (_hasError) {
       return _buildErrorWidget();
     }

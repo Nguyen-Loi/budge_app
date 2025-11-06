@@ -253,7 +253,15 @@ jobs:
           
       - name: Restore original firebase.json
         if: always()
-        run: git checkout HEAD -- firebase.json
+        run: |
+          # Only restore if firebase.json exists in git
+          if git ls-files --error-unmatch firebase.json > /dev/null 2>&1; then
+            git checkout HEAD -- firebase.json
+            echo "✅ Restored original firebase.json"
+          else
+            echo "ℹ️ No firebase.json in git to restore, removing temporary file"
+            rm -f firebase.json
+          fi
           
       - name: Extract version information
         id: version
