@@ -238,14 +238,11 @@ jobs:
           # Install Firebase CLI
           npm install -g firebase-tools
           
-          # Set service account
-          export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
-          
-          # Authenticate using service account
-          firebase login:ci --no-localhost
+          # Set service account environment variable
+          export GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/firebase-service-account.json
           
           # Deploy to Firebase Hosting using service account
-          firebase deploy --only hosting --project budget-ss --non-interactive --token "$(cat firebase-service-account.json | jq -r .private_key)"
+          firebase deploy --only hosting --project budget-ss --non-interactive
           
       - name: Cleanup
         if: always()
