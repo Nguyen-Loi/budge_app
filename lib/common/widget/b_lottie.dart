@@ -51,8 +51,8 @@ class _BLottieState extends State<BLottie> {
 
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb){
-      return _buildCachedLottie();
+    if (kIsWeb) {
+      return _buildNetworkLottie();
     }
     if (_hasError) {
       return _buildErrorWidget();
