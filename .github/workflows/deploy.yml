@@ -29,16 +29,16 @@ jobs:
           echo "Commit message: $COMMIT_MSG"
           
           # Check for Android deployment
-          if [[ "$COMMIT_MSG" =~ [Dd]eploy[[:space:]]+[Aa]ndroid ]]; then
+          if [[ "$COMMIT_MSG" =~ [Gg]o[[:space:]]+[Aa]ndroid ]]; then
             echo "should-deploy-android=true" >> $GITHUB_OUTPUT
-            echo "✅ Found 'go apk' in commit message - proceeding with Android deployment"
+            echo "✅ Found 'go android' in commit message - proceeding with Android deployment"
           else
             echo "should-deploy-android=false" >> $GITHUB_OUTPUT
-            echo "❌ No 'go apk' found in commit message - skipping Android deployment"
+            echo "❌ No 'go android' found in commit message - skipping Android deployment"
           fi
           
           # Check for Web deployment
-          if [[ "$COMMIT_MSG" =~ [Dd]eploy[[:space:]]+[Ww]eb ]]; then
+          if [[ "$COMMIT_MSG" =~ [Gg]o[[:space:]]+[Ww]eb ]]; then
             echo "should-deploy-web=true" >> $GITHUB_OUTPUT
             echo "✅ Found 'go web' in commit message - proceeding with Web deployment"
           else
