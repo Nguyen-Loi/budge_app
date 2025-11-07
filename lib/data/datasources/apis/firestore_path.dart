@@ -53,6 +53,19 @@ extension ConverterDocument<T> on DocumentReference<Map<String, dynamic>> {
   }
 }
 
+extension ConverterSnapshot<V> on QuerySnapshot<V> {
+  List<V> toList() {
+    return docs.map((e) => e.data()).toList();
+  }
+}
+
+extension ConverterQuerySnapshot<T> on QuerySnapshot<Map<String, dynamic>> {
+  List<V> toList<V>({required V Function(Map<String, dynamic>) fromMap}) {
+    return docs.map((e) => fromMap(e.data())).toList();
+  }
+}
+
+
 extension ConverterQuery<T> on Query<Map<String, dynamic>> {
   Query<V> mapModel<V>(
       {required V Function(Map<String, dynamic> value) modelFrom,

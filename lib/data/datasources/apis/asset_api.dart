@@ -17,7 +17,7 @@ class AssetApi {
 
   Future<List<AssetModel>> fetch() async {
     final snapshot = await _db.collection(FirestorePath.assets).get();
-    return snapshot.docs.map((doc) => AssetModel.fromMap(doc.data())).toList()
+    return snapshot.toList<AssetModel>(fromMap: AssetModel.fromMap)
       ..sort((a, b) => a.index?.compareTo(b.index ?? 0) ?? 0);
   }
 

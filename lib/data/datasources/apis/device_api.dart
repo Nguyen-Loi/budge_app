@@ -28,7 +28,7 @@ class DeviceApi implements IDeviceApi {
         .mapModel<DeviceModel>(
             modelFrom: DeviceModel.fromMap, modelTo: (model) => model.toMap())
         .get();
-    return data.docs.map((e) => e.data()).toList();
+    return data.toList();
   }
 
   @override

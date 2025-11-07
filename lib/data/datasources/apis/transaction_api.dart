@@ -143,7 +143,7 @@ class TransactionApi extends TransactionRepository {
         .mapModel<TransactionModel>(
             modelFrom: TransactionModel.fromMap, modelTo: (e) => e.toMap())
         .get();
-    return data.docs.map((e) => e.data()).toList();
+    return data.toList();
   }
 
   @override
@@ -156,7 +156,7 @@ class TransactionApi extends TransactionRepository {
             modelFrom: TransactionModel.fromMap,
             modelTo: (model) => model.toMap())
         .get();
-    return data.docs.map((e) => e.data()).toList();
+    return data.toList();
   }
 
   @override
@@ -168,6 +168,6 @@ class TransactionApi extends TransactionRepository {
         .mapModel<TransactionModel>(
             modelFrom: TransactionModel.fromMap, modelTo: (e) => e.toMap())
         .get();
-    return data.docs.map((e) => e.data()).toList();
+    return data.toList();
   }
 }
