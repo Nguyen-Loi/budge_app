@@ -1,3 +1,4 @@
+import 'package:budget_app/common/log.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +53,10 @@ class BImage extends StatelessWidget {
         ),
       ),
       placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
+      errorWidget: (context, url, error) {
+        logError('Failed to load image from $url: $error');
+        return const Icon(Icons.error);
+      },
     );
   }
 }

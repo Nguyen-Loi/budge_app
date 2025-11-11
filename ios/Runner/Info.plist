@@ -35,7 +35,7 @@
 	<key>FacebookClientToken</key>
 	<string>a018e1f278d258ed9d74f16e03afd6ee</string>
 	<key>FacebookDisplayName</key>
-	<string>SmartBudget</string>
+	<string>Smart Budget</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
