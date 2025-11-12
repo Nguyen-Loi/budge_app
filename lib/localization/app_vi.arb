@@ -110,7 +110,6 @@
   "errorSignInFacebook": "Đã xảy ra lỗi khi đăng nhập bằng Facebook. Hãy thử lại.",
   "accountAlreadyExits": "Tài khoản đã tồn tại.",
   "errorCredentials": "Đã xảy ra lỗi khi truy cập thông tin đăng nhập. Hãy thử lại.",
-  "credentialAlreadyInUse": "Tài khoản đã tồn tại với thông tin đăng nhập khác.",
   "invalidEmailOrPassword": "Email hoặc mật khẩu không hợp lệ.",
   "walletInvalidMatches": "Giá trị hiện tại của ví đang trùng",
   "cancel": "Hủy",
@@ -420,5 +419,7 @@
   "errorLoadingProducts": "Lỗi khi tải sản phẩm: {errorMessage}",
   "loadingSubscriptionPlans": "Đang tải các gói đăng ký...",
   "pAnErrorUnexpectedOccur": "Đã xảy ra lỗi không xác định: {errorMessage}",
-  "noInternetConnection": "Không có kết nối internet"
+  "noInternetConnection": "Không có kết nối internet",
+  "confirmNewAccountLoginTitle": "Xác nhận đăng nhập tài khoản mới",
+  "confirmNewAccountLoginMessage": "Nếu bạn tiếp tục, tất cả dữ liệu hiện tại trên ứng dụng này sẽ bị xóa để đồng bộ với tài khoản mới. Bạn có chắc chắn muốn tiếp tục không?"
 }

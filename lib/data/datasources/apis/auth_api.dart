@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:budget_app/constants/string_constants.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:crypto/crypto.dart';
 import 'package:budget_app/common/exception/network_exception.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
-import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
 import 'package:budget_app/common/shared_pref/language_controller.dart';
@@ -43,15 +44,6 @@ enum SocialAuthProvider {
   final String providerId;
 }
 
-/// Enum for Facebook authentication result status
-enum FacebookAuthResult {
-  success,
-  cancelled,
-  failed,
-  noAccessToken,
-  invalidToken,
-}
-
 /// Enum for Google authentication result status
 enum GoogleAuthResult {
   success,
@@ -62,16 +54,18 @@ enum GoogleAuthResult {
 
 /// Helper class to hold Facebook login result data
 class _FacebookLoginResult {
-  final FacebookAuthResult status;
+  final LoginStatus status;
   final AccessToken? accessToken;
   final String? rawNonce;
   final String? errorMessage;
+  final UserAuthInfo? userAuthInfo;
 
   const _FacebookLoginResult({
     required this.status,
     this.accessToken,
     this.rawNonce,
     this.errorMessage,
+    this.userAuthInfo,
   });
 }
 
@@ -88,6 +82,23 @@ class _GoogleLoginResult {
   });
 }
 
+class UserAuthInfo {
+  final String email;
+  final String? displayName;
+  final String? photoURL;
+  final String? phoneNumber;
+
+  UserAuthInfo(
+      {required this.email, this.displayName, this.photoURL, this.phoneNumber});
+}
+
+class CredentialInfo {
+  final AuthCredential credential;
+  final UserAuthInfo userAuthInfo;
+
+  CredentialInfo({required this.credential, required this.userAuthInfo});
+}
+
 final authApiProvider = Provider((ref) {
   final auth = ref.watch(authProvider);
   final db = ref.watch(dbProvider);
@@ -96,16 +107,16 @@ final authApiProvider = Provider((ref) {
 });
 
 abstract class IAuthApi {
-  FutureEitherVoid signUp({
+  FutureEither<CredentialInfo> signUp({
     required String email,
     required String password,
   });
-  FutureEitherVoid loginWithEmailAndPassword({
+  FutureEither<CredentialInfo> loginWithEmailAndPassword({
     required String email,
     required String password,
   });
-  FutureEitherVoid loginWithFacebook();
-  FutureEitherVoid loginWithGoogle();
+  FutureEither<CredentialInfo> loginWithFacebook();
+  FutureEither<CredentialInfo> loginWithGoogle();
   FutureEitherVoid signOut(BuildContext context);
   FutureEitherVoid resetPassword({
     required String email,
@@ -130,28 +141,81 @@ class AuthAPI implements IAuthApi {
         _db = db,
         _sharedPref = sharedPref;
 
-  User _currentUserAccount() {
+  User get _currentUserAccount {
     return _auth.currentUser!;
   }
 
-  Future<void> _writeNewInfoToDB({required AccountType accountType}) async {
-    User user = _currentUserAccount();
-    if (accountType == AccountType.google ||
-        accountType == AccountType.facebook) {
-      final isUserExitsOnDb =
-          await _db.collection(FirestorePath.users()).doc(user.uid).get();
-      if (isUserExitsOnDb.exists) {
-        return;
-      }
+  /// Check if an account already exists in Firestore
+  Future<bool> checkAccountExists(String email) async {
+    try {
+      final querySnapshot = await _db
+          .collection(FirestorePath.users())
+          .where('email', isEqualTo: email)
+          .limit(1)
+          .get();
+
+      return querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      logError('Error checking account existence: $e');
+      return false;
     }
+  }
+
+  /// Perform actual login after validation
+  FutureEitherVoid signInWithCredential(
+      {required CredentialInfo credentialInfo,
+      required AccountType accountType}) async {
+    try {
+      bool isAccountExistsInDb =
+          await checkAccountExists(credentialInfo.userAuthInfo.email);
+      if (isAccountExistsInDb) {
+        await _auth.signInWithCredential(credentialInfo.credential);
+      } else {
+        await _currentUserAccount.linkWithCredential(credentialInfo.credential);
+        await _writeNewInfoToDB(
+            uid: _currentUserAccount.uid,
+            accountType: accountType,
+            userAuthInfo: credentialInfo.userAuthInfo);
+      }
+
+      return right(null);
+    } on FirebaseAuthException catch (e) {
+      return left(
+          _handleFirebaseAuthException(e, 'Error signing in with credential.'));
+    } catch (e) {
+      return left(Failure(error: e.toString()));
+    }
+  }
+
+  /// Handle Google login errors and map them to Failure
+  Failure _handleGoogleLoginError(
+      _GoogleLoginResult result, String defaultError) {
+    AppLocalizations loc = _ref.read(appLocalizationsProvider);
+    switch (result.status) {
+      case GoogleAuthResult.cancelled:
+        return Failure(error: 'cancelled', message: loc.loginCancelledByUser);
+      case GoogleAuthResult.failed:
+      default:
+        return Failure(
+          error: result.errorMessage ?? 'Google login failed',
+          message: defaultError,
+        );
+    }
+  }
+
+  Future<void> _writeNewInfoToDB(
+      {required String uid,
+      required AccountType accountType,
+      required UserAuthInfo userAuthInfo}) async {
+    String uid = _currentUserAccount.uid;
     final DateTime now = DateTime.now();
-    String email = user.email ?? StringConstants.emailDefault;
-    String name = user.displayName ?? getNameFromEmail(email);
+    String email = userAuthInfo.email;
+    String name = userAuthInfo.displayName ?? getNameFromEmail(email);
     final newUser = UserModel(
-      id: user.uid,
+      id: uid,
       email: email,
       balance: 0,
-      profileUrl: user.photoURL,
+      profileUrl: userAuthInfo.photoURL,
       name: name,
       accountTypeValue: accountType.value,
       currencyTypeValue: CurrencyType.vnd.code,
@@ -167,7 +231,7 @@ class AuthAPI implements IAuthApi {
   }
 
   @override
-  FutureEitherVoid signUp({
+  FutureEither<CredentialInfo> signUp({
     required String email,
     required String password,
   }) async {
@@ -178,9 +242,12 @@ class AuthAPI implements IAuthApi {
             password: password,
           );
 
-          await _auth.currentUser!.linkWithCredential(credential);
-          await _writeNewInfoToDB(accountType: AccountType.emailAndPassword);
-          return right(null);
+          UserAuthInfo userAuthInfo = UserAuthInfo(
+            email: email,
+            displayName: getNameFromEmail(email),
+          );
+          return right(CredentialInfo(
+              credential: credential, userAuthInfo: userAuthInfo));
         },
         defaultError: _ref.read(appLocalizationsProvider).unknownError);
   }
@@ -237,7 +304,7 @@ class AuthAPI implements IAuthApi {
   }
 
   @override
-  FutureEitherVoid loginWithEmailAndPassword({
+  FutureEither<CredentialInfo> loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -246,52 +313,43 @@ class AuthAPI implements IAuthApi {
     return _baseFirebaseAuthentication(
         defaultError: defaultError,
         func: () async {
-          await _auth.signInWithEmailAndPassword(
+          final credential = EmailAuthProvider.credential(
             email: email,
             password: password,
           );
-          return right(null);
+
+          final UserAuthInfo userAuthInfo = UserAuthInfo(
+            email: email,
+            displayName: getNameFromEmail(email),
+          );
+          return right(CredentialInfo(
+              credential: credential, userAuthInfo: userAuthInfo));
         });
   }
 
   @override
-  FutureEitherVoid loginWithFacebook() async {
+  FutureEither<CredentialInfo> loginWithFacebook() async {
     final defaultError =
         _ref.read(appLocalizationsProvider).errorSignInFacebook;
+
     return _baseFirebaseAuthentication(
         func: () async {
           final facebookResult = await _performFacebookLogin();
 
-          switch (facebookResult.status) {
-            case FacebookAuthResult.success:
-              await _handleSuccessfulFacebookLogin(facebookResult);
-              await _writeNewInfoToDB(accountType: AccountType.facebook);
-              return right(null);
-
-            case FacebookAuthResult.cancelled:
-              return left(Failure(
-                error: 'Facebook login was cancelled by user',
-                message: defaultError,
-              ));
-
-            case FacebookAuthResult.noAccessToken:
-              return left(Failure(
-                error: 'No access token received from Facebook',
-                message: defaultError,
-              ));
-
-            case FacebookAuthResult.invalidToken:
-              return left(Failure(
-                error: 'Invalid Facebook token received',
-                message: defaultError,
-              ));
-
-            case FacebookAuthResult.failed:
-              return left(Failure(
-                error: facebookResult.errorMessage ?? 'Facebook login failed',
-                message: defaultError,
-              ));
+          if (facebookResult.status != LoginStatus.success) {
+            return left(Failure(
+              error: facebookResult.status.toString(),
+              message: facebookResult.errorMessage,
+            ));
           }
+          final credential = _createFacebookCredential(
+            facebookResult.accessToken!,
+            facebookResult.rawNonce,
+          );
+          return right(CredentialInfo(
+            credential: credential,
+            userAuthInfo: facebookResult.userAuthInfo!,
+          ));
         },
         defaultError: defaultError);
   }
@@ -312,58 +370,34 @@ class AuthAPI implements IAuthApi {
         loginBehavior: LoginBehavior.webOnly,
       );
 
-      logError(
+      logInfo(
           'Facebook login result: ${result.status}, message: ${result.message}');
 
-      if (result.status != LoginStatus.success) {
-        final errorMsg = 'Facebook login failed: ${result.status}';
-        logError(errorMsg);
+      if (result.status == LoginStatus.success) {
+        final userData = await FacebookAuth.instance.getUserData();
+        logInfo('Facebook user data: $userData');
         return _FacebookLoginResult(
-          status: FacebookAuthResult.failed,
+          status: result.status,
+          accessToken: result.accessToken!,
+          rawNonce: rawNonce,
+          userAuthInfo: UserAuthInfo(
+            email: userData['email'] as String,
+            displayName: userData['name'] as String?,
+            photoURL: userData['picture']['data']['url'] as String?,
+          ),
+        );
+      } else {
+        return _FacebookLoginResult(
+          status: result.status,
           errorMessage: result.message,
         );
       }
-
-      if (result.accessToken == null) {
-        logError('No access token received from Facebook');
-        return _FacebookLoginResult(status: FacebookAuthResult.noAccessToken);
-      }
-
-      // Validate the access token
-      try {
-        final userData = await FacebookAuth.instance.getUserData();
-        logError('Facebook user data: $userData');
-      } catch (userDataError) {
-        logError('Error getting Facebook user data: $userDataError');
-        return _FacebookLoginResult(status: FacebookAuthResult.invalidToken);
-      }
-
-      return _FacebookLoginResult(
-        status: FacebookAuthResult.success,
-        accessToken: result.accessToken!,
-        rawNonce: rawNonce,
-      );
     } catch (e) {
       logError('Error in Facebook login process: $e');
       return _FacebookLoginResult(
-        status: FacebookAuthResult.failed,
-        errorMessage: e.toString(),
+        status: LoginStatus.failed,
       );
     }
-  }
-
-  /// Handles successful Facebook login by creating Firebase credential and signing in
-  Future<void> _handleSuccessfulFacebookLogin(
-      _FacebookLoginResult result) async {
-    final AuthCredential facebookCredential = _createFacebookCredential(
-      result.accessToken!,
-      result.rawNonce,
-    );
-    if (_auth.currentUser != null) {
-      await _auth.signOut();
-    }
-
-    await _auth.signInWithCredential(facebookCredential);
   }
 
   /// Creates Facebook authentication credential based on platform and token type
@@ -391,36 +425,33 @@ class AuthAPI implements IAuthApi {
   }
 
   @override
-  FutureEitherVoid loginWithGoogle() async {
+  FutureEither<CredentialInfo> loginWithGoogle() async {
     final defaultError = _ref.read(appLocalizationsProvider).errorSignInGoogle;
+
     return _baseFirebaseAuthentication(
-      defaultError: defaultError,
-      func: () async {
-        final googleResult = await _performGoogleLogin();
+        func: () async {
+          final googleResult = await _performGoogleLogin();
 
-        switch (googleResult.status) {
-          case GoogleAuthResult.success:
-            await _handleSuccessfulGoogleLogin(googleResult.account!);
-            await _writeNewInfoToDB(accountType: AccountType.google);
-            return right(null);
+          if (googleResult.status != GoogleAuthResult.success) {
+            return left(_handleGoogleLoginError(googleResult, defaultError));
+          }
 
-          case GoogleAuthResult.cancelled:
-            return left(Failure(
-              error: 'cancelled',
-              message: defaultError,
-            ));
+          final GoogleSignInAuthentication googleAuth =
+              await googleResult.account!.authentication;
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
 
-          case GoogleAuthResult.credentialAlreadyInUse:
-            return await _handleGoogleCredentialAlreadyInUse(defaultError);
-
-          case GoogleAuthResult.failed:
-            return left(Failure(
-              error: googleResult.errorMessage ?? 'Google login failed',
-              message: defaultError,
-            ));
-        }
-      },
-    );
+          UserAuthInfo userAuthInfo = UserAuthInfo(
+            email: googleResult.account!.email,
+            displayName: googleResult.account!.displayName,
+            photoURL: googleResult.account!.photoUrl,
+          );
+          return right(CredentialInfo(
+              credential: credential, userAuthInfo: userAuthInfo));
+        },
+        defaultError: defaultError);
   }
 
   /// Performs Google login and returns the result status
@@ -443,44 +474,6 @@ class AuthAPI implements IAuthApi {
         status: GoogleAuthResult.failed,
         errorMessage: e.toString(),
       );
-    }
-  }
-
-  /// Handles successful Google login by creating Firebase credential and signing in
-  Future<void> _handleSuccessfulGoogleLogin(
-      GoogleSignInAccount googleUser) async {
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    await _auth.currentUser!.linkWithCredential(credential);
-  }
-
-  /// Handles the case where Google credential is already in use
-  Future<Either<Failure, void>> _handleGoogleCredentialAlreadyInUse(
-      String defaultError) async {
-    await _auth.signOut();
-    try {
-      final GoogleSignIn retryGoogleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? retryGoogleUser =
-          await retryGoogleSignIn.signIn();
-
-      if (retryGoogleUser != null) {
-        final GoogleSignInAuthentication retryGoogleAuth =
-            await retryGoogleUser.authentication;
-        final retryCredential = GoogleAuthProvider.credential(
-          accessToken: retryGoogleAuth.accessToken,
-          idToken: retryGoogleAuth.idToken,
-        );
-        await _auth.signInWithCredential(retryCredential);
-        return right(null);
-      }
-      return left(Failure(message: defaultError));
-    } catch (retryError) {
-      return left(Failure(error: retryError.toString(), message: defaultError));
     }
   }
 
@@ -523,7 +516,10 @@ class AuthAPI implements IAuthApi {
   Future<User> signInAnonymously() {
     return _auth.signInAnonymously().then((userCredential) {
       final user = userCredential.user!;
-      _writeNewInfoToDB(accountType: AccountType.anonymous);
+      _writeNewInfoToDB(
+          accountType: AccountType.anonymous,
+          uid: user.uid,
+          userAuthInfo: UserAuthInfo(email: StringConstants.emailDefault));
       return user;
     }).catchError((error, stackTrace) {
       if (error is FirebaseAuthException) {
@@ -539,38 +535,36 @@ class AuthAPI implements IAuthApi {
   }
 
   /// Handles Firebase authentication exceptions specific to sign up
-  FutureEitherVoid _baseFirebaseAuthentication(
-      {required FutureEitherVoid Function() func,
+  FutureEither<CredentialInfo> _baseFirebaseAuthentication(
+      {required FutureEither<CredentialInfo> Function() func,
       required String defaultError}) async {
     try {
       return await func();
     } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case 'weak-password':
-          return left(Failure(
-              error: e.code,
-              message: _ref.read(appLocalizationsProvider).passwordTooWeak));
-        case 'email-already-in-use':
-          return left(Failure(
-              error: e.code,
-              message: _ref.read(appLocalizationsProvider).emailAlreadyExits));
-        case 'credential-already-in-use':
-        case 'account-exists-with-different-credential':
-          return left(Failure(
-              error: e.code,
-              message:
-                  _ref.read(appLocalizationsProvider).credentialAlreadyInUse));
-        case 'invalid-credential':
-          final errorMessage =
-              _ref.read(appLocalizationsProvider).errorCredentials;
-          return left(Failure(error: e.code, message: errorMessage));
-        default:
-          return left(Failure(
-              error: e.code, message: e.message ?? 'Authentication error'));
-      }
+      return left(_handleFirebaseAuthException(e, defaultError));
     } catch (e) {
       logError('General error in authentication: $e');
       return left(Failure(error: e.toString(), message: defaultError));
+    }
+  }
+
+  Failure _handleFirebaseAuthException(
+      FirebaseAuthException e, String defaultError) {
+    switch (e.code) {
+      case 'weak-password':
+        return Failure(
+            error: e.code,
+            message: _ref.read(appLocalizationsProvider).passwordTooWeak);
+      case 'email-already-in-use':
+        return Failure(
+            error: e.code,
+            message: _ref.read(appLocalizationsProvider).emailAlreadyExits);
+      case 'invalid-credential':
+        final errorMessage =
+            _ref.read(appLocalizationsProvider).errorCredentials;
+        return Failure(error: e.code, message: errorMessage);
+      default:
+        return Failure(error: e.code, message: e.message ?? defaultError);
     }
   }
 

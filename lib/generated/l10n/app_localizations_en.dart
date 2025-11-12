@@ -308,9 +308,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorCredentials => 'Error occurred while accessing credentials. Try again.';
 
   @override
-  String get credentialAlreadyInUse => 'The account already exists with a different credential.';
-
-  @override
   String get invalidEmailOrPassword => 'Invalid email or password. Please try again.';
 
   @override
@@ -869,7 +866,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tellUsYourNameToGetStarted => 'Tell us your name to get started';
 
   @override
-  String get letPersonalizeYourExperience => 'Let\\\'s personalize your experience';
+  String get letPersonalizeYourExperience => 'Let\'s personalize your experience';
 
   @override
   String get smartBudgetPlanning => 'Smart Budget Planning';
@@ -1139,4 +1136,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noInternetConnection => 'No internet connection';
+
+  @override
+  String get confirmNewAccountLoginTitle => 'Confirm new account login';
+
+  @override
+  String get confirmNewAccountLoginMessage => 'If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?';
 }

@@ -21,7 +21,7 @@ void showSnackBar(BuildContext context, String content,
   );
 }
 
-void showSnackBarError(BuildContext context, String content) {
+void showSnackBarError(BuildContext context, String content, {int? durationSeconds=4}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: BText(
@@ -33,6 +33,7 @@ void showSnackBarError(BuildContext context, String content) {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
+      duration: Duration(seconds: durationSeconds ?? 4),
     ),
   );
 }

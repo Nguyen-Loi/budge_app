@@ -110,7 +110,6 @@
     "errorSignInFacebook": "Error occurred using Facebook Sign-In. Try again.",
     "accountAlreadyExits": "The account already exists with a different credential.",
     "errorCredentials": "Error occurred while accessing credentials. Try again.",
-    "credentialAlreadyInUse": "The account already exists with a different credential.",
     "invalidEmailOrPassword": "Invalid email or password. Please try again.",
     "walletInvalidMatches": "The value matches the value currently",
     "cancel": "Cancel",
@@ -335,7 +334,7 @@
     "agreeToTerms": "By continuing, you agree to our Terms & Privacy Policy",
     "selectCurrencyDesc": "Select your preferred currency for transactions",
     "tellUsYourNameToGetStarted": "Tell us your name to get started",
-    "letPersonalizeYourExperience": "Let\\'s personalize your experience",
+    "letPersonalizeYourExperience": "Let's personalize your experience",
     "smartBudgetPlanning": "Smart Budget Planning",
     "easyExpenseTracking": "Easy Expense Tracking",
     "detailedReports": "Detailed Reports",
@@ -420,5 +419,7 @@
     "errorLoadingProducts": "Error loading products: {errorMessage}",
     "loadingSubscriptionPlans": "Loading subscription plans...",
     "pAnErrorUnexpectedOccur": "An unexpected error occurred: {errorMessage}",
-    "noInternetConnection": "No internet connection"
+    "noInternetConnection": "No internet connection",
+    "confirmNewAccountLoginTitle": "Confirm new account login",
+    "confirmNewAccountLoginMessage": "If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?"
 }

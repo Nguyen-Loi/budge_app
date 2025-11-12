@@ -308,9 +308,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get errorCredentials => 'Đã xảy ra lỗi khi truy cập thông tin đăng nhập. Hãy thử lại.';
 
   @override
-  String get credentialAlreadyInUse => 'Tài khoản đã tồn tại với thông tin đăng nhập khác.';
-
-  @override
   String get invalidEmailOrPassword => 'Email hoặc mật khẩu không hợp lệ.';
 
   @override
@@ -1139,4 +1136,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noInternetConnection => 'Không có kết nối internet';
+
+  @override
+  String get confirmNewAccountLoginTitle => 'Xác nhận đăng nhập tài khoản mới';
+
+  @override
+  String get confirmNewAccountLoginMessage => 'Nếu bạn tiếp tục, tất cả dữ liệu hiện tại trên ứng dụng này sẽ bị xóa để đồng bộ với tài khoản mới. Bạn có chắc chắn muốn tiếp tục không?';
 }
