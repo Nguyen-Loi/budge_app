@@ -96,11 +96,11 @@ final authApiProvider = Provider((ref) {
 });
 
 abstract class IAuthApi {
-  FutureEither<User> signUp({
+  FutureEitherVoid signUp({
     required String email,
     required String password,
   });
-  FutureEither<User> loginWithEmailAndPassword({
+  FutureEitherVoid loginWithEmailAndPassword({
     required String email,
     required String password,
   });
@@ -138,12 +138,9 @@ class AuthAPI implements IAuthApi {
     User user = _currentUserAccount();
     if (accountType == AccountType.google ||
         accountType == AccountType.facebook) {
-      final isUserExitsOnDb = await _db
-          .collection(FirestorePath.users())
-          .where('id', isEqualTo: user.uid)
-          .limit(1)
-          .get();
-      if (isUserExitsOnDb.size != 0) {
+      final isUserExitsOnDb =
+          await _db.collection(FirestorePath.users()).doc(user.uid).get();
+      if (isUserExitsOnDb.exists) {
         return;
       }
     }
@@ -170,41 +167,22 @@ class AuthAPI implements IAuthApi {
   }
 
   @override
-  FutureEither<User> signUp({
+  FutureEitherVoid signUp({
     required String email,
     required String password,
   }) async {
-    try {
-      final credential = EmailAuthProvider.credential(
-        email: email,
-        password: password,
-      );
+    return _baseFirebaseAuthentication(
+        func: () async {
+          final credential = EmailAuthProvider.credential(
+            email: email,
+            password: password,
+          );
 
-      final account = await _auth.currentUser!.linkWithCredential(credential);
-      await _writeNewInfoToDB(accountType: AccountType.emailAndPassword);
-
-      return right(account.user!);
-    } on FirebaseAuthException catch (e) {
-      return left(_handleSignUpFirebaseException(e));
-    } catch (e) {
-      logError('General error in sign up: $e');
-      return left(Failure(error: e.toString()));
-    }
-  }
-
-  /// Handles Firebase authentication exceptions specific to sign up
-  Failure _handleSignUpFirebaseException(FirebaseAuthException e) {
-    switch (e.code) {
-      case 'weak-password':
-        return Failure(
-            error: _ref.read(appLocalizationsProvider).passwordTooWeak);
-      case 'email-already-in-use':
-      case 'credential-already-in-use':
-        return Failure(
-            error: _ref.read(appLocalizationsProvider).emailAlreadyExits);
-      default:
-        return Failure(error: e.code);
-    }
+          await _auth.currentUser!.linkWithCredential(credential);
+          await _writeNewInfoToDB(accountType: AccountType.emailAndPassword);
+          return right(null);
+        },
+        defaultError: _ref.read(appLocalizationsProvider).unknownError);
   }
 
   @override
@@ -259,79 +237,68 @@ class AuthAPI implements IAuthApi {
   }
 
   @override
-  FutureEither<User> loginWithEmailAndPassword({
+  FutureEitherVoid loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
-    try {
-      await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return right(_currentUserAccount());
-    } on FirebaseAuthException catch (e) {
-      logError('Email/Password login error: ${e.code} - ${e.message}');
-      return left(Failure(
-        error: e.message ?? 'Login failed',
-        message: _ref.read(appLocalizationsProvider).invalidEmailOrPassword,
-      ));
-    } catch (e) {
-      logError('General error in email/password login: $e');
-      return left(Failure(error: e.toString()));
-    }
+    String defaultError =
+        _ref.read(appLocalizationsProvider).invalidEmailOrPassword;
+    return _baseFirebaseAuthentication(
+        defaultError: defaultError,
+        func: () async {
+          await _auth.signInWithEmailAndPassword(
+            email: email,
+            password: password,
+          );
+          return right(null);
+        });
   }
 
   @override
   FutureEitherVoid loginWithFacebook() async {
     final defaultError =
         _ref.read(appLocalizationsProvider).errorSignInFacebook;
+    return _baseFirebaseAuthentication(
+        func: () async {
+          final facebookResult = await _performFacebookLogin();
 
-    try {
-      final facebookResult = await _performFacebookLogin();
+          switch (facebookResult.status) {
+            case FacebookAuthResult.success:
+              await _handleSuccessfulFacebookLogin(facebookResult);
+              await _writeNewInfoToDB(accountType: AccountType.facebook);
+              return right(null);
 
-      switch (facebookResult.status) {
-        case FacebookAuthResult.success:
-          await _handleSuccessfulFacebookLogin(facebookResult);
-          await _writeNewInfoToDB(accountType: AccountType.facebook);
-          return right(null);
+            case FacebookAuthResult.cancelled:
+              return left(Failure(
+                error: 'Facebook login was cancelled by user',
+                message: defaultError,
+              ));
 
-        case FacebookAuthResult.cancelled:
-          return left(Failure(
-            error: 'Facebook login was cancelled by user',
-            message: defaultError,
-          ));
+            case FacebookAuthResult.noAccessToken:
+              return left(Failure(
+                error: 'No access token received from Facebook',
+                message: defaultError,
+              ));
 
-        case FacebookAuthResult.noAccessToken:
-          return left(Failure(
-            error: 'No access token received from Facebook',
-            message: defaultError,
-          ));
+            case FacebookAuthResult.invalidToken:
+              return left(Failure(
+                error: 'Invalid Facebook token received',
+                message: defaultError,
+              ));
 
-        case FacebookAuthResult.invalidToken:
-          return left(Failure(
-            error: 'Invalid Facebook token received',
-            message: defaultError,
-          ));
-
-        case FacebookAuthResult.failed:
-          return left(Failure(
-            error: facebookResult.errorMessage ?? 'Facebook login failed',
-            message: defaultError,
-          ));
-      }
-    } on FirebaseAuthException catch (e) {
-      return _handleFirebaseAuthException(
-          e, defaultError, SocialAuthProvider.facebook);
-    } catch (e) {
-      logError('General error in Facebook login: $e');
-      return left(Failure(error: e.toString(), message: defaultError));
-    }
+            case FacebookAuthResult.failed:
+              return left(Failure(
+                error: facebookResult.errorMessage ?? 'Facebook login failed',
+                message: defaultError,
+              ));
+          }
+        },
+        defaultError: defaultError);
   }
 
   /// Performs Facebook login and returns the result status
   Future<_FacebookLoginResult> _performFacebookLogin() async {
     try {
-      // Always clear Facebook login data to force fresh login
       await FacebookAuth.instance.logOut();
 
       final rawNonce = _generateNonce();
@@ -392,8 +359,6 @@ class AuthAPI implements IAuthApi {
       result.accessToken!,
       result.rawNonce,
     );
-
-    // Always sign out Firebase user first to ensure fresh authentication
     if (_auth.currentUser != null) {
       await _auth.signOut();
     }
@@ -425,65 +390,37 @@ class AuthAPI implements IAuthApi {
     }
   }
 
-  /// Handles Firebase authentication exceptions for social login
-  Either<Failure, void> _handleFirebaseAuthException(
-    FirebaseAuthException e,
-    String defaultError,
-    SocialAuthProvider provider,
-  ) {
-    logError(
-        'Firebase Auth Error in ${provider.name} login: ${e.code} - ${e.message}');
-
-    switch (e.code) {
-      case 'account-exists-with-different-credential':
-        return left(Failure(error: e.message, message: e.message));
-
-      case 'invalid-credential':
-        final errorMessage = provider == SocialAuthProvider.facebook
-            ? 'Facebook login configuration error. Please try again or contact support.'
-            : _ref.read(appLocalizationsProvider).errorCredentials;
-        return left(Failure(error: errorMessage, message: errorMessage));
-
-      default:
-        return left(Failure(message: defaultError, error: e.toString()));
-    }
-  }
-
   @override
   FutureEitherVoid loginWithGoogle() async {
     final defaultError = _ref.read(appLocalizationsProvider).errorSignInGoogle;
+    return _baseFirebaseAuthentication(
+      defaultError: defaultError,
+      func: () async {
+        final googleResult = await _performGoogleLogin();
 
-    try {
-      final googleResult = await _performGoogleLogin();
+        switch (googleResult.status) {
+          case GoogleAuthResult.success:
+            await _handleSuccessfulGoogleLogin(googleResult.account!);
+            await _writeNewInfoToDB(accountType: AccountType.google);
+            return right(null);
 
-      switch (googleResult.status) {
-        case GoogleAuthResult.success:
-          await _handleSuccessfulGoogleLogin(googleResult.account!);
-          await _writeNewInfoToDB(accountType: AccountType.google);
-          return right(null);
+          case GoogleAuthResult.cancelled:
+            return left(Failure(
+              error: 'cancelled',
+              message: defaultError,
+            ));
 
-        case GoogleAuthResult.cancelled:
-          return left(Failure(
-            error: 'Google login was cancelled by user',
-            message: defaultError,
-          ));
+          case GoogleAuthResult.credentialAlreadyInUse:
+            return await _handleGoogleCredentialAlreadyInUse(defaultError);
 
-        case GoogleAuthResult.credentialAlreadyInUse:
-          return await _handleGoogleCredentialAlreadyInUse(defaultError);
-
-        case GoogleAuthResult.failed:
-          return left(Failure(
-            error: googleResult.errorMessage ?? 'Google login failed',
-            message: defaultError,
-          ));
-      }
-    } on FirebaseAuthException catch (e) {
-      return _handleFirebaseAuthException(
-          e, defaultError, SocialAuthProvider.google);
-    } catch (e) {
-      logError('General error in Google login: $e');
-      return left(Failure(error: e.toString(), message: defaultError));
-    }
+          case GoogleAuthResult.failed:
+            return left(Failure(
+              error: googleResult.errorMessage ?? 'Google login failed',
+              message: defaultError,
+            ));
+        }
+      },
+    );
   }
 
   /// Performs Google login and returns the result status
@@ -599,6 +536,42 @@ class AuthAPI implements IAuthApi {
       logError('Error signing in anonymously: $error', stackTrace: stackTrace);
       throw Exception('Error signing in anonymously: $error');
     });
+  }
+
+  /// Handles Firebase authentication exceptions specific to sign up
+  FutureEitherVoid _baseFirebaseAuthentication(
+      {required FutureEitherVoid Function() func,
+      required String defaultError}) async {
+    try {
+      return await func();
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'weak-password':
+          return left(Failure(
+              error: e.code,
+              message: _ref.read(appLocalizationsProvider).passwordTooWeak));
+        case 'email-already-in-use':
+          return left(Failure(
+              error: e.code,
+              message: _ref.read(appLocalizationsProvider).emailAlreadyExits));
+        case 'credential-already-in-use':
+        case 'account-exists-with-different-credential':
+          return left(Failure(
+              error: e.code,
+              message:
+                  _ref.read(appLocalizationsProvider).credentialAlreadyInUse));
+        case 'invalid-credential':
+          final errorMessage =
+              _ref.read(appLocalizationsProvider).errorCredentials;
+          return left(Failure(error: e.code, message: errorMessage));
+        default:
+          return left(Failure(
+              error: e.code, message: e.message ?? 'Authentication error'));
+      }
+    } catch (e) {
+      logError('General error in authentication: $e');
+      return left(Failure(error: e.toString(), message: defaultError));
+    }
   }
 
   @override

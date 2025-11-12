@@ -659,6 +659,12 @@ abstract class AppLocalizations {
   /// **'Error occurred while accessing credentials. Try again.'**
   String get errorCredentials;
 
+  /// No description provided for @credentialAlreadyInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'The account already exists with a different credential.'**
+  String get credentialAlreadyInUse;
+
   /// No description provided for @invalidEmailOrPassword.
   ///
   /// In en, this message translates to:

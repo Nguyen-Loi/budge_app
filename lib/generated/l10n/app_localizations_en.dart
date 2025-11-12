@@ -308,6 +308,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorCredentials => 'Error occurred while accessing credentials. Try again.';
 
   @override
+  String get credentialAlreadyInUse => 'The account already exists with a different credential.';
+
+  @override
   String get invalidEmailOrPassword => 'Invalid email or password. Please try again.';
 
   @override

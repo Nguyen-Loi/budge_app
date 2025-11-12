@@ -110,6 +110,7 @@
     "errorSignInFacebook": "Error occurred using Facebook Sign-In. Try again.",
     "accountAlreadyExits": "The account already exists with a different credential.",
     "errorCredentials": "Error occurred while accessing credentials. Try again.",
+    "credentialAlreadyInUse": "The account already exists with a different credential.",
     "invalidEmailOrPassword": "Invalid email or password. Please try again.",
     "walletInvalidMatches": "The value matches the value currently",
     "cancel": "Cancel",

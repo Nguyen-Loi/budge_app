@@ -308,6 +308,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get errorCredentials => 'Đã xảy ra lỗi khi truy cập thông tin đăng nhập. Hãy thử lại.';
 
   @override
+  String get credentialAlreadyInUse => 'Tài khoản đã tồn tại với thông tin đăng nhập khác.';
+
+  @override
   String get invalidEmailOrPassword => 'Email hoặc mật khẩu không hợp lệ.';
 
   @override
