@@ -1,4 +1,3 @@
-import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/data/datasources/apis/device_api.dart';
@@ -83,14 +82,8 @@ class MainPageController extends StateNotifier<void> {
       logError('Failed to get FCM token: $e');
       return null;
     });
-    final now = DateTime.now();
-    final UserRoleEnum newRole = user.subscriptionExpiryDate != null &&
-            user.subscriptionExpiryDate!.isAfter(now)
-        ? UserRoleEnum.premium
-        : UserRoleEnum.normal;
     final updatedUser = user.copyWith(
       token: token,
-      role: newRole,
     );
     if (token != null) {
       await ref.read(userBaseControllerProvider.notifier).updateUser(
