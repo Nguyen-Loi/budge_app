@@ -272,8 +272,11 @@ class _ContactViewState extends State<ContactView>
       scheme: 'tel',
       path: _pathPhone,
     );
+
     if (await canLaunchUrl(phoneUri)) {
-      await launchUrl(phoneUri);
+      await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
+    } else {
+      _copyToClipboard(_phone);
     }
   }
 
