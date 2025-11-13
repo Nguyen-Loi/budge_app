@@ -1979,11 +1979,11 @@ abstract class AppLocalizations {
   /// **'Open in Browser'**
   String get openInBrowser;
 
-  /// No description provided for @premium.
+  /// No description provided for @prenium.
   ///
   /// In en, this message translates to:
-  /// **'Premium'**
-  String get premium;
+  /// **'Prenium'**
+  String get prenium;
 
   /// No description provided for @subscription.
   ///
@@ -1994,14 +1994,14 @@ abstract class AppLocalizations {
   /// No description provided for @upgradeToUnlockFeatures.
   ///
   /// In en, this message translates to:
-  /// **'Upgrade to unlock premium features'**
+  /// **'Upgrade to unlock prenium features'**
   String get upgradeToUnlockFeatures;
 
-  /// No description provided for @premiumBenefits.
+  /// No description provided for @preniumBenefits.
   ///
   /// In en, this message translates to:
-  /// **'Premium Benefits'**
-  String get premiumBenefits;
+  /// **'Prenium Benefits'**
+  String get preniumBenefits;
 
   /// No description provided for @noAds.
   ///
@@ -2135,11 +2135,11 @@ abstract class AppLocalizations {
   /// **'7-day free trial'**
   String get freeTrial;
 
-  /// No description provided for @continueWithPremium.
+  /// No description provided for @continueWithPrenium.
   ///
   /// In en, this message translates to:
-  /// **'Continue with Premium'**
-  String get continueWithPremium;
+  /// **'Continue with Prenium'**
+  String get continueWithPrenium;
 
   /// No description provided for @upgradeNow.
   ///

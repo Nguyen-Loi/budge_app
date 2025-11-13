@@ -3,7 +3,7 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/size_constants.dart';
 import 'package:flutter/material.dart';
 
-enum ButtonType { filled, outlined, text, premium }
+enum ButtonType { filled, outlined, text, prenium }
 
 enum ButtonSize { small, medium, large, custom }
 
@@ -72,7 +72,7 @@ class BButton extends StatelessWidget {
   })  : type = ButtonType.outlined,
         textDecoration = null;
 
-  const BButton.premium({
+  const BButton.prenium({
     super.key,
     required this.onPressed,
     required this.title,
@@ -84,7 +84,7 @@ class BButton extends StatelessWidget {
     this.minHeight,
     this.maxWidth,
     this.minWidth,
-  })  : type = ButtonType.premium,
+  })  : type = ButtonType.prenium,
         color = null,
         textDecoration = null;
 
@@ -225,8 +225,8 @@ class BButton extends StatelessWidget {
         return _outlinedButton(context, padding);
       case ButtonType.text:
         return _textButton(context, padding);
-      case ButtonType.premium:
-        return _premiumButton(context, padding);
+      case ButtonType.prenium:
+        return _preniumButton(context, padding);
     }
   }
 
@@ -452,7 +452,7 @@ class BButton extends StatelessWidget {
     }
   }
 
-  Widget _premiumButton(BuildContext context, EdgeInsets? paddingItem) {
+  Widget _preniumButton(BuildContext context, EdgeInsets? paddingItem) {
     return AnimatedScale(
       scale: enabled ? 1.0 : 0.95,
       duration: const Duration(milliseconds: 200),

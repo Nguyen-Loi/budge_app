@@ -1,126 +1,126 @@
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Service to manage premium features and restrictions
-class PremiumService {
+/// Service to manage prenium features and restrictions
+class PreniumService {
   static const int _maxFreeBudgets = 3;
   static const int _maxFreeTransactionsPerMonth = 50;
 
   final Ref ref;
 
-  PremiumService(this.ref);
+  PreniumService(this.ref);
 
-  /// Check if user has premium access
-  bool get isPremium {
-    bool isUserPremium =
-        ref.watch(userBaseControllerProvider.select((user) => user.isPremium));
-    return isUserPremium;
+  /// Check if user has prenium access
+  bool get isPrenium {
+    bool isUserPrenium =
+        ref.watch(userBaseControllerProvider.select((user) => user.isPrenium));
+    return isUserPrenium;
   }
 
   /// Check if user can create more budgets
   bool canCreateBudget(int currentBudgetCount) {
-    if (isPremium) return true;
+    if (isPrenium) return true;
     return currentBudgetCount < _maxFreeBudgets;
   }
 
   /// Check if user can add more transactions this month
   bool canAddTransaction(int transactionsThisMonth) {
-    if (isPremium) return true;
+    if (isPrenium) return true;
     return transactionsThisMonth < _maxFreeTransactionsPerMonth;
   }
 
   /// Check if user can access advanced reports
-  bool get canAccessAdvancedReports => isPremium;
+  bool get canAccessAdvancedReports => isPrenium;
 
   /// Check if user can export data
-  bool get canExportData => isPremium;
+  bool get canExportData => isPrenium;
 
-  /// Check if user should see ads (opposite of premium)
-  bool get shouldShowAds => !isPremium;
+  /// Check if user should see ads (opposite of prenium)
+  bool get shouldShowAds => !isPrenium;
 
   /// Get remaining free budgets
   int getRemainingFreeBudgets(int currentBudgetCount) {
-    if (isPremium) return -1; // Unlimited
+    if (isPrenium) return -1; // Unlimited
     return (_maxFreeBudgets - currentBudgetCount).clamp(0, _maxFreeBudgets);
   }
 
   /// Get remaining free transactions for this month
   int getRemainingFreeTransactions(int transactionsThisMonth) {
-    if (isPremium) return -1; // Unlimited
+    if (isPrenium) return -1; // Unlimited
     return (_maxFreeTransactionsPerMonth - transactionsThisMonth)
         .clamp(0, _maxFreeTransactionsPerMonth);
   }
 
-  /// Get premium features list
-  List<PremiumFeature> get premiumFeatures => [
-        PremiumFeature(
+  /// Get prenium features list
+  List<PreniumFeature> get preniumFeatures => [
+        PreniumFeature(
           name: "Unlimited Budgets",
           description: "Create as many budgets as you need",
-          isEnabled: isPremium,
+          isEnabled: isPrenium,
         ),
-        PremiumFeature(
+        PreniumFeature(
           name: "Unlimited Transactions",
           description: "Add unlimited transactions per month",
-          isEnabled: isPremium,
+          isEnabled: isPrenium,
         ),
-        PremiumFeature(
+        PreniumFeature(
           name: "Advanced Reports",
           description: "Detailed analytics and insights",
-          isEnabled: isPremium,
+          isEnabled: isPrenium,
         ),
-        PremiumFeature(
+        PreniumFeature(
           name: "Data Export",
           description: "Export your data in multiple formats",
-          isEnabled: isPremium,
+          isEnabled: isPrenium,
         ),
-        PremiumFeature(
+        PreniumFeature(
           name: "No Ads",
           description: "Enjoy an ad-free experience",
-          isEnabled: isPremium,
+          isEnabled: isPrenium,
         ),
-        PremiumFeature(
+        PreniumFeature(
           name: "Priority Support",
           description: "Get priority customer support",
-          isEnabled: isPremium,
+          isEnabled: isPrenium,
         ),
       ];
 }
 
-class PremiumFeature {
+class PreniumFeature {
   final String name;
   final String description;
   final bool isEnabled;
 
-  const PremiumFeature({
+  const PreniumFeature({
     required this.name,
     required this.description,
     required this.isEnabled,
   });
 }
 
-/// Provider for PremiumService
-final premiumServiceProvider = Provider<PremiumService>((ref) {
-  return PremiumService(ref);
+/// Provider for PreniumService
+final preniumServiceProvider = Provider<PreniumService>((ref) {
+  return PreniumService(ref);
 });
 
-/// Convenient providers for common premium checks
+/// Convenient providers for common prenium checks
 final canCreateBudgetProvider = Provider.family<bool, int>((ref, currentCount) {
-  final premiumService = ref.watch(premiumServiceProvider);
-  return premiumService.canCreateBudget(currentCount);
+  final preniumService = ref.watch(preniumServiceProvider);
+  return preniumService.canCreateBudget(currentCount);
 });
 
 final canAddTransactionProvider =
     Provider.family<bool, int>((ref, transactionsThisMonth) {
-  final premiumService = ref.watch(premiumServiceProvider);
-  return premiumService.canAddTransaction(transactionsThisMonth);
+  final preniumService = ref.watch(preniumServiceProvider);
+  return preniumService.canAddTransaction(transactionsThisMonth);
 });
 
 final shouldShowAdsProvider = Provider<bool>((ref) {
-  final premiumService = ref.watch(premiumServiceProvider);
-  return premiumService.shouldShowAds;
+  final preniumService = ref.watch(preniumServiceProvider);
+  return preniumService.shouldShowAds;
 });
 
-final premiumFeaturesProvider = Provider<List<PremiumFeature>>((ref) {
-  final premiumService = ref.watch(premiumServiceProvider);
-  return premiumService.premiumFeatures;
+final preniumFeaturesProvider = Provider<List<PreniumFeature>>((ref) {
+  final preniumService = ref.watch(preniumServiceProvider);
+  return preniumService.preniumFeatures;
 });

@@ -90,7 +90,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
     final colors = Theme.of(context).extension<AppColors>()!;
     final userRole =
         ref.watch(userBaseControllerProvider.select((user) => user.role));
-    final isPremium = userRole == UserRoleEnum.premium;
+    final isPrenium = userRole == UserRoleEnum.prenium;
 
     return Scaffold(
       appBar: AppBar(
@@ -112,14 +112,14 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      _buildHeaderSection(colors, isPremium: isPremium),
+                      _buildHeaderSection(colors, isPrenium: isPrenium),
                       gapH32,
-                      if (isPremium) ...[
-                        _buildPremiumStatusSection(colors),
+                      if (isPrenium) ...[
+                        _buildPreniumStatusSection(colors),
                         gapH32,
                       ],
                       _buildBenefitsSection(colors),
-                      if (!isPremium) ...[
+                      if (!isPrenium) ...[
                         gapH32,
                         _buildPricingSection(colors),
                         gapH32,
@@ -137,7 +137,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
     );
   }
 
-  Widget _buildHeaderSection(AppColors colors, {bool isPremium = false}) {
+  Widget _buildHeaderSection(AppColors colors, {bool isPrenium = false}) {
     AppLocalizations loc = context.loc;
     return Container(
       padding: const EdgeInsets.all(32),
@@ -168,15 +168,15 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
           ),
           gapH16,
           BText.h1(
-            isPremium ? "${loc.premium} ${loc.active}" : loc.premium,
+            isPrenium ? "${loc.prenium} ${loc.active}" : loc.prenium,
             color: colors.onPrimary,
             fontWeight: FontWeight.bold,
             textAlign: TextAlign.center,
           ),
           gapH8,
           BText.b1(
-            isPremium
-                ? "Enjoy unlimited access to all premium features"
+            isPrenium
+                ? "Enjoy unlimited access to all prenium features"
                 : loc.upgradeToUnlockFeatures,
             color: colors.onPrimary.withAlpha(200),
             textAlign: TextAlign.center,
@@ -186,7 +186,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
     );
   }
 
-  Widget _buildPremiumStatusSection(AppColors colors) {
+  Widget _buildPreniumStatusSection(AppColors colors) {
     AppLocalizations loc = context.loc;
 
     return Consumer(builder: (context, ref, _) {
@@ -226,7 +226,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
             _buildStatusRow(
               icon: IconManager.crown,
               label: "Plan",
-              value: subscriptionPlan?.content(context) ?? "Premium",
+              value: subscriptionPlan?.content(context) ?? "Prenium",
               colors: colors,
             ),
             gapH12,
@@ -254,7 +254,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                   gapW8,
                   Expanded(
                     child: BText.b3(
-                      "You have full access to all premium features. No action required.",
+                      "You have full access to all prenium features. No action required.",
                       color: colors.success,
                     ),
                   ),
@@ -344,7 +344,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         BText.h2(
-          loc.premiumBenefits,
+          loc.preniumBenefits,
           fontWeight: FontWeight.bold,
           color: colors.defaultText,
         ),
@@ -526,7 +526,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                   ],
                 ],
               ),
-              if (plan == SubscriptionPlanEnum.yearlyPremium) ...[
+              if (plan == SubscriptionPlanEnum.yearlyPrenium) ...[
                 Positioned(
                   top: -24,
                   right: -24,
@@ -602,7 +602,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
                 ),
               ],
             ),
-            if (plan == SubscriptionPlanEnum.yearlyPremium) ...[
+            if (plan == SubscriptionPlanEnum.yearlyPrenium) ...[
               gapH8,
               BText.b3(
                 loc.billedAnnuallyAt(
@@ -622,7 +622,7 @@ class _SubscriptionViewState extends ConsumerState<SubscriptionView>
     return Consumer(builder: (context, ref, _) {
       ProductDetails? product = ref.watch(subscriptionControllerProvider);
       final controller = ref.read(subscriptionControllerProvider.notifier);
-      return BButton.premium(
+      return BButton.prenium(
           onPressed: () {
             controller.startSubscription(context, product: product!);
           },

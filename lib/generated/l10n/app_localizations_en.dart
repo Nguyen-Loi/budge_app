@@ -1000,16 +1000,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openInBrowser => 'Open in Browser';
 
   @override
-  String get premium => 'Premium';
+  String get prenium => 'Prenium';
 
   @override
   String get subscription => 'Subscription';
 
   @override
-  String get upgradeToUnlockFeatures => 'Upgrade to unlock premium features';
+  String get upgradeToUnlockFeatures => 'Upgrade to unlock prenium features';
 
   @override
-  String get premiumBenefits => 'Premium Benefits';
+  String get preniumBenefits => 'Prenium Benefits';
 
   @override
   String get noAds => 'No Ads';
@@ -1080,7 +1080,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get freeTrial => '7-day free trial';
 
   @override
-  String get continueWithPremium => 'Continue with Premium';
+  String get continueWithPrenium => 'Continue with Prenium';
 
   @override
   String get upgradeNow => 'Upgrade Now';

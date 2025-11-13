@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 
 enum UserRoleEnum {
   normal('NORMAL'),
-  premium('PREMIUM');
+  prenium('PRENIUM');
 
   factory UserRoleEnum.fromValue(String value) {
     return UserRoleEnum.values.firstWhereOrNull((e) => e.value == value) ??
@@ -18,8 +18,8 @@ extension ConvertTypeAccount on UserRoleEnum {
     switch (this) {
       case UserRoleEnum.normal:
         return 'Normal';
-      case UserRoleEnum.premium:
-        return 'Premium';
+      case UserRoleEnum.prenium:
+        return 'Prenium';
     }
   }
 }

@@ -122,8 +122,8 @@ class HomeDrawer extends ConsumerWidget {
         ),
         if (!kIsWeb && isLogin)
           _DrawerMenuItem(
-            icon: IconManager.premium,
-            title: loc.premium,
+            icon: IconManager.prenium,
+            title: loc.prenium,
             onTap: () => _navigateToSubscription(context),
           ),
         _DrawerMenuItem(
