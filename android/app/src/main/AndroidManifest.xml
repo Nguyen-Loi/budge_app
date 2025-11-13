@@ -7,11 +7,6 @@
     <uses-permission android:name="com.android.vending.BILLING" />
     
     <queries>
-        <!--  SMS support -->
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="sms" />
-        </intent>
         <!-- Call support -->
         <intent>
             <action android:name="android.intent.action.VIEW" />

@@ -1136,4 +1136,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noInternetConnection => 'Không có kết nối internet';
+
+  @override
+  String get confirmNewAccountLoginTitle => 'Xác nhận đăng nhập tài khoản mới';
+
+  @override
+  String get confirmNewAccountLoginMessage => 'Nếu bạn tiếp tục, tất cả dữ liệu hiện tại trên ứng dụng này sẽ bị xóa để đồng bộ với tài khoản mới. Bạn có chắc chắn muốn tiếp tục không?';
 }

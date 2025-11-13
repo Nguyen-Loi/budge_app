@@ -1,9 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:budget_app/common/widget/dialog/b_dialog_info.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
+import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +31,12 @@ class AuthController extends StateNotifier<void> {
 
   void loginWithEmailPassword(BuildContext context,
       {required String email, required String password}) async {
-    _baseLogin(context,
+    _baseAuth(context,
         res: _authAPI.loginWithEmailAndPassword(
-            email: email, password: password));
+          email: email,
+          password: password,
+        ),
+        accountType: AccountType.emailAndPassword);
   }
 
   void signUp(
@@ -36,36 +44,69 @@ class AuthController extends StateNotifier<void> {
     required String email,
     required String password,
   }) {
-    _baseLogin(context, res: _authAPI.signUp(email: email, password: password));
+    _baseAuth(context,
+        res: _authAPI.signUp(email: email, password: password),
+        accountType: AccountType.emailAndPassword);
   }
 
   void loginWithFacebook(BuildContext context) async {
-    _baseLogin(context, res: _authAPI.loginWithFacebook());
+    _baseAuth(
+      context,
+      res: _authAPI.loginWithFacebook(),
+      accountType: AccountType.facebook,
+    );
   }
 
   void loginWithGoogle(
     BuildContext context,
   ) {
-    _baseLogin(context, res: _authAPI.loginWithGoogle());
+    _baseAuth(
+      context,
+      res: _authAPI.loginWithGoogle(),
+      accountType: AccountType.google,
+    );
   }
 
-  void _baseLogin(BuildContext context,
-      {required Future<Either<Failure, void>> res}) async {
+  void _baseAuth(BuildContext context,
+      {required Future<Either<Failure, CredentialInfo>> res,
+      required AccountType accountType}) async {
+    AppLocalizations loc = context.loc;
     final closeLoading = showLoading(context: context);
-    final resApi = await res;
-    if (!context.mounted) {
-      throw Exception('context is not mounted');
-    }
-    if (resApi.isLeft()) {
-      String errorMessage = resApi.getLeftOrDefault().message;
+    final resAuth = await res;
+    resAuth.fold((l) {
+      String errorMessage = resAuth.getLeftOrDefault().message;
       logError(errorMessage);
-      showSnackBarError(context, errorMessage);
       closeLoading();
-      return;
-    }
-    _ref.invalidate(mainPageControllerProvider);
-    closeLoading();
-    Navigator.popUntil(context, (route) => route.isFirst);
+      showSnackBarError(context, errorMessage);
+    }, (credentialInfo) async {
+      bool isAccountExists =
+          await _authAPI.checkAccountExists(credentialInfo.userAuthInfo.email);
+      bool? isUserAcceptLogin;
+      if (isAccountExists) {
+        isUserAcceptLogin = await BDialogInfo(
+                title: loc.confirmNewAccountLoginTitle,
+                message: loc.confirmNewAccountLoginMessage,
+                dialogInfoType: BDialogInfoType.warning)
+            .presentAction(context, onClose: () {
+          showSnackBarError(context, loc.loginCancelledByUser);
+        });
+      }
+      if (!isAccountExists || isUserAcceptLogin == true) {
+        final res = await _authAPI.signInWithCredential(
+            credentialInfo: credentialInfo, accountType: accountType);
+        closeLoading();
+        if (res.isLeft()) {
+          showSnackBarError(context,
+              res.getLeftOrDefault(defaultError: loc.errorCredentials).message,
+              durationSeconds: 5);
+
+          return;
+        } else {
+          _ref.invalidate(mainPageControllerProvider);
+          Navigator.popUntil(context, (route) => route.isFirst);
+        }
+      }
+    });
   }
 
   void resetPassword(BuildContext context, {required String email}) async {

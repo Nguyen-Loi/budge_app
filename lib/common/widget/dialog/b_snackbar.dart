@@ -21,15 +21,19 @@ void showSnackBar(BuildContext context, String content,
   );
 }
 
-void showSnackBarError(BuildContext context, String content) {
+void showSnackBarError(BuildContext context, String content, {int? durationSeconds=4}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: BText(content),
+      content: BText(
+        content,
+        color: Theme.of(context).colorScheme.onPrimary,
+      ),
       backgroundColor: Colors.red.shade600,
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
+      duration: Duration(seconds: durationSeconds ?? 4),
     ),
   );
 }

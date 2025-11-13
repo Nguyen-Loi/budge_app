@@ -1718,7 +1718,7 @@ abstract class AppLocalizations {
   /// No description provided for @letPersonalizeYourExperience.
   ///
   /// In en, this message translates to:
-  /// **'Let\\\'s personalize your experience'**
+  /// **'Let\'s personalize your experience'**
   String get letPersonalizeYourExperience;
 
   /// No description provided for @smartBudgetPlanning.
@@ -2230,6 +2230,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No internet connection'**
   String get noInternetConnection;
+
+  /// No description provided for @confirmNewAccountLoginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm new account login'**
+  String get confirmNewAccountLoginTitle;
+
+  /// No description provided for @confirmNewAccountLoginMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?'**
+  String get confirmNewAccountLoginMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
