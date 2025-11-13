@@ -334,6 +334,7 @@ class AuthAPI implements IAuthApi {
 
     return _baseFirebaseAuthentication(
         func: () async {
+          await _signOutFromFacebook();
           final facebookResult = await _performFacebookLogin();
 
           if (facebookResult.status != LoginStatus.success) {
@@ -350,6 +351,37 @@ class AuthAPI implements IAuthApi {
             credential: credential,
             userAuthInfo: facebookResult.userAuthInfo!,
           ));
+        },
+        defaultError: defaultError);
+  }
+
+  @override
+  FutureEither<CredentialInfo> loginWithGoogle() async {
+    final defaultError = _ref.read(appLocalizationsProvider).errorSignInGoogle;
+
+    return _baseFirebaseAuthentication(
+        func: () async {
+          await _signOutFromGoogle();
+          final googleResult = await _performGoogleLogin();
+
+          if (googleResult.status != GoogleAuthResult.success) {
+            return left(_handleGoogleLoginError(googleResult, defaultError));
+          }
+
+          final GoogleSignInAuthentication googleAuth =
+              await googleResult.account!.authentication;
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+
+          UserAuthInfo userAuthInfo = UserAuthInfo(
+            email: googleResult.account!.email,
+            displayName: googleResult.account!.displayName,
+            photoURL: googleResult.account!.photoUrl,
+          );
+          return right(CredentialInfo(
+              credential: credential, userAuthInfo: userAuthInfo));
         },
         defaultError: defaultError);
   }
@@ -422,36 +454,6 @@ class AuthAPI implements IAuthApi {
       // Android - use standard credential
       return FacebookAuthProvider.credential(accessToken.tokenString);
     }
-  }
-
-  @override
-  FutureEither<CredentialInfo> loginWithGoogle() async {
-    final defaultError = _ref.read(appLocalizationsProvider).errorSignInGoogle;
-
-    return _baseFirebaseAuthentication(
-        func: () async {
-          final googleResult = await _performGoogleLogin();
-
-          if (googleResult.status != GoogleAuthResult.success) {
-            return left(_handleGoogleLoginError(googleResult, defaultError));
-          }
-
-          final GoogleSignInAuthentication googleAuth =
-              await googleResult.account!.authentication;
-          final credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth.accessToken,
-            idToken: googleAuth.idToken,
-          );
-
-          UserAuthInfo userAuthInfo = UserAuthInfo(
-            email: googleResult.account!.email,
-            displayName: googleResult.account!.displayName,
-            photoURL: googleResult.account!.photoUrl,
-          );
-          return right(CredentialInfo(
-              credential: credential, userAuthInfo: userAuthInfo));
-        },
-        defaultError: defaultError);
   }
 
   /// Performs Google login and returns the result status
