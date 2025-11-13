@@ -122,7 +122,7 @@ class UserModel {
       email: StringConstants.emailDefault,
       profileUrl: null,
       name: StringConstants.nameDefault,
-      accountTypeValue: AccountType.emailAndPassword.value,
+      accountTypeValue: AccountType.anonymous.value,
       currencyTypeValue: CurrencyType.usd.code,
       balance: 0,
       phoneNumber: null,
