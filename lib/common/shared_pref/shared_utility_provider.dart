@@ -16,7 +16,6 @@ final sharedUtilityProvider = Provider<SharedUtility>((ref) {
 
 const String _darkModeKey = 'darkMode';
 const String _languageCodeKey = 'language_code';
-const String _defaultBudgetsCreatedKey = 'default_budgets_created';
 const String _dataFirstTime = 'data_first_time';
 const String _inAppReviewPromptCountKey = 'in_app_review_prompt_count';
 const String _userTransactionCountKey = 'user_transaction_count';
@@ -47,18 +46,6 @@ class SharedUtility {
 
   void setLanguageCode({required String code}) {
     sharedPreferences.setString(_languageCodeKey, code);
-  }
-
-  bool areDefaultBudgetsCreated() {
-    return sharedPreferences.getBool(_defaultBudgetsCreatedKey) ?? false;
-  }
-
-  void markDefaultBudgetsAsCreated() {
-    sharedPreferences.setBool(_defaultBudgetsCreatedKey, true);
-  }
-
-  Future<void> resetDefaultBudgetsFlag() async {
-    await sharedPreferences.remove(_defaultBudgetsCreatedKey);
   }
 
   Future<void> reset() async {

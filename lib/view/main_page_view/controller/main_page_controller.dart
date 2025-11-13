@@ -1,4 +1,3 @@
-import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/providers.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/data/datasources/apis/device_api.dart';
@@ -39,8 +38,8 @@ class MainPageController extends StateNotifier<void> {
 
   Future<void> loadBaseDataOptimized(BuildContext context) async {
     final isAuthenicated = _ref.read(authApiProvider).isAuthenticated;
-
-    await _ref.read(assetControllerProvider.notifier).load(context);
+    logInfo('Loading asset data...');
+    _ref.read(assetControllerProvider.notifier).load(context);
 
     if (!isAuthenicated) {
       await _ref.read(authApiProvider).signInAnonymously();
@@ -52,8 +51,8 @@ class MainPageController extends StateNotifier<void> {
 
     // Only initialize UID if it's not already set
     Future.microtask(() {
-      _ref.read(uidControllerProvider.notifier).init(uid);
       logInfo('Loading critical user data...');
+      _ref.read(uidControllerProvider.notifier).init(uid);
       _ref.read(userBaseControllerProvider.notifier).fetchUserInfo().then((e) {
         unawaited(_refreshInfoUser(_ref, user: e));
       });
@@ -83,14 +82,8 @@ class MainPageController extends StateNotifier<void> {
       logError('Failed to get FCM token: $e');
       return null;
     });
-    final now = DateTime.now();
-    final UserRoleEnum newRole = user.subscriptionExpiryDate != null &&
-            user.subscriptionExpiryDate!.isAfter(now)
-        ? UserRoleEnum.premium
-        : UserRoleEnum.normal;
     final updatedUser = user.copyWith(
       token: token,
-      role: newRole,
     );
     if (token != null) {
       await ref.read(userBaseControllerProvider.notifier).updateUser(

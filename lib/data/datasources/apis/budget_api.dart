@@ -25,7 +25,7 @@ class BudgetApi implements BudgetRepository {
         .mapModel<BudgetModel>(
             modelFrom: BudgetModel.fromMap, modelTo: (model) => model.toMap())
         .get();
-    return data.docs.map((e) => e.data()).toList();
+    return data.toList();
   }
 
   @override

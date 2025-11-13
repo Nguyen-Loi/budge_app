@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:budget_app/core/icon_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +20,7 @@ class BLottie extends StatefulWidget {
     this.errorWidget,
     this.onLoaded,
     this.cacheDuration = const Duration(days: 30),
+    this.repeat = true,
   });
 
   final String url;
@@ -26,6 +28,7 @@ class BLottie extends StatefulWidget {
   final double? height;
   final BoxFit fit;
   final bool animate;
+  final bool repeat;
   final Widget? loadingWidget;
   final Widget? errorWidget;
   final VoidCallback? onLoaded;
@@ -48,6 +51,9 @@ class _BLottieState extends State<BLottie> {
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return _buildNetworkLottie();
+    }
     if (_hasError) {
       return _buildErrorWidget();
     }
@@ -165,6 +171,7 @@ class _BLottieState extends State<BLottie> {
       height: widget.height,
       fit: widget.fit,
       animate: widget.animate,
+      repeat: widget.repeat,
     );
   }
 
@@ -175,6 +182,7 @@ class _BLottieState extends State<BLottie> {
       height: widget.height,
       fit: widget.fit,
       animate: widget.animate,
+      repeat: widget.repeat,
       onLoaded: (_) => widget.onLoaded?.call(),
       frameBuilder: (context, child, composition) {
         if (composition != null) {

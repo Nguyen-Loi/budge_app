@@ -122,7 +122,7 @@ class UserModel {
       email: StringConstants.emailDefault,
       profileUrl: null,
       name: StringConstants.nameDefault,
-      accountTypeValue: AccountType.emailAndPassword.value,
+      accountTypeValue: AccountType.anonymous.value,
       currencyTypeValue: CurrencyType.usd.code,
       balance: 0,
       phoneNumber: null,
@@ -139,7 +139,7 @@ class UserModel {
     );
   }
 
-  Map<String, dynamic> toMap({bool isSqliteFomat = false}) {
+  Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {
       'id': id,
       'email': email,
@@ -160,12 +160,6 @@ class UserModel {
       'subscriptionExpiryDate': subscriptionExpiryDate?.millisecondsSinceEpoch,
       'subscriptionPlan': subscriptionPlan?.name,
     };
-    if (isSqliteFomat) {
-      data['isRemindTransactionEveryDate'] =
-          isRemindTransactionEveryDate ? 1 : 0;
-      data['isActive'] = isActive ? 1 : 0;
-      data['phoneNumber'] = phoneNumber?.toString();
-    }
     return data;
   }
 
@@ -194,25 +188,6 @@ class UserModel {
         );
       }
     }
-    bool isRemindTransactionEveryDate = true;
-    if (map['isRemindTransactionEveryDate'] != null) {
-      final value = map['isRemindTransactionEveryDate'];
-      if (value is bool) {
-        isRemindTransactionEveryDate = value;
-      } else if (value is int) {
-        isRemindTransactionEveryDate = value == 1;
-      }
-    }
-
-    bool isActive = true;
-    if (map['isActive'] != null) {
-      final value = map['isActive'];
-      if (value is bool) {
-        isActive = value;
-      } else if (value is int) {
-        isActive = value == 1;
-      }
-    }
 
     return UserModel(
       id: map['id'] as String,
@@ -228,8 +203,8 @@ class UserModel {
           map['role'] as String? ?? UserRoleEnum.normal.value),
       languageCode:
           map['languageCode'] != null ? map['languageCode'] as String : 'en',
-      isRemindTransactionEveryDate: isRemindTransactionEveryDate,
-      isActive: isActive,
+      isRemindTransactionEveryDate: map['isRemindTransactionEveryDate'] as bool,
+      isActive: map['isActive'] as bool,
       inactiveReason: map['inactiveReason'] as String?,
       createdDate:
           DateTime.fromMillisecondsSinceEpoch(map['createdDate'] as int),

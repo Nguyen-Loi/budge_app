@@ -29,21 +29,21 @@ jobs:
           echo "Commit message: $COMMIT_MSG"
           
           # Check for Android deployment
-          if [[ "$COMMIT_MSG" =~ [Dd]eploy[[:space:]]+[Aa]ndroid ]]; then
+          if [[ "$COMMIT_MSG" =~ [Gg]o[[:space:]]+[Aa]ndroid ]]; then
             echo "should-deploy-android=true" >> $GITHUB_OUTPUT
-            echo "✅ Found 'deploy android' in commit message - proceeding with Android deployment"
+            echo "✅ Found 'go android' in commit message - proceeding with Android deployment"
           else
             echo "should-deploy-android=false" >> $GITHUB_OUTPUT
-            echo "❌ No 'deploy android' found in commit message - skipping Android deployment"
+            echo "❌ No 'go android' found in commit message - skipping Android deployment"
           fi
           
           # Check for Web deployment
-          if [[ "$COMMIT_MSG" =~ [Dd]eploy[[:space:]]+[Ww]eb ]]; then
+          if [[ "$COMMIT_MSG" =~ [Gg]o[[:space:]]+[Ww]eb ]]; then
             echo "should-deploy-web=true" >> $GITHUB_OUTPUT
-            echo "✅ Found 'deploy web' in commit message - proceeding with Web deployment"
+            echo "✅ Found 'go web' in commit message - proceeding with Web deployment"
           else
             echo "should-deploy-web=false" >> $GITHUB_OUTPUT
-            echo "❌ No 'deploy web' found in commit message - skipping Web deployment"
+            echo "❌ No 'go web' found in commit message - skipping Web deployment"
           fi
 
   build-android:
@@ -53,6 +53,8 @@ jobs:
     permissions:
       contents: write
       actions: read
+      pull-requests: write
+      issues: write
 
     steps:
       - name: Checkout code
@@ -88,6 +90,14 @@ jobs:
           keyAlias=${{ secrets.KEY_ALIAS }}
           storeFile=upload-keystore.jks
           EOF
+
+      - name: Create google-services.json from secret
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > android/app/google-services.json
+
+      - name: Create firebase_options.dart from secret
+        run: |
+          echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 -d > lib/firebase_options.dart
 
       - name: Install dependencies
         run: flutter pub get
@@ -132,12 +142,10 @@ jobs:
 
       - name: Create GitHub Release
         if: success()
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.TAG_NAME }}
-          release_name: "Android Release ${{ steps.version.outputs.VERSION_NAME }}"
+          name: "Android Release ${{ steps.version.outputs.VERSION_NAME }}"
           body: |
             ## Android Release ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.VERSION_CODE }})
             
@@ -168,6 +176,8 @@ jobs:
     permissions:
       contents: write
       actions: read
+      pull-requests: write
+      issues: write
 
     steps:
       - name: Checkout code
@@ -180,6 +190,10 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.29.3'
+
+      - name: Create firebase_options.dart from secret
+        run: |
+          echo "${{ secrets.FIREBASE_OPTIONS_DART }}" | base64 -d > lib/firebase_options.dart
 
       - name: Install dependencies
         run: flutter pub get
@@ -226,10 +240,10 @@ jobs:
           # Install Firebase CLI
           npm install -g firebase-tools
           
-          # Set service account
-          export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
+          # Set service account environment variable
+          export GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/firebase-service-account.json
           
-          # Deploy to Firebase Hosting
+          # Deploy to Firebase Hosting using service account
           firebase deploy --only hosting --project budget-ss --non-interactive
           
       - name: Cleanup
@@ -239,7 +253,15 @@ jobs:
           
       - name: Restore original firebase.json
         if: always()
-        run: git checkout HEAD -- firebase.json
+        run: |
+          # Only restore if firebase.json exists in git
+          if git ls-files --error-unmatch firebase.json > /dev/null 2>&1; then
+            git checkout HEAD -- firebase.json
+            echo "✅ Restored original firebase.json"
+          else
+            echo "ℹ️ No firebase.json in git to restore, removing temporary file"
+            rm -f firebase.json
+          fi
           
       - name: Extract version information
         id: version
@@ -253,12 +275,10 @@ jobs:
 
       - name: Create GitHub Release
         if: success()
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.TAG_NAME }}
-          release_name: "Web Release ${{ steps.version.outputs.VERSION_NAME }}"
+          name: "Web Release ${{ steps.version.outputs.VERSION_NAME }}"
           body: |
             ## Web Release ${{ steps.version.outputs.VERSION_NAME }} (Build ${{ steps.version.outputs.BUILD_NUMBER }})
             

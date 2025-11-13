@@ -1,4 +1,3 @@
-import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/data/datasources/repositories/budget_repository.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/services/default_budget_service.dart';
@@ -11,11 +10,9 @@ final budgetBaseControllerProvider =
     StateNotifierProvider<BudgetBaseController, List<BudgetModel>>((ref) {
   final uid = ref.watch(uidControllerProvider);
   final budgetRepository = ref.watch(budgetRepositoryProvider);
-  final sharedUtility = ref.watch(sharedUtilityProvider);
   return BudgetBaseController(
     budgetRepository: budgetRepository,
     uid: uid,
-    sharedUtility: sharedUtility,
     ref: ref,
   );
 });
@@ -29,17 +26,14 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
   BudgetBaseController({
     required BudgetRepository budgetRepository,
     required String uid,
-    required SharedUtility sharedUtility,
     required Ref ref,
   })  : _budgetRepository = budgetRepository,
         _uid = uid,
-        _sharedUtility = sharedUtility,
         _ref = ref,
         super([]);
 
   final BudgetRepository _budgetRepository;
   final String _uid;
-  final SharedUtility _sharedUtility;
   final Ref _ref;
 
   List<BudgetModel> _allBudgets = [];
@@ -56,8 +50,7 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
     _allBudgets = budgets;
 
     // Check if we need to create default budgets for first-time users
-    if (DefaultBudgetService.shouldCreateDefaultBudgets(
-        _allBudgets, _sharedUtility)) {
+    if (DefaultBudgetService.shouldCreateDefaultBudgets(_allBudgets)) {
       await _createDefaultBudgets();
     } else {
       _notifier(newList: _allBudgets);
@@ -79,8 +72,6 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
       await _budgetRepository.addBudget(model: budget);
       _allBudgets.add(budget);
     }
-
-    _sharedUtility.markDefaultBudgetsAsCreated();
 
     _notifier(newList: _allBudgets);
   }
@@ -121,14 +112,6 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
 
     if (hasUpdates) {
       _notifier(newList: _allBudgets);
-    }
-  }
-
-  ///  reset default budgets 
-  Future<void> resetDefaultBudgets() async {
-    _sharedUtility.resetDefaultBudgetsFlag();
-    if (_uid.isNotEmpty) {
-      await _createDefaultBudgets();
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
+import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
 import 'package:budget_app/core/gen_id.dart';
@@ -91,7 +91,7 @@ class DefaultBudgetService {
     for (final budgetData in [...expenseBudgets, ...incomeBudgets]) {
       defaultBudgets.add(
         BudgetModel(
-          id: GenId.budget(),
+          id: GenId.budgetDefault(budgetData['localizationKey'] as String),
           userId: userId,
           name: budgetData['name'] as String,
           iconName: budgetData['iconName'] as String,
@@ -127,9 +127,10 @@ class DefaultBudgetService {
   /// Check if user needs default budgets (first time setup)
   static bool shouldCreateDefaultBudgets(
     List<BudgetModel> existingBudgets,
-    SharedUtility sharedUtility,
   ) {
-    if (!sharedUtility.areDefaultBudgetsCreated() && existingBudgets.isEmpty) {
+    if (existingBudgets.isEmpty ||
+        existingBudgets.any((budget) =>
+            budget.id.startsWith(StringConstants.budgetDefaultKeyPrefix))) {
       return true;
     }
 

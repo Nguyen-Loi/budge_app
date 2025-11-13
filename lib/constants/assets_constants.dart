@@ -6,9 +6,9 @@ class LottieUrl {
   static const String loadingImage =
       'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2FloadingImage.json?alt=media&token=92b63b5b-e79e-4266-9aab-394704a9495b';
   static const String error =
-      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Ferror.json?alt=media&token=d39b59fd-7a5f-4f9a-b40d-6fe51b3a5fb2';
+      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Ferror.json?alt=media&token=c2a2a714-4c76-4181-8423-d10638b54e53';
   static const String empty =
-      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Fempty.json?alt=media&token=ab2be7db-0cc9-4f4b-ac6e-da932b1fc167';
+      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Fempty.json?alt=media&token=bbcef2bf-e8d8-40be-a3c0-a10133a9a65e';
 }
 
 class SvgAssets {

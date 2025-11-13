@@ -132,7 +132,7 @@ extension Present<T> on BDialogInfo {
     );
   }
 
-  Future<T?> presentAction(
+  Future<bool?> presentAction(
     BuildContext context, {
     String? textSubmit,
     VoidCallback? onSubmit,
@@ -172,7 +172,7 @@ extension Present<T> on BDialogInfo {
         bTextClose = textClose ?? context.loc.close;
         bColorButtonClose = ColorManager.greyLight;
     }
-    return showDialog<T?>(
+    return showDialog<bool?>(
       context: context,
       barrierDismissible: false,
       builder: (context) {
@@ -186,7 +186,10 @@ extension Present<T> on BDialogInfo {
                     backgroundColor: bColorButtonClose,
                     padding: const EdgeInsets.symmetric(
                         vertical: 8, horizontal: 16)),
-                onPressed: onClose ?? () => Navigator.of(context).pop(),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                  onClose?.call();
+                },
                 child: BText.b1(
                   bTextClose,
                   color: ColorManager.white,
@@ -199,7 +202,7 @@ extension Present<T> on BDialogInfo {
                     padding: const EdgeInsets.symmetric(
                         vertical: 8, horizontal: 16)),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(true);
                   onSubmit?.call();
                 },
                 child: BText.b1(

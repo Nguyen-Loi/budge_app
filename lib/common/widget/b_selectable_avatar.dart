@@ -2,6 +2,7 @@ import 'package:budget_app/common/widget/b_smart_avatar.dart';
 import 'package:budget_app/common/widget/button/b_button.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/enums/asset_type_enum.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -60,11 +61,7 @@ class _BSelectableAvatarState extends ConsumerState<BSelectableAvatar> {
   }
 
   String get _defaultAvatar {
-    return ref
-        .read(assetControllerProvider.notifier)
-        .getAssetsByType(AssetTypeEnum.avatarImage)
-        .first
-        .url;
+    return StringConstants.profileUrlDefault;
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:budget_app/constants/string_constants.dart';
 import 'package:uuid/uuid.dart';
 
 Uuid _uuid = const Uuid();
@@ -14,6 +15,7 @@ class GenId {
   //   return month.toString();
   // }
   static String budget() => _time;
+  static String budgetDefault(String key) => StringConstants.budgetDefaultKeyPrefix + key;
   static String device() => _time;
   static String budgetWallet() => 'WALLET';
   static String transaction() => _time;

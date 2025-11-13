@@ -68,7 +68,7 @@ class FeedbackApi extends FeedbackRepository {
           )
           .get();
 
-      return querySnapshot.docs.map((doc) => doc.data()).toList();
+      return querySnapshot.toList();
     } catch (e) {
       logError('Error getting feedbacks: ${e.toString()}');
       return [];
@@ -88,7 +88,7 @@ class FeedbackApi extends FeedbackRepository {
           )
           .get();
 
-      return querySnapshot.docs.map((doc) => doc.data()).toList();
+      return querySnapshot.toList();
     } catch (e) {
       logError('Error getting user feedbacks: ${e.toString()}');
       return [];
