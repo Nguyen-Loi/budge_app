@@ -1,3 +1,4 @@
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/data/datasources/repositories/budget_repository.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/services/default_budget_service.dart';
@@ -49,21 +50,22 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
     final budgets = await _budgetRepository.fetch(_uid);
     _allBudgets = budgets;
 
-    // Check if we need to create default budgets for first-time users
-    if (DefaultBudgetService.shouldCreateDefaultBudgets(_allBudgets)) {
-      await _createDefaultBudgets();
-    } else {
-      _notifier(newList: _allBudgets);
-    }
+    await _createDefaultBudgetsIfNotExits();
+    _notifier(newList: _allBudgets);
 
     return _allBudgets;
   }
 
   /// Creates default budgets for first-time users
-  Future<void> _createDefaultBudgets() async {
+  Future<void> _createDefaultBudgetsIfNotExits() async {
     final appLocalizations = _ref.read(appLocalizationsProvider);
 
-    final defaultBudgets = DefaultBudgetService.createDefaultBudgets(
+    if (!(DefaultBudgetService.shouldCreateDefaultBudgets(_allBudgets))) {
+      return;
+    }
+
+    logWarning('Creating default budgets for user $_uid');
+    final defaultBudgets = DefaultBudgetService.defaultBudgets(
       userId: _uid,
       localizations: appLocalizations,
     );
@@ -72,8 +74,6 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
       await _budgetRepository.addBudget(model: budget);
       _allBudgets.add(budget);
     }
-
-    _notifier(newList: _allBudgets);
   }
 
   void addBudgetState(BudgetModel model) {
