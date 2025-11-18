@@ -10,10 +10,10 @@ import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PremiumBanner extends ConsumerWidget {
-  const PremiumBanner({
+class PreniumBanner extends ConsumerWidget {
+  const PreniumBanner({
     super.key,
-    this.message = "Upgrade to Premium for advanced features",
+    this.message = "Upgrade to Prenium for advanced features",
     this.showCloseButton = true,
   });
 
@@ -22,11 +22,12 @@ class PremiumBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isUserPremium = ref.watch(userBaseControllerProvider.select((user) => user.isPremium));
+    final isUserPrenium =
+        ref.watch(userBaseControllerProvider.select((user) => user.isPrenium));
     final colors = Theme.of(context).extension<AppColors>()!;
 
-    // Don't show banner if user has premium
-    if (isUserPremium) {
+    // Don't show banner if user has prenium
+    if (isUserPrenium) {
       return const SizedBox.shrink();
     }
 
@@ -68,7 +69,7 @@ class PremiumBanner extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 BText.b1(
-                  "Premium",
+                  "Prenium",
                   fontWeight: FontWeight.w600,
                   color: colors.primary,
                 ),
@@ -112,34 +113,37 @@ class PremiumBanner extends ConsumerWidget {
   }
 
   void _dismissBanner(BuildContext context) {
-   showBDialog(context, dialogInfoType: BDialogInfoType.success, message: context.loc.bannerDismissed);
+    showBDialog(context,
+        dialogInfoType: BDialogInfoType.success,
+        message: context.loc.bannerDismissed);
   }
 }
 
-class PremiumFeatureGate extends ConsumerWidget {
-  const PremiumFeatureGate({
+class PreniumFeatureGate extends ConsumerWidget {
+  const PreniumFeatureGate({
     super.key,
     required this.child,
-    this.premiumChild,
+    this.preniumChild,
     this.featureName = "This feature",
   });
 
   final Widget child;
-  final Widget? premiumChild;
+  final Widget? preniumChild;
   final String featureName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isUserPremium = ref.watch(userBaseControllerProvider.select((user) => user.isPremium));
+    final isUserPrenium =
+        ref.watch(userBaseControllerProvider.select((user) => user.isPrenium));
     final colors = Theme.of(context).extension<AppColors>()!;
 
-    if (isUserPremium) {
+    if (isUserPrenium) {
       return child;
     }
 
-    return premiumChild ??
+    return preniumChild ??
         GestureDetector(
-          onTap: () => _showPremiumDialog(context, colors),
+          onTap: () => _showPreniumDialog(context, colors),
           child: Stack(
             children: [
               Opacity(
@@ -163,7 +167,7 @@ class PremiumFeatureGate extends ConsumerWidget {
                         ),
                         gapH8,
                         BText.b1(
-                          "Premium Feature",
+                          "Prenium Feature",
                           color: colors.primary,
                           fontWeight: FontWeight.w600,
                         ),
@@ -182,7 +186,7 @@ class PremiumFeatureGate extends ConsumerWidget {
         );
   }
 
-  void _showPremiumDialog(BuildContext context, AppColors colors) {
+  void _showPreniumDialog(BuildContext context, AppColors colors) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -194,11 +198,11 @@ class PremiumFeatureGate extends ConsumerWidget {
               size: 24,
             ),
             gapW8,
-            const BText.h3("Premium Feature"),
+            const BText.h3("Prenium Feature"),
           ],
         ),
         content: BText(
-          "$featureName requires a Premium subscription. Upgrade now to unlock this and many other advanced features.",
+          "$featureName requires a Prenium subscription. Upgrade now to unlock this and many other advanced features.",
         ),
         actions: [
           TextButton(

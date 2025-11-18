@@ -1000,7 +1000,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get openInBrowser => 'Mở trong trình duyệt';
 
   @override
-  String get premium => 'Cao cấp';
+  String get prenium => 'Cao cấp';
 
   @override
   String get subscription => 'Đăng ký';
@@ -1009,7 +1009,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get upgradeToUnlockFeatures => 'Nâng cấp để mở khóa tính năng cao cấp';
 
   @override
-  String get premiumBenefits => 'Lợi ích Cao cấp';
+  String get preniumBenefits => 'Lợi ích Cao cấp';
 
   @override
   String get noAds => 'Không quảng cáo';
@@ -1080,7 +1080,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get freeTrial => 'Dùng thử miễn phí 7 ngày';
 
   @override
-  String get continueWithPremium => 'Tiếp tục với Cao cấp';
+  String get continueWithPrenium => 'Tiếp tục với Cao cấp';
 
   @override
   String get upgradeNow => 'Nâng cấp ngay';

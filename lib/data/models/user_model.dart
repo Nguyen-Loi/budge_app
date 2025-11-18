@@ -55,8 +55,8 @@ class UserModel {
   AccountType get accountType => AccountType.fromValue(accountTypeValue);
   CurrencyType get currency => CurrencyType.fromValue(currencyTypeValue);
 
-  bool get isPremium {
-    if (role == UserRoleEnum.premium) return true;
+  bool get isPrenium {
+    if (role == UserRoleEnum.prenium) return true;
     return false;
   }
 

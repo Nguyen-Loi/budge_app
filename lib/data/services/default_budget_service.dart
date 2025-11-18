@@ -10,7 +10,7 @@ class DefaultBudgetService {
   const DefaultBudgetService._();
 
   /// Creates default budget list for first-time users
-  static List<BudgetModel> createDefaultBudgets({
+  static List<BudgetModel> defaultBudgets({
     required String userId,
     required AppLocalizations localizations,
   }) {
@@ -129,7 +129,7 @@ class DefaultBudgetService {
     List<BudgetModel> existingBudgets,
   ) {
     if (existingBudgets.isEmpty ||
-        existingBudgets.any((budget) =>
+        !existingBudgets.any((budget) =>
             budget.id.startsWith(StringConstants.budgetDefaultKeyPrefix))) {
       return true;
     }

@@ -51,8 +51,8 @@ class IconManager {
   static IconData contact = Icons.phone_outlined;
   static IconData feedback = FontAwesomeIcons.commentDots;
 
-  // Premium/Subscription
-  static IconData premium = Icons.workspace_premium_rounded;
+  // Prenium/Subscription
+  static IconData prenium = Icons.workspace_premium_rounded;
   static IconData crown = FontAwesomeIcons.crown;
   static IconData noAds = Icons.block_rounded;
   static IconData analytics = Icons.analytics_outlined;

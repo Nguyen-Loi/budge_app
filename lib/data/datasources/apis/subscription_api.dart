@@ -168,7 +168,7 @@ class SubscriptionApi implements ISubscriptionApi {
     final userNewPlan = user.withPlan(
       plan: plan,
       expiryDate: expiryDate,
-      newUserRole: UserRoleEnum.premium,
+      newUserRole: UserRoleEnum.prenium,
     );
     await _ref
         .read(userBaseControllerProvider.notifier)
@@ -205,7 +205,7 @@ class SubscriptionApi implements ISubscriptionApi {
       final updatedUser = user.withPlan(
         plan: plan,
         expiryDate: expiryDate,
-        newUserRole: UserRoleEnum.premium,
+        newUserRole: UserRoleEnum.prenium,
       );
       await _userDb.updateUser(user: updatedUser);
     }
