@@ -6,28 +6,24 @@ import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/route_path.dart';
+import 'package:budget_app/data/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/budget_model.dart';
-import 'package:budget_app/data/models/transaction_model.dart';
 import 'package:budget_app/view/base_view.dart';
-import 'package:budget_app/view/budget_view/budget_detail_view/controller/budget_detail_controller.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/widget/budget_transacitons_detail_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 abstract class BudgetBaseDetailView extends StatelessWidget {
-  const BudgetBaseDetailView({
-    super.key,
-    required this.budget,
-    required this.transactions,
-  });
+  const BudgetBaseDetailView(
+      {super.key, required this.budgetTransactionsModel});
 
-  final BudgetModel budget;
-  final List<TransactionModel> transactions;
+  final BudgetTransactionsModel budgetTransactionsModel;
 
   @override
   Widget build(BuildContext context) {
+    final budget = budgetTransactionsModel.budget;
     return BaseView(
       title: budget.name,
       actions: [
@@ -52,7 +48,7 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
   List<Widget> header(BuildContext context, BudgetModel budget, WidgetRef ref);
 
   Widget itemStatus(BuildContext context) {
-    final status = budget.budgetStatusTime;
+    final status = budgetTransactionsModel.budget.budgetStatusTime;
     if (status == BudgetStatusTime.active) {
       return SizedBox.shrink();
     }
@@ -65,6 +61,7 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
   }
 
   Widget itemOperatingTime(BuildContext context) {
+    final budget = budgetTransactionsModel.budget;
     final value =
         "${budget.startDate.toFormatDate(strFormat: 'dd/MM/yyyy')} - ${budget.endDate.toFormatDate(strFormat: 'dd/MM/yyyy')}";
     return itemRow(context,
@@ -182,6 +179,7 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
   }
 
   Widget _transactionsCard(BuildContext context) {
+    final transactions = budgetTransactionsModel.transactions;
     return Card(
       elevation: 4,
       shadowColor: Theme.of(context).shadowColor.withAlpha(20),
@@ -223,13 +221,10 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
 
   Widget _status(BuildContext context) {
     return Consumer(builder: (_, ref, __) {
-      BudgetModel model = ref.watch(budgetDetailControllerProvider(budget));
-      return Consumer(builder: (_, ref, __) {
-        return ColumnWithSpacing(
-            spacing: 12,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: header(context, model, ref));
-      });
+      return ColumnWithSpacing(
+          spacing: 12,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: header(context, budgetTransactionsModel.budget, ref));
     });
   }
 }

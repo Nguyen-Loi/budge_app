@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
+import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -30,12 +31,14 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
   final _formKey = GlobalKey<FormState>();
   late BudgetModel _budget;
   late bool _showLimitField;
+  late String _budgetName;
 
   @override
   void initState() {
     _budget = widget.budgetModel;
     _iconName = _budget.iconName;
     _limit = _budget.budgetLimit;
+    _budgetName = _budget.name;
     _dateTimeRangeModel = DatetimeRangeModel(
         startDate: _budget.startDate,
         endDate: _budget.endDate,
@@ -60,10 +63,10 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
     if (_formKey.currentState!.validate()) {
       ref
           .read(
-            budgetModifyControllerProvider(_budget),
+            budgetModifyControllerProvider(_budget).notifier,
           )
           .updateBudget(context,
-              budget: _budget,
+              budgetName: _budgetName,
               iconName: _iconName,
               limit: _limit,
               dateTimeRange: _dateTimeRangeModel);
@@ -91,8 +94,12 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
         children: [
           BFormFieldText.init(
               label: context.loc.budgetName,
-              initialValue: _budget.name,
-              disable: true),
+              hint: context.loc.budgetNameHint,
+              initialValue: _budgetName,
+              validator: (p0) => p0.validateNotNull(context),
+              onChanged: (v) {
+                _budgetName = v;
+              }),
           gapH16,
           BFormPickerIcon(
             initialValue: IconManagerData.getIconModel(_budget.iconName),
@@ -109,15 +116,8 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
               return null;
             },
           ),
-          gapH16,
-          BBottomsheetRangeDatetime(
-              initialValue: _dateTimeRangeModel,
-              onChanged: (e) {
-                _dateTimeRangeModel = e;
-                _updateLimitFieldVisibility();
-              }),
-          gapH16,
-          if (_showLimitField)
+          if (_showLimitField) ...[
+            gapH16,
             BFormFieldAmount(
                 initialValue: _limit,
                 label: context.loc.limit,
@@ -126,6 +126,15 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
                     _limit = v;
                   }
                 }),
+          ],
+          gapH16,
+          BBottomsheetRangeDatetime(
+              initialValue: _dateTimeRangeModel,
+              onChanged: (e) {
+                _dateTimeRangeModel = e;
+                _updateLimitFieldVisibility();
+              }),
+          gapH16,
           const SizedBox(height: 64),
           Consumer(
             builder: (context, ref, child) {

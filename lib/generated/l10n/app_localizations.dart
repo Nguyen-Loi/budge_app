@@ -2242,6 +2242,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?'**
   String get confirmNewAccountLoginMessage;
+
+  /// No description provided for @previewValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview: {value}'**
+  String previewValue(Object value);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

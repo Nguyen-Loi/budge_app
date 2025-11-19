@@ -421,5 +421,6 @@
     "pAnErrorUnexpectedOccur": "An unexpected error occurred: {errorMessage}",
     "noInternetConnection": "No internet connection",
     "confirmNewAccountLoginTitle": "Confirm new account login",
-    "confirmNewAccountLoginMessage": "If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?"
+    "confirmNewAccountLoginMessage": "If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?",
+    "previewValue": "Preview: {value}"
 }

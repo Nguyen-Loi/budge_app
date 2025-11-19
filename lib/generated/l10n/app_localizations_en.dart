@@ -1142,4 +1142,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmNewAccountLoginMessage => 'If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?';
+
+  @override
+  String previewValue(Object value) {
+    return 'Preview: $value';
+  }
 }

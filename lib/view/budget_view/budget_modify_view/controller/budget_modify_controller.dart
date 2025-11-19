@@ -7,12 +7,12 @@ import 'package:budget_app/view/budget_view/budget_detail_view/controller/budget
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final budgetModifyControllerProvider = Provider.autoDispose
-    .family<BudgetModifyController, BudgetModel>((ref, budgetModel) {
-  return BudgetModifyController(
-      defaultBudget: budgetModel,
-  );
-});
+final budgetModifyControllerProvider = NotifierProvider.autoDispose
+    .family<BudgetModifyController, void, BudgetModel>(
+  (budgetModel) {
+    return BudgetModifyController(defaultBudget: budgetModel);
+  },
+);
 
 class BudgetModifyController extends Notifier<void> {
   late BudgetRepository _budgetRepository;
@@ -28,16 +28,16 @@ class BudgetModifyController extends Notifier<void> {
     _budgetRepository = ref.watch(budgetRepositoryProvider);
     _budgetDetailController =
         ref.watch(budgetDetailControllerProvider(defaultBudget).notifier);
-    return;
   }
 
   void updateBudget(BuildContext context,
-      {required BudgetModel budget,
+      {required String budgetName,
       required String iconName,
       required int limit,
       required DatetimeRangeModel dateTimeRange}) async {
     final now = DateTime.now();
-    final budgetModify = budget.copyWith(
+    final budgetModify = defaultBudget.copyWith(
+        name: budgetName,
         iconName: iconName,
         budgetLimit: limit,
         updatedDate: now,
@@ -50,7 +50,7 @@ class BudgetModifyController extends Notifier<void> {
     closeDialog();
     res.fold((failure) {
       showSnackBar(context, failure.message);
-    }, (r) {
+    }, (_) {
       _budgetDetailController.updateState(budgetModify);
       Navigator.pop(context);
     });
