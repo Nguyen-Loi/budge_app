@@ -1,4 +1,3 @@
-
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/validate.dart';
@@ -10,30 +9,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 final profileControllerProvider =
-    StateNotifierProvider.autoDispose<ProfileController, bool>((ref) {
-  final userRepository = ref.watch(userRepositoryProvider);
-  final userController = ref.watch(userBaseControllerProvider.notifier);
-  return ProfileController(
-      userRepository: userRepository, userController: userController);
-});
+    NotifierProvider.autoDispose<ProfileController, bool>(ProfileController.new);
 
-class ProfileController extends StateNotifier<bool> {
-  ProfileController(
-      {required UserRepository userRepository,
-      required UserBaseController userController})
-      : _userRepository = userRepository,
-        _userController = userController,
-        super(true);
-  final UserRepository _userRepository;
-  final UserBaseController _userController;
+class ProfileController extends Notifier<bool> {
+  late final UserRepository _userRepository;
+  late UserBaseController _userController;
+
+  @override
+  bool build() {
+    _userRepository = ref.watch(userRepositoryProvider);
+    _userController = ref.watch(userBaseControllerProvider.notifier);
+    return true;
+  }
 
   void updateDisable(bool status) {
     state = status;
   }
 
   Future<void> update(BuildContext context,
-      {
-      required UserModel user,
+      {required UserModel user,
       required String name,
       required PhoneNumber phoneNumber,
       required String profileUrl}) async {
@@ -43,11 +37,12 @@ class ProfileController extends StateNotifier<bool> {
     final closeLoading = showLoading(context: context);
 
     final res = await _userRepository.updateUser(
-        user: user.copyWith(
-          name: name,
-          phoneNumber: phoneNumber,
-          profileUrl: profileUrl,
-        ),);
+      user: user.copyWith(
+        name: name,
+        phoneNumber: phoneNumber,
+        profileUrl: profileUrl,
+      ),
+    );
 
     res.fold((l) => showSnackBar(context, l.message), (user) {
       updateDisable(true);

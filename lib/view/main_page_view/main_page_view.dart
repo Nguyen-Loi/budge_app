@@ -129,8 +129,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
                     SizedBox(height: 16),
                     BButton(
                       onPressed: () {
-                        final refresh = ref.refresh(mainPageControllerProvider);
-                        logInfo('Refresh status: $refresh');
+                        ref.invalidate(mainPageControllerProvider);
                       },
                       title: context.loc.refresh,
                     )

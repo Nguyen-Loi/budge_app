@@ -12,26 +12,15 @@ import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/data/models/models_widget/chart_budget_model.dart';
-import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
-import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final reportPageControllerProvider =
-    StateNotifierProvider.autoDispose<ReportPageController, ReportFilterState>(
-        (ref) {
-  final budgets = ref.watch(budgetBaseControllerProvider);
-  final transactionsCard = ref.watch(transactionsBaseControllerProvider);
-  final user = ref.watch(userBaseControllerProvider);
-  return ReportPageController(
-    budgets: budgets,
-    transactionsCard: transactionsCard,
-    user: user,
-  );
-});
+    NotifierProvider.autoDispose<ReportPageController, ReportFilterState>(
+        ReportPageController.new);
 
 class ReportFilterState {
   final DateTimeRange dateTimeRange;
@@ -70,30 +59,10 @@ class ReportFilterState {
   }
 }
 
-class ReportPageController extends StateNotifier<ReportFilterState> {
-  ReportPageController({
-    required List<BudgetModel> budgets,
-    required List<TransactionCardModel> transactionsCard,
-    required UserModel user,
-  })  : _budgets = budgets,
-        _transactionsCard = transactionsCard,
-        super(ReportFilterState(
-          dateTimeRange: DateTime.now().getRangeMonth,
-          transactionTypes: [
-            TransactionTypeEnum.income,
-            TransactionTypeEnum.expense,
-          ],
-          selectedBudgetIds: budgets.map((b) => b.id).toList(),
-          chartData: [],
-          budgetTransactionsList: [],
-        )) {
-    _init();
-  }
+class ReportPageController extends Notifier<ReportFilterState> {
+  late List<BudgetModel> _budgets;
+  late List<TransactionCardModel> _transactionsCard;
 
-  final List<BudgetModel> _budgets;
-  final List<TransactionCardModel> _transactionsCard;
-
-  // Option ranges for filter
   late List<DateTimeRange> _dateRangeOptions;
   List<DateTimeRange> get dateRangeOptions => _dateRangeOptions;
 
@@ -114,7 +83,37 @@ class ReportPageController extends StateNotifier<ReportFilterState> {
     return maxDate.isBefore(now) ? now : maxDate;
   }
 
-  void _init() {
+  @override
+  ReportFilterState build() {
+    _budgets = ref.watch(budgetBaseControllerProvider);
+    _transactionsCard = ref.watch(transactionsBaseControllerProvider);
+
+    _initDateRangeOptions();
+
+    final initialDateRange = DateTime.now().getRangeMonth;
+    final initialTransactionTypes = [
+      TransactionTypeEnum.income,
+      TransactionTypeEnum.expense,
+    ];
+    final initialBudgetIds = _budgets.map((b) => b.id).toList();
+
+    final initialData = _calculateData(
+      dateRange: DateTime.now().getRangeMonth,
+      transactionTypes: initialTransactionTypes,
+      selectedBudgetIds: initialBudgetIds,
+    );
+
+    return ReportFilterState(
+      dateTimeRange: initialDateRange,
+      transactionTypes: initialTransactionTypes,
+      selectedBudgetIds: initialBudgetIds,
+      chartData: initialData['chartData'] as List<ChartBudgetModel>,
+      budgetTransactionsList: initialData['budgetTransactionsList']
+          as List<BudgetTransactionsModel>,
+    );
+  }
+
+  void _initDateRangeOptions() {
     final now = DateTime.now();
 
     // Initialize date range options
@@ -147,8 +146,44 @@ class ReportPageController extends StateNotifier<ReportFilterState> {
     _dateRangeOptions.add(
       DateTimeRange(start: minDateInTransactions, end: maxDateInTransactions),
     );
+  }
 
-    _updateData();
+  Map<String, dynamic> _calculateData({
+    required DateTimeRange dateRange,
+    required List<TransactionTypeEnum> transactionTypes,
+    required List<String> selectedBudgetIds,
+  }) {
+    // Filter transactions based on parameters
+    final filteredTransactions = _transactionsCard.where((e) {
+      bool isInDateRange =
+          e.transaction.transactionDate.isBetweenDateTimeRange(dateRange);
+      bool hasTransactionType = transactionTypes.contains(e.transactionType);
+      bool isInSelectedBudgets =
+          selectedBudgetIds.contains(e.transaction.budgetId);
+
+      return isInDateRange && hasTransactionType && isInSelectedBudgets;
+    }).toList();
+
+    final budgetFilter = _budgets.where((budget) {
+      return selectedBudgetIds.contains(budget.id);
+    }).toList();
+
+    // Calculate chart data
+    final chartData = ChartBudgetModel.toList(
+      allTransactionCard: filteredTransactions,
+      transactionTypes: transactionTypes,
+    );
+
+    // Calculate budget transactions list
+    final budgetTransactionsList = BudgetTransactionsModel.mapList(
+      budgetFilter,
+      filteredTransactions.map((e) => e.transaction).toList(),
+    );
+
+    return {
+      'chartData': chartData,
+      'budgetTransactionsList': budgetTransactionsList,
+    };
   }
 
   void updateDateTimeRange(DateTimeRange newRange) {
@@ -180,37 +215,16 @@ class ReportPageController extends StateNotifier<ReportFilterState> {
   }
 
   void _updateData() {
-    // Filter transactions based on current state
-    final filteredTransactions = _transactionsCard.where((e) {
-      bool isInDateRange = e.transaction.transactionDate
-          .isBetweenDateTimeRange(state.dateTimeRange);
-      bool hasTransactionType =
-          state.transactionTypes.contains(e.transactionType);
-      bool isInSelectedBudgets =
-          state.selectedBudgetIds.contains(e.transaction.budgetId);
-
-      return isInDateRange && hasTransactionType && isInSelectedBudgets;
-    }).toList();
-
-    final budgetFilter = _budgets.where((budget) {
-      return state.selectedBudgetIds.contains(budget.id);
-    }).toList();
-
-    // Update chart data
-    final chartData = ChartBudgetModel.toList(
-      allTransactionCard: filteredTransactions,
+    final calculatedData = _calculateData(
+      dateRange: state.dateTimeRange,
       transactionTypes: state.transactionTypes,
-    );
-
-    // Update budget transactions list
-    final budgetTransactionsList = BudgetTransactionsModel.mapList(
-      budgetFilter,
-      filteredTransactions.map((e) => e.transaction).toList(),
+      selectedBudgetIds: state.selectedBudgetIds,
     );
 
     state = state.copyWith(
-      chartData: chartData,
-      budgetTransactionsList: budgetTransactionsList,
+      chartData: calculatedData['chartData'] as List<ChartBudgetModel>,
+      budgetTransactionsList: calculatedData['budgetTransactionsList']
+          as List<BudgetTransactionsModel>,
     );
   }
 
@@ -233,18 +247,14 @@ class ReportPageController extends StateNotifier<ReportFilterState> {
 
       showSnackBar(context, l.message);
     }, (r) {
+      final info = BDialogInfo(
+        dialogInfoType: BDialogInfoType.success,
+        message: context.loc.reportExportedSuccessfully,
+      );
       if (kIsWeb) {
-        // For web, the file is automatically downloaded
-        BDialogInfo(
-          dialogInfoType: BDialogInfoType.success,
-          message: context.loc.reportExportedSuccessfully,
-        ).present(context);
+        info.present(context);
       } else {
-        // For mobile/desktop, show the dialog with open file option
-        BDialogInfo(
-          dialogInfoType: BDialogInfoType.success,
-          message: context.loc.reportExportedSuccessfully,
-        ).presentAction(
+        info.presentAction(
           context,
           textSubmit: context.loc.openFile,
           onSubmit: () async {

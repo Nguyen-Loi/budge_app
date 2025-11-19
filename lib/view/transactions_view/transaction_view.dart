@@ -379,21 +379,19 @@ class _TransactionViewState extends ConsumerState<TransactionView>
 }
 
 final transactionControllerProvider =
-    StateNotifierProvider.autoDispose<TransactionsController, TransactionState>(
-        (ref) {
-  final transactionBase = ref.watch(transactionsBaseControllerProvider);
-  return TransactionsController(transactionsState: transactionBase);
-});
+    NotifierProvider.autoDispose<TransactionsController, TransactionState>(
+        TransactionsController.new);
 
-class TransactionsController extends StateNotifier<TransactionState> {
-  TransactionsController({
-    required List<TransactionCardModel> transactionsState,
-  })  : _transactionBase = transactionsState,
-        super(TransactionState(transactions: [], sumIncome: 0, sumExpense: 0)) {
+class TransactionsController extends Notifier<TransactionState> {
+  late List<TransactionCardModel> _transactionBase;
+
+  @override
+  TransactionState build() {
+    _transactionBase = ref.watch(transactionsBaseControllerProvider);
     updateDate(_dateTimePicker);
     _init();
+    return state;
   }
-  final List<TransactionCardModel> _transactionBase;
 
   void _init() {
     final now = DateTime.now();

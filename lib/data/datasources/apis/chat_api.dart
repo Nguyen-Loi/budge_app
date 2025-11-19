@@ -71,6 +71,7 @@ class ChatApi implements IBotApi {
       {required List<ChatModel> history}) async {
     AppLocalizations loc = AppLocalizations.of(context);
     DateTime now = DateTime.now();
+    now = now.add(const Duration(seconds: 1));
     final currentUserChat = history.last;
     final remoteConfig = _ref.read(remoteConfigBaseControllerProvider);
     final url = Uri.parse('https://openrouter.ai/api/v1/chat/completions');

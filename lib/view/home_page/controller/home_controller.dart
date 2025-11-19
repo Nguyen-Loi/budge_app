@@ -1,4 +1,3 @@
-import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/budget_type_enum.dart';
@@ -15,33 +14,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final homeControllerProvider =
-    StateNotifierProvider<HomeController, void>((ref) {
-  final transactions = ref.watch(transactionsBaseControllerProvider);
-  final budgets = ref.watch(budgetBaseControllerProvider);
-  final authApi = ref.watch(authApiProvider);
-  return HomeController(
-    null,
-    transactions: transactions,
-    budgets: budgets,
-    authAPI: authApi,
-    ref: ref,
-  );
-});
+    NotifierProvider<HomeController, void>(HomeController.new);
 
-class HomeController extends StateNotifier<void> {
-  HomeController(
-    super.state, {
-    required this.transactions,
-    required this.budgets,
-    required AuthAPI authAPI,
-    required Ref ref,
-  })  : _authApi = authAPI,
-        _ref = ref;
+class HomeController extends Notifier<void> {
+  late List<TransactionCardModel> _transactions;
+  late List<BudgetModel> _budgets;
+  late final AuthAPI _authApi;
 
-  final List<TransactionCardModel> transactions;
-  final List<BudgetModel> budgets;
-  final AuthAPI _authApi;
-  final Ref _ref;
+  @override
+  void build() {
+    _transactions = ref.watch(transactionsBaseControllerProvider);
+    _budgets = ref.watch(budgetBaseControllerProvider);
+    _authApi = ref.watch(authApiProvider);
+    return;
+  }
 
   Future<void> signOut(BuildContext context) async {
     final navigator = Navigator.of(context);
@@ -52,8 +38,7 @@ class HomeController extends StateNotifier<void> {
 
     try {
       await _authApi.signOut(context);
-      final refresh = _ref.refresh(mainPageControllerProvider);
-      logInfo('Refresh status: $refresh');
+      ref.invalidate(mainPageControllerProvider);
     } catch (e) {
       if (context.mounted) {
         showSnackBar(context, 'Error signing out. Please try again.');
@@ -89,7 +74,7 @@ class HomeController extends StateNotifier<void> {
   }
 
   List<BudgetModel> get budgetsPreview {
-    final expenseBudgets = budgets
+    final expenseBudgets = _budgets
         .where((budget) => budget.budgetType == BudgetTypeEnum.expense)
         .toList();
 
@@ -99,14 +84,14 @@ class HomeController extends StateNotifier<void> {
   }
 
   List<TransactionCardModel> _getTransactionsForMonth(DateTime month) {
-    return transactions
+    return _transactions
         .where((transaction) =>
             transaction.transaction.transactionDate.isSameMonth(month))
         .toList();
   }
 
   List<TransactionCardModel> get transactionsRecently {
-    final sortedTransactions = transactions.toList();
+    final sortedTransactions = _transactions.toList();
     sortedTransactions.sort((a, b) =>
         b.transaction.transactionDate.compareTo(a.transaction.transactionDate));
     return sortedTransactions.take(6).toList();

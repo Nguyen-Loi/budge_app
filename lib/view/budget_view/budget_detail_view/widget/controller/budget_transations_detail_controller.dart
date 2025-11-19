@@ -4,25 +4,26 @@ import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
-/// Get lastest transaction of this budget
-final budgetTransactionDetailControllerProvider = StateNotifierProvider.family<
+/// Get latest transaction of this budget
+final budgetTransactionDetailControllerProvider = NotifierProvider.family<
     BudgetTransactionsDetailController,
     List<TransactionModel>,
-    String>((ref, budgetId) {
-  final transactionsById = ref
-      .watch(transactionsBaseControllerProvider)
-      .expand((e) => [e.transaction])
-      .filter((e) => e.budgetId == budgetId)
-      .sorted((a, b) => b.transactionDate.compareTo(a.transactionDate))
-      .toList();
-  return BudgetTransactionsDetailController(
-    transactions: transactionsById,
-  );
-});
+    String>((budgetId) => BudgetTransactionsDetailController(budgetId));
 
-class BudgetTransactionsDetailController
-    extends StateNotifier<List<TransactionModel>> {
-  BudgetTransactionsDetailController(
-      {required List<TransactionModel> transactions})
-      : super(transactions);
+class BudgetTransactionsDetailController extends Notifier<List<TransactionModel>> {
+  final String budgetId;
+  
+  BudgetTransactionsDetailController(this.budgetId);
+  
+  @override
+  List<TransactionModel> build() {
+    final transactionsById = ref
+        .watch(transactionsBaseControllerProvider)
+        .expand((e) => [e.transaction])
+        .filter((e) => e.budgetId == budgetId)
+        .sorted((a, b) => b.transactionDate.compareTo(a.transactionDate))
+        .toList();
+    
+    return transactionsById;
+  }
 }

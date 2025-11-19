@@ -9,7 +9,7 @@ import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
-import 'package:budget_app/common/shared_pref/language_controller.dart';
+import 'package:budget_app/common/shared_pref/language_controller.dart' as language_controller;
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
@@ -129,12 +129,12 @@ abstract class IAuthApi {
 class AuthAPI implements IAuthApi {
   final FirebaseAuth _auth;
   final FirebaseFirestore _db;
-  final Ref<Object?> _ref;
+  final Ref _ref;
   final SharedUtility _sharedPref;
   AuthAPI({
     required FirebaseAuth auth,
     required FirebaseFirestore db,
-    required Ref<Object?> ref,
+    required Ref ref,
     required SharedUtility sharedPref,
   })  : _auth = auth,
         _ref = ref,
@@ -220,7 +220,7 @@ class AuthAPI implements IAuthApi {
       accountTypeValue: accountType.value,
       currencyTypeValue: CurrencyType.vnd.code,
       role: UserRoleEnum.normal,
-      languageCode: _ref.read(languageControllerProvider).code,
+      languageCode: _ref.read(language_controller.languageControllerProvider).code,
       isRemindTransactionEveryDate: true,
       isActive: true,
       createdDate: now,

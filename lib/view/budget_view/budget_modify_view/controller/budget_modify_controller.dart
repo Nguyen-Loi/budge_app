@@ -4,33 +4,32 @@ import 'package:budget_app/data/datasources/repositories/budget_repository.dart'
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/controller/budget_detail_controller.dart';
-import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final budgetModifyControllerProvider =
-    Provider.autoDispose.family<BudgetModifyController, BudgetModel>((ref, budgetModel) {
-  final budgetRepository = ref.watch(budgetRepositoryProvider);
-  final uid = ref.watch(uidControllerProvider);
-  final budgetDetailController =
-      ref.watch(budgetDetailControllerProvider(budgetModel).notifier);
+final budgetModifyControllerProvider = Provider.autoDispose
+    .family<BudgetModifyController, BudgetModel>((ref, budgetModel) {
   return BudgetModifyController(
-      budgetRepository: budgetRepository,
-      uid: uid,
-      budgetDetailController: budgetDetailController);
+      defaultBudget: budgetModel,
+  );
 });
 
-class BudgetModifyController extends StateNotifier<void> {
-  final BudgetRepository _budgetRepository;
-  final BudgetDetailController _budgetDetailController;
+class BudgetModifyController extends Notifier<void> {
+  late BudgetRepository _budgetRepository;
+  late BudgetDetailController _budgetDetailController;
+  final BudgetModel defaultBudget;
 
-  BudgetModifyController(
-      {required BudgetRepository budgetRepository,
-      required String uid,
-      required BudgetDetailController budgetDetailController})
-      : _budgetRepository = budgetRepository,
-        _budgetDetailController = budgetDetailController,
-        super(null);
+  BudgetModifyController({
+    required this.defaultBudget,
+  });
+
+  @override
+  void build() {
+    _budgetRepository = ref.watch(budgetRepositoryProvider);
+    _budgetDetailController =
+        ref.watch(budgetDetailControllerProvider(defaultBudget).notifier);
+    return;
+  }
 
   void updateBudget(BuildContext context,
       {required BudgetModel budget,

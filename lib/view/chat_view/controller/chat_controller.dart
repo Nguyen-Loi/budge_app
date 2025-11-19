@@ -12,26 +12,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final chatControllerProvider =
-    StateNotifierProvider.autoDispose<ChatController, bool>((ref) {
-  final chatBaseController = ref.watch(chatBaseControllerProvider.notifier);
-  final chatApi = ref.watch(chatAPIProvider);
-  final uid = ref.watch(uidControllerProvider);
-  return ChatController(
-      chatBaseController: chatBaseController, chats: chatApi, uid: uid);
-});
+    NotifierProvider.autoDispose<ChatController, bool>(ChatController.new);
+class ChatController extends Notifier<bool> {
 
-class ChatController extends StateNotifier<bool> {
-  ChatController(
-      {required ChatBaseController chatBaseController,
-      required ChatApi chats,
-      required String uid})
-      : _chatBaseController = chatBaseController,
-        _chatApi = chats,
-        _uid = uid,
-        super(false);
-  final ChatBaseController _chatBaseController;
-  final ChatApi _chatApi;
-  final String _uid;
+  late ChatBaseController _chatBaseController;
+  late ChatApi _chatApi;
+  late String _uid;
+
+    @override
+  bool build() {
+    _chatBaseController = ref.watch(chatBaseControllerProvider.notifier);
+    _chatApi = ref.watch(chatAPIProvider);
+    _uid = ref.watch(uidControllerProvider);
+   return false;
+  }
 
   // Make is chat related to history
   List<ChatModel> get _recentChats {
@@ -80,4 +74,5 @@ class ChatController extends StateNotifier<bool> {
     await _chatBaseController.init();
     closeDialog();
   }
+
 }

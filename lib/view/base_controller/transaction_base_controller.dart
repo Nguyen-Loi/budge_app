@@ -5,33 +5,23 @@ import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final transactionsBaseControllerProvider = StateNotifierProvider<
-    TransactionsBaseController, List<TransactionCardModel>>((ref) {
-  final uid = ref.watch(uidControllerProvider).toString();
-  final transactionRepository = ref.watch(transactionRepositoryProvider);
-  final budgetController = ref.watch(budgetBaseControllerProvider.notifier);
-  return TransactionsBaseController(
-    transactionRepository: transactionRepository,
-    uid: uid,
-    budgetController: budgetController,
-  );
-});
+final transactionsBaseControllerProvider =
+    NotifierProvider<TransactionsBaseController, List<TransactionCardModel>>(
+        TransactionsBaseController.new);
 
-class TransactionsBaseController
-    extends StateNotifier<List<TransactionCardModel>> {
-  TransactionsBaseController({
-    required TransactionRepository transactionRepository,
-    required BudgetBaseController budgetController,
-    required String uid,
-  })  : _transactionRepository = transactionRepository,
-        _uid = uid,
-        _budgetController = budgetController,
-        super([]);
-  final TransactionRepository _transactionRepository;
-  final BudgetBaseController _budgetController;
-  final String _uid;
-
+class TransactionsBaseController extends Notifier<List<TransactionCardModel>> {
+  late final TransactionRepository _transactionRepository;
+  late final BudgetBaseController _budgetController;
+  late final String _uid;
   List<TransactionCardModel> _allCardTranctions = [];
+
+  @override
+  List<TransactionCardModel> build() {
+    _uid = ref.watch(uidControllerProvider).toString();
+    _transactionRepository = ref.watch(transactionRepositoryProvider);
+    _budgetController = ref.watch(budgetBaseControllerProvider.notifier);
+    return [];
+  }
 
   Future<List<TransactionCardModel>> fetch() async {
     final transactions = await _transactionRepository.fetchTransaction(_uid);

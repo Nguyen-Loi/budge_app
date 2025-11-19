@@ -8,21 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final assetControllerProvider =
-    StateNotifierProvider<AssetController, List<AssetModel>>((ref) {
-  final assetApi = ref.watch(assetApiProvider);
-  return AssetController(assetApi: assetApi);
-});
+    NotifierProvider<AssetController, List<AssetModel>>(AssetController.new);
 
-class AssetController extends StateNotifier<List<AssetModel>> {
-  AssetController({required AssetApi assetApi})
-      : _assetApi = assetApi,
-        super([]);
+class AssetController extends Notifier<List<AssetModel>> {
 
-  final AssetApi _assetApi;
+  @override
+  List<AssetModel> build() {
+    return [];
+  }
 
   Future<void> load(BuildContext context) async {
     try {
-      final assets = await _assetApi.fetch();
+      final assets = await ref.read(assetApiProvider).fetch();
       if (kIsWeb) return;
       if (!context.mounted) {
         throw Exception('Context is not mounted: $runtimeType');

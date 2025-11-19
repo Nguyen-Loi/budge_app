@@ -4,7 +4,6 @@ import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
-import 'package:budget_app/data/datasources/apis/user_api.dart';
 import 'package:budget_app/data/datasources/repositories/transaction_repository.dart';
 import 'package:budget_app/data/datasources/repositories/user_repository.dart';
 import 'package:budget_app/data/models/user_model.dart';
@@ -16,33 +15,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userBaseControllerProvider =
-    StateNotifierProvider<UserBaseController, UserModel>((ref) {
-  return UserBaseController(
-      uid: ref.watch(uidControllerProvider),
-      ref: ref,
-      userRepository: ref.watch(userRepositoryProvider),
-      userApi: ref.watch(userApiProvider));
-});
+    NotifierProvider<UserBaseController, UserModel>(UserBaseController.new);
 
 final userFutureProvider = FutureProvider((ref) {
   final loadUser = ref.watch(userBaseControllerProvider.notifier);
   return loadUser.fetchUserInfo();
 });
 
-class UserBaseController extends StateNotifier<UserModel> {
-  final UserRepository _userRepository;
-  final String _uid;
-  final Ref _ref;
+class UserBaseController extends Notifier<UserModel> {
+  late final UserRepository _userRepository;
+  late String _uid;
 
-  UserBaseController(
-      {required UserRepository userRepository,
-      required Ref ref,
-      required String uid,
-      required UserApi userApi})
-      : _userRepository = userRepository,
-        _ref = ref,
-        _uid = uid,
-        super(UserModel.defaultData(uid));
+  @override
+  UserModel build() {
+    _uid = ref.watch(uidControllerProvider);
+
+    _userRepository = ref.watch(userRepositoryProvider);
+    return UserModel.defaultData(_uid);
+  }
 
   Future<UserModel> fetchUserInfo() async {
     UserModel currentUser = await _userRepository.getUserById(_uid);
@@ -51,7 +41,7 @@ class UserBaseController extends StateNotifier<UserModel> {
     return currentUser;
   }
 
-  bool get isLogin => _ref.read(authApiProvider).isLogin;
+  bool get isLogin => ref.read(authApiProvider).isLogin;
 
   void reload(UserModel user) {
     state = user;
@@ -89,7 +79,7 @@ class UserBaseController extends StateNotifier<UserModel> {
 
   void updateWallet(BuildContext context, {required int newValue}) async {
     final closeLoading = showLoading(context: context);
-    final res = await _ref
+    final res = await ref
         .read(transactionRepositoryProvider)
         .updateWallet(user: state, newValue: newValue, note: '');
     closeLoading();
@@ -98,7 +88,7 @@ class UserBaseController extends StateNotifier<UserModel> {
       showSnackBarError(context, l.message);
     }, (r) {
       reload(r.$1);
-      _ref.read(transactionsBaseControllerProvider.notifier).addState(r.$2);
+      ref.read(transactionsBaseControllerProvider.notifier).addState(r.$2);
       _trackTransactionForReview(context);
       Navigator.pop(context);
     });
@@ -110,11 +100,11 @@ class UserBaseController extends StateNotifier<UserModel> {
       required String? note,
       required DateTime transactionDate}) async {
     final closeDialog = showLoading(context: context);
-    final currentBudget = _ref
+    final currentBudget = ref
         .read(budgetBaseControllerProvider)
         .firstWhere((e) => e.id == budgetId);
 
-    final res = await _ref
+    final res = await ref
         .read(transactionRepositoryProvider)
         .addBudgetTransaction(
             user: state,
@@ -127,8 +117,8 @@ class UserBaseController extends StateNotifier<UserModel> {
       showSnackBarError(context, l.message);
     }, (r) {
       reload(r.$3);
-      _ref.read(transactionsBaseControllerProvider.notifier).addState(r.$1);
-      _ref.read(budgetBaseControllerProvider.notifier).updateState(r.$2);
+      ref.read(transactionsBaseControllerProvider.notifier).addState(r.$1);
+      ref.read(budgetBaseControllerProvider.notifier).updateState(r.$2);
       _trackTransactionForReview(context);
 
       Navigator.of(context).pop();
@@ -139,8 +129,8 @@ class UserBaseController extends StateNotifier<UserModel> {
 
   void _trackTransactionForReview(BuildContext context) async {
     try {
-      final sharedUtility = _ref.read(sharedUtilityProvider);
-      final inAppRatingService = _ref.read(inAppRatingServiceProvider);
+      final sharedUtility = ref.read(sharedUtilityProvider);
+      final inAppRatingService = ref.read(inAppRatingServiceProvider);
 
       await sharedUtility.incrementUserTransactionCount();
       final currentTransactionCount = sharedUtility.getUserTransactionCount();

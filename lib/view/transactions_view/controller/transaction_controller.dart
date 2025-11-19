@@ -6,21 +6,21 @@ import 'package:budget_app/view/base_controller/transaction_base_controller.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final transactionControllerProvider = StateNotifierProvider.autoDispose<
-    TransactionsController, List<TransactionCardModel>>((ref) {
-  final transactionBase = ref.watch(transactionsBaseControllerProvider);
-  return TransactionsController(transactionsState: transactionBase);
-});
+final transactionControllerProvider = NotifierProvider.autoDispose<
+    TransactionsController,
+    List<TransactionCardModel>>(TransactionsController.new);
 
-class TransactionsController extends StateNotifier<List<TransactionCardModel>> {
-  TransactionsController({
-    required List<TransactionCardModel> transactionsState,
-  })  : _transactionBase = transactionsState,
-        super([]) {
+class TransactionsController extends Notifier<List<TransactionCardModel>> {
+
+  late final List<TransactionCardModel> _transactionBase;
+
+  @override
+  List<TransactionCardModel> build() {
+    _transactionBase = ref.watch(transactionsBaseControllerProvider);
     updateDate(_dateTimePicker);
     _init();
+    return state;
   }
-  final List<TransactionCardModel> _transactionBase;
 
   void _init() {
     final now = DateTime.now();

@@ -1,13 +1,12 @@
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-final isDarkControllerProvider = StateNotifierProvider<ThemeController, bool>((ref) {
-  return ThemeController(ref: ref);
-});
-class ThemeController extends StateNotifier<bool> {
-  ThemeController({required this.ref}) : super(false) {
-    state = ref.watch(sharedUtilityProvider).isDarkModeEnabled();
+final isDarkControllerProvider = NotifierProvider<ThemeController, bool>(ThemeController.new);
+
+class ThemeController extends Notifier<bool> {
+  @override
+  bool build() {
+    return ref.watch(sharedUtilityProvider).isDarkModeEnabled();
   }
-  Ref ref;
 
   void toggleTheme() {
     bool isDark = ref.watch(sharedUtilityProvider).isDarkModeEnabled();

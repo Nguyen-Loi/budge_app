@@ -8,34 +8,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // This budgets filter on budget screen
 final budgetBaseControllerProvider =
-    StateNotifierProvider<BudgetBaseController, List<BudgetModel>>((ref) {
-  final uid = ref.watch(uidControllerProvider);
-  final budgetRepository = ref.watch(budgetRepositoryProvider);
-  return BudgetBaseController(
-    budgetRepository: budgetRepository,
-    uid: uid,
-    ref: ref,
-  );
-});
+    NotifierProvider<BudgetBaseController, List<BudgetModel>>(
+        BudgetBaseController.new);
 
 final budgetsFutureProvider = FutureProvider((ref) {
   final data = ref.watch(budgetBaseControllerProvider.notifier);
   return data.fetch();
 });
 
-class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
-  BudgetBaseController({
-    required BudgetRepository budgetRepository,
-    required String uid,
-    required Ref ref,
-  })  : _budgetRepository = budgetRepository,
-        _uid = uid,
-        _ref = ref,
-        super([]);
+class BudgetBaseController extends Notifier<List<BudgetModel>> {
+  late BudgetRepository _budgetRepository;
+  late String _uid;
 
-  final BudgetRepository _budgetRepository;
-  final String _uid;
-  final Ref _ref;
+  @override
+  List<BudgetModel> build() {
+    _uid = ref.watch(uidControllerProvider);
+    _budgetRepository = ref.watch(budgetRepositoryProvider);
+    return [];
+  }
 
   List<BudgetModel> _allBudgets = [];
   List<BudgetModel> get getAll => _allBudgets;
@@ -58,7 +48,7 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
 
   /// Creates default budgets for first-time users
   Future<void> _createDefaultBudgetsIfNotExits() async {
-    final appLocalizations = _ref.read(appLocalizationsProvider);
+    final appLocalizations = ref.read(appLocalizationsProvider);
 
     if (!(DefaultBudgetService.shouldCreateDefaultBudgets(_allBudgets))) {
       return;
@@ -94,7 +84,7 @@ class BudgetBaseController extends StateNotifier<List<BudgetModel>> {
   Future<void> updateDefaultBudgetNames() async {
     if (_allBudgets.isEmpty) return;
 
-    final appLocalizations = _ref.read(appLocalizationsProvider);
+    final appLocalizations = ref.read(appLocalizationsProvider);
     final updatedBudgets = DefaultBudgetService.updateDefaultBudgetNames(
       _allBudgets,
       appLocalizations,

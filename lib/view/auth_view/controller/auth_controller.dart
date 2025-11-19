@@ -16,18 +16,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
 final authControllerProvider =
-    StateNotifierProvider<AuthController, void>((ref) {
-  final auth = ref.watch(authApiProvider);
-  return AuthController(authApi: auth, ref: ref);
-});
+    NotifierProvider<AuthController, void>(AuthController.new);
 
-class AuthController extends StateNotifier<void> {
-  final AuthAPI _authAPI;
-  final Ref _ref;
-  AuthController({required AuthAPI authApi, required Ref ref})
-      : _authAPI = authApi,
-        _ref = ref,
-        super(null);
+class AuthController extends Notifier<void> {
+  late final AuthAPI _authAPI;
+  @override
+  void build() {
+    _authAPI = ref.watch(authApiProvider);
+  }
 
   void loginWithEmailPassword(BuildContext context,
       {required String email, required String password}) async {
@@ -102,7 +98,7 @@ class AuthController extends StateNotifier<void> {
 
           return;
         } else {
-          _ref.invalidate(mainPageControllerProvider);
+          ref.invalidate(mainPageControllerProvider);
           Navigator.popUntil(context, (route) => route.isFirst);
         }
       }

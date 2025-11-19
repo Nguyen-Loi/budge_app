@@ -15,28 +15,26 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final remoteConfigBaseControllerProvider =
-    StateNotifierProvider<RemoteConfigBaseController, RemoteConfigModel>((ref) {
-  bool isRoleUserAds = ref.watch(userBaseControllerProvider.select((value) => value.roleAds));
-  return RemoteConfigBaseController(isRoleUserAds: isRoleUserAds);
-});
+    NotifierProvider<RemoteConfigBaseController, RemoteConfigModel>(
+        RemoteConfigBaseController.new);
 
-class RemoteConfigBaseController extends StateNotifier<RemoteConfigModel> {
+class RemoteConfigBaseController extends Notifier<RemoteConfigModel> {
   static RemoteConfigModel? _cachedConfig;
-
-  RemoteConfigBaseController({required bool isRoleUserAds})
-      : _isRoleUserAds = isRoleUserAds,
-        super(_cachedConfig ?? RemoteConfigModel.empty());
-
   final remoteConfig = FirebaseRemoteConfig.instance;
-  final bool _isRoleUserAds;
+  late final bool _isRoleUserAds;
   StreamSubscription<RemoteConfigUpdate>? _configUpdateSubscription;
 
   bool get isUserAds => state.isAds && !kIsWeb && _isRoleUserAds == true;
 
   @override
-  void dispose() {
-    _configUpdateSubscription?.cancel();
-    super.dispose();
+  RemoteConfigModel build() {
+    _isRoleUserAds =
+        ref.watch(userBaseControllerProvider.select((value) => value.roleAds));
+
+    ref.onDispose(() {
+      _configUpdateSubscription?.cancel();
+    });
+    return RemoteConfigModel.empty();
   }
 
   Future<void> initialize(BuildContext context,
