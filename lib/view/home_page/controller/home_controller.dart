@@ -38,7 +38,7 @@ class HomeController extends Notifier<void> {
 
     try {
       await _authApi.signOut(context);
-      ref.invalidate(mainPageControllerProvider);
+      ref.invalidate(mainPageFutureProvider);
     } catch (e) {
       if (context.mounted) {
         showSnackBar(context, 'Error signing out. Please try again.');

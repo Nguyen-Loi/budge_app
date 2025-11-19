@@ -117,7 +117,9 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
         child: ref.watch(mainPageFutureProvider(context)).when(
               data: (_) => _buildWithFirstTimeCheck(),
               error: (e, stackTrace) {
-                logError('MainPageView error: $e', error: e, stackTrace: stackTrace);
+                logError('MainPageView error: $e',
+                    error: e, stackTrace: stackTrace);
+
                 return Scaffold(
                     body: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -129,7 +131,7 @@ class _MainPageBottomBarState extends ConsumerState<MainPageView> {
                     SizedBox(height: 16),
                     BButton(
                       onPressed: () {
-                        ref.invalidate(mainPageControllerProvider);
+                        ref.invalidate(mainPageFutureProvider);
                       },
                       title: context.loc.refresh,
                     )

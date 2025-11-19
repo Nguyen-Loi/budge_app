@@ -42,7 +42,8 @@ class AuthController extends Notifier<void> {
   }) {
     _baseAuth(context,
         res: _authAPI.signUp(email: email, password: password),
-        accountType: AccountType.emailAndPassword);
+        accountType: AccountType.emailAndPassword,
+        onlySignUp: true);
   }
 
   void loginWithFacebook(BuildContext context) async {
@@ -65,7 +66,8 @@ class AuthController extends Notifier<void> {
 
   void _baseAuth(BuildContext context,
       {required Future<Either<Failure, CredentialInfo>> res,
-      required AccountType accountType}) async {
+      required AccountType accountType,
+      bool onlySignUp = false}) async {
     AppLocalizations loc = context.loc;
     final closeLoading = showLoading(context: context);
     final resAuth = await res;
@@ -75,6 +77,12 @@ class AuthController extends Notifier<void> {
       closeLoading();
       showSnackBarError(context, errorMessage);
     }, (credentialInfo) async {
+      if (onlySignUp) {
+        closeLoading();
+        showSnackBar(context, loc.accountCreateSuccess);
+        Navigator.pop(context);
+        return;
+      }
       bool isAccountExists =
           await _authAPI.checkAccountExists(credentialInfo.userAuthInfo.email);
       bool? isUserAcceptLogin;
@@ -98,7 +106,7 @@ class AuthController extends Notifier<void> {
 
           return;
         } else {
-          ref.invalidate(mainPageControllerProvider);
+          ref.invalidate(mainPageFutureProvider);
           Navigator.popUntil(context, (route) => route.isFirst);
         }
       }
