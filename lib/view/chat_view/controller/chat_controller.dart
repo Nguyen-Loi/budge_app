@@ -13,18 +13,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final chatControllerProvider =
     NotifierProvider.autoDispose<ChatController, bool>(ChatController.new);
-class ChatController extends Notifier<bool> {
 
+class ChatController extends Notifier<bool> {
   late ChatBaseController _chatBaseController;
   late ChatApi _chatApi;
   late String _uid;
 
-    @override
+  @override
   bool build() {
     _chatBaseController = ref.watch(chatBaseControllerProvider.notifier);
     _chatApi = ref.watch(chatAPIProvider);
     _uid = ref.watch(uidControllerProvider);
-   return false;
+    return false;
   }
 
   // Make is chat related to history
@@ -45,7 +45,7 @@ class ChatController extends Notifier<bool> {
     }
     final now = DateTime.now();
     final userChat = ChatModel(
-        id: GenId.chat,
+        id: GenId.chat(RoleChatEnum.user),
         userId: _uid,
         message: message,
         roleTypeValue: RoleChatEnum.user.value,
@@ -74,5 +74,4 @@ class ChatController extends Notifier<bool> {
     await _chatBaseController.init();
     closeDialog();
   }
-
 }

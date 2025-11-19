@@ -11,7 +11,7 @@ class ChatRowStart extends StatelessWidget {
   ChatModel geminiTyping(BuildContext context) {
     final now = DateTime.now();
     return ChatModel(
-        id: GenId.chat,
+        id: GenId.chat(RoleChatEnum.assistant),
         userId: '',
         message: context.loc.viBotHello,
         roleTypeValue: RoleChatEnum.assistant.value,

@@ -71,7 +71,7 @@ class ChatApi implements IBotApi {
       {required List<ChatModel> history}) async {
     AppLocalizations loc = AppLocalizations.of(context);
     DateTime now = DateTime.now();
-    now = now.add(const Duration(seconds: 1));
+    now = now.add(const Duration(milliseconds: 1));
     final currentUserChat = history.last;
     final remoteConfig = _ref.read(remoteConfigBaseControllerProvider);
     final url = Uri.parse('https://openrouter.ai/api/v1/chat/completions');
@@ -106,7 +106,7 @@ class ChatApi implements IBotApi {
           return left(Failure(message: loc.errorContactSupport));
         }
         ChatModel assistentChat = ChatModel(
-          id: GenId.chat,
+          id: GenId.chat(RoleChatEnum.assistant),
           userId: _uid,
           message: reply,
           roleTypeValue: RoleChatEnum.assistant.value,
@@ -140,7 +140,6 @@ class ChatApi implements IBotApi {
 
   Future<void> _writeToDB(List<ChatModel> chats) async {
     var batch = db.batch();
-    chats.sort((a, b) => a.createdDate.compareTo(b.createdDate));
     for (var chat in chats) {
       final docRef = db.collection(FirestorePath.chats(uid: _uid)).doc(chat.id);
       batch.set(docRef, chat.toMap());

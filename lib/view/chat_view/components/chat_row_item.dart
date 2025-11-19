@@ -218,12 +218,14 @@ class _ChatRowItemState extends ConsumerState<ChatRowItem>
         ? Theme.of(context).colorScheme.onPrimary
         : Theme.of(context).colorScheme.onSurface;
 
-    return isUser
-        ? BText(
-            widget.chatModel.message,
-            color: textColor,
-          )
-        : _buildRichMarkdown(textColor);
+    return SelectionArea(
+      child: isUser
+          ? BText(
+              widget.chatModel.message,
+              color: textColor,
+            )
+          : _buildRichMarkdown(textColor),
+    );
   }
 
   Widget _buildRichMarkdown(Color textColor) {
