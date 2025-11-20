@@ -9,7 +9,6 @@ import 'package:budget_app/core/type_defs.dart';
 import 'package:budget_app/data/models/chat_content_model.dart';
 import 'package:budget_app/data/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/data/models/user_model.dart';
-import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
@@ -47,13 +46,8 @@ class ChatApi implements IBotApi {
   List<ChatContentModel> basePrompt(BuildContext context) {
     PackageInfo packageInfo = _ref.read(packageInfoBaseControllerProvider);
     final userModel = _ref.read(userBaseControllerProvider);
-    final allBudgets = _ref.read(budgetBaseControllerProvider);
-    final allTransactions = _ref
-        .read(transactionsBaseControllerProvider)
-        .map((e) => e.transaction)
-        .toList();
-    final budgetAndTransactionModel =
-        BudgetTransactionsModel.mapList(allBudgets, allTransactions);
+    final allBudgetTransactions =
+        _ref.read(transactionsBaseControllerProvider);
     List<ChatContentModel> baseContents = [
       ChatContentModel(
           role: RoleChatEnum.user,
@@ -62,7 +56,7 @@ class ChatApi implements IBotApi {
               "Your responses should be concise, informative, and relevant to the user's request."
               "Information about the app smart budget:  ${packageInfo.toString()}, "
               "Info current user: ${userModel.toChatData(context)}, "
-              "Budgets and transaction information: ${budgetAndTransactionModel.toChatData}"),
+              "Budgets and transaction information: ${allBudgetTransactions.toChatData}"),
     ];
     return baseContents;
   }

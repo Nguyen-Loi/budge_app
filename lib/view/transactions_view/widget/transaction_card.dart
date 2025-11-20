@@ -10,14 +10,14 @@ import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
+import 'package:budget_app/data/models/merge_model/budget_transaction_model.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TransactionCard extends StatefulWidget {
   const TransactionCard({super.key, required this.model});
-  final TransactionCardModel model;
+  final BudgetTransactionModel model;
 
   @override
   State<TransactionCard> createState() => _TransactionCardState();
@@ -52,7 +52,9 @@ class _TransactionCardState extends State<TransactionCard>
 
   @override
   Widget build(BuildContext context) {
-    Color iconColor = IconManagerData.getIconModel(widget.model.iconName).color;
+    final budget = widget.model.budget;
+    final transaction = widget.model.transaction;
+    Color iconColor = IconManagerData.getIconModel(budget.iconName).color;
     return AnimatedBuilder(
       animation: _scaleAnimation,
       builder: (context, child) {
@@ -75,19 +77,19 @@ class _TransactionCardState extends State<TransactionCard>
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
                   leading: Hero(
-                    tag: 'transaction_icon_${widget.model.transaction.id}',
+                    tag: 'transaction_icon_${transaction.id}',
                     child: CircleAvatar(
                       radius: 24,
                       backgroundColor: iconColor.withAlpha(50),
-                      child: BIcon(name: widget.model.iconName),
+                      child: BIcon(name: budget.iconName),
                     ),
                   ),
-                  title: BText(widget.model.transactionName,
+                  title: BText(budget.name,
                       fontWeight: FontWeight.bold),
                   subtitle: BText.b3(
-                      widget.model.transaction.transactionDate.toFormatDate()),
+                      transaction.transactionDate.toFormatDate()),
                   trailing: Consumer(builder: (_, ref, __) {
-                    return BTextMoney(widget.model.transaction.amount,
+                    return BTextMoney(transaction.amount,
                         ref: ref);
                   }),
                 ),
@@ -130,7 +132,7 @@ class _TransactionCardState extends State<TransactionCard>
 
 class _TransactionDetailDialog extends StatefulWidget {
   const _TransactionDetailDialog({required this.model});
-  final TransactionCardModel model;
+  final BudgetTransactionModel model;
 
   @override
   State<_TransactionDetailDialog> createState() =>
@@ -178,7 +180,10 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
 
   @override
   Widget build(BuildContext context) {
-    Color iconColor = IconManagerData.getIconModel(widget.model.iconName).color;
+    final budget = widget.model.budget;
+    final transaction = widget.model.transaction;
+
+    Color iconColor = IconManagerData.getIconModel(budget.iconName).color;
 
     return Container(
       margin: const EdgeInsets.all(24),
@@ -215,7 +220,7 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
               child: Column(
                 children: [
                   Hero(
-                    tag: 'transaction_icon_${widget.model.transaction.id}',
+                    tag: 'transaction_icon_${transaction.id}',
                     child: Container(
                       width: 80,
                       height: 80,
@@ -230,12 +235,12 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
                           ),
                         ],
                       ),
-                      child: BIcon(name: widget.model.iconName, size: 40),
+                      child: BIcon(name: budget.iconName, size: 40),
                     ),
                   ),
                   gapH16,
                   BText.b1(
-                    widget.model.transactionName,
+                    budget.name,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     textAlign: TextAlign.center,
@@ -258,21 +263,21 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
                       _buildDetailCard(
                         icon: IconManager.note,
                         label: context.loc.note,
-                        content: widget.model.transaction.note,
+                        content: transaction.note,
                         isNote: true,
                       ),
                       _buildAmountCard(context),
                       _buildDetailCard(
                         icon: IconManager.transactionDate,
                         label: context.loc.transactionDate,
-                        content: widget.model.transaction.transactionDate
+                        content: transaction.transactionDate
                             .toFormatDate(),
                       ),
                       _buildDetailCard(
                         icon: IconManager.createdDate,
                         label: context.loc.createdDate,
                         content:
-                            widget.model.transaction.createdDate.toFormatDate(),
+                            transaction.createdDate.toFormatDate(),
                       ),
                     ],
                   ),
@@ -348,7 +353,8 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
   Widget _buildAmountCard(BuildContext context) {
     Color color;
     IconData icon;
-    switch (widget.model.transaction.transactionType) {
+    final transaction = widget.model.transaction;
+    switch (transaction.transactionType) {
       case TransactionTypeEnum.income:
         color = Theme.of(context).colorScheme.tertiary;
         icon = Icons.trending_up;
@@ -387,7 +393,7 @@ class _TransactionDetailDialogState extends State<_TransactionDetailDialog>
                 gapH4,
                 Consumer(builder: (_, ref, __) {
                   return BText.b1(
-                    widget.model.transaction.amount.toMoneyStr(ref),
+                    transaction.amount.toMoneyStr(ref),
                     color: color,
                     fontWeight: FontWeight.bold,
                   );

@@ -7,11 +7,11 @@ import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/models_widget/icon_model.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
-import 'package:budget_app/view/report_page/controller/report_page_controller.dart';
+import 'package:budget_app/view/report_page/controller/report_filter_model.dart';
 import 'package:flutter/material.dart';
 
 class ReportFilterDialog extends StatefulWidget {
-  final ReportFilterState currentState;
+  final ReportFilterModel currentState;
   final List<BudgetModel> availableBudgets;
   final List<TransactionTypeEnum> availableTransactionTypes;
   final List<DateTimeRange> dateRangeOptions;

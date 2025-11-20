@@ -23,7 +23,7 @@ final userFutureProvider = FutureProvider((ref) {
 });
 
 class UserBaseController extends Notifier<UserModel> {
-  late final UserRepository _userRepository;
+  late UserRepository _userRepository;
   late String _uid;
 
   @override

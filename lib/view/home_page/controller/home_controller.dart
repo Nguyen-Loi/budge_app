@@ -1,12 +1,11 @@
 import 'package:budget_app/common/widget/dialog/b_loading.dart';
 import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
-import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
 import 'package:budget_app/data/models/budget_model.dart';
-import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
-import 'package:budget_app/view/base_controller/budget_base_controller.dart';
+import 'package:budget_app/data/models/merge_model/budget_transaction_model.dart';
+import 'package:budget_app/data/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/main_page_view/controller/main_page_controller.dart';
@@ -17,14 +16,12 @@ final homeControllerProvider =
     NotifierProvider<HomeController, void>(HomeController.new);
 
 class HomeController extends Notifier<void> {
-  late List<TransactionCardModel> _transactions;
-  late List<BudgetModel> _budgets;
+  late List<BudgetTransactionsModel> _budgetsTransactions;
   late final AuthAPI _authApi;
 
   @override
   void build() {
-    _transactions = ref.watch(transactionsBaseControllerProvider);
-    _budgets = ref.watch(budgetBaseControllerProvider);
+    _budgetsTransactions = ref.watch(transactionsBaseControllerProvider);
     _authApi = ref.watch(authApiProvider);
     return;
   }
@@ -52,48 +49,34 @@ class HomeController extends Notifier<void> {
   }
 
   double get totalExpenseThisMonth {
-    final now = DateTime.now();
-    const expenseTypes = {
-      TransactionTypeEnum.expense,
-    };
-
-    return _getTransactionsForMonth(now)
-        .where((e) => expenseTypes.contains(e.transaction.transactionType))
-        .fold(0.0, (sum, e) => sum + e.transaction.amount);
+    return _getTransactionsForThisMonthWithType(TransactionTypeEnum.expense)
+        .fold(0.0, (total, e) => total + e.transaction.amount);
   }
 
   double get totalIncomeThisMonth {
-    final now = DateTime.now();
-    const incomeTypes = {
-      TransactionTypeEnum.income,
-    };
-
-    return _getTransactionsForMonth(now)
-        .where((e) => incomeTypes.contains(e.transaction.transactionType))
-        .fold(0.0, (sum, e) => sum + e.transaction.amount);
+    return _getTransactionsForThisMonthWithType(TransactionTypeEnum.income)
+        .fold(0.0, (total, e) => total + e.transaction.amount);
   }
 
   List<BudgetModel> get budgetsPreview {
-    final expenseBudgets = _budgets
-        .where((budget) => budget.budgetType == BudgetTypeEnum.expense)
-        .toList();
+    final expenseBudgets = _budgetsTransactions.map((e) => e.budget).toList();
 
     expenseBudgets.sort((a, b) => b.updatedDate.compareTo(a.updatedDate));
 
     return expenseBudgets.take(3).toList();
   }
 
-  List<TransactionCardModel> _getTransactionsForMonth(DateTime month) {
-    return _transactions
-        .where((transaction) =>
-            transaction.transaction.transactionDate.isSameMonth(month))
+  List<BudgetTransactionModel> _getTransactionsForThisMonthWithType(TransactionTypeEnum type) {
+    final now = DateTime.now();
+    return _budgetsTransactions.toEveryItem
+        .where((e) => e.transaction.transactionDate.isSameMonth(now) && e.transaction.transactionType == type)
         .toList();
   }
 
-  List<TransactionCardModel> get transactionsRecently {
-    final sortedTransactions = _transactions.toList();
-    sortedTransactions.sort((a, b) =>
-        b.transaction.transactionDate.compareTo(a.transaction.transactionDate));
+  List<BudgetTransactionModel> get transactionsRecently {
+    final sortedTransactions = _budgetsTransactions.toEveryItem.toList();
+    sortedTransactions
+        .sort((a, b) => b.transaction.transactionDate.compareTo(a.transaction.transactionDate));
     return sortedTransactions.take(6).toList();
   }
 }

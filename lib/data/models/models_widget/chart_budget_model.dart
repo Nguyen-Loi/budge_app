@@ -1,6 +1,6 @@
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
-import 'package:budget_app/core/extension/extension_data.dart';
-import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
+import 'package:budget_app/data/models/merge_model/budget_transactions_model.dart';
+import 'package:budget_app/data/models/transaction_model.dart';
 
 class ChartBudgetModel {
   final String? budgetId;
@@ -43,39 +43,44 @@ class ChartBudgetModel {
   }
 
   static List<ChartBudgetModel> toList(
-      {required List<TransactionCardModel> allTransactionCard,
+      {required List<BudgetTransactionsModel> budgetTransaction,
       required List<TransactionTypeEnum> transactionTypes}) {
     List<ChartBudgetModel> list = [];
 
-    final listInChart = allTransactionCard
-        .where((e) => transactionTypes.contains(e.transactionType))
+    final filterBudgetTransaction = budgetTransaction
+        .map((e) {
+          final filteredTransactions = e.transactions
+              .where((tx) => transactionTypes.contains(tx.transactionType))
+              .toList();
+
+          return BudgetTransactionsModel(
+            budget: e.budget,
+            transactions: filteredTransactions,
+          );
+        })
+        .where((e) => e.transactions.isNotEmpty)
         .toList();
 
-    final groupBudgetId = listInChart.groupBy((e) => e.transaction.budgetId);
-    for (var e in groupBudgetId.entries) {
-      TransactionCardModel representItem = e.value.first;
-
-      // Calculate income and expense separately
-      int incomeAmount = e.value
+    for (var e in filterBudgetTransaction) {
+      final List<TransactionModel> transactions = e.transactions;
+      final budget = e.budget;
+      int incomeAmount = transactions
           .where((element) =>
               element.transactionType == TransactionTypeEnum.income)
-          .fold(0, (sum, element) => sum + element.transaction.amount);
+          .fold<int>(0, (total, element) => total + element.amount);
 
-      int expenseAmount = e.value
+      int expenseAmount = transactions
           .where((element) =>
               element.transactionType == TransactionTypeEnum.expense)
-          .fold(0, (sum, element) => sum + element.transaction.amount.abs());
+          .fold<int>(0, (total, element) => total + element.amount.abs());
 
-      // Calculate total based on transaction types requested
       int totalAmount;
       if (transactionTypes.contains(TransactionTypeEnum.income) &&
           transactionTypes.contains(TransactionTypeEnum.expense)) {
-        // For mixed types, use net amount but show absolute for visualization
         totalAmount = incomeAmount - expenseAmount;
       } else if (transactionTypes.contains(TransactionTypeEnum.income)) {
         totalAmount = incomeAmount;
       } else {
-        // For expense-only, use positive value to ensure it's included in chart
         totalAmount = expenseAmount;
       }
 
@@ -92,10 +97,10 @@ class ChartBudgetModel {
 
       if (hasRelevantTransactions && totalAmount != 0) {
         final model = ChartBudgetModel(
-          budgetId: representItem.transaction.budgetId,
-          budgetName: representItem.transactionName,
+          budgetId: budget.id,
+          budgetName: budget.name,
           value: 0,
-          iconName: representItem.iconName,
+          iconName: budget.iconName,
           total: totalAmount,
           incomeAmount: incomeAmount > 0 ? incomeAmount : null,
           expenseAmount: expenseAmount > 0 ? expenseAmount : null,
@@ -104,14 +109,12 @@ class ChartBudgetModel {
       }
     }
 
-    // Calculate the sum using absolute values for percentage calculation
-    int totalSum = list.fold(0, (sum, item) => sum + item.total.abs());
+    int totalSum = list.fold(0, (total, item) => total + item.total.abs());
 
-    // Update each item's `value` based on its percentage of the total sum
     List<ChartBudgetModel> updatedList = [];
     for (ChartBudgetModel item in list) {
       if (totalSum > 0) {
-        final avgItem = ((item.total.abs() / totalSum) * 100);
+        final double avgItem = ((item.total.abs() / totalSum) * 100);
         updatedList.add(item.copyWith(value: avgItem));
       }
     }

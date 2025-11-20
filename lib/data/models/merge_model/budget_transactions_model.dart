@@ -1,5 +1,6 @@
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/data/models/budget_model.dart';
+import 'package:budget_app/data/models/merge_model/budget_transaction_model.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
 
 class BudgetTransactionsModel {
@@ -56,5 +57,11 @@ extension BudgetTransactionsModelExtension on List<BudgetTransactionsModel> {
         "transactions": transactions.toChatData()
       };
     }).toList().toString();
+  }
+
+  List<BudgetTransactionModel> get toEveryItem {
+    return expand((e) => e.transactions.map(
+            (tx) => BudgetTransactionModel(budget: e.budget, transaction: tx)))
+        .toList();
   }
 }

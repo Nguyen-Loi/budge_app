@@ -10,83 +10,32 @@ import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/merge_model/budget_transactions_model.dart';
-import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/data/models/models_widget/chart_budget_model.dart';
-import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
+import 'package:budget_app/view/report_page/controller/report_filter_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final reportPageControllerProvider =
-    NotifierProvider.autoDispose<ReportPageController, ReportFilterState>(
+    NotifierProvider.autoDispose<ReportPageController, ReportFilterModel>(
         ReportPageController.new);
 
-class ReportFilterState {
-  final DateTimeRange dateTimeRange;
-  final List<TransactionTypeEnum> transactionTypes;
-  final List<String> selectedBudgetIds;
-  final List<ChartBudgetModel> chartData;
-  final List<BudgetTransactionsModel> budgetTransactionsList;
-  final bool isLoading;
-
-  ReportFilterState({
-    required this.dateTimeRange,
-    required this.transactionTypes,
-    required this.selectedBudgetIds,
-    required this.chartData,
-    required this.budgetTransactionsList,
-    this.isLoading = false,
-  });
-
-  ReportFilterState copyWith({
-    DateTimeRange? dateTimeRange,
-    List<TransactionTypeEnum>? transactionTypes,
-    List<String>? selectedBudgetIds,
-    List<ChartBudgetModel>? chartData,
-    List<BudgetTransactionsModel>? budgetTransactionsList,
-    bool? isLoading,
-  }) {
-    return ReportFilterState(
-      dateTimeRange: dateTimeRange ?? this.dateTimeRange,
-      transactionTypes: transactionTypes ?? this.transactionTypes,
-      selectedBudgetIds: selectedBudgetIds ?? this.selectedBudgetIds,
-      chartData: chartData ?? this.chartData,
-      budgetTransactionsList:
-          budgetTransactionsList ?? this.budgetTransactionsList,
-      isLoading: isLoading ?? this.isLoading,
-    );
-  }
-}
-
-class ReportPageController extends Notifier<ReportFilterState> {
-  late List<BudgetModel> _budgets;
-  late List<TransactionCardModel> _transactionsCard;
+class ReportPageController extends Notifier<ReportFilterModel> {
+  late List<BudgetTransactionsModel> _budgetsTransactions;
 
   late List<DateTimeRange> _dateRangeOptions;
   List<DateTimeRange> get dateRangeOptions => _dateRangeOptions;
 
-  // Date range from transaction data
-  DateTime? get firstTransactionDate {
-    if (_transactionsCard.isEmpty) return null;
-    return _transactionsCard
-        .map((e) => e.transaction.transactionDate)
-        .reduce((a, b) => a.isBefore(b) ? a : b);
-  }
+  bool get _userHasNoTransactions =>
+      !_budgetsTransactions.any((e) => e.transactions.isNotEmpty);
 
-  DateTime? get lastTransactionDate {
-    if (_transactionsCard.isEmpty) return null;
-    final now = DateTime.now();
-    final maxDate = _transactionsCard
-        .map((e) => e.transaction.transactionDate)
-        .reduce((a, b) => a.isAfter(b) ? a : b);
-    return maxDate.isBefore(now) ? now : maxDate;
-  }
+  List<BudgetModel> get availableBudgets =>
+      _budgetsTransactions.map((e) => e.budget).toList();
 
   @override
-  ReportFilterState build() {
-    _budgets = ref.watch(budgetBaseControllerProvider);
-    _transactionsCard = ref.watch(transactionsBaseControllerProvider);
+  ReportFilterModel build() {
+    _budgetsTransactions = ref.watch(transactionsBaseControllerProvider);
 
     _initDateRangeOptions();
 
@@ -95,7 +44,8 @@ class ReportPageController extends Notifier<ReportFilterState> {
       TransactionTypeEnum.income,
       TransactionTypeEnum.expense,
     ];
-    final initialBudgetIds = _budgets.map((b) => b.id).toList();
+    final initialBudgetIds =
+        _budgetsTransactions.map((b) => b.budget.id).toList();
 
     final initialData = _calculateData(
       dateRange: DateTime.now().getRangeMonth,
@@ -103,7 +53,7 @@ class ReportPageController extends Notifier<ReportFilterState> {
       selectedBudgetIds: initialBudgetIds,
     );
 
-    return ReportFilterState(
+    return ReportFilterModel(
       dateTimeRange: initialDateRange,
       transactionTypes: initialTransactionTypes,
       selectedBudgetIds: initialBudgetIds,
@@ -111,6 +61,17 @@ class ReportPageController extends Notifier<ReportFilterState> {
       budgetTransactionsList: initialData['budgetTransactionsList']
           as List<BudgetTransactionsModel>,
     );
+  }
+
+  // Date range from transaction data
+  DateTime? get firstTransactionDate {
+    if (_userHasNoTransactions) return null;
+    return _getMinMaxDate(isMin: true);
+  }
+
+  DateTime? get lastTransactionDate {
+    if (_userHasNoTransactions) return null;
+    return _getMinMaxDate(isMin: false);
   }
 
   void _initDateRangeOptions() {
@@ -125,17 +86,13 @@ class ReportPageController extends Notifier<ReportFilterState> {
           start: DateTime(now.year, 1, 1), end: DateTime(now.year, 12, 31)),
     ];
 
-    if (_transactionsCard.isEmpty) {
+    if (_userHasNoTransactions) {
       return;
     }
 
     // Update model options based on available data
-    DateTime minDateInTransactions = _transactionsCard
-        .map((e) => e.transaction.transactionDate)
-        .reduce((a, b) => a.isBefore(b) ? a : b);
-    DateTime maxDateInTransactions = _transactionsCard
-        .map((e) => e.transaction.transactionDate)
-        .reduce((a, b) => a.isAfter(b) ? a : b);
+    DateTime minDateInTransactions = _getMinMaxDate(isMin: true);
+    DateTime maxDateInTransactions = _getMinMaxDate(isMin: false);
 
     // Ensure we don't go beyond available data
     if (maxDateInTransactions.isBefore(now)) {
@@ -154,35 +111,32 @@ class ReportPageController extends Notifier<ReportFilterState> {
     required List<String> selectedBudgetIds,
   }) {
     // Filter transactions based on parameters
-    final filteredTransactions = _transactionsCard.where((e) {
-      bool isInDateRange =
-          e.transaction.transactionDate.isBetweenDateTimeRange(dateRange);
-      bool hasTransactionType = transactionTypes.contains(e.transactionType);
-      bool isInSelectedBudgets =
-          selectedBudgetIds.contains(e.transaction.budgetId);
+    final filteredTransactions = _budgetsTransactions.map((e) {
+      final filteredTxs = e.transactions.where((tx) {
+        bool isInDateRange =
+            tx.transactionDate.isBetweenDateTimeRange(dateRange);
+        bool hasTransactionType =
+            transactionTypes.contains(tx.transactionType);
+        bool isInSelectedBudgets =
+            selectedBudgetIds.contains(tx.budgetId);
+        return isInDateRange && hasTransactionType && isInSelectedBudgets;
+      }).toList();
 
-      return isInDateRange && hasTransactionType && isInSelectedBudgets;
-    }).toList();
-
-    final budgetFilter = _budgets.where((budget) {
-      return selectedBudgetIds.contains(budget.id);
+      return BudgetTransactionsModel(
+        budget: e.budget,
+        transactions: filteredTxs,
+      );
     }).toList();
 
     // Calculate chart data
     final chartData = ChartBudgetModel.toList(
-      allTransactionCard: filteredTransactions,
+      budgetTransaction: filteredTransactions,
       transactionTypes: transactionTypes,
-    );
-
-    // Calculate budget transactions list
-    final budgetTransactionsList = BudgetTransactionsModel.mapList(
-      budgetFilter,
-      filteredTransactions.map((e) => e.transaction).toList(),
     );
 
     return {
       'chartData': chartData,
-      'budgetTransactionsList': budgetTransactionsList,
+      'budgetTransactionsList': filteredTransactions,
     };
   }
 
@@ -301,7 +255,6 @@ class ReportPageController extends Notifier<ReportFilterState> {
     };
   }
 
-  List<BudgetModel> get availableBudgets => _budgets;
   List<TransactionTypeEnum> get availableTransactionTypes =>
       TransactionTypeEnum.values;
 
@@ -311,23 +264,39 @@ class ReportPageController extends Notifier<ReportFilterState> {
       return [];
     }
 
-    // Get all transactions within the specified date range
-    final allTransactionsInRange = _transactionsCard.where((e) {
+    // Filter by date range
+    final budgetTransactionInRange =
+        _budgetsTransactions.toEveryItem.where((e) {
       return e.transaction.transactionDate.isBetweenDateTimeRange(dateRange);
     }).toList();
 
-    // Get budget IDs that have transactions of the selected types
+    // Filter by transaction types
     final relevantBudgetIds = <String>{};
 
-    for (final transactionCard in allTransactionsInRange) {
-      if (transactionTypes.contains(transactionCard.transactionType)) {
-        relevantBudgetIds.add(transactionCard.transaction.budgetId);
+    for (final e in budgetTransactionInRange) {
+      final transaction = e.transaction;
+      if (transactionTypes.contains(transaction.transactionType)) {
+        relevantBudgetIds.add(transaction.budgetId);
       }
     }
 
     // Return budgets that have transactions of the selected types
-    return _budgets
-        .where((budget) => relevantBudgetIds.contains(budget.id))
+    return _budgetsTransactions
+        .where((e) => relevantBudgetIds.contains(e.budget.id))
+        .map((e) => e.budget)
         .toList();
+  }
+
+  DateTime _getMinMaxDate({required bool isMin}) {
+    final now = DateTime.now();
+    final ou = _budgetsTransactions
+        .expand((e) => e.transactions)
+        .map((e) => e.transactionDate)
+        .reduce(
+            (a, b) => isMin ? (a.isBefore(b) ? a : b) : (a.isAfter(b) ? a : b));
+    if (!isMin && ou.isBefore(now)) {
+      return now;
+    }
+    return ou;
   }
 }

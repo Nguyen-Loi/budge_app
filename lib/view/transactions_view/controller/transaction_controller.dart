@@ -1,42 +1,17 @@
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/extension/extension_iterable.dart';
-import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
+import 'package:budget_app/data/models/merge_model/budget_transaction_model.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final transactionControllerProvider = NotifierProvider.autoDispose<
-    TransactionsController,
-    List<TransactionCardModel>>(TransactionsController.new);
+final transactionControllerProvider =
+    NotifierProvider.autoDispose<TransactionsController, TransactionState>(
+        TransactionsController.new);
 
-class TransactionsController extends Notifier<List<TransactionCardModel>> {
-
-  late final List<TransactionCardModel> _transactionBase;
-
-  @override
-  List<TransactionCardModel> build() {
-    _transactionBase = ref.watch(transactionsBaseControllerProvider);
-    updateDate(_dateTimePicker);
-    _init();
-    return state;
-  }
-
-  void _init() {
-    final now = DateTime.now();
-    if (_transactionBase.isEmpty) {
-      _dateTimeRangeToFilter = now.getRangeMonth;
-      return;
-    }
-    final allTransactions = _transactionBase.map((e) => e.transaction).toList();
-    allTransactions
-        .sort((a, b) => a.transactionDate.compareTo(b.transactionDate));
-    final start = allTransactions[0].transactionDate;
-    final end = allTransactions.last.transactionDate.isBefore(now)
-        ? now
-        : allTransactions.last.transactionDate;
-    _dateTimeRangeToFilter = DateTimeRange(start: start, end: end);
-  }
+class TransactionsController extends Notifier<TransactionState> {
+  late List<BudgetTransactionModel> _budgetsTransactions;
 
   late DateTimeRange _dateTimeRangeToFilter;
   DateTimeRange get dateRangeToFilter => _dateTimeRangeToFilter;
@@ -44,26 +19,55 @@ class TransactionsController extends Notifier<List<TransactionCardModel>> {
   DateTime _dateTimePicker = DateTime.now();
   DateTime get dateTimePicker => _dateTimePicker;
 
-  int _sumIncome = 0;
-  int _sumExpense = 0;
-  int get sumIncome => _sumIncome;
-  int get sumExpense => _sumExpense.abs();
+  @override
+  TransactionState build() {
+    final list = ref.watch(transactionsBaseControllerProvider);
+    _budgetsTransactions = list
+        .expand((e) => e.transactions
+            .map((tx) => BudgetTransactionModel(budget: e.budget, transaction: tx)))
+        .toList();
+
+    updateDate(_dateTimePicker);
+    _init();
+    return state;
+  }
+
+  void _init() {
+    final now = DateTime.now();
+    if (_budgetsTransactions.isEmpty) {
+      _dateTimeRangeToFilter = now.getRangeMonth;
+      return;
+    }
+
+    _budgetsTransactions
+        .sort((a, b) => a.transaction.transactionDate.compareTo(b.transaction.transactionDate));
+    final start = _budgetsTransactions[0].transaction.transactionDate;
+    final end = _budgetsTransactions.last.transaction.transactionDate.isBefore(now)
+        ? now
+        : _budgetsTransactions.last.transaction.transactionDate;
+    _dateTimeRangeToFilter = DateTimeRange(start: start, end: end);
+  }
 
   void updateDate(DateTime date) {
     _dateTimePicker = date;
-    state = _transactionBase
-        .filterByMonth(
-            time: _dateTimePicker,
-            getDate: (x) => x.transaction.transactionDate)
+    final filterBudgetTransactions = _budgetsTransactions
+        .filterByMonth(time: _dateTimePicker, getDate: (x) => x.transaction.transactionDate)
         .toList();
 
-    _caculator();
+    final sums = _calculateSums(filterBudgetTransactions);
+
+    state = TransactionState(
+      budgetTransactions: filterBudgetTransactions,
+      sumIncome: sums.income,
+      sumExpense: sums.expense,
+    );
   }
 
-  void _caculator() {
+  ({int income, int expense}) _calculateSums(
+      List<BudgetTransactionModel> budgetTransactions) {
     int newIncome = 0;
     int newExpense = 0;
-    for (var e in state) {
+    for (var e in budgetTransactions) {
       switch (e.transaction.transactionType) {
         case TransactionTypeEnum.income:
           newIncome += e.transaction.amount;
@@ -73,7 +77,30 @@ class TransactionsController extends Notifier<List<TransactionCardModel>> {
           break;
       }
     }
-    _sumIncome = newIncome;
-    _sumExpense = newExpense;
+    return (income: newIncome, expense: newExpense.abs());
+  }
+}
+
+class TransactionState {
+  final List<BudgetTransactionModel> budgetTransactions;
+  final int sumIncome;
+  final int sumExpense;
+
+  TransactionState({
+    required this.budgetTransactions,
+    required this.sumIncome,
+    required this.sumExpense,
+  });
+
+  TransactionState copyWith({
+    List<BudgetTransactionModel>? budgetTransactions,
+    int? sumIncome,
+    int? sumExpense,
+  }) {
+    return TransactionState(
+      budgetTransactions: budgetTransactions ?? this.budgetTransactions,
+      sumIncome: sumIncome ?? this.sumIncome,
+      sumExpense: sumExpense ?? this.sumExpense,
+    );
   }
 }
