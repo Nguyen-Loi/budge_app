@@ -124,12 +124,19 @@ class ReportPageController extends Notifier<ReportFilterModel> {
     List<BudgetTypeEnum>? budgetTypes,
     List<String>? selectedBudgetIds,
   }) {
+    final calculatedData = _calculateData(
+      dateRange: dateTimeRange ?? state.dateTimeRangePicker,
+      budgetTypes: budgetTypes ?? state.budgetTypes,
+      selectedBudgetIds: selectedBudgetIds ?? state.selectedBudgetIds,
+    );
     state = state.copyWith(
       dateTimeRangePicker: dateTimeRange,
       budgetTypes: budgetTypes,
       selectedBudgetIds: selectedBudgetIds,
+      chartData: calculatedData['chartData'] as List<ChartBudgetModel>,
+      budgetTransactionsList: calculatedData['budgetTransactionsList']
+          as List<BudgetTransactionsModel>,
     );
-    _updateData();
   }
 
   void _updateData() {
