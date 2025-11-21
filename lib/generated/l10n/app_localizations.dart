@@ -962,8 +962,8 @@ abstract class AppLocalizations {
   /// No description provided for @transactionNotScopeBudget.
   ///
   /// In en, this message translates to:
-  /// **'The transaction date is not within the budget time range'**
-  String get transactionNotScopeBudget;
+  /// **'The transaction date is not within the budget time range ({startDate} - {endDate})'**
+  String transactionNotScopeBudget(Object endDate, Object startDate);
 
   /// No description provided for @totalIncome.
   ///

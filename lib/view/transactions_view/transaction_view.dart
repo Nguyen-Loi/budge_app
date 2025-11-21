@@ -293,7 +293,7 @@ class _TransactionViewState extends ConsumerState<TransactionView>
                 fontWeight: FontWeight.w500,
               ),
               BText.h3(
-                netIncome.toMoneyStrContext(context),
+                netIncome.toMoneyStrContext(context, compact: false),
                 color: color,
               ),
             ],

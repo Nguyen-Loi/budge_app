@@ -1,3 +1,4 @@
+import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/with_spacing.dart';
 import 'package:budget_app/constants/gap_constants.dart';
@@ -289,8 +290,8 @@ class _ReportPageState extends ConsumerState<ReportPage> {
                   chartData: state.chartData,
                   chartType: ChartType.auto,
                   showIncomeExpenseBreakdown: true,
-                  period: _formatDateRange(state.dateTimeRange),
-                  transactionTypes: state.transactionTypes,
+                  period: _formatDateRange(state.dateTimeRangePicker),
+                  budgetTypes: state.budgetTypes,
                   transactionCount:
                       controller.getStatistics()['transactionCount'] as int,
                 ),
@@ -303,6 +304,8 @@ class _ReportPageState extends ConsumerState<ReportPage> {
 
   Widget _buildTransactionsSection(
       BuildContext context, ReportFilterModel state) {
+    state.budgetTransactionsList.sort((a, b) =>
+        b.budget.currentAmount.abs().compareTo(a.budget.currentAmount.abs()));
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -399,16 +402,13 @@ class _ReportPageState extends ConsumerState<ReportPage> {
       context: context,
       builder: (context) => ReportFilterDialog(
         currentState: state,
-        availableBudgets: controller.availableBudgets,
-        availableTransactionTypes: controller.availableTransactionTypes,
-        dateRangeOptions: controller.dateRangeOptions,
-        firstDate: controller.firstTransactionDate,
-        lastDate: controller.lastTransactionDate,
-        getRelevantBudgets: controller.getRelevantBudgets,
-        onFiltersChanged: (dateRange, transactionTypes, budgetIds) {
+        availableBudgetsTransactions: controller.availableBudgetsTransactions,
+        availableDateRange: controller.availableDateRange,
+        onChanged: (dateRange, budgetTypes, budgetIds) {
+          logWarning('Filter changed: $dateRange, $budgetTypes, $budgetIds');
           controller.setFilters(
             dateTimeRange: dateRange,
-            transactionTypes: transactionTypes,
+            budgetTypes: budgetTypes,
             selectedBudgetIds: budgetIds,
           );
         },

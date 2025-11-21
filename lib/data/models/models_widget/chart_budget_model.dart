@@ -1,3 +1,4 @@
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/data/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
@@ -44,24 +45,15 @@ class ChartBudgetModel {
 
   static List<ChartBudgetModel> toList(
       {required List<BudgetTransactionsModel> budgetTransaction,
-      required List<TransactionTypeEnum> transactionTypes}) {
+      required List<BudgetTypeEnum> budgetTypes}) {
     List<ChartBudgetModel> list = [];
 
-    final filterBudgetTransaction = budgetTransaction
-        .map((e) {
-          final filteredTransactions = e.transactions
-              .where((tx) => transactionTypes.contains(tx.transactionType))
-              .toList();
+    final filterBudget = budgetTransaction
+        .where((e) => budgetTypes.contains(e.budget.budgetType))
+        .toList()
+        .containTransactions;
 
-          return BudgetTransactionsModel(
-            budget: e.budget,
-            transactions: filteredTransactions,
-          );
-        })
-        .where((e) => e.transactions.isNotEmpty)
-        .toList();
-
-    for (var e in filterBudgetTransaction) {
+    for (var e in filterBudget) {
       final List<TransactionModel> transactions = e.transactions;
       final budget = e.budget;
       int incomeAmount = transactions
@@ -75,10 +67,10 @@ class ChartBudgetModel {
           .fold<int>(0, (total, element) => total + element.amount.abs());
 
       int totalAmount;
-      if (transactionTypes.contains(TransactionTypeEnum.income) &&
-          transactionTypes.contains(TransactionTypeEnum.expense)) {
+      if (budgetTypes.contains(BudgetTypeEnum.income) &&
+          budgetTypes.contains(BudgetTypeEnum.expense)) {
         totalAmount = incomeAmount - expenseAmount;
-      } else if (transactionTypes.contains(TransactionTypeEnum.income)) {
+      } else if (budgetTypes.contains(BudgetTypeEnum.income)) {
         totalAmount = incomeAmount;
       } else {
         totalAmount = expenseAmount;
@@ -86,11 +78,11 @@ class ChartBudgetModel {
 
       // Only add items that have transactions for the selected types
       bool hasRelevantTransactions = false;
-      if (transactionTypes.contains(TransactionTypeEnum.income) &&
+      if (budgetTypes.contains(BudgetTypeEnum.income) &&
           incomeAmount > 0) {
         hasRelevantTransactions = true;
       }
-      if (transactionTypes.contains(TransactionTypeEnum.expense) &&
+      if (budgetTypes.contains(BudgetTypeEnum.expense) &&
           expenseAmount > 0) {
         hasRelevantTransactions = true;
       }

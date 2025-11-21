@@ -90,7 +90,8 @@ class TransactionApi extends TransactionRepository {
     DateTimeRange dateTimeRangeBudget =
         DateTimeRange(start: budget.startDate, end: budget.endDate);
     if (!transactionDate.isBetweenDateTimeRange(dateTimeRangeBudget)) {
-      throw _loc.transactionNotScopeBudget;
+      throw _loc.transactionNotScopeBudget(
+          budget.startDate.toFormatDate(), budget.endDate.toFormatDate());
     }
   }
 
@@ -102,6 +103,7 @@ class TransactionApi extends TransactionRepository {
       required String? note,
       required DateTime transactionDate}) async {
     try {
+      final now = DateTime.now();
       _validateBudgetTransaction(budgetModel, transactionDate);
       TransactionTypeEnum transactionType;
       switch (budgetModel.budgetType) {
@@ -115,7 +117,7 @@ class TransactionApi extends TransactionRepository {
       }
 
       final newBudget = budgetModel.copyWith(
-          currentAmount: budgetModel.currentAmount + amount);
+          currentAmount: budgetModel.currentAmount + amount, updatedDate: now);
 
       final newTransaction = _add(user.id,
           budgetId: budgetModel.id,

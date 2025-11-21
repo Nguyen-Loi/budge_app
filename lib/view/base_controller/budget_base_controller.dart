@@ -38,6 +38,7 @@ class BudgetBaseController extends Notifier<List<BudgetModel>> {
 
   Future<List<BudgetModel>> fetch() async {
     final budgets = await _budgetRepository.fetch(_uid);
+    budgets.sort((a, b) => b.updatedDate.compareTo(a.updatedDate));
     _allBudgets = budgets;
 
     await _createDefaultBudgetsIfNotExits();

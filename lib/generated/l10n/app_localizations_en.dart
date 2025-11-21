@@ -468,7 +468,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reasonChartNotVisible => 'The chart is not displayed because the filter is showing income and expense';
 
   @override
-  String get transactionNotScopeBudget => 'The transaction date is not within the budget time range';
+  String transactionNotScopeBudget(Object endDate, Object startDate) {
+    return 'The transaction date is not within the budget time range ($startDate - $endDate)';
+  }
 
   @override
   String get totalIncome => 'Total Income';

@@ -468,7 +468,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get reasonChartNotVisible => 'Biểu đồ không hiện thị vì bộ lọc đang hiện nguồn thu và chi tiêu';
 
   @override
-  String get transactionNotScopeBudget => 'Ngày giao dịch không nằm trong phạm vi thời gian của ngân sách';
+  String transactionNotScopeBudget(Object endDate, Object startDate) {
+    return 'Ngày giao dịch không nằm trong phạm vi thời gian của ngân sách ($startDate - $endDate)';
+  }
 
   @override
   String get totalIncome => 'Tổng Thu Nhập';
