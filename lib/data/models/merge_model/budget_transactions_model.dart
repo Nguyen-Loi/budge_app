@@ -18,14 +18,14 @@ class BudgetTransactionsModel {
     Map<String, List<TransactionModel>> transactionsMap = {};
 
     for (var transaction in transactions) {
-      String transactionId = transaction.budgetId;
+      String budgetId = transaction.budgetId;
       if (transaction.budgetId == GenId.budgetWallet()) {
-        transactionId = transaction.transactionTypeValue;
+        budgetId = transaction.transactionTypeValue;
       }
-      if (!transactionsMap.containsKey(transactionId)) {
-        transactionsMap[transactionId] = [];
+      if (!transactionsMap.containsKey(budgetId)) {
+        transactionsMap[budgetId] = [];
       }
-      transactionsMap[transactionId]!.add(transaction);
+      transactionsMap[budgetId]!.add(transaction);
     }
 
     for (var budget in budgets) {
@@ -36,8 +36,6 @@ class BudgetTransactionsModel {
           budget: budget, transactions: transactionsOfBudget);
       list.add(model);
     }
-
-    list.removeWhere((e) => e.transactions.isEmpty);
     return list;
   }
 }
