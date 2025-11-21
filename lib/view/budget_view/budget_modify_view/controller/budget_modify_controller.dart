@@ -8,26 +8,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final budgetModifyControllerProvider = NotifierProvider.autoDispose
-    .family<BudgetModifyController, void, BudgetModel>(
-  (budgetModel) {
-    return BudgetModifyController(defaultBudget: budgetModel);
+    .family<BudgetModifyController, void, String>(
+  (budgetId) {
+    return BudgetModifyController(budgetId: budgetId);
   },
 );
 
 class BudgetModifyController extends Notifier<void> {
   late BudgetRepository _budgetRepository;
   late BudgetDetailController _budgetDetailController;
-  final BudgetModel defaultBudget;
+  final String budgetId;
+  late BudgetModel budgetDetail;
 
   BudgetModifyController({
-    required this.defaultBudget,
+    required this.budgetId,
   });
 
   @override
   void build() {
     _budgetRepository = ref.watch(budgetRepositoryProvider);
     _budgetDetailController =
-        ref.watch(budgetDetailControllerProvider(defaultBudget).notifier);
+        ref.watch(budgetDetailControllerProvider(budgetId).notifier);
+    budgetDetail = _budgetDetailController.state;
   }
 
   void updateBudget(BuildContext context,
@@ -36,7 +38,7 @@ class BudgetModifyController extends Notifier<void> {
       required int limit,
       required DatetimeRangeModel dateTimeRange}) async {
     final now = DateTime.now();
-    final budgetModify = defaultBudget.copyWith(
+    final budgetModify = budgetDetail.copyWith(
         name: budgetName,
         iconName: iconName,
         budgetLimit: limit,

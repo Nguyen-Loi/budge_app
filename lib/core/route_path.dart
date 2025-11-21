@@ -1,4 +1,3 @@
-import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/view/auth_view/forgot_password.dart';
 import 'package:budget_app/view/auth_view/login_view.dart';
 import 'package:budget_app/view/auth_view/sign_up_view.dart';
@@ -62,9 +61,9 @@ class MainRouter {
         return MaterialPageRoute(
             builder: (_) => BudgetDetailView(budgetId: budgetId));
       case RoutePath.budgetModify:
-        final data = settings.arguments as BudgetModel;
+        final budgetId = settings.arguments as String;
         return MaterialPageRoute(
-            builder: (_) => BudgetModifyView(budgetModel: data));
+            builder: (_) => BudgetModifyView(budgetId: budgetId));
 
       case RoutePath.newTransaction:
         return MaterialPageRoute(builder: (_) => const NewTransactionView());

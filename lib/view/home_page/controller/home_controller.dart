@@ -3,7 +3,6 @@ import 'package:budget_app/common/widget/dialog/b_snackbar.dart';
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/data/datasources/apis/auth_api.dart';
-import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/merge_model/budget_transaction_model.dart';
 import 'package:budget_app/data/models/merge_model/budget_transactions_model.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
@@ -56,14 +55,6 @@ class HomeController extends Notifier<void> {
   double get totalIncomeThisMonth {
     return _getTransactionsForThisMonthWithType(TransactionTypeEnum.income)
         .fold(0.0, (total, e) => total + e.transaction.amount);
-  }
-
-  List<BudgetModel> get budgetsPreview {
-    final expenseBudgets = _budgetsTransactions.map((e) => e.budget).toList();
-
-    expenseBudgets.sort((a, b) => b.updatedDate.compareTo(a.updatedDate));
-
-    return expenseBudgets.take(3).toList();
   }
 
   List<BudgetTransactionModel> _getTransactionsForThisMonthWithType(TransactionTypeEnum type) {

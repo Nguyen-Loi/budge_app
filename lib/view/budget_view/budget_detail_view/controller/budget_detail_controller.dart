@@ -3,26 +3,27 @@ import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final budgetDetailControllerProvider = NotifierProvider.autoDispose
-    .family<BudgetDetailController, BudgetModel, BudgetModel>(
-  (budgetModel) {
-    return BudgetDetailController(budgetModel);
+    .family<BudgetDetailController, BudgetModel, String>(
+  (budgetId) {
+    return BudgetDetailController(budgetId);
   },
 );
 
 class BudgetDetailController extends Notifier<BudgetModel> {
-  final BudgetModel initialValue;
-  late final BudgetBaseController _budgetController;
-  BudgetDetailController(this.initialValue);
+  final String budgetId;
+  BudgetDetailController(this.budgetId);
 
   @override
   BudgetModel build() {
-    _budgetController = ref.watch(budgetBaseControllerProvider.notifier);
-    return initialValue;
+    return ref.watch(budgetBaseControllerProvider).firstWhere(
+          (budget) => budget.id == budgetId,
+          orElse: () => throw Exception("Budget not found"),
+        );
   }
 
   /// This is still update state for budget at home screen
   void updateState(BudgetModel budget) {
     state = budget;
-    _budgetController.updateState(budget);
+    ref.read(budgetBaseControllerProvider.notifier).updateState(budget);
   }
 }

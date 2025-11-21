@@ -16,15 +16,15 @@ import 'package:budget_app/view/budget_view/budget_modify_view/controller/budget
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BudgetModifyView extends StatefulWidget {
-  final BudgetModel budgetModel;
-  const BudgetModifyView({super.key, required this.budgetModel});
+class BudgetModifyView extends ConsumerStatefulWidget {
+  final String budgetId;
+  const BudgetModifyView({super.key, required this.budgetId});
 
   @override
-  State<BudgetModifyView> createState() => _ModifyBudgetViewState();
+  ConsumerState<BudgetModifyView> createState() => _ModifyBudgetViewState();
 }
 
-class _ModifyBudgetViewState extends State<BudgetModifyView> {
+class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
   late String _iconName;
   late int _limit;
   late DatetimeRangeModel _dateTimeRangeModel;
@@ -35,7 +35,9 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
 
   @override
   void initState() {
-    _budget = widget.budgetModel;
+    _budget = ref
+        .read(budgetModifyControllerProvider(widget.budgetId).notifier)
+        .budgetDetail;
     _iconName = _budget.iconName;
     _limit = _budget.budgetLimit;
     _budgetName = _budget.name;
@@ -63,7 +65,7 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
     if (_formKey.currentState!.validate()) {
       ref
           .read(
-            budgetModifyControllerProvider(_budget).notifier,
+            budgetModifyControllerProvider(widget.budgetId).notifier,
           )
           .updateBudget(context,
               budgetName: _budgetName,

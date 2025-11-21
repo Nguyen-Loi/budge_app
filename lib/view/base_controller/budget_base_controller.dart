@@ -105,4 +105,12 @@ class BudgetBaseController extends Notifier<List<BudgetModel>> {
       _notifier(newList: _allBudgets);
     }
   }
+
+  List<BudgetModel> get recently {
+    final budgets = budgetAvailable.map((e) => e).toList();
+
+    budgets.sort((a, b) => b.updatedDate.compareTo(a.updatedDate));
+
+    return budgets.take(3).toList();
+  }
 }

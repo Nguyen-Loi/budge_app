@@ -36,7 +36,7 @@ abstract class BudgetBaseDetailView extends StatelessWidget {
           child: IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, RoutePath.budgetModify,
-                    arguments: budget);
+                    arguments: budget.id);
               },
               icon: Icon(IconManager.modify, size: 18)),
         )
