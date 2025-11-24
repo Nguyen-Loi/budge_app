@@ -1149,4 +1149,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String previewValue(Object value) {
     return 'Preview: $value';
   }
+
+  @override
+  String accountInactiveWithReason(Object reason) {
+    return 'Account inactive: $reason, please contact support.';
+  }
 }

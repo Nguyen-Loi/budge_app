@@ -42,8 +42,7 @@ class AuthController extends Notifier<void> {
   }) {
     _baseAuth(context,
         res: _authAPI.signUp(email: email, password: password),
-        accountType: AccountType.emailAndPassword,
-        onlySignUp: true);
+        accountType: AccountType.registeredEmailAndPassword);
   }
 
   void loginWithFacebook(BuildContext context) async {
@@ -66,8 +65,7 @@ class AuthController extends Notifier<void> {
 
   void _baseAuth(BuildContext context,
       {required Future<Either<Failure, CredentialInfo>> res,
-      required AccountType accountType,
-      bool onlySignUp = false}) async {
+      required AccountType accountType}) async {
     AppLocalizations loc = context.loc;
     final closeLoading = showLoading(context: context);
     final resAuth = await res;
@@ -77,14 +75,9 @@ class AuthController extends Notifier<void> {
       closeLoading();
       showSnackBarError(context, errorMessage);
     }, (credentialInfo) async {
-      if (onlySignUp) {
-        closeLoading();
-        showSnackBar(context, loc.accountCreateSuccess);
-        Navigator.pop(context);
-        return;
-      }
-      bool isAccountExists =
-          await _authAPI.checkAccountExists(credentialInfo.userAuthInfo.email);
+      UserModelStatus userWithStatus =
+          await _authAPI.getUserInDb(credentialInfo.userAuthInfo.email);
+      bool isAccountExists = userWithStatus.status != UserGetStatus.notFound;
       bool? isUserAcceptLogin;
       if (isAccountExists) {
         isUserAcceptLogin = await BDialogInfo(
@@ -92,12 +85,15 @@ class AuthController extends Notifier<void> {
                 message: loc.confirmNewAccountLoginMessage,
                 dialogInfoType: BDialogInfoType.warning)
             .presentAction(context, onClose: () {
+          closeLoading();
           showSnackBarError(context, loc.loginCancelledByUser);
         });
       }
       if (!isAccountExists || isUserAcceptLogin == true) {
         final res = await _authAPI.signInWithCredential(
-            credentialInfo: credentialInfo, accountType: accountType);
+            credentialInfo: credentialInfo,
+            accountType: accountType,
+            userInDbStatus: userWithStatus);
         closeLoading();
         if (res.isLeft()) {
           showSnackBarError(context,
@@ -107,6 +103,9 @@ class AuthController extends Notifier<void> {
           return;
         } else {
           ref.invalidate(mainPageFutureProvider);
+          if (accountType == AccountType.registeredEmailAndPassword) {
+            showSnackBar(context, loc.accountCreateSuccess);
+          }
           Navigator.popUntil(context, (route) => route.isFirst);
         }
       }

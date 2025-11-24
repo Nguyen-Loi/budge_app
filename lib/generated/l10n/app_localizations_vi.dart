@@ -1149,4 +1149,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String previewValue(Object value) {
     return 'Xem trước: $value';
   }
+
+  @override
+  String accountInactiveWithReason(Object reason) {
+    return 'Tài khoản không hoạt động: $reason, vui lòng liên hệ hỗ trợ.';
+  }
 }

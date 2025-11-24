@@ -17,11 +17,18 @@ class FirestorePath {
   static String budgets({required String uid}) => '$_user/$uid/$_budget';
   static String budget({required String uid, required String budgetId}) =>
       '$_user/$uid/$_budget/$budgetId';
+  
   static String transactions({required String uid}) =>
       '$_user/$uid/$_transaction';
+  static String transaction({required String uid, required String transactionId}) =>
+      '$_user/$uid/$_transaction/$transactionId';
 
   static String devices({required String uid}) => '$_user/$uid/$_devices';
+  
   static String chats({required String uid}) => '$_user/$uid/$_chats';
+  static String chat({required String uid, required String chatId}) =>
+      '$_user/$uid/$_chats/$chatId';
+      
   static String feedbacks() => _feedback;
 
   static String subscriptions({required String uid}) =>

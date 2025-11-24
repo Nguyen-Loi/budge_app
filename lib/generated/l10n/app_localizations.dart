@@ -2248,6 +2248,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preview: {value}'**
   String previewValue(Object value);
+
+  /// No description provided for @accountInactiveWithReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Account inactive: {reason}, please contact support.'**
+  String accountInactiveWithReason(Object reason);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

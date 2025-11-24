@@ -3,13 +3,17 @@ import 'dart:io';
 import 'dart:math';
 import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
+import 'package:budget_app/view/base_controller/chat_base_controller.dart';
+import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
+import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:crypto/crypto.dart';
 import 'package:budget_app/common/exception/network_exception.dart';
 import 'package:budget_app/common/log.dart';
 import 'package:budget_app/common/shared_pref/shared_utility_provider.dart';
 import 'package:budget_app/core/utils.dart';
 import 'package:budget_app/data/datasources/apis/firestore_path.dart';
-import 'package:budget_app/common/shared_pref/language_controller.dart' as language_controller;
+import 'package:budget_app/common/shared_pref/language_controller.dart'
+    as language_controller;
 import 'package:budget_app/core/enums/account_type_enum.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
@@ -50,6 +54,19 @@ enum GoogleAuthResult {
   cancelled,
   failed,
   credentialAlreadyInUse,
+}
+
+enum UserGetStatus {
+  notFound,
+  inactive,
+  active,
+}
+
+class UserModelStatus {
+  final UserModel? userModel;
+  final UserGetStatus status;
+
+  UserModelStatus({this.userModel, required this.status});
 }
 
 /// Helper class to hold Facebook login result data
@@ -146,43 +163,70 @@ class AuthAPI implements IAuthApi {
   }
 
   /// Check if an account already exists in Firestore
-  Future<bool> checkAccountExists(String email) async {
+  Future<UserModelStatus> getUserInDb(String email) async {
     try {
       final querySnapshot = await _db
           .collection(FirestorePath.users())
           .where('email', isEqualTo: email)
+          .mapModel(
+              modelFrom: UserModel.fromMap, modelTo: (model) => model.toMap())
           .limit(1)
           .get();
-
-      return querySnapshot.docs.isNotEmpty;
+      if (querySnapshot.docs.isNotEmpty) {
+        UserModel userModel = querySnapshot.docs.first.data();
+        if (!userModel.isActive) {
+          return UserModelStatus(
+              userModel: userModel, status: UserGetStatus.inactive);
+        }
+        return UserModelStatus(
+            userModel: userModel, status: UserGetStatus.active);
+      }
     } catch (e) {
       logError('Error checking account existence: $e');
-      return false;
+      return UserModelStatus(status: UserGetStatus.notFound);
     }
+    return UserModelStatus(status: UserGetStatus.notFound);
   }
 
   /// Perform actual login after validation
   FutureEitherVoid signInWithCredential(
       {required CredentialInfo credentialInfo,
-      required AccountType accountType}) async {
+      required AccountType accountType,
+      required UserModelStatus userInDbStatus}) async {
     try {
-      bool isAccountExistsInDb =
-          await checkAccountExists(credentialInfo.userAuthInfo.email);
-      if (isAccountExistsInDb) {
-        await _auth.signInWithCredential(credentialInfo.credential);
-      } else {
-        await _currentUserAccount.linkWithCredential(credentialInfo.credential);
-        await _writeNewInfoToDB(
-            uid: _currentUserAccount.uid,
-            accountType: accountType,
-            userAuthInfo: credentialInfo.userAuthInfo);
+      UserGetStatus status = userInDbStatus.status;
+
+      switch (status) {
+        case UserGetStatus.inactive:
+          String reason = userInDbStatus.userModel?.inactiveReason ?? '';
+          return left(Failure(
+              error: 'account_inactive',
+              message: _ref
+                  .read(appLocalizationsProvider)
+                  .accountInactiveWithReason(reason)));
+        case UserGetStatus.notFound:
+          if (accountType == AccountType.registeredEmailAndPassword) {
+            final cre =
+                await _auth.signInWithCredential(credentialInfo.credential);
+            await _cloneDataForNewUserAccount(toUser: cre.user!);
+          } else {
+            await _currentUserAccount
+                .linkWithCredential(credentialInfo.credential);
+          }
+          break;
+        case UserGetStatus.active:
+          await _auth.signInWithCredential(credentialInfo.credential);
+          break;
       }
 
       return right(null);
     } on FirebaseAuthException catch (e) {
+      logError(
+          'FirebaseAuthException during sign-in: ${e.code} - ${e.message}');
       return left(
           _handleFirebaseAuthException(e, 'Error signing in with credential.'));
     } catch (e) {
+      logError('General error during sign-in with credential: $e');
       return left(Failure(error: e.toString()));
     }
   }
@@ -220,7 +264,8 @@ class AuthAPI implements IAuthApi {
       accountTypeValue: accountType.value,
       currencyTypeValue: CurrencyType.vnd.code,
       role: UserRoleEnum.normal,
-      languageCode: _ref.read(language_controller.languageControllerProvider).code,
+      languageCode:
+          _ref.read(language_controller.languageControllerProvider).code,
       isRemindTransactionEveryDate: true,
       isActive: true,
       createdDate: now,
@@ -237,17 +282,20 @@ class AuthAPI implements IAuthApi {
   }) async {
     return _baseFirebaseAuthentication(
         func: () async {
-          final credential = EmailAuthProvider.credential(
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: email,
             password: password,
           );
 
-          UserAuthInfo userAuthInfo = UserAuthInfo(
-            email: email,
-            displayName: getNameFromEmail(email),
-          );
           return right(CredentialInfo(
-              credential: credential, userAuthInfo: userAuthInfo));
+              credential: EmailAuthProvider.credential(
+                email: email,
+                password: password,
+              ),
+              userAuthInfo: UserAuthInfo(
+                email: email,
+                displayName: getNameFromEmail(email),
+              )));
         },
         defaultError: _ref.read(appLocalizationsProvider).unknownError);
   }
@@ -543,6 +591,7 @@ class AuthAPI implements IAuthApi {
     try {
       return await func();
     } on FirebaseAuthException catch (e) {
+      logError('FirebaseAuthException: ${e.code} - ${e.message}');
       return left(_handleFirebaseAuthException(e, defaultError));
     } catch (e) {
       logError('General error in authentication: $e');
@@ -563,7 +612,7 @@ class AuthAPI implements IAuthApi {
             message: _ref.read(appLocalizationsProvider).emailAlreadyExits);
       case 'invalid-credential':
         final errorMessage =
-            _ref.read(appLocalizationsProvider).errorCredentials;
+            _ref.read(appLocalizationsProvider).invalidEmailOrPassword;
         return Failure(error: e.code, message: errorMessage);
       default:
         return Failure(error: e.code, message: e.message ?? defaultError);
@@ -588,5 +637,77 @@ class AuthAPI implements IAuthApi {
     final bytes = utf8.encode(input);
     final digest = sha256.convert(bytes);
     return digest.toString();
+  }
+
+  Future<void> _cloneDataForNewUserAccount({required User toUser}) async {
+    final user = _ref.read(userBaseControllerProvider);
+    final budgetTransactions = _ref.read(transactionsBaseControllerProvider);
+    final chats = _ref.read(chatBaseControllerProvider);
+    final now = DateTime.now();
+    final toUid = toUser.uid;
+
+    final newUser = user.copyWith(
+      id: toUid,
+      email: toUser.email,
+      name: StringConstants.setName(name: user.name, email: toUser.email!),
+      accountTypeValue: AccountType.registeredEmailAndPassword.value,
+      updatedDate: now,
+    );
+
+    const batchLimit = 400;
+    var batch = _db.batch();
+    var counter = 0;
+
+    batch.set(_db.doc(FirestorePath.user(toUid)), newUser.toMap());
+    counter++;
+
+    for (final budgetTransaction in budgetTransactions) {
+      final newBudget = budgetTransaction.budget.copyWith(
+        userId: toUid,
+        updatedDate: now,
+      );
+      batch.set(
+          _db.doc(FirestorePath.budget(uid: toUid, budgetId: newBudget.id)),
+          newBudget.toMap());
+      counter++;
+
+      for (final transaction in budgetTransaction.transactions) {
+        final newTransaction = transaction.copyWith(
+          userId: toUid,
+          updatedDate: now,
+        );
+        batch.set(
+            _db.doc(FirestorePath.transaction(
+                uid: toUid, transactionId: newTransaction.id)),
+            newTransaction.toMap());
+        counter++;
+
+        if (counter >= batchLimit) {
+          await batch.commit();
+          batch = _db.batch();
+          counter = 0;
+        }
+      }
+    }
+
+    for (final chat in chats) {
+      final newChat = chat.copyWith(
+        userId: toUid,
+        updatedDate: now,
+      );
+      batch.set(_db.doc(FirestorePath.chat(uid: toUid, chatId: newChat.id)),
+          newChat.toMap());
+      counter++;
+
+      if (counter >= batchLimit) {
+        await batch.commit();
+        batch = _db.batch();
+        counter = 0;
+      }
+    }
+
+    if (counter > 0) {
+      await batch.commit();
+    }
   }
 }

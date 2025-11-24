@@ -8,6 +8,7 @@ import 'package:budget_app/data/datasources/repositories/transaction_repository.
 import 'package:budget_app/data/datasources/repositories/user_repository.dart';
 import 'package:budget_app/data/models/user_model.dart';
 import 'package:budget_app/data/services/in_app_rating_service.dart';
+import 'package:budget_app/localization/app_localizations_provider.dart';
 import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/base_controller/uid_controller.dart';
@@ -31,7 +32,8 @@ class UserBaseController extends Notifier<UserModel> {
     _uid = ref.watch(uidControllerProvider);
 
     _userRepository = ref.watch(userRepositoryProvider);
-    return UserModel.defaultData(_uid);
+    final loc = ref.read(appLocalizationsProvider);
+    return UserModel.defaultData(_uid).copyWith(name: loc.userNameDefault);
   }
 
   Future<UserModel> fetchUserInfo() async {

@@ -422,5 +422,6 @@
   "noInternetConnection": "Không có kết nối internet",
   "confirmNewAccountLoginTitle": "Xác nhận đăng nhập tài khoản mới",
   "confirmNewAccountLoginMessage": "Nếu bạn tiếp tục, tất cả dữ liệu hiện tại trên ứng dụng này sẽ bị xóa để đồng bộ với tài khoản mới. Bạn có chắc chắn muốn tiếp tục không?",
-  "previewValue": "Xem trước: {value}"
+  "previewValue": "Xem trước: {value}",
+  "accountInactiveWithReason": "Tài khoản không hoạt động: {reason}, vui lòng liên hệ hỗ trợ."
 }

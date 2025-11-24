@@ -5,6 +5,7 @@ import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/core/enums/subscription_plan_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:budget_app/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
@@ -51,7 +52,14 @@ class UserModel {
     this.subscriptionPlan,
   });
 
-  bool get roleAds => role == UserRoleEnum.normal;
+  bool get roleAds =>
+      role == UserRoleEnum.normal &&
+      createdDate
+          .add(
+            Duration(days: SettingConstants.datePreniumForNewUser),
+          )
+          .isBefore(DateTime.now());
+
   AccountType get accountType => AccountType.fromValue(accountTypeValue);
   CurrencyType get currency => CurrencyType.fromValue(currencyTypeValue);
 
@@ -121,7 +129,7 @@ class UserModel {
       id: uid,
       email: StringConstants.emailDefault,
       profileUrl: null,
-      name: StringConstants.nameDefault,
+      name: getNameFromEmail(StringConstants.emailDefault),
       accountTypeValue: AccountType.anonymous.value,
       currencyTypeValue: CurrencyType.usd.code,
       balance: 0,
