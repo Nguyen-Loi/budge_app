@@ -62,7 +62,7 @@ class _BudgetNewViewState extends State<NewBudgetView> {
 
   void _addNewBudget(WidgetRef ref) {
     if (_formKey.currentState!.validate()) {
-      ref.read(newBudgetControllerProvider).addBudget(context,
+      ref.read(newBudgetControllerProvider.notifier).addBudget(context,
           budgetName: _budgetNameController.text,
           rangeDatetimeModel: _rangeDatetimeModel!,
           iconName: _iconName,

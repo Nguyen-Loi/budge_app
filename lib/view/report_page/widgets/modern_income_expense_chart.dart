@@ -1,8 +1,8 @@
 import 'package:budget_app/common/widget/b_text.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/data/models/models_widget/chart_budget_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ class ModernIncomeExpenseChart extends StatefulWidget {
   final int totalExpense;
   final String period;
   final int transactionCount;
-  final List<TransactionTypeEnum> transactionTypes;
+  final List<BudgetTypeEnum> budgetTypes;
   final List<ChartBudgetModel> chartData; // Add budget data for breakdown
 
   const ModernIncomeExpenseChart({
@@ -21,9 +21,9 @@ class ModernIncomeExpenseChart extends StatefulWidget {
     required this.totalExpense,
     this.period = '',
     this.transactionCount = 0,
-    this.transactionTypes = const [
-      TransactionTypeEnum.income,
-      TransactionTypeEnum.expense
+    this.budgetTypes = const [
+      BudgetTypeEnum.income,
+      BudgetTypeEnum.expense
     ],
     this.chartData = const [], // Add budget data parameter
   });
@@ -85,9 +85,9 @@ class _ModernIncomeExpenseChartState extends State<ModernIncomeExpenseChart>
   @override
   Widget build(BuildContext context) {
     final hasIncomeType =
-        widget.transactionTypes.contains(TransactionTypeEnum.income);
+        widget.budgetTypes.contains(BudgetTypeEnum.income);
     final hasExpenseType =
-        widget.transactionTypes.contains(TransactionTypeEnum.expense);
+        widget.budgetTypes.contains(BudgetTypeEnum.expense);
 
     // Check if we have any data for the selected transaction types
     final effectiveTotal = hasIncomeType && hasExpenseType

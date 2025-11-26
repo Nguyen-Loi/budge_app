@@ -1,7 +1,7 @@
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/view/report_page/widgets/enhanced_budget_chart.dart';
 import 'package:budget_app/view/report_page/widgets/modern_income_expense_chart.dart';
 import 'package:budget_app/data/models/models_widget/chart_budget_model.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:flutter/material.dart';
 
 enum ChartType {
@@ -15,7 +15,7 @@ class SmartBudgetChart extends StatelessWidget {
   final ChartType chartType;
   final bool showIncomeExpenseBreakdown;
   final String? period;
-  final List<TransactionTypeEnum> transactionTypes;
+  final List<BudgetTypeEnum> budgetTypes;
   final int transactionCount;
   final Map<String, dynamic>? statistics;
 
@@ -25,9 +25,9 @@ class SmartBudgetChart extends StatelessWidget {
     this.chartType = ChartType.auto,
     this.showIncomeExpenseBreakdown = true,
     this.period,
-    this.transactionTypes = const [
-      TransactionTypeEnum.income,
-      TransactionTypeEnum.expense
+    this.budgetTypes = const [
+      BudgetTypeEnum.income,
+      BudgetTypeEnum.expense
     ],
     this.transactionCount = 0,
     this.statistics,
@@ -56,23 +56,21 @@ class SmartBudgetChart extends StatelessWidget {
       return chartType;
     }
 
-    final hasIncomeType = transactionTypes.contains(TransactionTypeEnum.income);
+    final hasIncomeType = budgetTypes.contains(BudgetTypeEnum.income);
     final hasExpenseType =
-        transactionTypes.contains(TransactionTypeEnum.expense);
+        budgetTypes.contains(BudgetTypeEnum.expense);
 
-    // If both income and expense are selected, use income/expense chart
     if (hasIncomeType && hasExpenseType) {
       return ChartType.incomeExpense;
     }
 
-    // If only one type is selected, use budget chart to show breakdown
     return ChartType.budget;
   }
 
   List<ChartBudgetModel> _getFilteredChartData() {
-    final hasIncomeType = transactionTypes.contains(TransactionTypeEnum.income);
+    final hasIncomeType = budgetTypes.contains(BudgetTypeEnum.income);
     final hasExpenseType =
-        transactionTypes.contains(TransactionTypeEnum.expense);
+        budgetTypes.contains(BudgetTypeEnum.expense);
 
     if (hasIncomeType && hasExpenseType) {
       return chartData;
@@ -99,7 +97,7 @@ class SmartBudgetChart extends StatelessWidget {
       totalExpense: totalExpense,
       period: period ?? '',
       transactionCount: transactionCount,
-      transactionTypes: transactionTypes,
+      budgetTypes: budgetTypes,
       chartData: filteredData,
     );
   }
@@ -109,7 +107,7 @@ class SmartBudgetChart extends StatelessWidget {
     return EnhancedBudgetChart(
       chartData: filteredData,
       transactionCount: transactionCount,
-      transactionTypes: transactionTypes,
+      budgetTypes: budgetTypes,
       period: period ?? '',
     );
   }

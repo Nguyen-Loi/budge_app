@@ -125,7 +125,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   void _completeOnboarding() {
     String userName = _nameController.text.trim();
     final result = OnboardingResult(
-      userName: userName.isNotEmpty ? userName : context.loc.userNameDefault,
+      userName: userName.isNotEmpty ? userName : "",
       currency: _selectedCurrency,
     );
     Navigator.of(context).pop(result);
@@ -632,7 +632,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                           color: Theme.of(context)
                               .colorScheme
                               .onPrimary
-                              .withAlpha(160),
+                              .withAlpha(230),
                           fontWeight: FontWeight.w800,
                         ),
                       ],

@@ -2,17 +2,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 final packageInfoBaseControllerProvider =
-    StateNotifierProvider<PackageInfoBaseController, PackageInfo>((ref) {
-  return PackageInfoBaseController();
-});
+    NotifierProvider<PackageInfoBaseController, PackageInfo>(
+        PackageInfoBaseController.new);
 
-class PackageInfoBaseController extends StateNotifier<PackageInfo> {
-  PackageInfoBaseController()
-      : super(PackageInfo(
-            appName: 'SmartBudget',
-            packageName: '',
-            version: '0.0.0',
-            buildNumber: '0'));
+class PackageInfoBaseController extends Notifier<PackageInfo> {
+  @override
+  PackageInfo build() {
+    return PackageInfo(
+      appName: 'SmartBudget',
+      packageName: 'unknown',
+      version: '0.0.0',
+      buildNumber: '0'
+    );
+  }
+
   bool get isInit {
     bool isDataDefault = state.version == '0.0.0';
     return !isDataDefault;

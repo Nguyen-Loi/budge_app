@@ -5,6 +5,7 @@ import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/core/enums/subscription_plan_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
@@ -51,13 +52,27 @@ class UserModel {
     this.subscriptionPlan,
   });
 
-  bool get roleAds => role == UserRoleEnum.normal;
+  bool get roleAds =>
+      role == UserRoleEnum.normal &&
+      createdDate
+          .add(
+            Duration(days: SettingConstants.datePreniumForNewUser),
+          )
+          .isBefore(DateTime.now());
+
   AccountType get accountType => AccountType.fromValue(accountTypeValue);
   CurrencyType get currency => CurrencyType.fromValue(currencyTypeValue);
 
   bool get isPrenium {
     if (role == UserRoleEnum.prenium) return true;
     return false;
+  }
+
+  String nameDisplay(AppLocalizations loc) {
+    if (name.isEmpty) {
+      return loc.userNameDefault;
+    }
+    return name;
   }
 
   UserModel withPlan({
@@ -121,7 +136,7 @@ class UserModel {
       id: uid,
       email: StringConstants.emailDefault,
       profileUrl: null,
-      name: StringConstants.nameDefault,
+      name: '',
       accountTypeValue: AccountType.anonymous.value,
       currencyTypeValue: CurrencyType.usd.code,
       balance: 0,

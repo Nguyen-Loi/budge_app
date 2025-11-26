@@ -1,14 +1,15 @@
 class LottieUrl {
+  static const String _lottiesPath = 'assets/lotties';
   static const String loading1 =
-      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Floading1.json?alt=media&token=06fac971-6191-4118-950c-43d798136ec9';
+      '$_lottiesPath/loading1.json';
   static const String loading2 =
-      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Floading2.json?alt=media&token=03f48e21-d2d6-4a3d-9f5b-dc8bb3d2a4c4';
+      '$_lottiesPath/loading2.json';
   static const String loadingImage =
-      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2FloadingImage.json?alt=media&token=92b63b5b-e79e-4266-9aab-394704a9495b';
+      '$_lottiesPath/loadingImage.json';
   static const String error =
-      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Ferror.json?alt=media&token=c2a2a714-4c76-4181-8423-d10638b54e53';
+      '$_lottiesPath/error.json';
   static const String empty =
-      'https://firebasestorage.googleapis.com/v0/b/budget-ss.appspot.com/o/assets%2FLOTTIE%2Fempty.json?alt=media&token=bbcef2bf-e8d8-40be-a3c0-a10133a9a65e';
+      '$_lottiesPath/empty.json';
 }
 
 class SvgAssets {

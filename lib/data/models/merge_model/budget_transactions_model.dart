@@ -1,6 +1,9 @@
+import 'package:budget_app/core/extension/extension_datetime.dart';
 import 'package:budget_app/core/gen_id.dart';
 import 'package:budget_app/data/models/budget_model.dart';
+import 'package:budget_app/data/models/merge_model/budget_transaction_model.dart';
 import 'package:budget_app/data/models/transaction_model.dart';
+import 'package:flutter/material.dart';
 
 class BudgetTransactionsModel {
   final BudgetModel budget;
@@ -17,14 +20,14 @@ class BudgetTransactionsModel {
     Map<String, List<TransactionModel>> transactionsMap = {};
 
     for (var transaction in transactions) {
-      String transactionId = transaction.budgetId;
+      String budgetId = transaction.budgetId;
       if (transaction.budgetId == GenId.budgetWallet()) {
-        transactionId = transaction.transactionTypeValue;
+        budgetId = transaction.transactionTypeValue;
       }
-      if (!transactionsMap.containsKey(transactionId)) {
-        transactionsMap[transactionId] = [];
+      if (!transactionsMap.containsKey(budgetId)) {
+        transactionsMap[budgetId] = [];
       }
-      transactionsMap[transactionId]!.add(transaction);
+      transactionsMap[budgetId]!.add(transaction);
     }
 
     for (var budget in budgets) {
@@ -35,8 +38,6 @@ class BudgetTransactionsModel {
           budget: budget, transactions: transactionsOfBudget);
       list.add(model);
     }
-
-    list.removeWhere((e) => e.transactions.isEmpty);
     return list;
   }
 }
@@ -56,5 +57,36 @@ extension BudgetTransactionsModelExtension on List<BudgetTransactionsModel> {
         "transactions": transactions.toChatData()
       };
     }).toList().toString();
+  }
+
+  List<BudgetTransactionModel> get toEveryItem {
+    return expand((e) => e.transactions.map(
+            (tx) => BudgetTransactionModel(budget: e.budget, transaction: tx)))
+        .toList();
+  }
+
+  List<BudgetTransactionsModel> get containTransactions {
+    return where((element) => element.transactions.isNotEmpty).toList();
+  }
+
+  /// Filter with date range and remove transactions invalid in item
+  List<BudgetTransactionsModel> filterTransactionWithDateRange(
+      DateTimeRange dateRange) {
+    return map((e) {
+      final filteredTransactions = e.transactions.where((tx) {
+        return tx.transactionDate.isBetweenDateTimeRange(dateRange);
+      }).toList();
+      return BudgetTransactionsModel(
+          budget: e.budget, transactions: filteredTransactions);
+    }).toList();
+  }
+
+  List<BudgetModel> getBudgetActive(DateTimeRange dateRange) {
+    return map((e) => e.budget)
+        .where((budget) =>
+            budget.endDate.isBetweenDateTimeRange(dateRange) ||
+            budget.startDate.isBetweenDateTimeRange(dateRange))
+        .toSet()
+        .toList();
   }
 }

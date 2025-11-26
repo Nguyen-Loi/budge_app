@@ -23,9 +23,9 @@ abstract class IStorageAPI {
 
 class StorageApi extends IStorageAPI {
   final FirebaseStorage _storage;
-  final Ref<Object?> _ref;
+  final Ref _ref;
   StorageApi(
-      {required FirebaseStorage storage, required Ref<Object?> ref})
+      {required FirebaseStorage storage, required Ref ref})
       : _storage = storage,
         _ref = ref;
 
@@ -57,7 +57,6 @@ class StorageApi extends IStorageAPI {
     }
     List<String> urls = [];
     for (final imageUrl in imageUrls) {
-      List<String> urls = [];
       imageUrl.fold(
         (_) {},
         (url) {

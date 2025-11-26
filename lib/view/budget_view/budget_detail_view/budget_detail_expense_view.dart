@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BudgetDetailExpenseView extends BudgetBaseDetailView {
   const BudgetDetailExpenseView(
-      {super.key, required super.budget, required super.transactions});
+      {super.key, required super.budgetTransactionsModel});
 
   @override
   List<Widget> header(BuildContext context, BudgetModel budget, WidgetRef ref) {

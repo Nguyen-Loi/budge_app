@@ -11,7 +11,7 @@ class ChatRowTypingItem extends StatelessWidget {
   ChatModel get geminiTyping {
     final now = DateTime.now();
     return ChatModel(
-        id: GenId.chat,
+        id: GenId.chat(RoleChatEnum.assistant),
         userId: '',
         message: 'Loading...',
         roleTypeValue: RoleChatEnum.assistant.value,

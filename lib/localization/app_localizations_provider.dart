@@ -1,32 +1,27 @@
-import 'package:budget_app/common/shared_pref/language_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
-/// provider used to access the AppLocalizations object for the current locale
+final languageControllerProvider = StateProvider<Locale>((ref) {
+  return WidgetsBinding.instance.platformDispatcher.locale;
+});
+
+// Provider for the AppLocalizations for the current locale
 final appLocalizationsProvider = Provider<AppLocalizations>((ref) {
-  final language = ref.watch(languageControllerProvider);
-
-  // set the initial locale
-  ref.state = lookupAppLocalizations(Locale(language.code));
-  // update afterwards
-  final observer = _LocaleObserver((locales) {
-    ref.state = lookupAppLocalizations(basicLocaleListResolution(
-        [WidgetsBinding.instance.platformDispatcher.locale],
-        AppLocalizations.supportedLocales));
-  });
-  final binding = WidgetsBinding.instance;
-  binding.addObserver(observer);
-  ref.onDispose(() => binding.removeObserver(observer));
-  return ref.state;
+  final locale = ref.watch(languageControllerProvider);
+  return lookupAppLocalizations(locale);
 });
 
 /// observed used to notify the caller when the locale changes
-class _LocaleObserver extends WidgetsBindingObserver {
-  _LocaleObserver(this._didChangeLocales);
-  final void Function(List<Locale>? locales) _didChangeLocales;
+class LocaleObserver extends WidgetsBindingObserver {
+  final void Function(Locale) onLocaleChanged;
+  LocaleObserver(this.onLocaleChanged);
+
   @override
   void didChangeLocales(List<Locale>? locales) {
-    _didChangeLocales(locales);
+    if (locales != null && locales.isNotEmpty) {
+      onLocaleChanged(locales.first);
+    }
   }
 }

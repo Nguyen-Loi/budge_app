@@ -7,6 +7,7 @@ import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
+import 'package:budget_app/view/report_page/controller/report_filter_model.dart';
 import 'package:budget_app/view/report_page/controller/report_page_controller.dart';
 import 'package:budget_app/view/report_page/widgets/report_filter_dialog.dart';
 import 'package:budget_app/view/report_page/widgets/smart_budget_chart.dart';
@@ -116,7 +117,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
     );
   }
 
-  Widget _buildBody(BuildContext context, ReportFilterState state,
+  Widget _buildBody(BuildContext context, ReportFilterModel state,
       ReportPageController controller) {
     return RefreshIndicator(
       onRefresh: () async {
@@ -152,7 +153,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
     );
   }
 
-  Widget _buildSliverHeader(BuildContext context, ReportFilterState state,
+  Widget _buildSliverHeader(BuildContext context, ReportFilterModel state,
       ReportPageController controller) {
     return SliverAppBar(
       expandedHeight: 70,
@@ -186,7 +187,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
   }
 
   Widget _buildExportButtonSection(BuildContext context,
-      ReportFilterState state, ReportPageController controller) {
+      ReportFilterModel state, ReportPageController controller) {
     if (state.budgetTransactionsList.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -204,7 +205,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
     );
   }
 
-  Widget _buildExportButton(BuildContext context, ReportFilterState state,
+  Widget _buildExportButton(BuildContext context, ReportFilterModel state,
       ReportPageController controller) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final textColor = Theme.of(context).colorScheme.onPrimary;
@@ -251,7 +252,7 @@ class _ReportPageState extends ConsumerState<ReportPage> {
   }
 
   Widget _buildMergedStatisticsChartSection(BuildContext context,
-      ReportFilterState state, ReportPageController controller) {
+      ReportFilterModel state, ReportPageController controller) {
     return Container(
       margin: const EdgeInsets.all(16),
       child: Card(
@@ -288,8 +289,8 @@ class _ReportPageState extends ConsumerState<ReportPage> {
                   chartData: state.chartData,
                   chartType: ChartType.auto,
                   showIncomeExpenseBreakdown: true,
-                  period: _formatDateRange(state.dateTimeRange),
-                  transactionTypes: state.transactionTypes,
+                  period: _formatDateRange(state.dateTimeRangePicker),
+                  budgetTypes: state.budgetTypes,
                   transactionCount:
                       controller.getStatistics()['transactionCount'] as int,
                 ),
@@ -301,7 +302,9 @@ class _ReportPageState extends ConsumerState<ReportPage> {
   }
 
   Widget _buildTransactionsSection(
-      BuildContext context, ReportFilterState state) {
+      BuildContext context, ReportFilterModel state) {
+    state.budgetTransactionsList.sort((a, b) =>
+        b.budget.currentAmount.abs().compareTo(a.budget.currentAmount.abs()));
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -392,22 +395,18 @@ class _ReportPageState extends ConsumerState<ReportPage> {
     return "$start - $end";
   }
 
-  void _showFilterDialog(BuildContext context, ReportFilterState state,
+  void _showFilterDialog(BuildContext context, ReportFilterModel state,
       ReportPageController controller) {
     showDialog(
       context: context,
       builder: (context) => ReportFilterDialog(
         currentState: state,
-        availableBudgets: controller.availableBudgets,
-        availableTransactionTypes: controller.availableTransactionTypes,
-        dateRangeOptions: controller.dateRangeOptions,
-        firstDate: controller.firstTransactionDate,
-        lastDate: controller.lastTransactionDate,
-        getRelevantBudgets: controller.getRelevantBudgets,
-        onFiltersChanged: (dateRange, transactionTypes, budgetIds) {
+        availableBudgetsTransactions: controller.availableBudgetsTransactions,
+        availableDateRange: controller.availableDateRange,
+        onChanged: (dateRange, budgetTypes, budgetIds) {
           controller.setFilters(
             dateTimeRange: dateRange,
-            transactionTypes: transactionTypes,
+            budgetTypes: budgetTypes,
             selectedBudgetIds: budgetIds,
           );
         },

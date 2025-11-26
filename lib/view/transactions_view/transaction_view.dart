@@ -6,43 +6,16 @@ import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/common/widget/picker/b_picker_month_dialog.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/ad_helper.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:budget_app/core/extension/extension_datetime.dart';
-import 'package:budget_app/core/extension/extension_iterable.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
 import 'package:budget_app/core/icon_manager.dart';
-import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/remote_config_base_controller.dart';
-import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
+import 'package:budget_app/view/transactions_view/controller/transaction_controller.dart';
 import 'package:budget_app/view/transactions_view/widget/transaction_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-
-class TransactionState {
-  final List<TransactionCardModel> transactions;
-  final int sumIncome;
-  final int sumExpense;
-
-  TransactionState({
-    required this.transactions,
-    required this.sumIncome,
-    required this.sumExpense,
-  });
-
-  TransactionState copyWith({
-    List<TransactionCardModel>? transactions,
-    int? sumIncome,
-    int? sumExpense,
-  }) {
-    return TransactionState(
-      transactions: transactions ?? this.transactions,
-      sumIncome: sumIncome ?? this.sumIncome,
-      sumExpense: sumExpense ?? this.sumExpense,
-    );
-  }
-}
 
 class TransactionView extends ConsumerStatefulWidget {
   const TransactionView({super.key});
@@ -320,7 +293,7 @@ class _TransactionViewState extends ConsumerState<TransactionView>
                 fontWeight: FontWeight.w500,
               ),
               BText.h3(
-                netIncome.toMoneyStrContext(context),
+                netIncome.toMoneyStrContext(context, compact: false),
                 color: color,
               ),
             ],
@@ -334,7 +307,7 @@ class _TransactionViewState extends ConsumerState<TransactionView>
     return Consumer(builder: (_, ref, __) {
       final state = ref.watch(transactionControllerProvider);
 
-      if (state.transactions.isEmpty) {
+      if (state.budgetTransactions.isEmpty) {
         return SliverFillRemaining(
           hasScrollBody: false,
           child: Column(
@@ -366,88 +339,15 @@ class _TransactionViewState extends ConsumerState<TransactionView>
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: TransactionCard(model: state.transactions[index]),
+                  child:
+                      TransactionCard(model: state.budgetTransactions[index]),
                 ),
               );
             },
-            childCount: state.transactions.length,
+            childCount: state.budgetTransactions.length,
           ),
         ),
       );
     });
-  }
-}
-
-final transactionControllerProvider =
-    StateNotifierProvider.autoDispose<TransactionsController, TransactionState>(
-        (ref) {
-  final transactionBase = ref.watch(transactionsBaseControllerProvider);
-  return TransactionsController(transactionsState: transactionBase);
-});
-
-class TransactionsController extends StateNotifier<TransactionState> {
-  TransactionsController({
-    required List<TransactionCardModel> transactionsState,
-  })  : _transactionBase = transactionsState,
-        super(TransactionState(transactions: [], sumIncome: 0, sumExpense: 0)) {
-    updateDate(_dateTimePicker);
-    _init();
-  }
-  final List<TransactionCardModel> _transactionBase;
-
-  void _init() {
-    final now = DateTime.now();
-    if (_transactionBase.isEmpty) {
-      _dateTimeRangeToFilter = now.getRangeMonth;
-      return;
-    }
-    final allTransactions = _transactionBase.map((e) => e.transaction).toList();
-    allTransactions
-        .sort((a, b) => a.transactionDate.compareTo(b.transactionDate));
-    final start = allTransactions[0].transactionDate;
-    final end = allTransactions.last.transactionDate.isBefore(now)
-        ? now
-        : allTransactions.last.transactionDate;
-    _dateTimeRangeToFilter = DateTimeRange(start: start, end: end);
-  }
-
-  late DateTimeRange _dateTimeRangeToFilter;
-  DateTimeRange get dateRangeToFilter => _dateTimeRangeToFilter;
-
-  DateTime _dateTimePicker = DateTime.now();
-  DateTime get dateTimePicker => _dateTimePicker;
-
-  void updateDate(DateTime date) {
-    _dateTimePicker = date;
-    final filteredTransactions = _transactionBase
-        .filterByMonth(
-            time: _dateTimePicker,
-            getDate: (x) => x.transaction.transactionDate)
-        .toList();
-
-    final sums = _calculateSums(filteredTransactions);
-
-    state = TransactionState(
-      transactions: filteredTransactions,
-      sumIncome: sums.income,
-      sumExpense: sums.expense,
-    );
-  }
-
-  ({int income, int expense}) _calculateSums(
-      List<TransactionCardModel> transactions) {
-    int newIncome = 0;
-    int newExpense = 0;
-    for (var e in transactions) {
-      switch (e.transaction.transactionType) {
-        case TransactionTypeEnum.income:
-          newIncome += e.transaction.amount;
-          break;
-        case TransactionTypeEnum.expense:
-          newExpense += e.transaction.amount;
-          break;
-      }
-    }
-    return (income: newIncome, expense: newExpense.abs());
   }
 }

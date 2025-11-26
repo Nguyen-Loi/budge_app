@@ -1,27 +1,27 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
+import 'package:budget_app/core/enums/budget_type_enum.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/models_widget/chart_budget_model.dart';
 import 'package:budget_app/theme/app_text_theme.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
-import 'package:budget_app/core/enums/transaction_type_enum.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class EnhancedBudgetChart extends StatefulWidget {
   final List<ChartBudgetModel> chartData;
   final int transactionCount;
-  final List<TransactionTypeEnum> transactionTypes;
+  final List<BudgetTypeEnum> budgetTypes;
   final String period;
 
   const EnhancedBudgetChart({
     super.key,
     required this.chartData,
     this.transactionCount = 0,
-    this.transactionTypes = const [
-      TransactionTypeEnum.income,
-      TransactionTypeEnum.expense
+    this.budgetTypes = const [
+      BudgetTypeEnum.income,
+      BudgetTypeEnum.expense
     ],
     this.period = '',
   });
@@ -181,9 +181,9 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
 
     // Get the transaction type labels
     final hasIncomeType =
-        widget.transactionTypes.contains(TransactionTypeEnum.income);
+        widget.budgetTypes.contains(BudgetTypeEnum.income);
     final hasExpenseType =
-        widget.transactionTypes.contains(TransactionTypeEnum.expense);
+        widget.budgetTypes.contains(BudgetTypeEnum.expense);
 
     String chartTitle;
     if (hasIncomeType && hasExpenseType) {
@@ -426,9 +426,9 @@ class _EnhancedBudgetChartState extends State<EnhancedBudgetChart>
 
       // Determine if item is income or expense based on transaction types and actual data
       final hasIncomeType =
-          widget.transactionTypes.contains(TransactionTypeEnum.income);
+          widget.budgetTypes.contains(BudgetTypeEnum.income);
       final hasExpenseType =
-          widget.transactionTypes.contains(TransactionTypeEnum.expense);
+          widget.budgetTypes.contains(BudgetTypeEnum.expense);
 
       bool isIncome;
       if (hasIncomeType && hasExpenseType) {

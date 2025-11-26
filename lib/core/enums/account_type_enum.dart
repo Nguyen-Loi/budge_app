@@ -1,6 +1,7 @@
 enum AccountType {
   anonymous('ANONYMOUS'),
-  emailAndPassword('DEFAULT'),
+  loginEmailAndPassword('DEFAULT'),
+  registeredEmailAndPassword('DEFAULT'),
   facebook('FACEBOOK'),
   google('GOOGLE');
 
@@ -15,7 +16,8 @@ enum AccountType {
 extension ConvertTypeAccount on AccountType {
   String toText() {
     switch (this) {
-      case AccountType.emailAndPassword:
+      case AccountType.loginEmailAndPassword:
+      case AccountType.registeredEmailAndPassword:
         return 'Email and password';
       case AccountType.facebook:
         return 'Facebook';

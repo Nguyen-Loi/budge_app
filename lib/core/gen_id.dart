@@ -1,4 +1,5 @@
 import 'package:budget_app/constants/string_constants.dart';
+import 'package:budget_app/core/enums/role_chat_enum.dart';
 import 'package:uuid/uuid.dart';
 
 Uuid _uuid = const Uuid();
@@ -15,11 +16,12 @@ class GenId {
   //   return month.toString();
   // }
   static String budget() => _time;
-  static String budgetDefault(String key) => StringConstants.budgetDefaultKeyPrefix + key;
+  static String budgetDefault(String key) =>
+      StringConstants.budgetDefaultKeyPrefix + key;
   static String device() => _time;
   static String budgetWallet() => 'WALLET';
   static String transaction() => _time;
-  static String get chat => _time;
+  static String chat(RoleChatEnum role) => '${_time}_${role.value}';
   static String devices(String uid) => uid + _time;
   static String feedback() => _time;
   static String subscription() => _time;

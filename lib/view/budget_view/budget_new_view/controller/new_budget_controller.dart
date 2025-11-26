@@ -13,29 +13,19 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final newBudgetControllerProvider = Provider.autoDispose((ref) {
-  final budgetRepository = ref.watch(budgetRepositoryProvider);
-  final uid = ref.watch(uidControllerProvider);
-  final budgetController = ref.watch(budgetBaseControllerProvider.notifier);
-  return NewBudgetController(
-      budgetRepository: budgetRepository,
-      uid: uid,
-      budgetController: budgetController);
-});
+final newBudgetControllerProvider = NotifierProvider.autoDispose<NewBudgetController, bool>(NewBudgetController.new);
+class NewBudgetController extends Notifier<bool> {
+  late BudgetRepository _budgetRepository;
+  late BudgetBaseController _budgetBaseController;
+  late String _uid;
 
-class NewBudgetController extends StateNotifier<bool> {
-  final BudgetRepository _budgetRepository;
-  final BudgetBaseController _budgetBaseController;
-  final String _uid;
-
-  NewBudgetController(
-      {required BudgetRepository budgetRepository,
-      required String uid,
-      required BudgetBaseController budgetController})
-      : _budgetRepository = budgetRepository,
-        _uid = uid,
-        _budgetBaseController = budgetController,
-        super(false);
+  @override
+  bool build() {
+    _uid = ref.watch(uidControllerProvider);
+    _budgetBaseController = ref.watch(budgetBaseControllerProvider.notifier);
+    _budgetRepository = ref.watch(budgetRepositoryProvider);
+    return false;
+  }
 
   String? _errorValidate(BuildContext context, {required String budgetName}) {
     List<BudgetModel> list = _budgetBaseController.getAll;
@@ -83,4 +73,6 @@ class NewBudgetController extends StateNotifier<bool> {
       Navigator.pop(context);
     });
   }
+  
+
 }

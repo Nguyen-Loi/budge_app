@@ -81,7 +81,7 @@
     "nameInvalid": "Name invalid",
     "passwordMininum6": "Password minimum is 6 characters",
     "confirmPasswordInvalid": "Confirm password invalid",
-    "accountCreateSuccess": "Account created successfully!",
+    "loginSuccessWelcomeBack": "Login successful! Welcome back.",
     "forgetPassword": "Forgot password?",
     "pBudgetNameExits": "Budget {budgetName} already exist. Please change budget name and try again",
     "@pBudgetNameExits": {
@@ -208,7 +208,7 @@
     "filter": "Filter",
     "accept": "Accept",
     "reasonChartNotVisible": "The chart is not displayed because the filter is showing income and expense",
-    "transactionNotScopeBudget": "The transaction date is not within the budget time range",
+    "transactionNotScopeBudget": "The transaction date is not within the budget time range ({startDate} - {endDate})",
     "totalIncome": "Total Income",
     "totalExpense": "Total Expense",
     "newVersionDescription": "Please update to the latest version of the app.",
@@ -240,7 +240,7 @@
     "errorInternet": "No internet connection",
     "allTime": "All time",
     "invalidDateRange": "The new time frame must cover the entire current time frame.",
-    "emailNotFound": "Email not found",
+    "emailNotFound": "Email not found. Please check and try again.",
     "weAreSendEmailPassword": "We've sent you an email to reset your password. Please check your inbox.",
     "resetPassword": "Reset password",
     "resetPasswordTitle": "Forgot your password?",
@@ -421,5 +421,7 @@
     "pAnErrorUnexpectedOccur": "An unexpected error occurred: {errorMessage}",
     "noInternetConnection": "No internet connection",
     "confirmNewAccountLoginTitle": "Confirm new account login",
-    "confirmNewAccountLoginMessage": "If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?"
+    "confirmNewAccountLoginMessage": "If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?",
+    "previewValue": "Preview: {value}",
+    "accountInactiveWithReason": "Account inactive: {reason}, please contact support."
 }

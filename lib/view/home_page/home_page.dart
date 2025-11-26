@@ -9,6 +9,7 @@ import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/user_model.dart';
+import 'package:budget_app/view/base_controller/budget_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/view/budget_view/widget/budget_card.dart';
 import 'package:budget_app/view/home_page/controller/home_controller.dart';
@@ -131,7 +132,7 @@ class _HomePageState extends ConsumerState<HomePage>
                 ),
                 Expanded(
                   child: BText.h2(
-                    user.name,
+                    user.nameDisplay(context.loc),
                     color: Theme.of(context).colorScheme.onPrimary,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
@@ -310,7 +311,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   Widget _buildBudgetSection() {
     return Consumer(builder: (_, ref, __) {
-      final budgets = ref.watch(homeControllerProvider.notifier).budgetsPreview;
+      final budgets = ref.watch(budgetBaseControllerProvider.notifier).recently;
       return _buildSection(
           title: context.loc.budget,
           viewAll: budgets.isNotEmpty,

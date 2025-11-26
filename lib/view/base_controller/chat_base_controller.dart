@@ -4,20 +4,17 @@ import 'package:budget_app/data/models/chat_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final chatBaseControllerProvider =
-    StateNotifierProvider<ChatBaseController, List<ChatModel>>((ref) {
-  final chatApi = ref.watch(chatAPIProvider);
-  return ChatBaseController(chatApi: chatApi);
-});
+    NotifierProvider<ChatBaseController, List<ChatModel>>(
+        ChatBaseController.new);
 
-class ChatBaseController extends StateNotifier<List<ChatModel>> {
-  ChatBaseController({required ChatApi chatApi})
-      : _chatApi = chatApi,
-        super([]);
-
-  final ChatApi _chatApi;
+class ChatBaseController extends Notifier<List<ChatModel>> {
+  @override
+  List<ChatModel> build() {
+    return [];
+  }
 
   Future<void> init() async {
-    final list = await _chatApi.fetchASC();
+    final list = await ref.read(chatAPIProvider).fetchASC();
     state = list;
   }
 
