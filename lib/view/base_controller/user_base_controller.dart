@@ -50,7 +50,7 @@ class UserBaseController extends Notifier<UserModel> {
   }
 
   Future<void> updateUser(UserModel user) async {
-    await _userRepository.updateUser(user: user);
+    await _userRepository.update(user: user);
     reload(user);
   }
 
@@ -68,7 +68,7 @@ class UserBaseController extends Notifier<UserModel> {
     );
 
     // Update in database
-    final res = await _userRepository.updateUser(user: updatedUser);
+    final res = await _userRepository.update(user: updatedUser);
     res.fold(
       (failure) {
         showSnackBarError(context, failure.message);
@@ -158,7 +158,7 @@ class UserBaseController extends Notifier<UserModel> {
     final newUser = currentUser.copyWith(
         isRemindTransactionEveryDate:
             !currentUser.isRemindTransactionEveryDate);
-    final res = await _userRepository.updateUser(user: newUser);
+    final res = await _userRepository.update(user: newUser);
     res.fold((l) {
       showSnackBarError(context, l.message);
     }, (r) {

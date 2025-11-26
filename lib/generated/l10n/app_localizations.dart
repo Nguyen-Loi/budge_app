@@ -581,11 +581,11 @@ abstract class AppLocalizations {
   /// **'Confirm password invalid'**
   String get confirmPasswordInvalid;
 
-  /// No description provided for @accountCreateSuccess.
+  /// No description provided for @loginSuccessWelcomeBack.
   ///
   /// In en, this message translates to:
-  /// **'Account created successfully!'**
-  String get accountCreateSuccess;
+  /// **'Login successful! Welcome back.'**
+  String get loginSuccessWelcomeBack;
 
   /// No description provided for @forgetPassword.
   ///
@@ -1154,7 +1154,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailNotFound.
   ///
   /// In en, this message translates to:
-  /// **'Email not found'**
+  /// **'Email not found. Please check and try again.'**
   String get emailNotFound;
 
   /// No description provided for @weAreSendEmailPassword.

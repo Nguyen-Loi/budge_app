@@ -47,12 +47,4 @@ class AssetController extends Notifier<List<AssetModel>> {
   List<AssetModel> getAssetsByType(AssetTypeEnum type) {
     return state.where((asset) => asset.assetType == type).toList();
   }
-
-  String get defaultAvatar {
-    final avatars = getAssetsByType(AssetTypeEnum.avatarImage);
-    if (avatars.isEmpty) {
-      return "";
-    }
-    return avatars.first.url;
-  }
 }

@@ -81,7 +81,7 @@
   "nameInvalid": "Tên không hợp lệ",
   "passwordMininum6": "Mật khẩu tối thiểu là 6 ký tự",
   "confirmPasswordInvalid": "Xác nhận mật khẩu không hợp lệ",
-  "accountCreateSuccess": "Tạo tài khoản thành công!",
+  "loginSuccessWelcomeBack": "Đăng nhập thành công! Chào mừng bạn trở lại.",
   "forgetPassword": "Quên mật khẩu?",
   "pBudgetNameExits": "Ngân sách {budgetName} đã tồn tại. Vui lòng thay đổi tên ngân sách và thử lại",
   "@pBudgetNameExits": {
@@ -240,7 +240,7 @@
   "errorInternet": "Không có kết nối internet",
   "allTime": "Không giới hạn",
   "invalidDateRange": "Khoảng thời gian mới cần phải bao trùm toàn bộ khoảng thời gian hiện tại.",
-  "emailNotFound": "Email không tồn tại",
+  "emailNotFound": "Email không tồn tại. Vui lòng kiểm tra và thử lại.",
   "weAreSendEmailPassword": "Chúng tôi đã gửi email để bạn đặt lại mật khẩu. Vui lòng kiểm tra hộp thư.",
   "resetPassword": "Đặt lại mật khẩu",
   "resetPasswordTitle": "Quên mật khẩu?",

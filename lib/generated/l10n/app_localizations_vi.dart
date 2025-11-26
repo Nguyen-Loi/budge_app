@@ -265,7 +265,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get confirmPasswordInvalid => 'Xác nhận mật khẩu không hợp lệ';
 
   @override
-  String get accountCreateSuccess => 'Tạo tài khoản thành công!';
+  String get loginSuccessWelcomeBack => 'Đăng nhập thành công! Chào mừng bạn trở lại.';
 
   @override
   String get forgetPassword => 'Quên mật khẩu?';
@@ -570,7 +570,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get invalidDateRange => 'Khoảng thời gian mới cần phải bao trùm toàn bộ khoảng thời gian hiện tại.';
 
   @override
-  String get emailNotFound => 'Email không tồn tại';
+  String get emailNotFound => 'Email không tồn tại. Vui lòng kiểm tra và thử lại.';
 
   @override
   String get weAreSendEmailPassword => 'Chúng tôi đã gửi email để bạn đặt lại mật khẩu. Vui lòng kiểm tra hộp thư.';

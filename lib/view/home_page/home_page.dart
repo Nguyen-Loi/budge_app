@@ -132,7 +132,7 @@ class _HomePageState extends ConsumerState<HomePage>
                 ),
                 Expanded(
                   child: BText.h2(
-                    user.name,
+                    user.nameDisplay(context.loc),
                     color: Theme.of(context).colorScheme.onPrimary,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,

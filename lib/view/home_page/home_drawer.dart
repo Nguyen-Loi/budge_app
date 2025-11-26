@@ -74,7 +74,7 @@ class HomeDrawer extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   BText.b1(
-                    user.name,
+                    user.nameDisplay(context.loc),
                     color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),

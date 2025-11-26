@@ -8,11 +8,7 @@ class StringConstants {
   static const String budgetDefaultKeyPrefix = 'DEFAULT_';
 
   static String setName({required String name, required String email}) {
-    List<String> nameDefaults = [
-      'GUEST',
-      'KHÁCH',
-    ];
-    if (nameDefaults.contains(name.toUpperCase())) {
+    if (name.isEmpty) {
       return getNameFromEmail(email);
     }
     return name;

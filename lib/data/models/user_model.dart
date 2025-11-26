@@ -5,7 +5,7 @@ import 'package:budget_app/core/enums/language_enum.dart';
 import 'package:budget_app/core/enums/subscription_plan_enum.dart';
 import 'package:budget_app/core/enums/user_role_enum.dart';
 import 'package:budget_app/core/extension/extension_money.dart';
-import 'package:budget_app/core/utils.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
@@ -66,6 +66,13 @@ class UserModel {
   bool get isPrenium {
     if (role == UserRoleEnum.prenium) return true;
     return false;
+  }
+
+  String nameDisplay(AppLocalizations loc) {
+    if (name.isEmpty) {
+      return loc.userNameDefault;
+    }
+    return name;
   }
 
   UserModel withPlan({
@@ -129,7 +136,7 @@ class UserModel {
       id: uid,
       email: StringConstants.emailDefault,
       profileUrl: null,
-      name: getNameFromEmail(StringConstants.emailDefault),
+      name: '',
       accountTypeValue: AccountType.anonymous.value,
       currencyTypeValue: CurrencyType.usd.code,
       balance: 0,

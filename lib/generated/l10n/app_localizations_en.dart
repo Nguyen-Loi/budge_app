@@ -265,7 +265,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmPasswordInvalid => 'Confirm password invalid';
 
   @override
-  String get accountCreateSuccess => 'Account created successfully!';
+  String get loginSuccessWelcomeBack => 'Login successful! Welcome back.';
 
   @override
   String get forgetPassword => 'Forgot password?';
@@ -570,7 +570,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalidDateRange => 'The new time frame must cover the entire current time frame.';
 
   @override
-  String get emailNotFound => 'Email not found';
+  String get emailNotFound => 'Email not found. Please check and try again.';
 
   @override
   String get weAreSendEmailPassword => 'We\'ve sent you an email to reset your password. Please check your inbox.';

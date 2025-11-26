@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final userRepositoryProvider = Provider<UserRepository>((ref) {
   return ref.watch(userApiProvider);
 });
+
 abstract class UserRepository {
   Future<UserModel> getUserById(String uid);
-  FutureEither<UserModel> updateUser(
-      {required UserModel user});
+  FutureEither<UserModel> update({required UserModel user});
   FutureEitherVoid add({required UserModel user});
 }

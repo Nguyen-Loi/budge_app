@@ -9,7 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 final profileControllerProvider =
-    NotifierProvider.autoDispose<ProfileController, bool>(ProfileController.new);
+    NotifierProvider.autoDispose<ProfileController, bool>(
+        ProfileController.new);
 
 class ProfileController extends Notifier<bool> {
   late final UserRepository _userRepository;
@@ -30,13 +31,13 @@ class ProfileController extends Notifier<bool> {
       {required UserModel user,
       required String name,
       required PhoneNumber phoneNumber,
-      required String profileUrl}) async {
+      required String? profileUrl}) async {
     if (!Validate.phoneNumber(context, phoneNumber: phoneNumber.phoneNumber)) {
       return;
     }
     final closeLoading = showLoading(context: context);
 
-    final res = await _userRepository.updateUser(
+    final res = await _userRepository.update(
       user: user.copyWith(
         name: name,
         phoneNumber: phoneNumber,

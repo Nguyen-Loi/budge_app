@@ -207,7 +207,7 @@ class SubscriptionApi implements ISubscriptionApi {
         expiryDate: expiryDate,
         newUserRole: UserRoleEnum.prenium,
       );
-      await _userDb.updateUser(user: updatedUser);
+      await _userDb.update(user: updatedUser);
     }
 
     logInfo('Subscription activated successfully for user: ${user.id}');

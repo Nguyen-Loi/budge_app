@@ -3,8 +3,6 @@ import 'dart:io';
 import 'dart:math';
 import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/generated/l10n/app_localizations.dart';
-import 'package:budget_app/view/base_controller/chat_base_controller.dart';
-import 'package:budget_app/view/base_controller/transaction_base_controller.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:crypto/crypto.dart';
 import 'package:budget_app/common/exception/network_exception.dart';
@@ -29,6 +27,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 /// Enum for tracking authentication operation status
 enum AuthStatus {
@@ -205,14 +204,13 @@ class AuthAPI implements IAuthApi {
                   .read(appLocalizationsProvider)
                   .accountInactiveWithReason(reason)));
         case UserGetStatus.notFound:
-          if (accountType == AccountType.registeredEmailAndPassword) {
-            final cre =
-                await _auth.signInWithCredential(credentialInfo.credential);
-            await _cloneDataForNewUserAccount(toUser: cre.user!);
-          } else {
-            await _currentUserAccount
-                .linkWithCredential(credentialInfo.credential);
-          }
+          final credential = await _currentUserAccount
+              .linkWithCredential(credentialInfo.credential);
+          final userInDevice = _ref.read(userBaseControllerProvider);
+          await _updateDbUserAfterLink(
+              userModel: userInDevice,
+              user: credential.user!,
+              accountType: accountType);
           break;
         case UserGetStatus.active:
           await _auth.signInWithCredential(credentialInfo.credential);
@@ -282,11 +280,6 @@ class AuthAPI implements IAuthApi {
   }) async {
     return _baseFirebaseAuthentication(
         func: () async {
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: email,
-            password: password,
-          );
-
           return right(CredentialInfo(
               credential: EmailAuthProvider.credential(
                 email: email,
@@ -562,6 +555,29 @@ class AuthAPI implements IAuthApi {
     }
   }
 
+  Future<void> _updateDbUserAfterLink(
+      {required UserModel userModel,
+      required User user,
+      required AccountType accountType}) async {
+    final now = DateTime.now();
+    final PhoneNumber? phoneNumber = user.phoneNumber != null
+        ? PhoneNumber(phoneNumber: user.phoneNumber)
+        : userModel.phoneNumber;
+    final updatedUser = userModel.copyWith(
+      email: user.email,
+      name: user.displayName ??
+          StringConstants.setName(name: userModel.name, email: user.email!),
+          phoneNumber: phoneNumber,
+      accountTypeValue: accountType.value,
+      updatedDate: now,
+    );
+    final res = await _ref.read(userApiProvider).update(user: updatedUser);
+    if (res.isLeft()) {
+      throw Exception(
+          'Error updating user after linking account: ${res.getLeftOrDefault().message}');
+    }
+  }
+
   @override
   Future<User> signInAnonymously() {
     return _auth.signInAnonymously().then((userCredential) {
@@ -639,75 +655,75 @@ class AuthAPI implements IAuthApi {
     return digest.toString();
   }
 
-  Future<void> _cloneDataForNewUserAccount({required User toUser}) async {
-    final user = _ref.read(userBaseControllerProvider);
-    final budgetTransactions = _ref.read(transactionsBaseControllerProvider);
-    final chats = _ref.read(chatBaseControllerProvider);
-    final now = DateTime.now();
-    final toUid = toUser.uid;
+  // Future<void> _cloneDataForNewUserAccount({required User toUser}) async {
+  //   final user = _ref.read(userBaseControllerProvider);
+  //   final budgetTransactions = _ref.read(transactionsBaseControllerProvider);
+  //   final chats = _ref.read(chatBaseControllerProvider);
+  //   final now = DateTime.now();
+  //   final toUid = toUser.uid;
 
-    final newUser = user.copyWith(
-      id: toUid,
-      email: toUser.email,
-      name: StringConstants.setName(name: user.name, email: toUser.email!),
-      accountTypeValue: AccountType.registeredEmailAndPassword.value,
-      updatedDate: now,
-    );
+  //   final newUser = user.copyWith(
+  //     id: toUid,
+  //     email: toUser.email,
+  //     name: StringConstants.setName(name: user.name, email: toUser.email!),
+  //     accountTypeValue: AccountType.emailAndPassword.value,
+  //     updatedDate: now,
+  //   );
 
-    const batchLimit = 400;
-    var batch = _db.batch();
-    var counter = 0;
+  //   const batchLimit = 400;
+  //   var batch = _db.batch();
+  //   var counter = 0;
 
-    batch.set(_db.doc(FirestorePath.user(toUid)), newUser.toMap());
-    counter++;
+  //   batch.set(_db.doc(FirestorePath.user(toUid)), newUser.toMap());
+  //   counter++;
 
-    for (final budgetTransaction in budgetTransactions) {
-      final newBudget = budgetTransaction.budget.copyWith(
-        userId: toUid,
-        updatedDate: now,
-      );
-      batch.set(
-          _db.doc(FirestorePath.budget(uid: toUid, budgetId: newBudget.id)),
-          newBudget.toMap());
-      counter++;
+  //   for (final budgetTransaction in budgetTransactions) {
+  //     final newBudget = budgetTransaction.budget.copyWith(
+  //       userId: toUid,
+  //       updatedDate: now,
+  //     );
+  //     batch.set(
+  //         _db.doc(FirestorePath.budget(uid: toUid, budgetId: newBudget.id)),
+  //         newBudget.toMap());
+  //     counter++;
 
-      for (final transaction in budgetTransaction.transactions) {
-        final newTransaction = transaction.copyWith(
-          userId: toUid,
-          updatedDate: now,
-        );
-        batch.set(
-            _db.doc(FirestorePath.transaction(
-                uid: toUid, transactionId: newTransaction.id)),
-            newTransaction.toMap());
-        counter++;
+  //     for (final transaction in budgetTransaction.transactions) {
+  //       final newTransaction = transaction.copyWith(
+  //         userId: toUid,
+  //         updatedDate: now,
+  //       );
+  //       batch.set(
+  //           _db.doc(FirestorePath.transaction(
+  //               uid: toUid, transactionId: newTransaction.id)),
+  //           newTransaction.toMap());
+  //       counter++;
 
-        if (counter >= batchLimit) {
-          await batch.commit();
-          batch = _db.batch();
-          counter = 0;
-        }
-      }
-    }
+  //       if (counter >= batchLimit) {
+  //         await batch.commit();
+  //         batch = _db.batch();
+  //         counter = 0;
+  //       }
+  //     }
+  //   }
 
-    for (final chat in chats) {
-      final newChat = chat.copyWith(
-        userId: toUid,
-        updatedDate: now,
-      );
-      batch.set(_db.doc(FirestorePath.chat(uid: toUid, chatId: newChat.id)),
-          newChat.toMap());
-      counter++;
+  //   for (final chat in chats) {
+  //     final newChat = chat.copyWith(
+  //       userId: toUid,
+  //       updatedDate: now,
+  //     );
+  //     batch.set(_db.doc(FirestorePath.chat(uid: toUid, chatId: newChat.id)),
+  //         newChat.toMap());
+  //     counter++;
 
-      if (counter >= batchLimit) {
-        await batch.commit();
-        batch = _db.batch();
-        counter = 0;
-      }
-    }
+  //     if (counter >= batchLimit) {
+  //       await batch.commit();
+  //       batch = _db.batch();
+  //       counter = 0;
+  //     }
+  //   }
 
-    if (counter > 0) {
-      await batch.commit();
-    }
-  }
+  //   if (counter > 0) {
+  //     await batch.commit();
+  //   }
+  // }
 }

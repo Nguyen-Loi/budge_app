@@ -32,7 +32,7 @@ class AuthController extends Notifier<void> {
           email: email,
           password: password,
         ),
-        accountType: AccountType.emailAndPassword);
+        accountType: AccountType.loginEmailAndPassword);
   }
 
   void signUp(
@@ -79,6 +79,12 @@ class AuthController extends Notifier<void> {
           await _authAPI.getUserInDb(credentialInfo.userAuthInfo.email);
       bool isAccountExists = userWithStatus.status != UserGetStatus.notFound;
       bool? isUserAcceptLogin;
+      
+      if(accountType == AccountType.loginEmailAndPassword && !isAccountExists) {
+        closeLoading();
+        showSnackBarError(context, loc.emailNotFound);
+        return;
+      }
       if (isAccountExists) {
         isUserAcceptLogin = await BDialogInfo(
                 title: loc.confirmNewAccountLoginTitle,
@@ -103,9 +109,7 @@ class AuthController extends Notifier<void> {
           return;
         } else {
           ref.invalidate(mainPageFutureProvider);
-          if (accountType == AccountType.registeredEmailAndPassword) {
-            showSnackBar(context, loc.accountCreateSuccess);
-          }
+          showSnackBar(context, loc.loginSuccessWelcomeBack);
           Navigator.popUntil(context, (route) => route.isFirst);
         }
       }
