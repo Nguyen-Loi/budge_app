@@ -62,13 +62,12 @@ class RemoteConfigBaseController extends Notifier<RemoteConfigModel> {
     await remoteConfig.setDefaults(state.toMap());
 
     await remoteConfig.activate();
+    await remoteConfig.fetch();
 
     final newConfig =
         RemoteConfigModel.fromMapRemoteConfig(remoteConfig.getAll());
     state = newConfig;
     _cachedConfig = newConfig; // Cache the config
-
-    unawaited(remoteConfig.fetch());
 
     if (!kIsWeb) {
       _configUpdateSubscription = remoteConfig.onConfigUpdated.listen((event) {

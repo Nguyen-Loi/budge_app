@@ -4,6 +4,7 @@ import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/constants/size_constants.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager.dart';
+import 'package:budget_app/generated/l10n/app_localizations.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/data/models/chat_model.dart';
 import 'package:budget_app/view/base_controller/chat_base_controller.dart';
@@ -85,6 +86,7 @@ class _ChatViewState extends ConsumerState<ChatView>
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
+    AppLocalizations loc = context.loc;
     return AppBar(
       elevation: 0,
       title: Row(
@@ -123,7 +125,7 @@ class _ChatViewState extends ConsumerState<ChatView>
               Consumer(builder: (context, ref, child) {
                 final user = ref.watch(userBaseControllerProvider);
                 return BText.caption(
-                  "${context.loc.hello}, ${user.name}!",
+                  "${loc.hello}, ${user.nameDisplay(loc)}!",
                   color: Theme.of(context).colorScheme.onPrimary.withAlpha(200),
                 );
               }),

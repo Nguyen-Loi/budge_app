@@ -67,6 +67,7 @@ flutter:
   generate: true
   assets:
     - assets/svgs/
+    - assets/lotties/
 
   fonts:
     - family: Inter
