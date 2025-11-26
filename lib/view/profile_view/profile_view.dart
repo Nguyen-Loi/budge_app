@@ -279,7 +279,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
             user: user,
             name: _name,
             phoneNumber: _phoneNumber!,
-            profileUrl: _avatarAsset!,
+            profileUrl: _avatarAsset,
           );
     } else {
       showSnackBarError(context, context.loc.errorValidateForm);

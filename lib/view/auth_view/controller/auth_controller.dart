@@ -16,18 +16,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
 final authControllerProvider =
-    StateNotifierProvider<AuthController, void>((ref) {
-  final auth = ref.watch(authApiProvider);
-  return AuthController(authApi: auth, ref: ref);
-});
+    NotifierProvider<AuthController, void>(AuthController.new);
 
-class AuthController extends StateNotifier<void> {
-  final AuthAPI _authAPI;
-  final Ref _ref;
-  AuthController({required AuthAPI authApi, required Ref ref})
-      : _authAPI = authApi,
-        _ref = ref,
-        super(null);
+class AuthController extends Notifier<void> {
+  late final AuthAPI _authAPI;
+  @override
+  void build() {
+    _authAPI = ref.watch(authApiProvider);
+  }
 
   void loginWithEmailPassword(BuildContext context,
       {required String email, required String password}) async {
@@ -36,7 +32,7 @@ class AuthController extends StateNotifier<void> {
           email: email,
           password: password,
         ),
-        accountType: AccountType.emailAndPassword);
+        accountType: AccountType.loginEmailAndPassword);
   }
 
   void signUp(
@@ -46,7 +42,7 @@ class AuthController extends StateNotifier<void> {
   }) {
     _baseAuth(context,
         res: _authAPI.signUp(email: email, password: password),
-        accountType: AccountType.emailAndPassword);
+        accountType: AccountType.registeredEmailAndPassword);
   }
 
   void loginWithFacebook(BuildContext context) async {
@@ -79,21 +75,31 @@ class AuthController extends StateNotifier<void> {
       closeLoading();
       showSnackBarError(context, errorMessage);
     }, (credentialInfo) async {
-      bool isAccountExists =
-          await _authAPI.checkAccountExists(credentialInfo.userAuthInfo.email);
+      UserModelStatus userWithStatus =
+          await _authAPI.getUserInDb(credentialInfo.userAuthInfo.email);
+      bool isAccountExists = userWithStatus.status != UserGetStatus.notFound;
       bool? isUserAcceptLogin;
+      
+      if(accountType == AccountType.loginEmailAndPassword && !isAccountExists) {
+        closeLoading();
+        showSnackBarError(context, loc.emailNotFound);
+        return;
+      }
       if (isAccountExists) {
         isUserAcceptLogin = await BDialogInfo(
                 title: loc.confirmNewAccountLoginTitle,
                 message: loc.confirmNewAccountLoginMessage,
                 dialogInfoType: BDialogInfoType.warning)
             .presentAction(context, onClose: () {
+          closeLoading();
           showSnackBarError(context, loc.loginCancelledByUser);
         });
       }
       if (!isAccountExists || isUserAcceptLogin == true) {
         final res = await _authAPI.signInWithCredential(
-            credentialInfo: credentialInfo, accountType: accountType);
+            credentialInfo: credentialInfo,
+            accountType: accountType,
+            userInDbStatus: userWithStatus);
         closeLoading();
         if (res.isLeft()) {
           showSnackBarError(context,
@@ -102,7 +108,8 @@ class AuthController extends StateNotifier<void> {
 
           return;
         } else {
-          _ref.invalidate(mainPageControllerProvider);
+          ref.invalidate(mainPageFutureProvider);
+          showSnackBar(context, loc.loginSuccessWelcomeBack);
           Navigator.popUntil(context, (route) => route.isFirst);
         }
       }

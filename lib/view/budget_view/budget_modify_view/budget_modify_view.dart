@@ -5,6 +5,7 @@ import 'package:budget_app/common/widget/form/b_form_field_text.dart';
 import 'package:budget_app/common/widget/form/b_form_picker_icon.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/enums/range_date_time_enum.dart';
+import 'package:budget_app/core/extension/extension_validate.dart';
 import 'package:budget_app/core/extension/extension_widget.dart';
 import 'package:budget_app/core/icon_manager_data.dart';
 import 'package:budget_app/localization/app_localizations_context.dart';
@@ -15,27 +16,31 @@ import 'package:budget_app/view/budget_view/budget_modify_view/controller/budget
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BudgetModifyView extends StatefulWidget {
-  final BudgetModel budgetModel;
-  const BudgetModifyView({super.key, required this.budgetModel});
+class BudgetModifyView extends ConsumerStatefulWidget {
+  final String budgetId;
+  const BudgetModifyView({super.key, required this.budgetId});
 
   @override
-  State<BudgetModifyView> createState() => _ModifyBudgetViewState();
+  ConsumerState<BudgetModifyView> createState() => _ModifyBudgetViewState();
 }
 
-class _ModifyBudgetViewState extends State<BudgetModifyView> {
+class _ModifyBudgetViewState extends ConsumerState<BudgetModifyView> {
   late String _iconName;
   late int _limit;
   late DatetimeRangeModel _dateTimeRangeModel;
   final _formKey = GlobalKey<FormState>();
   late BudgetModel _budget;
   late bool _showLimitField;
+  late String _budgetName;
 
   @override
   void initState() {
-    _budget = widget.budgetModel;
+    _budget = ref
+        .read(budgetModifyControllerProvider(widget.budgetId).notifier)
+        .budgetDetail;
     _iconName = _budget.iconName;
     _limit = _budget.budgetLimit;
+    _budgetName = _budget.name;
     _dateTimeRangeModel = DatetimeRangeModel(
         startDate: _budget.startDate,
         endDate: _budget.endDate,
@@ -60,10 +65,10 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
     if (_formKey.currentState!.validate()) {
       ref
           .read(
-            budgetModifyControllerProvider(_budget),
+            budgetModifyControllerProvider(widget.budgetId).notifier,
           )
           .updateBudget(context,
-              budget: _budget,
+              budgetName: _budgetName,
               iconName: _iconName,
               limit: _limit,
               dateTimeRange: _dateTimeRangeModel);
@@ -91,8 +96,12 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
         children: [
           BFormFieldText.init(
               label: context.loc.budgetName,
-              initialValue: _budget.name,
-              disable: true),
+              hint: context.loc.budgetNameHint,
+              initialValue: _budgetName,
+              validator: (p0) => p0.validateNotNull(context),
+              onChanged: (v) {
+                _budgetName = v;
+              }),
           gapH16,
           BFormPickerIcon(
             initialValue: IconManagerData.getIconModel(_budget.iconName),
@@ -109,15 +118,8 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
               return null;
             },
           ),
-          gapH16,
-          BBottomsheetRangeDatetime(
-              initialValue: _dateTimeRangeModel,
-              onChanged: (e) {
-                _dateTimeRangeModel = e;
-                _updateLimitFieldVisibility();
-              }),
-          gapH16,
-          if (_showLimitField)
+          if (_showLimitField) ...[
+            gapH16,
             BFormFieldAmount(
                 initialValue: _limit,
                 label: context.loc.limit,
@@ -126,6 +128,15 @@ class _ModifyBudgetViewState extends State<BudgetModifyView> {
                     _limit = v;
                   }
                 }),
+          ],
+          gapH16,
+          BBottomsheetRangeDatetime(
+              initialValue: _dateTimeRangeModel,
+              onChanged: (e) {
+                _dateTimeRangeModel = e;
+                _updateLimitFieldVisibility();
+              }),
+          gapH16,
           const SizedBox(height: 64),
           Consumer(
             builder: (context, ref, child) {

@@ -265,7 +265,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get confirmPasswordInvalid => 'Xác nhận mật khẩu không hợp lệ';
 
   @override
-  String get accountCreateSuccess => 'Tạo tài khoản thành công!';
+  String get loginSuccessWelcomeBack => 'Đăng nhập thành công! Chào mừng bạn trở lại.';
 
   @override
   String get forgetPassword => 'Quên mật khẩu?';
@@ -468,7 +468,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get reasonChartNotVisible => 'Biểu đồ không hiện thị vì bộ lọc đang hiện nguồn thu và chi tiêu';
 
   @override
-  String get transactionNotScopeBudget => 'Ngày giao dịch không nằm trong phạm vi thời gian của ngân sách';
+  String transactionNotScopeBudget(Object endDate, Object startDate) {
+    return 'Ngày giao dịch không nằm trong phạm vi thời gian của ngân sách ($startDate - $endDate)';
+  }
 
   @override
   String get totalIncome => 'Tổng Thu Nhập';
@@ -568,7 +570,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get invalidDateRange => 'Khoảng thời gian mới cần phải bao trùm toàn bộ khoảng thời gian hiện tại.';
 
   @override
-  String get emailNotFound => 'Email không tồn tại';
+  String get emailNotFound => 'Email không tồn tại. Vui lòng kiểm tra và thử lại.';
 
   @override
   String get weAreSendEmailPassword => 'Chúng tôi đã gửi email để bạn đặt lại mật khẩu. Vui lòng kiểm tra hộp thư.';
@@ -1142,4 +1144,14 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get confirmNewAccountLoginMessage => 'Nếu bạn tiếp tục, tất cả dữ liệu hiện tại trên ứng dụng này sẽ bị xóa để đồng bộ với tài khoản mới. Bạn có chắc chắn muốn tiếp tục không?';
+
+  @override
+  String previewValue(Object value) {
+    return 'Xem trước: $value';
+  }
+
+  @override
+  String accountInactiveWithReason(Object reason) {
+    return 'Tài khoản không hoạt động: $reason, vui lòng liên hệ hỗ trợ.';
+  }
 }

@@ -7,16 +7,13 @@ import 'package:budget_app/view/base_controller/transaction_base_controller.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final languageControllerProvider =
-    StateNotifierProvider<LanguageController, LanguageEnum>((ref) {
-  return LanguageController(ref: ref);
-});
+    NotifierProvider<LanguageController, LanguageEnum>(LanguageController.new);
 
-class LanguageController extends StateNotifier<LanguageEnum> {
-  LanguageController({required this.ref}) : super(LanguageEnum.english) {
-    state =
-        LanguageEnum.fromCode(ref.watch(sharedUtilityProvider).languageCode());
+class LanguageController extends Notifier<LanguageEnum> {
+  @override
+  LanguageEnum build() {
+    return LanguageEnum.fromCode(ref.watch(sharedUtilityProvider).languageCode());
   }
-  Ref ref;
 
   void updateLanguage(LanguageEnum language) async {
     ref.watch(sharedUtilityProvider).setLanguageCode(

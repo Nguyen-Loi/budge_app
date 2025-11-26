@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:budget_app/common/color_manager.dart';
 import 'package:budget_app/common/widget/b_icon.dart';
 import 'package:budget_app/common/widget/b_text.dart';
@@ -78,7 +80,7 @@ class _BudgetCardState extends State<BudgetCard> with TickerProviderStateMixin {
         onTapCancel: _onTapCancel,
         onTap: () {
           Navigator.pushNamed(context, RoutePath.budgetDetail,
-              arguments: widget.model);
+              arguments: widget.model.id);
         },
         child: Stack(
           clipBehavior: Clip.none,
@@ -250,7 +252,9 @@ class _BudgetCardState extends State<BudgetCard> with TickerProviderStateMixin {
     } else {
       // Expense
       double spentPercent = widget.model.budgetLimit > 0
-          ? (widget.model.currentAmount.abs() * 100 / widget.model.budgetLimit)
+          ? min(
+              widget.model.currentAmount.abs() * 100 / widget.model.budgetLimit,
+              100)
           : 0;
 
       return Column(

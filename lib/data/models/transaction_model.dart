@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:budget_app/core/enums/transaction_type_enum.dart';
-import 'package:budget_app/data/models/budget_model.dart';
-import 'package:budget_app/data/models/merge_model/transaction_card_model.dart';
 
 class TransactionModel {
   final String id;
@@ -28,18 +26,6 @@ class TransactionModel {
 
   TransactionTypeEnum get transactionType =>
       TransactionTypeEnum.fromValue(transactionTypeValue);
-
-  TransactionCardModel toTransactionCard({required List<BudgetModel> budgets}) {
-    if (budgets.isEmpty) {
-      throw Exception('Budgets list cannot be empty');
-    }
-    final budgetOfTransaction = budgets.firstWhere((e) => e.id == budgetId);
-    return TransactionCardModel(
-        transaction: this,
-        transactionName: budgetOfTransaction.name,
-        iconName: budgetOfTransaction.iconName,
-        transactionType: transactionType);
-  }
 
   TransactionModel copyWith({
     String? id,

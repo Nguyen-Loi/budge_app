@@ -1,6 +1,7 @@
 import 'package:budget_app/common/widget/b_text.dart';
 import 'package:budget_app/constants/gap_constants.dart';
 import 'package:budget_app/core/utils/currency_utils.dart';
+import 'package:budget_app/localization/app_localizations_context.dart';
 import 'package:budget_app/view/base_controller/user_base_controller.dart';
 import 'package:budget_app/core/enums/currency_type_enum.dart';
 import 'package:flutter/material.dart';
@@ -275,12 +276,13 @@ class _BFormFieldAmountEnhancedState extends ConsumerState<BFormFieldAmount> {
                 );
 
                 return Text(
-                  'Preview: ${CurrencyUtils.formatExact(_currentValue!, currentCurrency)}',
+                  context.loc.previewValue(CurrencyUtils.formatExact(
+                      _currentValue!, currentCurrency)),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context)
                             .colorScheme
                             .onSurface
-                            .withAlpha(160),
+                            .withAlpha(200),
                       ),
                 );
               },

@@ -19,32 +19,32 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 
-final mainPageControllerProvider = Provider((ref) {
-  return MainPageController(ref: ref);
+final mainPageControllerProvider =
+    NotifierProvider<MainPageController, void>(() {
+  return MainPageController();
 });
 
 final mainPageFutureProvider =
     FutureProvider.family<void, BuildContext>((ref, context) {
-  final controller = ref.watch(mainPageControllerProvider);
+  final controller = ref.read(mainPageControllerProvider.notifier);
   return controller.loadBaseDataOptimized(context);
 });
 
-class MainPageController extends StateNotifier<void> {
-  final Ref _ref;
-
-  MainPageController({required Ref ref})
-      : _ref = ref,
-        super(null);
+class MainPageController extends Notifier<void> {
+  @override
+  void build() {
+    return;
+  }
 
   Future<void> loadBaseDataOptimized(BuildContext context) async {
-    final isAuthenicated = _ref.read(authApiProvider).isAuthenticated;
+    final isAuthenicated = ref.read(authApiProvider).isAuthenticated;
     logInfo('Loading asset data...');
-    _ref.read(assetControllerProvider.notifier).load(context);
+    ref.read(assetControllerProvider.notifier).load(context);
 
     if (!isAuthenicated) {
-      await _ref.read(authApiProvider).signInAnonymously();
+      await ref.read(authApiProvider).signInAnonymously();
     }
-    String? uid = _ref.read(authProvider).currentUser?.uid;
+    String? uid = ref.read(authProvider).currentUser?.uid;
     if (uid == null) {
       throw Exception('User UID is null, cannot proceed with loading data');
     }
@@ -52,19 +52,19 @@ class MainPageController extends StateNotifier<void> {
     // Only initialize UID if it's not already set
     Future.microtask(() {
       logInfo('Loading critical user data...');
-      _ref.read(uidControllerProvider.notifier).init(uid);
-      _ref.read(userBaseControllerProvider.notifier).fetchUserInfo().then((e) {
-        unawaited(_refreshInfoUser(_ref, user: e));
+      ref.read(uidControllerProvider.notifier).init(uid);
+      ref.read(userBaseControllerProvider.notifier).fetchUserInfo().then((e) {
+        unawaited(refreshInfoUser(ref, user: e));
       });
     });
 
     logInfo('Loading budget data first...');
     await Future.microtask(
-        () => _ref.read(budgetBaseControllerProvider.notifier).fetch());
+        () => ref.read(budgetBaseControllerProvider.notifier).fetch());
 
     logInfo('Budget data loaded, now loading transaction data...');
     await Future.microtask(
-        () => _ref.read(transactionsBaseControllerProvider.notifier).fetch());
+        () => ref.read(transactionsBaseControllerProvider.notifier).fetch());
 
     // Check if context is still mounted before proceeding with background tasks
     if (context.mounted) {
@@ -76,7 +76,7 @@ class MainPageController extends StateNotifier<void> {
     logInfo('Essential data loading completed with optimization');
   }
 
-  Future<void> _refreshInfoUser(Ref ref, {required UserModel user}) async {
+  Future<void> refreshInfoUser(Ref ref, {required UserModel user}) async {
     String? token =
         await ref.read(messagingProvider).getToken().catchError((e) {
       logError('Failed to get FCM token: $e');
@@ -129,12 +129,12 @@ class MainPageController extends StateNotifier<void> {
 
   Future<void> _loadPackageInfoAndRemoteConfig(BuildContext context) async {
     try {
-      final refPackage = _ref.read(packageInfoBaseControllerProvider.notifier);
+      final refPackage = ref.read(packageInfoBaseControllerProvider.notifier);
       logInfo('Loading package info app...');
       final packageInfo = await refPackage.init();
       if (!context.mounted) return;
       logInfo('Check version update ...');
-      _ref
+      ref
           .read(remoteConfigBaseControllerProvider.notifier)
           .initialize(context, packageInfo: packageInfo);
     } catch (e) {
@@ -148,13 +148,13 @@ class MainPageController extends StateNotifier<void> {
 
     // Device info writing
     userTasks
-        .add(_ref.read(deviceAPIProvider).writeDeviceInfo(uid).catchError((e) {
+        .add(ref.read(deviceAPIProvider).writeDeviceInfo(uid).catchError((e) {
       logInfo('Device info writing failed: $e');
     }));
 
     // Chat initialization
     userTasks.add(
-        _ref.read(chatBaseControllerProvider.notifier).init().catchError((e) {
+        ref.read(chatBaseControllerProvider.notifier).init().catchError((e) {
       logInfo('Chat initialization failed: $e');
     }));
 

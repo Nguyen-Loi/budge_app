@@ -265,7 +265,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmPasswordInvalid => 'Confirm password invalid';
 
   @override
-  String get accountCreateSuccess => 'Account created successfully!';
+  String get loginSuccessWelcomeBack => 'Login successful! Welcome back.';
 
   @override
   String get forgetPassword => 'Forgot password?';
@@ -468,7 +468,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reasonChartNotVisible => 'The chart is not displayed because the filter is showing income and expense';
 
   @override
-  String get transactionNotScopeBudget => 'The transaction date is not within the budget time range';
+  String transactionNotScopeBudget(Object endDate, Object startDate) {
+    return 'The transaction date is not within the budget time range ($startDate - $endDate)';
+  }
 
   @override
   String get totalIncome => 'Total Income';
@@ -568,7 +570,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalidDateRange => 'The new time frame must cover the entire current time frame.';
 
   @override
-  String get emailNotFound => 'Email not found';
+  String get emailNotFound => 'Email not found. Please check and try again.';
 
   @override
   String get weAreSendEmailPassword => 'We\'ve sent you an email to reset your password. Please check your inbox.';
@@ -1142,4 +1144,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmNewAccountLoginMessage => 'If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?';
+
+  @override
+  String previewValue(Object value) {
+    return 'Preview: $value';
+  }
+
+  @override
+  String accountInactiveWithReason(Object reason) {
+    return 'Account inactive: $reason, please contact support.';
+  }
 }

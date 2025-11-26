@@ -4,41 +4,42 @@ import 'package:budget_app/data/datasources/repositories/budget_repository.dart'
 import 'package:budget_app/data/models/budget_model.dart';
 import 'package:budget_app/data/models/models_widget/datetime_range_model.dart';
 import 'package:budget_app/view/budget_view/budget_detail_view/controller/budget_detail_controller.dart';
-import 'package:budget_app/view/base_controller/uid_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final budgetModifyControllerProvider =
-    Provider.autoDispose.family<BudgetModifyController, BudgetModel>((ref, budgetModel) {
-  final budgetRepository = ref.watch(budgetRepositoryProvider);
-  final uid = ref.watch(uidControllerProvider);
-  final budgetDetailController =
-      ref.watch(budgetDetailControllerProvider(budgetModel).notifier);
-  return BudgetModifyController(
-      budgetRepository: budgetRepository,
-      uid: uid,
-      budgetDetailController: budgetDetailController);
-});
+final budgetModifyControllerProvider = NotifierProvider.autoDispose
+    .family<BudgetModifyController, void, String>(
+  (budgetId) {
+    return BudgetModifyController(budgetId: budgetId);
+  },
+);
 
-class BudgetModifyController extends StateNotifier<void> {
-  final BudgetRepository _budgetRepository;
-  final BudgetDetailController _budgetDetailController;
+class BudgetModifyController extends Notifier<void> {
+  late BudgetRepository _budgetRepository;
+  late BudgetDetailController _budgetDetailController;
+  final String budgetId;
+  late BudgetModel budgetDetail;
 
-  BudgetModifyController(
-      {required BudgetRepository budgetRepository,
-      required String uid,
-      required BudgetDetailController budgetDetailController})
-      : _budgetRepository = budgetRepository,
-        _budgetDetailController = budgetDetailController,
-        super(null);
+  BudgetModifyController({
+    required this.budgetId,
+  });
+
+  @override
+  void build() {
+    _budgetRepository = ref.watch(budgetRepositoryProvider);
+    _budgetDetailController =
+        ref.watch(budgetDetailControllerProvider(budgetId).notifier);
+    budgetDetail = _budgetDetailController.state;
+  }
 
   void updateBudget(BuildContext context,
-      {required BudgetModel budget,
+      {required String budgetName,
       required String iconName,
       required int limit,
       required DatetimeRangeModel dateTimeRange}) async {
     final now = DateTime.now();
-    final budgetModify = budget.copyWith(
+    final budgetModify = budgetDetail.copyWith(
+        name: budgetName,
         iconName: iconName,
         budgetLimit: limit,
         updatedDate: now,
@@ -51,7 +52,7 @@ class BudgetModifyController extends StateNotifier<void> {
     closeDialog();
     res.fold((failure) {
       showSnackBar(context, failure.message);
-    }, (r) {
+    }, (_) {
       _budgetDetailController.updateState(budgetModify);
       Navigator.pop(context);
     });

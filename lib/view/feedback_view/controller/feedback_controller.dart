@@ -42,32 +42,25 @@ class FeedbackState {
 
 // Provider for feedback controller
 final feedbackControllerProvider =
-    StateNotifierProvider<FeedbackController, FeedbackState>((ref) {
-  final feedbackApi = ref.watch(feedbackApiProvider);
-  final user = ref.watch(userBaseControllerProvider);
-  return FeedbackController(feedbackApi: feedbackApi, user: user, ref: ref);
-});
+    NotifierProvider<FeedbackController, FeedbackState>(FeedbackController.new);
 
-class FeedbackController extends StateNotifier<FeedbackState> {
-  final FeedbackApi _feedbackApi;
-  final UserModel _user;
-  final Ref _ref;
+class FeedbackController extends Notifier<FeedbackState> {
+  late final FeedbackApi _feedbackApi;
+  late UserModel _user;
 
-  FeedbackController({
-    required FeedbackApi feedbackApi,
-    required UserModel user,
-    required Ref ref,
-  })  : _feedbackApi = feedbackApi,
-        _user = user,
-        _ref = ref,
-        super(FeedbackState());
+  @override
+  FeedbackState build() {
+    _feedbackApi = ref.read(feedbackApiProvider);
+    _user = ref.read(userBaseControllerProvider);
+    return FeedbackState();
+  }
 
   Future<void> submitFeedback({
     required String title,
     required String content,
     required int rating,
   }) async {
-    String userId = _ref.read(userBaseControllerProvider).id;
+    String userId = ref.read(userBaseControllerProvider).id;
 
     state = state.copyWith(isSubmitting: true, error: null);
 
@@ -98,7 +91,7 @@ class FeedbackController extends StateNotifier<FeedbackState> {
   }
 
   Future<void> loadUserFeedbacks() async {
-    String userId = _ref.read(userBaseControllerProvider).id;
+    String userId = ref.read(userBaseControllerProvider).id;
 
     state = state.copyWith(isLoading: true, error: null);
 

@@ -581,11 +581,11 @@ abstract class AppLocalizations {
   /// **'Confirm password invalid'**
   String get confirmPasswordInvalid;
 
-  /// No description provided for @accountCreateSuccess.
+  /// No description provided for @loginSuccessWelcomeBack.
   ///
   /// In en, this message translates to:
-  /// **'Account created successfully!'**
-  String get accountCreateSuccess;
+  /// **'Login successful! Welcome back.'**
+  String get loginSuccessWelcomeBack;
 
   /// No description provided for @forgetPassword.
   ///
@@ -962,8 +962,8 @@ abstract class AppLocalizations {
   /// No description provided for @transactionNotScopeBudget.
   ///
   /// In en, this message translates to:
-  /// **'The transaction date is not within the budget time range'**
-  String get transactionNotScopeBudget;
+  /// **'The transaction date is not within the budget time range ({startDate} - {endDate})'**
+  String transactionNotScopeBudget(Object endDate, Object startDate);
 
   /// No description provided for @totalIncome.
   ///
@@ -1154,7 +1154,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailNotFound.
   ///
   /// In en, this message translates to:
-  /// **'Email not found'**
+  /// **'Email not found. Please check and try again.'**
   String get emailNotFound;
 
   /// No description provided for @weAreSendEmailPassword.
@@ -2242,6 +2242,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?'**
   String get confirmNewAccountLoginMessage;
+
+  /// No description provided for @previewValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview: {value}'**
+  String previewValue(Object value);
+
+  /// No description provided for @accountInactiveWithReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Account inactive: {reason}, please contact support.'**
+  String accountInactiveWithReason(Object reason);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

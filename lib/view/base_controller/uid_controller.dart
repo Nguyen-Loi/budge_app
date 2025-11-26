@@ -5,13 +5,13 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final uidControllerProvider =
-    StateNotifierProvider<UidController, String>((ref) {
-  final uid = ref.watch(authProvider.select((api) => api.currentUser?.uid));
-  return UidController(uid: uid);
-});
+    NotifierProvider<UidController, String>(UidController.new);
 
-class UidController extends StateNotifier<String> {
-  UidController({required String? uid}) : super(uid ?? '');
+class UidController extends Notifier<String> {
+  @override
+  String build() {
+    return ref.watch(authProvider.select((api) => api.currentUser?.uid)) ?? '';
+  }
 
   void init(String uid) {
     if (state == uid) return;

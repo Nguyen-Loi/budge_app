@@ -1,7 +1,7 @@
 import 'package:budget_app/common/widget/b_lottie.dart';
 import 'package:budget_app/constants/assets_constants.dart';
+import 'package:budget_app/constants/string_constants.dart';
 import 'package:budget_app/core/icon_manager.dart';
-import 'package:budget_app/view/base_controller/asset_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ class BSmartAvatar extends ConsumerWidget {
     if (data != null) {
       return data!;
     }
-    return ref.read(assetControllerProvider.notifier).defaultAvatar;
+    return StringConstants.profileUrlDefault;
   }
 
   @override

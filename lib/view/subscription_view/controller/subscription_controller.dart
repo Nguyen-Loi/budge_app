@@ -10,9 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 final subscriptionControllerProvider =
-    StateNotifierProvider.autoDispose<SubscriptionController, ProductDetails?>(
-  (ref) => SubscriptionController(ref),
-);
+    NotifierProvider.autoDispose<SubscriptionController, ProductDetails?>(
+        SubscriptionController.new);
 
 final productsSubscriptionFutureControllerProvider =
     FutureProvider.autoDispose<List<ProductDetails>>((ref) async {
@@ -25,21 +24,18 @@ final productsSubscriptionFutureControllerProvider =
   );
 });
 
-class SubscriptionController extends StateNotifier<ProductDetails?> {
-  final Ref ref;
+class SubscriptionController extends Notifier<ProductDetails?> {
 
-  SubscriptionController(this.ref) : super(null) {
-    _initializeService();
+  @override
+  ProductDetails? build() {
+    final api = ref.read(subscriptionApiProvider);
+    api.initialize();
+    return null;
   }
 
   SubscriptionPlanEnum? get currentPlan {
     if (state == null) return null;
     return SubscriptionPlanEnum.fromProductId(state!.id);
-  }
-
-  Future<void> _initializeService() async {
-    final api = ref.read(subscriptionApiProvider);
-    await api.initialize();
   }
 
   void updateProduct(ProductDetails product) {
