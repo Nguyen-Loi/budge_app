@@ -1,8 +1,8 @@
 name: budget_app
-description: "A new Flutter project."
+description: "Budget App is a personal finance management application to help users track their income and expenses effectively."
 
 publish_to: "none"
-version: 2.0.3+13
+version: 2.0.4+14
 
 environment:
   sdk: ">=3.2.6 <4.0.0"
