@@ -217,7 +217,7 @@ class AppTheme {
           textStyle: AppTextTheme.labelLarge.copyWith(color: darkColors.error),
         ),
       ),
-      dialogTheme: DialogTheme(backgroundColor: darkColors.primaryContainer),
+      dialogTheme: DialogThemeData(backgroundColor: darkColors.primaryContainer),
       filledButtonTheme: FilledButtonThemeData(style: _buttonStyleBase),
       floatingActionButtonTheme:
           FloatingActionButtonThemeData(backgroundColor: darkColors.secondary),
@@ -255,7 +255,7 @@ class AppTheme {
         disabledBorder: ColorManager.greyLight.getOutlineBorder,
         errorMaxLines: 3,
       ),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         dividerColor: Colors.transparent,
         labelStyle: AppTextTheme.bodyLarge.copyWith(fontWeight: FontWeight.w700),
         labelColor: darkColors.primary,
@@ -274,7 +274,7 @@ class AppTheme {
           ),
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: ColorManager.cardColorDark,
         margin: EdgeInsets.zero,
         elevation: 2,
@@ -364,7 +364,7 @@ class AppTheme {
           textStyle: AppTextTheme.labelLarge.copyWith(color: lightColors.error),
         ),
       ),
-      dialogTheme: DialogTheme(backgroundColor: lightColors.primaryContainer),
+      dialogTheme: DialogThemeData(backgroundColor: lightColors.primaryContainer),
       filledButtonTheme: FilledButtonThemeData(style: _buttonStyleBase),
 
       floatingActionButtonTheme:
@@ -402,7 +402,7 @@ class AppTheme {
           disabledBorder: ColorManager.greyLight.getOutlineBorder,
           errorMaxLines: 3,
           contentPadding: EdgeInsets.all(8)),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         dividerColor: Colors.transparent,
         labelStyle: AppTextTheme.bodyLarge,
         labelColor: lightColors.primary,
@@ -418,7 +418,7 @@ class AppTheme {
         ),
       ),
 
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: ColorManager.cardColorLight,
         margin: EdgeInsets.zero,
         elevation: 2,
