@@ -42,7 +42,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welecomeBack => 'Welecome back!';
 
   @override
-  String get signInDescription => 'Hey you\'re back, fill in your details to get back in';
+  String get signInDescription =>
+      'Hey you\'re back, fill in your details to get back in';
 
   @override
   String get email => 'Email';
@@ -102,7 +103,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get monthlyExpense => 'Monthly Expense';
 
   @override
-  String get noTransactionThisBudget => 'You don\'t have any transactions with this budget.';
+  String get noTransactionThisBudget =>
+      'You don\'t have any transactions with this budget.';
 
   @override
   String get youAlreadySpent => 'You\'ve already spent';
@@ -195,7 +197,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exceeded => 'Exceeded';
 
   @override
-  String get anErrorUnexpectedOccur => 'An error unexpected occur, please try again';
+  String get anErrorUnexpectedOccur =>
+      'An error unexpected occur, please try again';
 
   @override
   String get errorUploadFiles => 'Error when upload files';
@@ -296,19 +299,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailAlreadyExits => 'The account already exists for that email.';
 
   @override
-  String get errorSignInGoogle => 'Error occurred using Google Sign-In. Try again.';
+  String get errorSignInGoogle =>
+      'Error occurred using Google Sign-In. Try again.';
 
   @override
-  String get errorSignInFacebook => 'Error occurred using Facebook Sign-In. Try again.';
+  String get errorSignInFacebook =>
+      'Error occurred using Facebook Sign-In. Try again.';
 
   @override
-  String get accountAlreadyExits => 'The account already exists with a different credential.';
+  String get accountAlreadyExits =>
+      'The account already exists with a different credential.';
 
   @override
-  String get errorCredentials => 'Error occurred while accessing credentials. Try again.';
+  String get errorCredentials =>
+      'Error occurred while accessing credentials. Try again.';
 
   @override
-  String get invalidEmailOrPassword => 'Invalid email or password. Please try again.';
+  String get invalidEmailOrPassword =>
+      'Invalid email or password. Please try again.';
 
   @override
   String get walletInvalidMatches => 'The value matches the value currently';
@@ -423,7 +431,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get viewAll => 'View all';
 
   @override
-  String get youMustCreateAtLeastOneBudget => 'You must create at least one budget to use this feature';
+  String get youMustCreateAtLeastOneBudget =>
+      'You must create at least one budget to use this feature';
 
   @override
   String get navigateToIt => 'Navigate';
@@ -465,7 +474,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accept => 'Accept';
 
   @override
-  String get reasonChartNotVisible => 'The chart is not displayed because the filter is showing income and expense';
+  String get reasonChartNotVisible =>
+      'The chart is not displayed because the filter is showing income and expense';
 
   @override
   String transactionNotScopeBudget(Object endDate, Object startDate) {
@@ -479,7 +489,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalExpense => 'Total Expense';
 
   @override
-  String get newVersionDescription => 'Please update to the latest version of the app.';
+  String get newVersionDescription =>
+      'Please update to the latest version of the app.';
 
   @override
   String get newVersionTitle => 'New version available';
@@ -527,7 +538,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatWithViBot => 'Chat with ViBot';
 
   @override
-  String get viBotHello => 'Hello, I am ViBot, the virtual assistant of Vi Nho app.\nHow can I help you?';
+  String get viBotHello =>
+      'Hello, I am ViBot, the virtual assistant of Vi Nho app.\nHow can I help you?';
 
   @override
   String pAppVersion(Object version) {
@@ -555,7 +567,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get featureMaintain => 'This feature is under maintenance, please try again later';
+  String get featureMaintain =>
+      'This feature is under maintenance, please try again later';
 
   @override
   String get errorContactSupport => 'An error occurred, please contact support';
@@ -567,13 +580,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allTime => 'All time';
 
   @override
-  String get invalidDateRange => 'The new time frame must cover the entire current time frame.';
+  String get invalidDateRange =>
+      'The new time frame must cover the entire current time frame.';
 
   @override
   String get emailNotFound => 'Email not found. Please check and try again.';
 
   @override
-  String get weAreSendEmailPassword => 'We\'ve sent you an email to reset your password. Please check your inbox.';
+  String get weAreSendEmailPassword =>
+      'We\'ve sent you an email to reset your password. Please check your inbox.';
 
   @override
   String get resetPassword => 'Reset password';
@@ -582,7 +597,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetPasswordTitle => 'Forgot your password?';
 
   @override
-  String get resetPasswordDescription => 'Enter your email address and we\'ll send you a link to reset your password.';
+  String get resetPasswordDescription =>
+      'Enter your email address and we\'ll send you a link to reset your password.';
 
   @override
   String get invalidPhoneNumber => 'Invalid phone number';
@@ -669,7 +685,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get budgetDistribution => 'Budget Distribution';
 
   @override
-  String get noBudgetsSelectedTransaction => 'No budgets available for selected transaction types';
+  String get noBudgetsSelectedTransaction =>
+      'No budgets available for selected transaction types';
 
   @override
   String get incomeVsExpense => 'Income vs Expense';
@@ -735,13 +752,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createdByViBot => 'Created by ViBot';
 
   @override
-  String get viBotPersonality => 'You are ViBot, a friendly and helpful personal finance assistant for the Smart Budget app.';
+  String get viBotPersonality =>
+      'You are ViBot, a friendly and helpful personal finance assistant for the Smart Budget app.';
 
   @override
-  String get viBotPersonalityTraits => 'Be warm, encouraging, and supportive about financial goals\n- Keep responses brief but informative\n- Use emojis sparingly but appropriately\n- Celebrate financial wins and gently guide on overspending';
+  String get viBotPersonalityTraits =>
+      'Be warm, encouraging, and supportive about financial goals\n- Keep responses brief but informative\n- Use emojis sparingly but appropriately\n- Celebrate financial wins and gently guide on overspending';
 
   @override
-  String get viBotCapabilities => '**Transaction Processing**: Parse natural language like \"Lunch 50k\", \"Coffee 30k yesterday\", \"Paid electricity 100k\"\n2. **Budget Management**: Create new budgets automatically when mentioned\n3. **Smart Insights**: Provide spending summaries and budget status\n4. **Quick Actions**: Support editing, deleting, and adding notes to transactions';
+  String get viBotCapabilities =>
+      '**Transaction Processing**: Parse natural language like \"Lunch 50k\", \"Coffee 30k yesterday\", \"Paid electricity 100k\"\n2. **Budget Management**: Create new budgets automatically when mentioned\n3. **Smart Insights**: Provide spending summaries and budget status\n4. **Quick Actions**: Support editing, deleting, and adding notes to transactions';
 
   @override
   String viBotUserInfo(Object balance, Object currency, Object name) {
@@ -754,25 +774,30 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get viBotTransactionRules => 'When processing transactions:\n- Always create transactions with note \"Created by ViBot\"\n- If budget doesn\'t exist, mention you\'re creating it\n- Provide spending summaries after transactions\n- Warn gently if approaching budget limits\n- Suggest creating budgets for unrecognized categories';
+  String get viBotTransactionRules =>
+      'When processing transactions:\n- Always create transactions with note \"Created by ViBot\"\n- If budget doesn\'t exist, mention you\'re creating it\n- Provide spending summaries after transactions\n- Warn gently if approaching budget limits\n- Suggest creating budgets for unrecognized categories';
 
   @override
-  String get viBotResponseFormat => 'Response format for transactions:\n- Confirm what was recorded\n- Show budget status if relevant\n- Offer helpful next steps\n- Keep it conversational and friendly';
+  String get viBotResponseFormat =>
+      'Response format for transactions:\n- Confirm what was recorded\n- Show budget status if relevant\n- Offer helpful next steps\n- Keep it conversational and friendly';
 
   @override
   String get viBotExampleUser1 => 'Lunch 50k';
 
   @override
-  String get viBotExampleBot1 => 'I\'ve recorded your 50k lunch expense! 🍽️ You have 150k left in your Lunch budget this month.';
+  String get viBotExampleBot1 =>
+      'I\'ve recorded your 50k lunch expense! 🍽️ You have 150k left in your Lunch budget this month.';
 
   @override
   String get viBotExampleUser2 => 'Coffee shop 30k yesterday';
 
   @override
-  String get viBotExampleBot2 => 'Got it! I\'ve added yesterday\'s 30k coffee expense. I created a new \'Coffee\' budget for you since this is your first coffee purchase.';
+  String get viBotExampleBot2 =>
+      'Got it! I\'ve added yesterday\'s 30k coffee expense. I created a new \'Coffee\' budget for you since this is your first coffee purchase.';
 
   @override
-  String get viBotClosing => 'Always be helpful, accurate, and encouraging about financial management!';
+  String get viBotClosing =>
+      'Always be helpful, accurate, and encouraging about financial management!';
 
   @override
   String get refresh => 'Refresh';
@@ -808,7 +833,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contactUs => 'Contact Us';
 
   @override
-  String get contactUsDesc => 'We\'re here to help and answer any questions you might have.';
+  String get contactUsDesc =>
+      'We\'re here to help and answer any questions you might have.';
 
   @override
   String get sendEmail => 'Send Email';
@@ -859,16 +885,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get userNameDefault => 'Guest';
 
   @override
-  String get agreeToTerms => 'By continuing, you agree to our Terms & Privacy Policy';
+  String get agreeToTerms =>
+      'By continuing, you agree to our Terms & Privacy Policy';
 
   @override
-  String get selectCurrencyDesc => 'Select your preferred currency for transactions';
+  String get selectCurrencyDesc =>
+      'Select your preferred currency for transactions';
 
   @override
   String get tellUsYourNameToGetStarted => 'Tell us your name to get started';
 
   @override
-  String get letPersonalizeYourExperience => 'Let\'s personalize your experience';
+  String get letPersonalizeYourExperience =>
+      'Let\'s personalize your experience';
 
   @override
   String get smartBudgetPlanning => 'Smart Budget Planning';
@@ -883,7 +912,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get next => 'Next';
 
   @override
-  String get takeControlOfYourFinances => 'Take control of your finances with smart budgeting and expense tracking';
+  String get takeControlOfYourFinances =>
+      'Take control of your finances with smart budgeting and expense tracking';
 
   @override
   String get chooseYourCurrency => 'Choose your currency';
@@ -894,7 +924,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get thankYouYourFeedback => 'Thank you for your interest in reviewing our app! Your feedback is valuable to us.';
+  String get thankYouYourFeedback =>
+      'Thank you for your interest in reviewing our app! Your feedback is valuable to us.';
 
   @override
   String get enterYourName => 'Enter your name';
@@ -906,7 +937,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get submitFeedback => 'Submit Feedback';
 
   @override
-  String get submitFeedbackDesc => 'Help us improve our app by sharing your thoughts and suggestions.';
+  String get submitFeedbackDesc =>
+      'Help us improve our app by sharing your thoughts and suggestions.';
 
   @override
   String get ratingRequired => 'Rating *';
@@ -936,10 +968,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedbackRequired => 'Feedback *';
 
   @override
-  String get feedbackDescHint => 'Tell us about your experience, suggestions, or issues...';
+  String get feedbackDescHint =>
+      'Tell us about your experience, suggestions, or issues...';
 
   @override
-  String get feedbackSuccess => 'Thank you for your feedback! We appreciate your input and will use it to improve our app.';
+  String get feedbackSuccess =>
+      'Thank you for your feedback! We appreciate your input and will use it to improve our app.';
 
   @override
   String get submitting => 'Submitting...';
@@ -1104,7 +1138,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bannerDismissed => 'Banner dismissed';
 
   @override
-  String get purchaseSuccessful => 'Purchase successful! Your subscription is now active.';
+  String get purchaseSuccessful =>
+      'Purchase successful! Your subscription is now active.';
 
   @override
   String purchaseFailed(Object errorMessage) {
@@ -1118,7 +1153,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get purchaseCanceledByUser => 'Purchase canceled by user.';
 
   @override
-  String get purchasePending => 'Purchase is pending. Please wait for confirmation.';
+  String get purchasePending =>
+      'Purchase is pending. Please wait for confirmation.';
 
   @override
   String get purchaseRestored => 'Purchase restored successfully.';
@@ -1143,7 +1179,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmNewAccountLoginTitle => 'Confirm new account login';
 
   @override
-  String get confirmNewAccountLoginMessage => 'If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?';
+  String get confirmNewAccountLoginMessage =>
+      'If you continue, all current data on this app will be deleted to sync with the new account. Are you sure you want to proceed?';
 
   @override
   String previewValue(Object value) {

@@ -42,7 +42,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get welecomeBack => 'Chào mừng trở lại!';
 
   @override
-  String get signInDescription => 'Xin chào, bạn đã quay lại, điền thông tin của bạn để tiếp tục';
+  String get signInDescription =>
+      'Xin chào, bạn đã quay lại, điền thông tin của bạn để tiếp tục';
 
   @override
   String get email => 'Email';
@@ -60,7 +61,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get signUpToStart => 'Hoàn thành sau đó đăng ký để bắt đầu';
 
   @override
-  String get pleaseEnableService => 'Vui lòng bật điều khoản dịch vụ của chúng tôi';
+  String get pleaseEnableService =>
+      'Vui lòng bật điều khoản dịch vụ của chúng tôi';
 
   @override
   String nEableServiceDescription(num count) {
@@ -102,7 +104,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get monthlyExpense => 'Chi tiêu hàng tháng';
 
   @override
-  String get noTransactionThisBudget => 'Bạn chưa có giao dịch nào với ngân sách này.';
+  String get noTransactionThisBudget =>
+      'Bạn chưa có giao dịch nào với ngân sách này.';
 
   @override
   String get youAlreadySpent => 'Bạn đã chi tiêu';
@@ -114,7 +117,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get budgetName => 'Tên ngân sách';
 
   @override
-  String get errorChooseYourBudgetIcon => 'Vui lòng chọn biểu tượng ngân sách của bạn';
+  String get errorChooseYourBudgetIcon =>
+      'Vui lòng chọn biểu tượng ngân sách của bạn';
 
   @override
   String get chooseYourBudget => 'Chọn ngân sách';
@@ -195,7 +199,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get exceeded => 'Vượt quá';
 
   @override
-  String get anErrorUnexpectedOccur => 'Đã xảy ra một lỗi không mong muốn, vui lòng thử lại';
+  String get anErrorUnexpectedOccur =>
+      'Đã xảy ra một lỗi không mong muốn, vui lòng thử lại';
 
   @override
   String get errorUploadFiles => 'Lỗi khi tải lên tệp';
@@ -265,7 +270,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get confirmPasswordInvalid => 'Xác nhận mật khẩu không hợp lệ';
 
   @override
-  String get loginSuccessWelcomeBack => 'Đăng nhập thành công! Chào mừng bạn trở lại.';
+  String get loginSuccessWelcomeBack =>
+      'Đăng nhập thành công! Chào mừng bạn trở lại.';
 
   @override
   String get forgetPassword => 'Quên mật khẩu?';
@@ -296,16 +302,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get emailAlreadyExits => 'Email đã tồn tại.';
 
   @override
-  String get errorSignInGoogle => 'Đã xảy ra lỗi khi đăng nhập bằng Google. Hãy thử lại.';
+  String get errorSignInGoogle =>
+      'Đã xảy ra lỗi khi đăng nhập bằng Google. Hãy thử lại.';
 
   @override
-  String get errorSignInFacebook => 'Đã xảy ra lỗi khi đăng nhập bằng Facebook. Hãy thử lại.';
+  String get errorSignInFacebook =>
+      'Đã xảy ra lỗi khi đăng nhập bằng Facebook. Hãy thử lại.';
 
   @override
   String get accountAlreadyExits => 'Tài khoản đã tồn tại.';
 
   @override
-  String get errorCredentials => 'Đã xảy ra lỗi khi truy cập thông tin đăng nhập. Hãy thử lại.';
+  String get errorCredentials =>
+      'Đã xảy ra lỗi khi truy cập thông tin đăng nhập. Hãy thử lại.';
 
   @override
   String get invalidEmailOrPassword => 'Email hoặc mật khẩu không hợp lệ.';
@@ -423,7 +432,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get viewAll => 'Xem tất cả';
 
   @override
-  String get youMustCreateAtLeastOneBudget => 'Bạn phải tạo ít nhất một ngân sách để sử dụng tính năng này';
+  String get youMustCreateAtLeastOneBudget =>
+      'Bạn phải tạo ít nhất một ngân sách để sử dụng tính năng này';
 
   @override
   String get navigateToIt => 'Chuyển đến';
@@ -465,7 +475,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get accept => 'Đồng ý';
 
   @override
-  String get reasonChartNotVisible => 'Biểu đồ không hiện thị vì bộ lọc đang hiện nguồn thu và chi tiêu';
+  String get reasonChartNotVisible =>
+      'Biểu đồ không hiện thị vì bộ lọc đang hiện nguồn thu và chi tiêu';
 
   @override
   String transactionNotScopeBudget(Object endDate, Object startDate) {
@@ -479,7 +490,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get totalExpense => 'Tổng Chi Phí';
 
   @override
-  String get newVersionDescription => 'Bạn hãy cập nhật ứng dụng để có trải nghiệm tốt hơn.';
+  String get newVersionDescription =>
+      'Bạn hãy cập nhật ứng dụng để có trải nghiệm tốt hơn.';
 
   @override
   String get newVersionTitle => 'Đã có phiên bản mới';
@@ -527,7 +539,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get chatWithViBot => 'Chat với ViBot';
 
   @override
-  String get viBotHello => 'Xin chào, tôi là ViBot trợ lý ảo của ứng dụng Vi Nhỏ.\nTôi có thể giúp gì cho bạn';
+  String get viBotHello =>
+      'Xin chào, tôi là ViBot trợ lý ảo của ứng dụng Vi Nhỏ.\nTôi có thể giúp gì cho bạn';
 
   @override
   String pAppVersion(Object version) {
@@ -555,10 +568,12 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get featureMaintain => 'Tính năng này đang được bảo trì, vui lòng thử lại sau';
+  String get featureMaintain =>
+      'Tính năng này đang được bảo trì, vui lòng thử lại sau';
 
   @override
-  String get errorContactSupport => 'Đã xảy ra lỗi, vui lòng liên hệ với bộ phận hỗ trợ';
+  String get errorContactSupport =>
+      'Đã xảy ra lỗi, vui lòng liên hệ với bộ phận hỗ trợ';
 
   @override
   String get errorInternet => 'Không có kết nối internet';
@@ -567,13 +582,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get allTime => 'Không giới hạn';
 
   @override
-  String get invalidDateRange => 'Khoảng thời gian mới cần phải bao trùm toàn bộ khoảng thời gian hiện tại.';
+  String get invalidDateRange =>
+      'Khoảng thời gian mới cần phải bao trùm toàn bộ khoảng thời gian hiện tại.';
 
   @override
-  String get emailNotFound => 'Email không tồn tại. Vui lòng kiểm tra và thử lại.';
+  String get emailNotFound =>
+      'Email không tồn tại. Vui lòng kiểm tra và thử lại.';
 
   @override
-  String get weAreSendEmailPassword => 'Chúng tôi đã gửi email để bạn đặt lại mật khẩu. Vui lòng kiểm tra hộp thư.';
+  String get weAreSendEmailPassword =>
+      'Chúng tôi đã gửi email để bạn đặt lại mật khẩu. Vui lòng kiểm tra hộp thư.';
 
   @override
   String get resetPassword => 'Đặt lại mật khẩu';
@@ -582,7 +600,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get resetPasswordTitle => 'Quên mật khẩu?';
 
   @override
-  String get resetPasswordDescription => 'Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn hướng dẫn để đặt lại mật khẩu.';
+  String get resetPasswordDescription =>
+      'Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn hướng dẫn để đặt lại mật khẩu.';
 
   @override
   String get invalidPhoneNumber => 'Số điện thoại không hợp lệ';
@@ -669,7 +688,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get budgetDistribution => 'Phân bổ ngân sách';
 
   @override
-  String get noBudgetsSelectedTransaction => 'Chưa có ngân sách cho loại giao dịch này';
+  String get noBudgetsSelectedTransaction =>
+      'Chưa có ngân sách cho loại giao dịch này';
 
   @override
   String get incomeVsExpense => 'Thu nhập và Chi tiêu';
@@ -735,13 +755,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get createdByViBot => 'Được tạo bởi ViBot';
 
   @override
-  String get viBotPersonality => 'Bạn là ViBot, một trợ lý tài chính cá nhân thân thiện và hữu ích cho ứng dụng Smart Budget.';
+  String get viBotPersonality =>
+      'Bạn là ViBot, một trợ lý tài chính cá nhân thân thiện và hữu ích cho ứng dụng Smart Budget.';
 
   @override
-  String get viBotPersonalityTraits => 'Hãy ấm áp, khuyến khích và hỗ trợ về các mục tiêu tài chính\n- Giữ câu trả lời ngắn gọn nhưng đầy đủ thông tin\n- Sử dụng biểu tượng cảm xúc một cách tiết kiệm nhưng phù hợp\n- Chúc mừng những thành tựu tài chính và nhẹ nhàng hướng dẫn về việc chi tiêu quá mức';
+  String get viBotPersonalityTraits =>
+      'Hãy ấm áp, khuyến khích và hỗ trợ về các mục tiêu tài chính\n- Giữ câu trả lời ngắn gọn nhưng đầy đủ thông tin\n- Sử dụng biểu tượng cảm xúc một cách tiết kiệm nhưng phù hợp\n- Chúc mừng những thành tựu tài chính và nhẹ nhàng hướng dẫn về việc chi tiêu quá mức';
 
   @override
-  String get viBotCapabilities => '**Xử lý giao dịch**: Phân tích ngôn ngữ tự nhiên như \"Ăn trưa 50k\", \"Cà phê 30k hôm qua\", \"Trả tiền điện 100k\"\n2. **Quản lý ngân sách**: Tự động tạo ngân sách mới khi được đề cập\n3. **Thông tin thông minh**: Cung cấp tóm tắt chi tiêu và trạng thái ngân sách\n4. **Hành động nhanh**: Hỗ trợ chỉnh sửa, xóa và thêm ghi chú cho giao dịch';
+  String get viBotCapabilities =>
+      '**Xử lý giao dịch**: Phân tích ngôn ngữ tự nhiên như \"Ăn trưa 50k\", \"Cà phê 30k hôm qua\", \"Trả tiền điện 100k\"\n2. **Quản lý ngân sách**: Tự động tạo ngân sách mới khi được đề cập\n3. **Thông tin thông minh**: Cung cấp tóm tắt chi tiêu và trạng thái ngân sách\n4. **Hành động nhanh**: Hỗ trợ chỉnh sửa, xóa và thêm ghi chú cho giao dịch';
 
   @override
   String viBotUserInfo(Object balance, Object currency, Object name) {
@@ -754,25 +777,30 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get viBotTransactionRules => 'Khi xử lý giao dịch:\n- Luôn tạo giao dịch với ghi chú \"Được tạo bởi ViBot\"\n- Nếu ngân sách không tồn tại, đề cập rằng bạn đang tạo nó\n- Cung cấp tóm tắt chi tiêu sau giao dịch\n- Cảnh báo nhẹ nhàng nếu sắp đạt giới hạn ngân sách\n- Đề xuất tạo ngân sách cho các danh mục không được nhận dạng';
+  String get viBotTransactionRules =>
+      'Khi xử lý giao dịch:\n- Luôn tạo giao dịch với ghi chú \"Được tạo bởi ViBot\"\n- Nếu ngân sách không tồn tại, đề cập rằng bạn đang tạo nó\n- Cung cấp tóm tắt chi tiêu sau giao dịch\n- Cảnh báo nhẹ nhàng nếu sắp đạt giới hạn ngân sách\n- Đề xuất tạo ngân sách cho các danh mục không được nhận dạng';
 
   @override
-  String get viBotResponseFormat => 'Định dạng phản hồi cho giao dịch:\n- Xác nhận những gì đã được ghi nhận\n- Hiển thị trạng thái ngân sách nếu có liên quan\n- Đưa ra các bước tiếp theo hữu ích\n- Giữ tính trò chuyện và thân thiện';
+  String get viBotResponseFormat =>
+      'Định dạng phản hồi cho giao dịch:\n- Xác nhận những gì đã được ghi nhận\n- Hiển thị trạng thái ngân sách nếu có liên quan\n- Đưa ra các bước tiếp theo hữu ích\n- Giữ tính trò chuyện và thân thiện';
 
   @override
   String get viBotExampleUser1 => 'Ăn trưa 50k';
 
   @override
-  String get viBotExampleBot1 => 'Tôi đã ghi nhận khoản chi 50k cho bữa trưa của bạn! 🍽️ Bạn còn 150k trong ngân sách Ăn trưa tháng này.';
+  String get viBotExampleBot1 =>
+      'Tôi đã ghi nhận khoản chi 50k cho bữa trưa của bạn! 🍽️ Bạn còn 150k trong ngân sách Ăn trưa tháng này.';
 
   @override
   String get viBotExampleUser2 => 'Quán cà phê 30k hôm qua';
 
   @override
-  String get viBotExampleBot2 => 'Đã ghi! Tôi đã thêm khoản chi 30k cà phê hôm qua. Tôi đã tạo ngân sách \'Cà phê\' mới cho bạn vì đây là lần đầu bạn mua cà phê.';
+  String get viBotExampleBot2 =>
+      'Đã ghi! Tôi đã thêm khoản chi 30k cà phê hôm qua. Tôi đã tạo ngân sách \'Cà phê\' mới cho bạn vì đây là lần đầu bạn mua cà phê.';
 
   @override
-  String get viBotClosing => 'Luôn hữu ích, chính xác và khuyến khích về quản lý tài chính!';
+  String get viBotClosing =>
+      'Luôn hữu ích, chính xác và khuyến khích về quản lý tài chính!';
 
   @override
   String get refresh => 'Làm mới';
@@ -781,7 +809,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get removeChatTitle => 'Xóa cuộc trò chuyện';
 
   @override
-  String get removeChatMessage => 'Bạn có chắc chắn muốn xóa cuộc trò chuyện này không?';
+  String get removeChatMessage =>
+      'Bạn có chắc chắn muốn xóa cuộc trò chuyện này không?';
 
   @override
   String get signingOutLoading => 'Đang đăng xuất...';
@@ -808,7 +837,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get contactUs => 'Liên hệ';
 
   @override
-  String get contactUsDesc => 'Chúng tôi sẵn sàng hỗ trợ và giải đáp mọi thắc mắc của bạn.';
+  String get contactUsDesc =>
+      'Chúng tôi sẵn sàng hỗ trợ và giải đáp mọi thắc mắc của bạn.';
 
   @override
   String get sendEmail => 'Gửi email';
@@ -859,16 +889,20 @@ class AppLocalizationsVi extends AppLocalizations {
   String get userNameDefault => 'Khách';
 
   @override
-  String get agreeToTerms => 'Bằng việc tiếp tục, bạn đồng ý với Điều khoản & Chính sách Bảo mật của chúng tôi';
+  String get agreeToTerms =>
+      'Bằng việc tiếp tục, bạn đồng ý với Điều khoản & Chính sách Bảo mật của chúng tôi';
 
   @override
-  String get selectCurrencyDesc => 'Chọn loại tiền tệ ưa thích của bạn cho giao dịch';
+  String get selectCurrencyDesc =>
+      'Chọn loại tiền tệ ưa thích của bạn cho giao dịch';
 
   @override
-  String get tellUsYourNameToGetStarted => 'Hãy cho chúng tôi biết tên của bạn để bắt đầu';
+  String get tellUsYourNameToGetStarted =>
+      'Hãy cho chúng tôi biết tên của bạn để bắt đầu';
 
   @override
-  String get letPersonalizeYourExperience => 'Hãy cá nhân hóa trải nghiệm của bạn';
+  String get letPersonalizeYourExperience =>
+      'Hãy cá nhân hóa trải nghiệm của bạn';
 
   @override
   String get smartBudgetPlanning => 'Lập Kế hoạch Ngân sách Thông minh';
@@ -883,7 +917,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get next => 'Tiếp theo';
 
   @override
-  String get takeControlOfYourFinances => 'Kiểm soát tài chính của bạn với việc lập ngân sách thông minh và theo dõi chi tiêu';
+  String get takeControlOfYourFinances =>
+      'Kiểm soát tài chính của bạn với việc lập ngân sách thông minh và theo dõi chi tiêu';
 
   @override
   String get chooseYourCurrency => 'Chọn loại tiền tệ của bạn';
@@ -894,7 +929,8 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get thankYouYourFeedback => 'Cảm ơn bạn đã gửi phản hồi của mình! Chúng tôi sẽ xem xét và trả lời sớm nhất có thể.';
+  String get thankYouYourFeedback =>
+      'Cảm ơn bạn đã gửi phản hồi của mình! Chúng tôi sẽ xem xét và trả lời sớm nhất có thể.';
 
   @override
   String get enterYourName => 'Nhập tên của bạn';
@@ -906,7 +942,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get submitFeedback => 'Gửi Phản Hồi';
 
   @override
-  String get submitFeedbackDesc => 'Giúp chúng tôi cải thiện ứng dụng bằng cách chia sẻ ý kiến và đề xuất của bạn.';
+  String get submitFeedbackDesc =>
+      'Giúp chúng tôi cải thiện ứng dụng bằng cách chia sẻ ý kiến và đề xuất của bạn.';
 
   @override
   String get ratingRequired => 'Đánh giá *';
@@ -936,10 +973,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get feedbackRequired => 'Phản hồi *';
 
   @override
-  String get feedbackDescHint => 'Chia sẻ trải nghiệm, đề xuất hoặc vấn đề của bạn...';
+  String get feedbackDescHint =>
+      'Chia sẻ trải nghiệm, đề xuất hoặc vấn đề của bạn...';
 
   @override
-  String get feedbackSuccess => 'Cảm ơn phản hồi của bạn! Chúng tôi đánh giá cao đóng góp này và sẽ sử dụng để cải thiện ứng dụng.';
+  String get feedbackSuccess =>
+      'Cảm ơn phản hồi của bạn! Chúng tôi đánh giá cao đóng góp này và sẽ sử dụng để cải thiện ứng dụng.';
 
   @override
   String get submitting => 'Đang gửi...';
@@ -1035,7 +1074,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get prioritySupport => 'Hỗ trợ ưu tiên';
 
   @override
-  String get getFastPersonalizedHelp => 'Nhận trợ giúp nhanh chóng và cá nhân hóa';
+  String get getFastPersonalizedHelp =>
+      'Nhận trợ giúp nhanh chóng và cá nhân hóa';
 
   @override
   String get unlimitedBudgets => 'Ngân sách không giới hạn';
@@ -1104,7 +1144,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get bannerDismissed => 'Đã bỏ qua quảng cáo';
 
   @override
-  String get purchaseSuccessful => 'Mua hàng thành công! Đăng ký của bạn hiện đã hoạt động.';
+  String get purchaseSuccessful =>
+      'Mua hàng thành công! Đăng ký của bạn hiện đã hoạt động.';
 
   @override
   String purchaseFailed(Object errorMessage) {
@@ -1112,13 +1153,15 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get unknownError => 'Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.';
+  String get unknownError =>
+      'Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.';
 
   @override
   String get purchaseCanceledByUser => 'Đơn hàng đã bị hủy bởi người dùng.';
 
   @override
-  String get purchasePending => 'Đơn hàng đang chờ xử lý. Vui lòng chờ xác nhận.';
+  String get purchasePending =>
+      'Đơn hàng đang chờ xử lý. Vui lòng chờ xác nhận.';
 
   @override
   String get purchaseRestored => 'Đơn hàng đã được khôi phục thành công.';
@@ -1143,7 +1186,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get confirmNewAccountLoginTitle => 'Xác nhận đăng nhập tài khoản mới';
 
   @override
-  String get confirmNewAccountLoginMessage => 'Nếu bạn tiếp tục, tất cả dữ liệu hiện tại trên ứng dụng này sẽ bị xóa để đồng bộ với tài khoản mới. Bạn có chắc chắn muốn tiếp tục không?';
+  String get confirmNewAccountLoginMessage =>
+      'Nếu bạn tiếp tục, tất cả dữ liệu hiện tại trên ứng dụng này sẽ bị xóa để đồng bộ với tài khoản mới. Bạn có chắc chắn muốn tiếp tục không?';
 
   @override
   String previewValue(Object value) {
