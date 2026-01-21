@@ -249,44 +249,46 @@ class _BBottomsheetRangeDatetimeState extends State<BBottomsheetRangeDatetime> {
       children: [
         BText.b1(context.loc.dateRange, fontWeight: FontWeight.bold),
         gapH16,
-        ColumnWithSpacing(
-          mainAxisSize: MainAxisSize.min,
-          children: _list.map((e) {
-            String title =
-                e.rangeDateTimeType.content(context, rangeDatetimeModel: e);
-            bool isChooseCustom =
-                e.rangeDateTimeType == RangeDateTimeEnum.custom &&
-                    _rangeDatetimeModelInit.rangeDateTimeType ==
-                        RangeDateTimeEnum.custom;
-            if (e.rangeDateTimeType == RangeDateTimeEnum.custom) {
-              title = context.loc.custom;
-            }
+        RadioGroup<DatetimeRangeModel>(
+          groupValue: _rangeDatetimeModelInit,
+          onChanged: (DatetimeRangeModel? value) async {
+            updateState(context: context, e: value, stateSetter: stateSetter);
+          },
+          child: ColumnWithSpacing(
+            mainAxisSize: MainAxisSize.min,
+            children: _list.map((e) {
+              String title =
+                  e.rangeDateTimeType.content(context, rangeDatetimeModel: e);
+              bool isChooseCustom =
+                  e.rangeDateTimeType == RangeDateTimeEnum.custom &&
+                      _rangeDatetimeModelInit.rangeDateTimeType ==
+                          RangeDateTimeEnum.custom;
+              if (e.rangeDateTimeType == RangeDateTimeEnum.custom) {
+                title = context.loc.custom;
+              }
 
-            // For custom
+              // For custom
 
-            String customFormat = 'dd/MM/yyyy';
-            final dateRangeCustom = _list[3];
-            String dateRangeForCustom =
-                '${dateRangeCustom.startDate.toFormatDate(strFormat: customFormat)} - ${dateRangeCustom.endDate.toFormatDate(strFormat: customFormat)}';
-            return RadioListTile(
-                value: e,
-                groupValue: _rangeDatetimeModelInit,
-                title: isChooseCustom
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          BText(title),
-                          gapH16,
-                          BText(
-                            dateRangeForCustom,
-                          )
-                        ],
-                      )
-                    : BText(title),
-                onChanged: (e) async {
-                  updateState(context: context, e: e, stateSetter: stateSetter);
-                });
-          }).toList(),
+              String customFormat = 'dd/MM/yyyy';
+              final dateRangeCustom = _list[3];
+              String dateRangeForCustom =
+                  '${dateRangeCustom.startDate.toFormatDate(strFormat: customFormat)} - ${dateRangeCustom.endDate.toFormatDate(strFormat: customFormat)}';
+              return RadioListTile(
+                  value: e,
+                  title: isChooseCustom
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            BText(title),
+                            gapH16,
+                            BText(
+                              dateRangeForCustom,
+                            )
+                          ],
+                        )
+                      : BText(title));
+            }).toList(),
+          ),
         )
       ],
     );

@@ -14,7 +14,7 @@ class BSwitchListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
-        activeColor: Theme.of(context).colorScheme.secondary,
+        activeThumbColor: Theme.of(context).colorScheme.secondary,
         title: BText(title),
         value: value,
         onChanged: onChanged);
