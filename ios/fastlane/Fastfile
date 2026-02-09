@@ -2,43 +2,123 @@ default_platform(:ios)
 
 platform :ios do
 
+  desc "Deploy patch update via Shorebird"
+  lane :patch do
+    UI.header("Creating Shorebird Patch")
+    
+    validate_release_branch
+    
+    begin
+      UI.message("Creating patch")
+      
+      Dir.chdir("../..") do
+        sh("shorebird patch ios --release-version=latest")
+      end
+      
+      version = get_version_number(xcodeproj: "Runner.xcodeproj")
+      build_number = get_build_number(xcodeproj: "Runner.xcodeproj")
+      
+      UI.success("Patch deployed successfully")
+      push_git_tag("ios_patch_v#{version}_#{build_number}_#{Time.now.strftime('%Y%m%d_%H%M')}")
+      
+    rescue => e
+      UI.error("Patch deployment failed: #{e.message}")
+      raise e
+    end
+  end
+
   desc "Build & upload to TestFlight"
   lane :beta do
-    # Get info AppStore latest build & increment buildNumber
-    app_store_connect_api_key(
-      key_id: "3I935WSDHE",
-      issuer_id: "ed1f387a-d513-4de6-947a-46bpo9he3108",
-      key_filepath: "fastlane/AuthKey_334DJE5TPX.p8"
-    )
-    increment_build_number(
-      build_number: latest_testflight_build_number(
-        initial_build_number: 1,
-        version: get_version_number(xcodeproj: "Runner.xcodeproj")
-      ) + 1
-    )
+    UI.header("Deploying Release to TestFlight")
+    
+    validate_release_branch
+    
+    begin
+      # Get info AppStore latest build & increment buildNumber
+      app_store_connect_api_key(
+        key_id: "3I935WSDHE",
+        issuer_id: "ed1f387a-d513-4de6-947a-46bpo9he3108",
+        key_filepath: "fastlane/AuthKey_334DJE5TPX.p8"
+      )
+      
+      version = get_version_number(xcodeproj: "Runner.xcodeproj")
+      
+      increment_build_number(
+        build_number: latest_testflight_build_number(
+          initial_build_number: 1,
+          version: version
+        ) + 1
+      )
 
-    # Handle cert & provisioning
-    match(
-      type: "appstore",
-      app_identifier: "com.NguyenLoi.BudgetSS",
-      readonly: true
-    )
+      # Handle cert & provisioning
+      match(
+        type: "appstore",
+        app_identifier: "com.NguyenLoi.BudgetSS",
+        readonly: true
+      )
 
-    # Build ipa
-    gym(
-      # scheme: "prod",
-      export_method: "app-store"
-    )
+      # Build ipa with Shorebird
+      build_shorebird_ipa
 
-    # Upload to TestFlight
-    if is_ci
+      # Upload to TestFlight
       pilot(
         app_identifier: "com.NguyenLoi.BudgetSS",
         skip_submission: true,
-        skip_waiting_for_build_processing: true
+        skip_waiting_for_build_processing: is_ci
       )
+      
+      build_number = get_build_number(xcodeproj: "Runner.xcodeproj")
+      
+      commit_and_push_version("Release TestFlight v#{version} (#{build_number})")
+      push_git_tag("TestFlight_v#{version}_#{build_number}")
+      
+      UI.success("Release deployed to TestFlight successfully")
+      
+    rescue => e
+      UI.error("Release deployment failed: #{e.message}")
+      raise e
     end
-
   end
   
+end
+
+# Helper Methods
+
+def validate_release_branch
+  current_branch = sh("git rev-parse --abbrev-ref HEAD").strip
+  unless current_branch == "Released" || current_branch == "main"
+    UI.user_error!("You are not on a release branch. Current branch: #{current_branch}")
+  end
+end
+
+def build_shorebird_ipa
+  UI.message("Building Shorebird IPA")
+  
+  Dir.chdir("../..") do
+    sh("shorebird release ios")
+  end
+  
+  UI.success("Shorebird IPA built successfully")
+end
+
+def commit_and_push_version(commit_message)
+  # Commit version changes in Info.plist or other version files
+  git_status = sh("git status --porcelain ios/").strip
+  
+  if git_status.empty?
+    UI.message("No changes to commit")
+    return
+  end
+  
+  sh("git add ios/")
+  sh("git commit -m '#{commit_message}'")
+  sh("git push")
+  
+  UI.success("Changes committed and pushed")
+end
+
+def push_git_tag(tag_name)
+  add_git_tag(tag: "#{tag_name}")
+  push_to_git_remote
+  UI.success("Git tag created and pushed: #{tag_name}")
 end

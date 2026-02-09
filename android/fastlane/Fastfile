@@ -1,50 +1,141 @@
-
 default_platform(:android)
 
-require 'ostruct'
+APP_BUILD_FILE = '../app/build.gradle.kts'
 
 platform :android do
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do |options|
+  
+  desc "Deploy patch update via Shorebird"
+  lane :patch do
+    UI.header("Creating Shorebird Patch")
+    
+    validate_release_branch
+    
     begin
-      mode_distribute = "production" # "internal", "alpha", "beta", "production"
+      UI.message("Creating patch")
+      
+      Dir.chdir("../..") do
+        sh("shorebird patch android --release-version=latest -- --no-tree-shake-icons")
+      end
+      
       version_code = current_version_code
       version_name = current_version
-
-      gradle(
-        task: 'bundle',
-        build_type: 'Release',
-        flags: '--stacktrace'
-      )
       
-      upload_to_play_store(
-        track: mode_distribute, 
-        skip_upload_changelogs: false,
-        skip_upload_metadata: true,
-        aab: '../build/app/outputs/bundle/release/app-release.aab',
-        version_code: version_code,
-        version_name: version_name
-      )
-
-      UI.success("Successfully deployed version #{version_name} (#{version_code}) to Google Play")
+      UI.success("Patch deployed successfully")
+      push_git_tag("patch_v#{version_name}_#{version_code}_#{Time.now.strftime('%Y%m%d_%H%M')}")
+      
     rescue => e
-      UI.error("An error occurred: #{e.message}")
+      UI.error("Patch deployment failed: #{e.message}")
       raise e
     end
   end
+  
+  desc "Deploy new release to Google Play Store"
+  lane :release_store do
+    UI.header("Deploying Release to Google Play Store")
+    
+    validate_release_branch
+    
+    begin
+      track = "production" # internal, alpha, beta, production
+      
+      build_shorebird_aab
+      
+      version_code = current_version_code
+      version_name = current_version
+      
+      upload_to_play_store(
+        track: track,
+        skip_upload_changelogs: false,
+        skip_upload_metadata: true,
+        skip_upload_apk: true,
+        aab: '../build/app/outputs/bundle/release/app-release.aab'
+      )
+      
+      commit_and_push_build_gradle("Release GooglePlay v#{version_name} (#{version_code})")
+      push_git_tag("GooglePlay_v#{version_name}_#{version_code}")
+      
+      UI.success("Release deployed to Google Play Store successfully")
+      
+    rescue => e
+      UI.error("Release deployment failed: #{e.message}")
+      raise e
+    end
+  end
+  
+end
+
+# Helper Methods
+
+def validate_release_branch
+  current_branch = sh("git rev-parse --abbrev-ref HEAD").strip
+  unless current_branch == "Released" || current_branch == "main"
+    UI.user_error!("You are not on a release branch. Current branch: #{current_branch}")
+  end
+end
+
+def build_shorebird_aab
+  UI.message("Building Shorebird AAB")
+  
+  prepare_build_environment
+  
+  Dir.chdir("../..") do
+    sh("shorebird release android -- --no-tree-shake-icons")
+  end
+  
+  UI.success("Shorebird AAB built successfully")
+end
+
+def prepare_build_environment
+  UI.message("Preparing build environment...")
+  gradle(task: "clean")
 end
 
 def current_version
-  path = '../app/build.gradle'
-  re = /versionName\s+"([^"]+)"/
-  s = File.read(path)
-  versionName = s[re, 1]
-  return versionName
+  path = APP_BUILD_FILE
+  version_regex = /versionName\s*=\s*"([^"]+)"/
+  
+  content = File.read(path)
+  match = content.match(version_regex)
+  
+  return match[1] if match
+  UI.user_error!("Could not find versionName in build.gradle.kts")
 end
 
 def current_version_code
-  path = '../app/build.gradle'
-  re = /versionCode\s+(\d+)/
-  s = File.read(path)
-  s[re, 1].to_i
+  path = APP_BUILD_FILE
+  version_code_regex = /versionCode\s*=\s*(\d+)/
+  
+  content = File.read(path)
+  match = content.match(version_code_regex)
+  
+  return match[1].to_i if match
+  UI.user_error!("Could not find versionCode in build.gradle.kts")
+end
+
+def commit_and_push_build_gradle(commit_message)
+  path = APP_BUILD_FILE
+  
+  unless File.exist?(path)
+    UI.message("build.gradle.kts not found, skipping commit")
+    return
+  end
+  
+  git_status = sh("git status --porcelain #{path}").strip
+  
+  if git_status.empty?
+    UI.message("No changes to commit in build.gradle.kts")
+    return
+  end
+  
+  sh("git add #{path}")
+  sh("git commit -m '#{commit_message}'")
+  sh("git push")
+  
+  UI.success("Changes committed and pushed")
+end
+
+def push_git_tag(tag_name)
+  add_git_tag(tag: "#{tag_name}")
+  push_to_git_remote
+  UI.success("Git tag created and pushed: #{tag_name}")
 end
