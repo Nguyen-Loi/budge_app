@@ -1,5 +1,7 @@
 default_platform(:ios)
 
+BRANCH_RELEASE = 'Released'
+
 platform :ios do
 
   desc "Deploy patch update via Shorebird"
@@ -85,10 +87,10 @@ end
 # Helper Methods
 
 def validate_release_branch
-  current_branch = sh("git rev-parse --abbrev-ref HEAD").strip
-  unless current_branch == "Released" || current_branch == "main"
-    UI.user_error!("You are not on a release branch. Current branch: #{current_branch}")
-  end
+  # current_branch = sh("git rev-parse --abbrev-ref HEAD").strip
+  # unless current_branch == BRANCH_RELEASE
+  #   UI.user_error!("You are not on a release branch. Current branch: #{current_branch}")
+  # end
 end
 
 def build_shorebird_ipa

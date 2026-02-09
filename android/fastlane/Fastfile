@@ -1,6 +1,8 @@
 default_platform(:android)
 
 APP_BUILD_FILE = '../app/build.gradle.kts'
+TRACK_STORE = 'internal' # internal, alpha, beta, production
+BRANCH_RELEASE = 'Released'
 
 platform :android do
   
@@ -36,7 +38,6 @@ platform :android do
     validate_release_branch
     
     begin
-      track = "production" # internal, alpha, beta, production
       
       build_shorebird_aab
       
@@ -44,7 +45,7 @@ platform :android do
       version_name = current_version
       
       upload_to_play_store(
-        track: track,
+        track: TRACK_STORE,
         skip_upload_changelogs: false,
         skip_upload_metadata: true,
         skip_upload_apk: true,
@@ -68,7 +69,7 @@ end
 
 def validate_release_branch
   current_branch = sh("git rev-parse --abbrev-ref HEAD").strip
-  unless current_branch == "Released" || current_branch == "main"
+  unless current_branch == BRANCH_RELEASE
     UI.user_error!("You are not on a release branch. Current branch: #{current_branch}")
   end
 end
