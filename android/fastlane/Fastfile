@@ -29,7 +29,7 @@ platform :android do
       
       UI.success("✓ Patch deployed successfully for v#{version_name} (#{version_code})")
       
-      patch_tag = "patch_v#{version_name}_#{version_code}_#{Time.now.strftime('%Y%m%d_%H%M')}"
+      patch_tag = "apk-patch_v#{version_name}-#{version_code}_#{Time.now.strftime('%Y%m%d-%H%M')}"
       push_git_tag(patch_tag)
       
       UI.success("✓ Tagged as: #{patch_tag}")
