@@ -15,13 +15,21 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android deploy
+### android patch
 
 ```sh
-[bundle exec] fastlane android deploy
+[bundle exec] fastlane android patch
 ```
 
-Deploy a new version to the Google Play
+Deploy patch update via Shorebird
+
+### android release_store
+
+```sh
+[bundle exec] fastlane android release_store
+```
+
+Deploy new release to Google Play Store
 
 ----
 
